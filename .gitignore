@@ -1,0 +1,6 @@
+# Created by .gitignore support plugin (hsz.mobi)
+eclipse
+gradle
+HxCCore.ipr
+HxCCore.iws
+HxCCore.iml
