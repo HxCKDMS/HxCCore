@@ -20,18 +20,18 @@ public class HxCCore
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.CommonProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
 
-	@Mod.Instance(Reference.MOD_ID)
-	public static HxCCore instance;
+    @Mod.Instance(Reference.MOD_ID)
+    public static HxCCore instance;
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
         LogHelper.info("Thank your for using HxCCore");
-	}
+    }
 
-	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
         MinecraftForge.EVENT_BUS.register(EventGod.instance);
     }
 
