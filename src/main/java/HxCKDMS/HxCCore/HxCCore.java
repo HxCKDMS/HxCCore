@@ -20,7 +20,7 @@ public class HxCCore
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-
+        System.out.println("Thank your for using HxCCore");
 	}
 
 	@EventHandler
