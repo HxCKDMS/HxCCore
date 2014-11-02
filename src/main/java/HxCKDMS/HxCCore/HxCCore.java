@@ -17,8 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class HxCCore
 {
-
-	@SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.CommonProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
+    @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.CommonProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
 
 	@Mod.Instance(Reference.MOD_ID)
