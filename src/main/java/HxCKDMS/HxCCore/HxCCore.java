@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Events.EventGod;
+import HxCKDMS.HxCCore.Events.EventJoinWorld;
 import HxCKDMS.HxCCore.Events.EventXPtoHP;
 import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
@@ -15,12 +16,18 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
+import java.io.File;
+import java.io.IOException;
+
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 
 public class HxCCore
 {
+    public static File HxCCoreDir = null;
+
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.CommonProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
+
     public static Config Config;
 
     @Mod.Instance(Reference.MOD_ID)
@@ -38,11 +45,18 @@ public class HxCCore
     {
         MinecraftForge.EVENT_BUS.register(EventGod.instance);
         MinecraftForge.EVENT_BUS.register(new EventXPtoHP());
+        MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
     }
 
     @EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
         CommandBase.initCommands(event);
+
+        File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
+        if (!WorldDir.exists()) {
+            WorldDir.mkdirs();
+        }
+        HxCCoreDir = WorldDir;
     }
 }
