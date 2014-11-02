@@ -19,7 +19,7 @@ public class HxCCore
 {
 
 	@SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.CommonProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
-        public static IProxy proxy;
+    public static IProxy proxy;
 
 	@Mod.Instance(Reference.MOD_ID)
 	public static HxCCore instance;
