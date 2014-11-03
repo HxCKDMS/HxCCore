@@ -46,6 +46,7 @@ public class HxCCore
     }
 
     @EventHandler
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event)
     {
         CommandBase.initCommands(event);
