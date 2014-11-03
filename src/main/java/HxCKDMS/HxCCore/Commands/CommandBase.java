@@ -46,11 +46,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     public void processCommand(ICommandSender sender, String[] args) {
         if(args.length > 0){
             if(commands.containsKey(args[0])){
-                try {
-                    commands.get(args[0]).handleCommand(sender, args);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                commands.get(args[0]).handleCommand(sender, args);
             }else{
                 throw new WrongUsageException("Type '"+getCommandUsage(sender)+"' for help.");
             }
