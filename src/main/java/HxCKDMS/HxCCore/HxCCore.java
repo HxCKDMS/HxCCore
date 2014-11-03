@@ -17,7 +17,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
-import java.io.IOException;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 
@@ -43,7 +42,7 @@ public class HxCCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(EventGod.instance);
+        MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoHP());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
     }

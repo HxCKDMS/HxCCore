@@ -1,9 +1,13 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.io.*;
 import java.util.List;
 
 public class CommandSetHome implements ISubCommand {
@@ -16,9 +20,11 @@ public class CommandSetHome implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        EntityPlayer player = (EntityPlayer)sender;
+        EntityPlayerMP player = (EntityPlayerMP)sender;
+        String UUID = player.getUniqueID().toString();
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
         try{
-            NBTTagCompound playerData = player.getEntityData();
+            NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
             NBTTagCompound home = playerData.getCompoundTag("home");
             NBTTagCompound homeDir = new NBTTagCompound();
 
@@ -35,10 +41,11 @@ public class CommandSetHome implements ISubCommand {
             homeDir.setInteger("dim", dim);
 
             home.setTag(hName, homeDir);
-
             playerData.setTag("home", home);
 
-        }catch(NullPointerException e){
+            CompressedStreamTools.write(playerData, CustomPlayerData);
+
+        }catch(Exception e){
 
             NBTTagCompound home = new NBTTagCompound();
             NBTTagCompound homeDir = new NBTTagCompound();
@@ -57,8 +64,13 @@ public class CommandSetHome implements ISubCommand {
             homeDir.setInteger("dim", dim);
 
             home.setTag(hName, homeDir);
-
             playerData.setTag("home", home);
+
+            try {
+                CompressedStreamTools.write(playerData, CustomPlayerData);
+            }catch(IOException exception){
+                exception.printStackTrace();
+            }
         }
     }
 
