@@ -1,11 +1,11 @@
 [
   {
     "modid": "HxCCore",
-    "name": "§3DrZed's §3Core§r",
+    "name": "HxC-Core",
     "description": "IDK",
     "version": "Alpha 1.0",
     "credits": "Minor help from Opensource COFH core",
-	"logoFile": "/textures/HxC.png",
+	"logoFile": "assets/HxCCore/textures/HxC.png",
     "mcversion": "1.7.10",
     "authors": ["§4HxCK§3D§eM§0S§r"],
     "dependencies": [
