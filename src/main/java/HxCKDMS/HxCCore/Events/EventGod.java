@@ -20,7 +20,7 @@ public class EventGod implements EventListener {
         if(event.entity instanceof EntityPlayer){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
             try {
                 NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
@@ -44,7 +44,7 @@ public class EventGod implements EventListener {
         if(event.entity instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
             try {
                 NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
@@ -67,7 +67,7 @@ public class EventGod implements EventListener {
         if(event.entity instanceof EntityPlayer && HealTimer >= 20){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             try {
                 NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
                 if (playerData.getBoolean("god") && event.isCancelable()) {

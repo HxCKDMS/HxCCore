@@ -22,7 +22,7 @@ public class CommandSetHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         String UUID = player.getUniqueID().toString();
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
         try{
             NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
             NBTTagCompound home = playerData.getCompoundTag("home");

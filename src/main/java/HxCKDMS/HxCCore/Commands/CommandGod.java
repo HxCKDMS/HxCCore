@@ -31,7 +31,7 @@ public class CommandGod implements ISubCommand {
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     String UUID = player.getUniqueID().toString();
-                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                     try{
                         NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
@@ -57,7 +57,7 @@ public class CommandGod implements ISubCommand {
                 EntityPlayerMP player = (EntityPlayerMP) sender;
                 EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                 String UUID = player2.getUniqueID().toString();
-                File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 try{
                     NBTTagCompound playerData2  = CompressedStreamTools.read(CustomPlayerData);

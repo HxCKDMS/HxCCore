@@ -24,7 +24,7 @@ public class CommandHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         String UUID = player.getUniqueID().toString();
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, UUID + ".dat");
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
         String hName = args.length == 1 ? "default" : args[1];
         try{
             NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
