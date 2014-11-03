@@ -1,9 +1,7 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Events.EventGod;
-import HxCKDMS.HxCCore.Events.EventJoinWorld;
-import HxCKDMS.HxCCore.Events.EventXPtoHP;
+import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
@@ -43,7 +41,7 @@ public class HxCCore
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new EventGod());
-        MinecraftForge.EVENT_BUS.register(new EventXPtoHP());
+        if (Config.XPBuffs) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
     }
 
