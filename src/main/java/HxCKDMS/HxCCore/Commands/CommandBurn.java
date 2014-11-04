@@ -24,7 +24,7 @@ public class CommandBurn implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    player.setFire(72000);
+                    player.setFire(750000000);
                 }else{
                     sender.addChatMessage(new ChatComponentText("the burn command without arguments can only be executed from a player."));
                 }
@@ -32,7 +32,7 @@ public class CommandBurn implements ISubCommand {
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                player2.setFire(72000);
+                player2.setFire(750000000);
             }
             break;
             default: {

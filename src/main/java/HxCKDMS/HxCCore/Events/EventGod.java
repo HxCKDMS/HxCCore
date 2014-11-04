@@ -48,6 +48,7 @@ public class EventGod implements EventListener {
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             if(NBTFileIO.getBoolean(CustomPlayerData, "god")){
                 player.heal(player.getMaxHealth() - player.getHealth());
+                player.getFoodStats().addStats(20, 20F);
             }
         }
         HealTimer++;

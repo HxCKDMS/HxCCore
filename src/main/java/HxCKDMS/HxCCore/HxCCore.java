@@ -9,6 +9,7 @@ import HxCKDMS.HxCCore.lib.Reference;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -29,7 +30,7 @@ public class HxCCore
 
     public static Config Config;
 
-    @Mod.Instance(Reference.MOD_ID)
+    @Instance(Reference.MOD_ID)
     public static HxCCore instance;
 
     @EventHandler
