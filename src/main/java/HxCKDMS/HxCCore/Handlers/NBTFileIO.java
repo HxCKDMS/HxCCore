@@ -70,7 +70,7 @@ public class NBTFileIO {
             data = CompressedStreamTools.read(dataFile);
         }catch(Exception e){
             e.printStackTrace();
-            return null;
+            return "";
         }
         return data.getString(tag);
     }
