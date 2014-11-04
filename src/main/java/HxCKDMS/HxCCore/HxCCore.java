@@ -46,6 +46,7 @@ public class HxCCore
         if (Config.XPBuffs) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
         FMLCommonHandler.instance().bus().register(new KeyInputHandler());
+        proxy.registerKeyBindings();
     }
 
     @EventHandler

@@ -7,7 +7,7 @@ public class KeyInputHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if(Keybinds.test.isPressed()){
+        if(Keybindings.test.isPressed()){
             System.out.println("test succeeded");
         }
     }

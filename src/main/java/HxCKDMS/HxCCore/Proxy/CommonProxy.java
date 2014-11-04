@@ -1,5 +1,5 @@
 package HxCKDMS.HxCCore.Proxy;
 
-public class CommonProxy implements IProxy {
+public abstract class CommonProxy implements IProxy {
     
 }
