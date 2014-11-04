@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -33,21 +34,8 @@ public class CommandGod implements ISubCommand {
                     String UUID = player.getUniqueID().toString();
                     File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-                    try{
-                        NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                        playerData.setBoolean("god", !playerData.getBoolean("god"));
-                        player.addChatComponentMessage(new ChatComponentText("turned " + (playerData.getBoolean("god") ? "on" : "off") + " god mode"));
-                        CompressedStreamTools.write(playerData, CustomPlayerData);
-                    }catch(Exception e){
-                        try{
-                            NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                            playerData.setBoolean("god", true);
-                            player.addChatComponentMessage(new ChatComponentText("turned " + (playerData.getBoolean("god") ? "on" : "off") + " god mode"));
-                            CompressedStreamTools.write(playerData, CustomPlayerData);
-                        }catch(Exception exception){
-                            exception.printStackTrace();
-                        }
-                    }
+                    NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
+                    player.addChatComponentMessage(new ChatComponentText("turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
                 }else {
                     sender.addChatMessage(new ChatComponentText("the god command without arguments can only be executed from a player."));
                 }
@@ -59,22 +47,8 @@ public class CommandGod implements ISubCommand {
                 String UUID = player2.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-                try{
-                    NBTTagCompound playerData2  = CompressedStreamTools.read(CustomPlayerData);
-                    playerData2.setBoolean("god", !playerData2.getBoolean("god"));
-                    player.addChatComponentMessage(new ChatComponentText("turned " + (playerData2.getBoolean("god") ? "on" : "off") + " god mode"));
-                    CompressedStreamTools.write(playerData2, CustomPlayerData);
-                }catch(Exception e){
-                    try {
-                        NBTTagCompound playerData2 = CompressedStreamTools.read(CustomPlayerData);
-                        playerData2.setBoolean("god", true);
-                        player.addChatComponentMessage(new ChatComponentText("turned " + (playerData2.getBoolean("god") ? "on" : "off") + " god mode"));
-                        CompressedStreamTools.write(playerData2, CustomPlayerData);
-                    }catch(Exception exception){
-                        exception.printStackTrace();
-                    }
-                }
-
+                NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
+                player.addChatComponentMessage(new ChatComponentText("turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
             }
             break;
             default: {

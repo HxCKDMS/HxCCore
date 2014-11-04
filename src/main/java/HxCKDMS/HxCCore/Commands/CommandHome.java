@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
@@ -25,18 +26,14 @@ public class CommandHome implements ISubCommand {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         String UUID = player.getUniqueID().toString();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+
         String hName = args.length == 1 ? "default" : args[1];
-        try{
-            NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-            NBTTagCompound homeDir = playerData.getCompoundTag("home");
-            if(!homeDir.hasKey(hName)){
-                throw new WrongUsageException("the home named: '" + hName + "' does not exist.");
-            }
-            NBTTagCompound home = homeDir.getCompoundTag(hName);
-            Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
-        }catch(Exception e){
-            e.printStackTrace();
+        NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+        if(!homeDir.hasKey(hName)){
+            throw new WrongUsageException("the home named: '" + hName + "' does not exist.");
         }
+        NBTTagCompound home = homeDir.getCompoundTag(hName);
+        Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.Events;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -8,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import org.lwjgl.Sys;
 
 import java.io.File;
 import java.util.EventListener;
@@ -22,68 +25,37 @@ public class EventGod implements EventListener {
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-            try {
-                NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                if (playerData.getBoolean("god") && event.isCancelable()) {
-                    event.setCanceled(true);
-                }
-            } catch (Exception e) {
-                try {
-                    NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                    playerData.setBoolean("god", false);
-                    CompressedStreamTools.write(playerData, CustomPlayerData);
-                }catch(Exception exception){
-                    exception.printStackTrace();
-                }
+            if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
+                event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent(receiveCanceled = true)
     public void playerDeath(LivingDeathEvent event){
-        if(event.entity instanceof EntityPlayer) {
+        if(event.entity instanceof EntityPlayer){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-            try {
-                NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                if (playerData.getBoolean("god") && event.isCancelable()) {
-                    event.setCanceled(true);
-                }
-            } catch (Exception e) {
-                try {
-                    NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                    playerData.setBoolean("god", false);
-                }catch(Exception exception){
-                    exception.printStackTrace();
-                }
+            if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
+                event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent(receiveCanceled = true)
-    public void playerUpdate(LivingEvent.LivingUpdateEvent event){
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
         if(event.entity instanceof EntityPlayer && HealTimer >= 20){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            try {
-                NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                if (playerData.getBoolean("god") && event.isCancelable()) {
-                    player.heal(player.getMaxHealth() - player.getHealth());
-                }
-            } catch (Exception e) {
-                try {
-                    NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-                    playerData.setBoolean("god", false);
-                }catch(Exception exception){
-                    exception.printStackTrace();
-                }
+            if(NBTFileIO.getBoolean(CustomPlayerData, "god")){
+                player.heal(player.getMaxHealth() - player.getHealth());
             }
         }
         HealTimer++;
-        if(HealTimer >= 20){
+        if(HealTimer >= 21){
             HealTimer = 0;
         }
     }

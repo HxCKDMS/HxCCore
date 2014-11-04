@@ -1,10 +1,9 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.*;
@@ -22,56 +21,27 @@ public class CommandSetHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         String UUID = player.getUniqueID().toString();
+
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-        try{
-            NBTTagCompound playerData = CompressedStreamTools.read(CustomPlayerData);
-            NBTTagCompound home = playerData.getCompoundTag("home");
-            NBTTagCompound homeDir = new NBTTagCompound();
 
-            String hName = args.length == 1 ? "default" : args[1];
+        NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+        NBTTagCompound homeDir = new NBTTagCompound();
 
-            int x = (int)player.posX;
-            int y = (int)player.posY;
-            int z = (int)player.posZ;
-            int dim = player.dimension;
+        String hName = args.length == 1 ? "default" : args[1];
 
-            homeDir.setInteger("x", x);
-            homeDir.setInteger("y", y);
-            homeDir.setInteger("z", z);
-            homeDir.setInteger("dim", dim);
+        int x = (int)player.posX;
+        int y = (int)player.posY;
+        int z = (int)player.posZ;
+        int dim = player.dimension;
 
-            home.setTag(hName, homeDir);
-            playerData.setTag("home", home);
+        homeDir.setInteger("x", x);
+        homeDir.setInteger("y", y);
+        homeDir.setInteger("z", z);
+        homeDir.setInteger("dim", dim);
 
-            CompressedStreamTools.write(playerData, CustomPlayerData);
+        home.setTag(hName, homeDir);
 
-        }catch(Exception e){
-
-            NBTTagCompound home = new NBTTagCompound();
-            NBTTagCompound homeDir = new NBTTagCompound();
-            NBTTagCompound playerData = player.getEntityData();
-
-            String hName = args.length == 1 ? "default" : args[1];
-
-            int x = (int)player.posX;
-            int y = (int)player.posY;
-            int z = (int)player.posZ;
-            int dim = player.dimension;
-
-            homeDir.setInteger("x", x);
-            homeDir.setInteger("y", y);
-            homeDir.setInteger("z", z);
-            homeDir.setInteger("dim", dim);
-
-            home.setTag(hName, homeDir);
-            playerData.setTag("home", home);
-
-            try {
-                CompressedStreamTools.write(playerData, CustomPlayerData);
-            }catch(IOException exception){
-                exception.printStackTrace();
-            }
-        }
+        NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
     }
 
     @Override
