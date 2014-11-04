@@ -6,7 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.io.*;
+import java.io.File;
 import java.util.List;
 
 public class CommandSetHome implements ISubCommand {

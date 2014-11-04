@@ -2,7 +2,6 @@ package HxCKDMS.HxCCore.Commands;
 
 import net.minecraft.command.ICommandSender;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ISubCommand {
