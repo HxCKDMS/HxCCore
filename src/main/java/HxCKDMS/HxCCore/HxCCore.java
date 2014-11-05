@@ -44,7 +44,7 @@ public class HxCCore
     {
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
-        LogHelper.info("Thank your for using HxCCore");
+        LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
     }
 
     @EventHandler
@@ -83,11 +83,11 @@ public class HxCCore
     private static void extendEnchantsArray()
     {
         int enchantsOffset;
-        LogHelper.info("Extending Enchants Array");
+        LogHelper.info("Extending Enchants Array", Reference.MOD_NAME);
         enchantsOffset = Enchantment.enchantmentsList.length;
         Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
         HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
-        LogHelper.info("Enchants Array now 512");
+        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, Reference.MOD_NAME);
     }
 }

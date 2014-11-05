@@ -1,45 +1,44 @@
 package HxCKDMS.HxCCore.Utils;
 
-import HxCKDMS.HxCCore.lib.Reference;
 import cpw.mods.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 @SuppressWarnings("unused")
 public class LogHelper {
 
-    public static void log(Level logLevel, Object object){
-        FMLLog.log(Reference.MOD_NAME, logLevel, String.valueOf(object));
+    public static void log(Level logLevel, Object object, String modName){
+        FMLLog.log(modName, logLevel, String.valueOf(object));
     }
 
-    public static void all(Object object){
-        log(Level.ALL, object);
+    public static void all(Object object, String modName){
+        log(Level.ALL, object, modName);
     }
 
-    public static void debug(Object object){
-        log(Level.DEBUG, object);
+    public static void debug(Object object, String modName){
+        log(Level.DEBUG, object, modName);
     }
 
-    public static void error(Object object){
-        log(Level.ERROR, object);
+    public static void error(Object object, String modName){
+        log(Level.ERROR, object, modName);
     }
 
-    public static void fatal(Object object){
-        log(Level.FATAL, object);
+    public static void fatal(Object object, String modName){
+        log(Level.FATAL, object, modName);
     }
 
-    public static void info(Object object){
-        log(Level.INFO, object);
+    public static void info(Object object, String modName){
+        log(Level.INFO, object, modName);
     }
 
-    public static void off(Object object){
-        log(Level.OFF, object);
+    public static void off(Object object, String modName){
+        log(Level.OFF, object, modName);
     }
 
-    public static void trace(Object object){
-        log(Level.TRACE, object);
+    public static void trace(Object object, String modName){
+        log(Level.TRACE, object, modName);
     }
 
-    public static void warn(Object object){
-        log(Level.WARN, object);
+    public static void warn(Object object, String modName){
+        log(Level.WARN, object, modName);
     }
 }
