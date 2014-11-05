@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.io.IOException;
-
+@SuppressWarnings("unused")
 public class NBTFileIO {
     public static NBTTagCompound getNbtTagCompound(File dataFile, String tag){
         NBTTagCompound tagCompound = new NBTTagCompound();

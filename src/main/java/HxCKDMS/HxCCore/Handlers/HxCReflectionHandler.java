@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-
+@SuppressWarnings("unused")
 public class HxCReflectionHandler
 {
     public static <T> Field removeFinal(Class <? super T > classToAccess, T instance, String... fieldNames)

@@ -4,6 +4,7 @@ import HxCKDMS.HxCCore.lib.Reference;
 import cpw.mods.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
+@SuppressWarnings("unused")
 public class LogHelper {
 
     public static void log(Level logLevel, Object object){

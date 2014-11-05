@@ -1,0 +1,49 @@
+package HxCKDMS.HxCCore.Commands;
+
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+
+import java.io.File;
+import java.util.List;
+
+public class CommandSetWarp implements ISubCommand {
+    public static CommandSetWarp instance = new CommandSetWarp();
+
+    @Override
+    public String getCommandName() {
+        return "setWarp";
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args) {
+        EntityPlayerMP player = (EntityPlayerMP)sender;
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-world.dat");
+
+        NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
+        NBTTagCompound warpDir = new NBTTagCompound();
+
+        String wName = args.length == 1 ? "default" : args[1];
+
+        int x = (int)player.posX;
+        int y = (int)player.posY;
+        int z = (int)player.posZ;
+        int dim = player.dimension;
+
+        warpDir.setInteger("x", x);
+        warpDir.setInteger("y", y);
+        warpDir.setInteger("z", z);
+        warpDir.setInteger("dim", dim);
+
+        warp.setTag(wName, warpDir);
+
+        NBTFileIO.setNbtTagCompound(CustomPlayerData, "warp", warp);
+    }
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        return null;
+    }
+}

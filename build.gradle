@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.0"
-group= "com.HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
 
 minecraft {

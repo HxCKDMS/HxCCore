@@ -23,6 +23,15 @@ public class CommandHelp implements ISubCommand {
         sender.addChatMessage(new ChatComponentText("/HxCCore god [player]: used to put your self or another player in god mode."));
         sender.addChatMessage(new ChatComponentText("/HxCCore fly [player]: used to grand the power of flight to your self or another player."));
         sender.addChatMessage(new ChatComponentText("/HxCCore feed [player]: used to feed your self or another player."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore burn [player]: used to burn your self or another player."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore extinguish [player]: used to extinguish your self or another player."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore smite [player]: used to smite your self or another player."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore setHome: used to set a home(WayPoint) at your location."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore home: used to return to a home(WayPoint)."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore repair: used to return to a home(WayPoint)."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore repairAll: used to return to a home(WayPoint)."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore warp: used to return to a warp(Public WayPoint)."));
+        sender.addChatMessage(new ChatComponentText("/HxCCore setWarp: used to return to a warp(Public WayPoint)."));
     }
 
     @Override

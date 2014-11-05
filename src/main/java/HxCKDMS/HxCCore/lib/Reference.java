@@ -1,5 +1,5 @@
 package HxCKDMS.HxCCore.lib;
-
+@SuppressWarnings("unused")
 public class Reference {
     public static final String MOD_ID = "HxCCore";
     public static final String MOD_NAME = "HxCKDMS Core";
