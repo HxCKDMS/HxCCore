@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
@@ -14,8 +15,10 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
 
@@ -37,6 +40,7 @@ public class HxCCore
     public void preInit(FMLPreInitializationEvent event)
     {
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
+        extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore");
     }
 
@@ -61,5 +65,16 @@ public class HxCCore
             WorldDir.mkdirs();
         }
         HxCCoreDir = WorldDir;
+    }
+    @SuppressWarnings("MismatchedReadAndWriteOfArray")
+    private static void extendEnchantsArray()
+    {
+        int enchantsOffset;
+        LogHelper.info("Extending Enchants Array");
+        enchantsOffset = Enchantment.enchantmentsList.length;
+        Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
+        System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
+        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_76425_a");
+        LogHelper.info("Enchants Array now 512");
     }
 }
