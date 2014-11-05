@@ -1,7 +1,9 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Events.EventGod;
+import HxCKDMS.HxCCore.Events.EventJoinWorld;
+import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;

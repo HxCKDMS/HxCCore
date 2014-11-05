@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore;
 
-import net.minecraftforge.common.config.*;
+import net.minecraftforge.common.config.Configuration;
 
 public class Config
 {
