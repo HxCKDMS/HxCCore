@@ -28,8 +28,8 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandSmite.instance);
         registerSubCommand(CommandRepair.instance);
         registerSubCommand(CommandRepairAll.instance);
-        registerSubCommand(CommandWarp.instance);
-        registerSubCommand(CommandSetWarp.instance);
+//        registerSubCommand(CommandWarp.instance);
+//        registerSubCommand(CommandSetWarp.instance);
     }
 
     public static void initCommands(FMLServerStartingEvent event){
