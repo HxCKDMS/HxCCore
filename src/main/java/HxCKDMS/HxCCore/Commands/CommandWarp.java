@@ -23,10 +23,10 @@ public class CommandWarp implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP)sender;
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+        File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
         String wName = args.length == 1 ? "default" : args[1];
-        NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
+        NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
         if(!warpDir.hasKey(wName)){
             throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
         }
