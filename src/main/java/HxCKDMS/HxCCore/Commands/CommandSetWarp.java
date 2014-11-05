@@ -20,7 +20,7 @@ public class CommandSetWarp implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP)sender;
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-world.dat");
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
         NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
         NBTTagCompound warpDir = new NBTTagCompound();
