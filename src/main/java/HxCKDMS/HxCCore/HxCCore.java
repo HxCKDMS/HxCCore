@@ -18,7 +18,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Level;
 
 import java.io.File;
 
