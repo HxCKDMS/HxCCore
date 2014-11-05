@@ -22,6 +22,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Currency;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 
@@ -66,6 +68,16 @@ public class HxCCore
             WorldDir.mkdirs();
         }
         HxCCoreDir = WorldDir;
+
+        File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
+
+        try {
+            if (!CustomWorldFile.exists()) CustomWorldFile.createNewFile();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+
     }
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private static void extendEnchantsArray()
