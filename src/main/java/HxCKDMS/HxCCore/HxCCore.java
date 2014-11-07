@@ -23,7 +23,6 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Currency;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 

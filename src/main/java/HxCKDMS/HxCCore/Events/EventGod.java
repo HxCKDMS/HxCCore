@@ -14,9 +14,9 @@ import java.util.EventListener;
 public class EventGod implements EventListener {
     private int HealTimer = 0;
 
-    @SubscribeEvent(receiveCanceled = true)
+    @SubscribeEvent
     public void playerHurt(LivingHurtEvent event){
-        if(event.entity instanceof EntityPlayer){
+        if(event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -27,9 +27,9 @@ public class EventGod implements EventListener {
         }
     }
 
-    @SubscribeEvent(receiveCanceled = true)
+    @SubscribeEvent
     public void playerDeath(LivingDeathEvent event){
-        if(event.entity instanceof EntityPlayer){
+        if(event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -40,9 +40,9 @@ public class EventGod implements EventListener {
         }
     }
 
-    @SubscribeEvent(receiveCanceled = true)
+    @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
-        if(event.entity instanceof EntityPlayer && HealTimer >= 20){
+        if(event.entity instanceof EntityPlayer && HealTimer >= 20 && !event.entity.worldObj.isRemote){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
