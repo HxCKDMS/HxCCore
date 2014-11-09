@@ -1,6 +1,12 @@
-# Created by .gitignore support plugin (hsz.mobi)
-eclipse
-gradle
-HxCCore.ipr
-HxCCore.iws
-HxCCore.iml
+# Eclipse
+eclipse/
+.project
+.settings/
+.classpath
+# Gradle
+.gradle/
+build/
+# IDEA
+*.ipr
+*.iws
+*.iml
