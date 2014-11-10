@@ -20,6 +20,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.terraingen.WorldTypeEvent;
 
 import java.io.File;
 import java.io.IOException;
