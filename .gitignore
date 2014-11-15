@@ -3,6 +3,7 @@ eclipse/
 .project
 .settings/
 .classpath
+.pmd
 # Gradle
 .gradle/
 build/
@@ -10,3 +11,13 @@ build/
 *.ipr
 *.iws
 *.iml
+# Runtime
+bin/
+config/
+crash-reports/
+logs/
+mods/
+resourcepacks/
+saves/
+options.txt
+usernamecache.json
