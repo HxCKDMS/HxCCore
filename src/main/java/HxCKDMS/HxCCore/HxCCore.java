@@ -1,14 +1,13 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Events.EventGod;
-import HxCKDMS.HxCCore.Events.EventJoinWorld;
-import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
+import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -17,10 +16,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+
 import net.minecraft.enchantment.Enchantment;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.terraingen.WorldTypeEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,10 +42,10 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        proxy.preInit();
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
-        proxy.preInit();
     }
 
     @EventHandler

@@ -1,20 +1,21 @@
 package HxCKDMS.HxCCore.renderers;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.opengl.GL11;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class RenderHxCPlayer extends RenderPlayer {
     public static HashMap<String, Character> nameColors = new HashMap<String, Character>();
-    
     public RenderHxCPlayer() {
         super();
     }
@@ -38,11 +39,20 @@ public class RenderHxCPlayer extends RenderPlayer {
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             Tessellator tessellator = Tessellator.instance;
             byte ears = 0;
-            
+
+            String UUID = entity.getUniqueID().toString();
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            String UN = NBTFileIO.getString(CustomPlayerData, "username");
+            String Color = NBTFileIO.getString(CustomPlayerData, "Color");
+
+            if (Color == null){
+                Color = "f";
+            }
             if (name.equals("deadmau5")) {
                 ears = -10;
             }
-            
+            nameColors.put(name, Color.toCharArray()[0]);
+
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             tessellator.startDrawingQuads();
             int xOff = fontrenderer.getStringWidth(name) / 2;
@@ -55,7 +65,7 @@ public class RenderHxCPlayer extends RenderPlayer {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             
             int color = 0x20FFFFFF;
-            if (entity instanceof EntityPlayer) {
+            if (entity instanceof EntityPlayer && name.equals(UN)) {
                 for (Entry<String, Character> e : nameColors.entrySet()) {
                     if (name.equals(e.getKey() + "\u00A7r")) {
                         name = "\u00A7" + e.getValue().toString() + name;
@@ -73,9 +83,5 @@ public class RenderHxCPlayer extends RenderPlayer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glPopMatrix();
         }
-    }
-    
-    static {
-        nameColors.put("TehPers", Character.valueOf('2'));
     }
 }
