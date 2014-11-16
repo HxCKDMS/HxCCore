@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.renderers;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,11 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
 public class RenderHxCPlayer extends RenderPlayer {
-    private Pattern p;
+    public static HashMap<String, Character> nameColors = new HashMap<String, Character>();
     
     public RenderHxCPlayer() {
         super();
-        p = Pattern.compile("\u00A72.");
     }
     
     protected void func_147906_a(Entity entity, String name, double x, double y, double z, int maxRenderDist) {
@@ -56,7 +55,14 @@ public class RenderHxCPlayer extends RenderPlayer {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             
             int color = 0x20FFFFFF;
-            if (entity instanceof EntityPlayer && name.equals("TehPers\u00A7r")) name = "\u00A72" + name;
+            if (entity instanceof EntityPlayer) {
+                for (Entry<String, Character> e : nameColors.entrySet()) {
+                    if (name.equals(e.getKey() + "\u00A7r")) {
+                        name = "\u00A7" + e.getValue().toString() + name;
+                        break;
+                    }
+                }
+            }
             fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, ears, color);
             
             GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -67,5 +73,9 @@ public class RenderHxCPlayer extends RenderPlayer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glPopMatrix();
         }
+    }
+    
+    static {
+        nameColors.put("TehPers", Character.valueOf('2'));
     }
 }
