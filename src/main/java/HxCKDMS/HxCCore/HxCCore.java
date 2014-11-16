@@ -45,6 +45,7 @@ public class HxCCore
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
+        proxy.preInit();
     }
 
     @EventHandler
