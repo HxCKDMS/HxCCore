@@ -1,8 +1,14 @@
 package HxCKDMS.HxCCore.Proxy;
 
+import java.io.File;
+import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Handlers.HealthBarUpdateHandler;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -21,5 +27,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer());
+        RenderHxCPlayer.loadColors();
     }
 }
