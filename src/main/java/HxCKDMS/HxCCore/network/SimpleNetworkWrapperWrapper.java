@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.network;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import HxCKDMS.HxCCore.HxCCore;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -18,5 +20,25 @@ public class SimpleNetworkWrapperWrapper {
     
     public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType) {
         this.network.registerMessage(messageHandler, requestMessageType, discriminatorN++, HxCCore.proxy.getSide());
+    }
+    
+    public void sendToAll(IMessage message) {
+        network.sendToAll(message);
+    }
+    
+    public void sendTo(IMessage message, EntityPlayerMP player) {
+        network.sendTo(message, player);
+    }
+    
+    public void sendToAllAround(IMessage message, NetworkRegistry.TargetPoint point) {
+        network.sendToAllAround(message, point);
+    }
+    
+    public void sendToDimension(IMessage message, int dimensionId) {
+        network.sendToDimension(message, dimensionId);
+    }
+    
+    public void sendToServer(IMessage message) {
+        network.sendToServer(message);
     }
 }
