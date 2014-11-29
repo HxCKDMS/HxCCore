@@ -12,6 +12,7 @@ public abstract class CommonProxy {
         network.registerMessage(MessageColor.class, MessageColor.Message.class);
     }
     
+    /** Returns proxy side and therefore mod instance side. **/
     public Side getSide() {
         return this instanceof ClientProxy ? Side.CLIENT : Side.SERVER;
     }

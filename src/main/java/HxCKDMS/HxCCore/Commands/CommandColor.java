@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -26,20 +27,16 @@ public class CommandColor implements ISubCommand {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String UUID = player.getUniqueID().toString();
         
-        //File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
         char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
         if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
-        LogHelper.info(FMLCommonHandler.instance().getSide().toString(), "HxCCore");
-        if (MinecraftServer.getServer().isDedicatedServer()) {
-            HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
-        } else {
-            // Will be buggy if LAN network has people logging on/off (names will lose their colors on reboot)
-            HxCCore.network.sendToAll(new MessageColor.Message(UUID, color));
-        }
+        // Will be buggy if LAN network has people logging on/off (names will lose their colors)
+        HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
     }
     
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        return null;
+        return tabCompleteOptions; 
     }
+    
+    private static final List<String> tabCompleteOptions = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
 }

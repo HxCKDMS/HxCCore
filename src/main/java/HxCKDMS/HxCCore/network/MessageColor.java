@@ -19,7 +19,7 @@ public class MessageColor implements IMessageHandler<MessageColor.Message, IMess
     
     @Override
     public IMessage onMessage(Message message, MessageContext ctx) {
-        if (ctx.side.equals(Side.CLIENT)) {
+        if (HxCCore.proxy.getSide().equals(Side.CLIENT)) {
             RenderHxCPlayer.nameColors.put(message.target, message.color);
         } else {
             LogHelper.info("[DEBUG] Somebody changed their color", Reference.MOD_NAME);
