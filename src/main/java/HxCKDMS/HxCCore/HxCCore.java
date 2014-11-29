@@ -1,13 +1,20 @@
 package HxCKDMS.HxCCore;
 
+import java.io.File;
+import java.io.IOException;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Events.EventGod;
+import HxCKDMS.HxCCore.Events.EventJoinWorld;
+import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
-import HxCKDMS.HxCCore.Proxy.IProxy;
+import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -16,14 +23,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-
-import net.minecraft.enchantment.Enchantment;
-
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
-import java.io.IOException;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 
@@ -32,8 +33,9 @@ public class HxCCore
     public static File HxCCoreDir = null;
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
-    public static IProxy proxy;
-
+    public static CommonProxy proxy;
+    public static SimpleNetworkWrapper network;
+    
     public static Config Config;
 
     @Instance(Reference.MOD_ID)
@@ -43,9 +45,11 @@ public class HxCCore
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit();
+        proxy.registerNetworkStuff(network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
+        LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", Reference.MOD_NAME);
     }
 
     @EventHandler

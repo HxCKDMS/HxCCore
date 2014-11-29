@@ -19,7 +19,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 
 public class RenderHxCPlayer extends RenderPlayer {
     public static HashMap<String, Character> nameColors = new HashMap<String, Character>();
-    public int tmr = 0;
+    //public int tmr = 0;
     
     public RenderHxCPlayer() {
         super();
@@ -60,12 +60,12 @@ public class RenderHxCPlayer extends RenderPlayer {
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             
-            if (++tmr >= 40) {
+            /*if (++tmr >= 40) {
                 tmr = 0;
                 loadColors();
-            }
+            }*/
             
-            int color = 0x20FFFFFF;
+            final int color = 0x20FFFFFF;
             if (entity instanceof EntityPlayer && nameColors.containsKey(entity.getUniqueID().toString())) {
                 name = "\u00A7" + nameColors.get(entity.getUniqueID().toString()).toString() + name;
             }
@@ -81,7 +81,7 @@ public class RenderHxCPlayer extends RenderPlayer {
         }
     }
     
-    public static void loadColors() {
+    /*public static void loadColors() {
         File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
         NBTTagCompound data = NBTFileIO.getData(colorData);
         if (data != null) {
@@ -93,5 +93,5 @@ public class RenderHxCPlayer extends RenderPlayer {
                 }
             }
         }
-    }
+    }*/
 }
