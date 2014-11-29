@@ -15,6 +15,7 @@ import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.network.SimpleNetworkWrapperWrapper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -24,7 +25,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 
@@ -34,7 +34,7 @@ public class HxCCore
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
-    public static SimpleNetworkWrapper network;
+    public static SimpleNetworkWrapperWrapper network;
     
     public static Config Config;
 
@@ -45,7 +45,7 @@ public class HxCCore
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit();
-        proxy.registerNetworkStuff(network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID));
+        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
