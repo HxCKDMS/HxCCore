@@ -25,8 +25,8 @@ public class Config
 
         LMPer = config.get("Features", "Level Boost", 5, "Boost Health and Damage every _ Levels.").getInt();
 
-        HPPer = config.get("Features", "HP Boost", 0.1, "boost hp _ much. every time(1 heart per boost default (0.1))").getInt();
-        DMPer = config.get("Features", "DM Boost", 0.1, "boost damage _ much. every time.(0.1 hearts of damage per boost default(0.1))").getInt();
+        HPPer = config.get("Features", "HP Boost", 0.1, "boost hp _ much. every time(1 heart per boost default (0.1))").getDouble();
+        DMPer = config.get("Features", "DM Boost", 0.1, "boost damage _ much. every time.(0.1 hearts of damage per boost default(0.1))").getDouble();
 
 
 
