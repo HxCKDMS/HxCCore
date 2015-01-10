@@ -16,6 +16,15 @@ public class EventXPtoBuffs {
     public int XP;
     public static UUID HPBuffUUID = UUID.fromString("edff168f-32d7-438b-8d29-189e9405e032");
     public static UUID DMBuffUUID = UUID.fromString("17cb8d52-6376-11e4-b116-123b93f75cba");
+
+    //Levels Per Boost : LPB
+    public int LPB = Config.LMPer;
+
+    //Health Per Boost : HPB
+    public double HPB = Config.HPPer;
+    //Damage Per Boost : DPB
+    public double DPB = Config.DMPer;
+
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
         if (event.entity instanceof EntityPlayerMP){
@@ -24,13 +33,13 @@ public class EventXPtoBuffs {
             IAttributeInstance PlayerD = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
             MH = PMP.getMaxHealth() - 10;
             MD = PlayerD.getAttributeValue();
-            XP = PMP.experienceLevel/5;
-            if (MH != XP*5 && MH <= Config.HPMax){
-                AttributeModifier exHP = new AttributeModifier(HPBuffUUID, "DrZedHealthBuff", XP * 0.1, 1);
+            XP = PMP.experienceLevel/LPB;
+            if (MH != XP*LPB && MH <= Config.HPMax){
+                AttributeModifier exHP = new AttributeModifier(HPBuffUUID, "DrZedHealthBuff", XP * HPB, 1);
                 PlayerH.removeModifier(exHP);
                 PlayerH.applyModifier(exHP);
-            }if (MD != XP*5 && MD <= Config.DMMax){
-                AttributeModifier exDM = new AttributeModifier(DMBuffUUID, "DrZedDamageBuff", XP * 0.5, 1);
+            }if (MD != XP*LPB && MD <= Config.DMMax){
+                AttributeModifier exDM = new AttributeModifier(DMBuffUUID, "DrZedDamageBuff", XP * DPB, 1);
                 PlayerD.removeModifier(exDM);
                 PlayerD.applyModifier(exDM);
             }
