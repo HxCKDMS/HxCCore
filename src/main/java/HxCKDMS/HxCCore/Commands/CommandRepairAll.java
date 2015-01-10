@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -11,13 +12,13 @@ public class CommandRepairAll implements ISubCommand
     public static CommandRepairAll instance = new CommandRepairAll();
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "repairAll";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args)
+    public void execute(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = (EntityPlayerMP)sender;
             for(int j = 0; j < 36; j++)

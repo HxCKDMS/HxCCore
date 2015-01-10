@@ -1,10 +1,11 @@
 package HxCKDMS.HxCCore.Commands;
 
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,29 +31,29 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandRepairAll.instance);
         registerSubCommand(CommandWarp.instance);
         registerSubCommand(CommandSetWarp.instance);
-        registerSubCommand(CommandColor.instance);
+//        registerSubCommand(CommandColor.instance);
     }
     
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }
-    
+
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "HxCCore";
     }
-    
+
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " help";
+        return "/" + getName() + " help";
     }
-    
+
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
-                commands.get(k).handleCommand(sender, args);
+                commands.get(k).execute(sender, args);
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }
@@ -63,7 +64,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     
     @SuppressWarnings("unchecked")
     @Override
-    public List getCommandAliases() {
+    public List getAliases() {
         List aliases = new ArrayList();
         aliases.add("HxCCore");
         aliases.add("HxC");
@@ -71,7 +72,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
     
     public static boolean registerSubCommand(ISubCommand subCommand) {
-        String k = subCommand.getCommandName().toLowerCase();
+        String k = subCommand.getName().toLowerCase();
         
         if (!commands.containsKey(k)) {
             commands.put(k, subCommand);
@@ -79,12 +80,10 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         }
         return false;
     }
-    
-    @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] args) {
         
         if (args.length == 1) {
-            return getListOfStringsFromIterableMatchingLastWord(args, commands.keySet());
+            return getListOfStringsMatchingLastWord(args, String.valueOf(commands.keySet()));
         } else if (commands.containsKey(args[0])) {
             return commands.get(args[0]).addTabCompletionOptions(sender, args);
         }

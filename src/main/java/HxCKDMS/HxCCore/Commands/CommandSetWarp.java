@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,12 +14,12 @@ public class CommandSetWarp implements ISubCommand {
     public static CommandSetWarp instance = new CommandSetWarp();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "setWarp";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 

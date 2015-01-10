@@ -1,21 +1,9 @@
 package HxCKDMS.HxCCore.Handlers;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-import java.util.Queue;
 import java.util.Random;
 
 public class HealthBarUpdateHandler {
@@ -29,8 +17,8 @@ public class HealthBarUpdateHandler {
     GameSettings gs = Minecraft.getMinecraft().gameSettings;
     Random rand = new Random();
     private static final ResourceLocation hearts = new ResourceLocation("HxCCore", "textures/gui/64Hearts.png");
-
-    /* HUD */
+/*
+    *//* HUD *//*
 @SubscribeEvent
 public void renderHealthbar (RenderGameOverlayEvent.Pre event)
     {
@@ -52,7 +40,7 @@ public void renderHealthbar (RenderGameOverlayEvent.Pre event)
                 }
                 IAttributeInstance attrMaxHealth = this.mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth);
                 int health = MathHelper.ceiling_float_int(mc.thePlayer.getHealth());
-                int healthLast = MathHelper.ceiling_float_int(mc.thePlayer.prevHealth);
+                int healthLast = MathHelper.ceiling_float_int(mc.thePlayer.health);
                 float healthMax = (float) attrMaxHealth.getAttributeValue();
                 if (healthMax > 20)
                 healthMax = 20;
@@ -159,5 +147,5 @@ public void renderHealthbar (RenderGameOverlayEvent.Pre event)
             tessellator.addVertexWithUV((double) (par1), (double) (par2), this.zLevel, (double) ((float) (par3) * f), (double) ((float) (par4) * f1));
             tessellator.draw();
         }
-    double zLevel = 0;
+    double zLevel = 0;*/
 }

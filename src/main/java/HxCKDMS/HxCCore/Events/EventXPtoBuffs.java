@@ -1,12 +1,12 @@
 package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Config;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class EventXPtoBuffs {
                 PlayerH.removeModifier(exHP);
                 PlayerH.applyModifier(exHP);
             }if (MD != XP*5 && MD <= Config.DMMax){
-                AttributeModifier exDM = new AttributeModifier(DMBuffUUID, "DrZedDamageBuff", XP * 0.1, 1);
+                AttributeModifier exDM = new AttributeModifier(DMBuffUUID, "DrZedDamageBuff", XP * 0.5, 1);
                 PlayerD.removeModifier(exDM);
                 PlayerD.applyModifier(exDM);
             }

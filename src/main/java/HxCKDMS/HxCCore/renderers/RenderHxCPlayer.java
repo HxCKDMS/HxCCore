@@ -1,30 +1,22 @@
 package HxCKDMS.HxCCore.renderers;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Set;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
-import org.lwjgl.opengl.GL11;
-
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import java.util.HashMap;
 
 public class RenderHxCPlayer extends RenderPlayer {
     public static HashMap<String, Character> nameColors = new HashMap<String, Character>();
+
+    public RenderHxCPlayer(RenderManager renderManager) {
+        super(renderManager);
+    }
     //public int tmr = 0;
     
-    public RenderHxCPlayer() {
-        super();
-    }
-    
+//    public RenderHxCPlayer() {
+//        super();
+//    }
+/*
     protected void func_147906_a(Entity entity, String name, double x, double y, double z, int maxRenderDist) {
         double dist = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
         
@@ -60,10 +52,10 @@ public class RenderHxCPlayer extends RenderPlayer {
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             
-            /*if (++tmr >= 40) {
+            *//*if (++tmr >= 40) {
                 tmr = 0;
                 loadColors();
-            }*/
+            }*//*
             
             final int color = 0x20FFFFFF;
             if (entity instanceof EntityPlayer && nameColors.containsKey(entity.getUniqueID().toString())) {
@@ -80,7 +72,7 @@ public class RenderHxCPlayer extends RenderPlayer {
             GL11.glPopMatrix();
         }
     }
-    
+    */
     /*public static void loadColors() {
         File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
         NBTTagCompound data = NBTFileIO.getData(colorData);

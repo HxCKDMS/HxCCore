@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Utils;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.S07PacketRespawn;
@@ -8,6 +7,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class Teleporter {
 
@@ -30,7 +30,7 @@ public class Teleporter {
         WorldServer worldServer_old = player.mcServer.worldServerForDimension(player.dimension);
         player.dimension = dimension;
         WorldServer worldServer_new = player.mcServer.worldServerForDimension(player.dimension);
-        player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+        player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
         worldServer_old.removePlayerEntityDangerously(player);
         player.isDead = false;
         transferEntityToWorld(player, worldServer_old, worldServer_new, x, y, z);

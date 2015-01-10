@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +18,12 @@ public class CommandGod implements ISubCommand {
     public static CommandGod instance = new CommandGod();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "god";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer) {
@@ -48,7 +49,7 @@ public class CommandGod implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
             }
         }
     }

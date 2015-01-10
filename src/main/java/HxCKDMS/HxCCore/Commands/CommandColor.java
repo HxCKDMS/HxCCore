@@ -1,29 +1,24 @@
 package HxCKDMS.HxCCore.Commands;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import cpw.mods.fml.common.FMLCommonHandler;
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.network.MessageColor;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.network.MessageColor;
-import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandColor implements ISubCommand {
     public static CommandColor instance = new CommandColor();
     
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "color";
     }
     
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String UUID = player.getUniqueID().toString();
         

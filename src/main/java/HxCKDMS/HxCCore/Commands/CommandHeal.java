@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,11 +16,11 @@ public class CommandHeal implements ISubCommand {
     public static CommandHeal instance = new CommandHeal();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "heal";
     }
 
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer){
@@ -39,7 +40,7 @@ public class CommandHeal implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
 
             }
         }

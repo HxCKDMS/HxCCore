@@ -1,13 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;
 
 public interface ISubCommand {
-    public String getCommandName();
+    public String getName();
 
-    public void handleCommand(ICommandSender sender, String[] args);
+    public void execute(ICommandSender sender, String[] args) throws CommandException;
 
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }
