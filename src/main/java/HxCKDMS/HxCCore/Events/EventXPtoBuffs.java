@@ -4,6 +4,7 @@ import HxCKDMS.HxCCore.Config;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,8 +28,14 @@ public class EventXPtoBuffs {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
-        if (event.entity instanceof EntityPlayerMP){
-            EntityPlayerMP PMP = (EntityPlayerMP) event.entity;
+        if (event.entityLiving instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
+            if (Config.XPCooldownWeaken){
+                player.xpCooldown = 0;
+            }
+        }
+        if (event.entityLiving instanceof EntityPlayerMP){
+            EntityPlayerMP PMP = (EntityPlayerMP) event.entityLiving;
             IAttributeInstance PlayerH = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
             IAttributeInstance PlayerD = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
             MH = PMP.getMaxHealth() - 10;
