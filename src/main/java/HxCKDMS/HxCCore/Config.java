@@ -6,7 +6,7 @@ public class Config
 {
     public boolean DebugMode;
 
-    public boolean XPBuffs;
+    public static boolean XPBuffs;
     public static boolean XPCooldownWeaken;
     public static int HPMax;
     public static int DMMax;

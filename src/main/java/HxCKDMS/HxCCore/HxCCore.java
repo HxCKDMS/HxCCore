@@ -51,7 +51,7 @@ public class HxCCore
     public void init(FMLInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new EventGod());
-        if (Config.XPBuffs) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
+        MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
         FMLCommonHandler.instance().bus().register(new KeyInputHandler());
 //        proxy.registerKeyBindings();
