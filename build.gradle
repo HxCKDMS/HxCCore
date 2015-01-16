@@ -65,4 +65,3 @@ task devJar(type: Jar) {
 artifacts {
 	archives devJar
 }
-a
