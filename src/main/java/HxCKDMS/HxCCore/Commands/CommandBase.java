@@ -13,7 +13,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     
     public static CommandBase instance = new CommandBase();
     private static TMap<String, ISubCommand> commands = new THashMap<String, ISubCommand>();
-    
+
     static {
         registerSubCommand(CommandHeal.instance);
         registerSubCommand(CommandHelp.instance);
