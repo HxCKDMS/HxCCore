@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "Beta-1.2"
+version = "Beta-1.3"
 group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
 
@@ -26,44 +26,42 @@ minecraft {
     runDir = "eclipse"
 }
 
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+def root = project.projectDir.parentFile
+sourceSets {
+	main {
+		java {
+			srcDir new File(root, "src")
+		}
+		resources {
+			srcDir new File(root, "resources")
+		}
+	}
+}
 
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+processResources {
+	from (sourceSets.main.resources.srcDirs) {
+		include '*.info'
+		expand 'version':project.version, 'mcversion':project.minecraft.version
+	}
 }
 
 jar {
-        manifest {
-        attributes 'FMLAT': 'accessTransformer.cfg'
-    }
+	classifier = 'universal'
+
+	manifest {
+		attributes 'FMLAT': 'accessTransformer.cfg'
+	}
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+task devJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'dev'
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+	manifest {
+		attributes 'FMLAT': 'accessTransformer.cfg'
+	}
+}
+
+artifacts {
+	archives devJar
 }
