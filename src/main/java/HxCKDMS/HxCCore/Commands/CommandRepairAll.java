@@ -18,6 +18,12 @@ public class CommandRepairAll implements ISubCommand
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
+    @Override
     public void execute(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP player = (EntityPlayerMP)sender;

@@ -22,6 +22,12 @@ public class CommandWarp implements ISubCommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 0;
+    }
+
+    @Override
     public void execute(ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");

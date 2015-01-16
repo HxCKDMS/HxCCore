@@ -49,6 +49,12 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
+    @Override
     public void execute(ICommandSender sender, String[] args) throws CommandException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();

@@ -19,6 +19,12 @@ public class CommandSetHome implements ISubCommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 0;
+    }
+
+    @Override
     public void execute(ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = (EntityPlayerMP)sender;
         String UUID = player.getUniqueID().toString();

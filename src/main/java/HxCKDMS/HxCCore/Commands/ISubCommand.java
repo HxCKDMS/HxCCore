@@ -10,5 +10,7 @@ public interface ISubCommand {
 
     public void execute(ICommandSender sender, String[] args) throws CommandException;
 
+    public int getRequiredPermissionLevel();
+
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }

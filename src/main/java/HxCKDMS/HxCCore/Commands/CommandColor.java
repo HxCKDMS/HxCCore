@@ -16,7 +16,13 @@ public class CommandColor implements ISubCommand {
     public String getName() {
         return "color";
     }
-    
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 1;
+    }
+
     @Override
     public void execute(ICommandSender sender, String[] args) throws CommandException {
         EntityPlayerMP player = (EntityPlayerMP) sender;
