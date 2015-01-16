@@ -30,7 +30,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandRepairAll.instance);
         registerSubCommand(CommandWarp.instance);
         registerSubCommand(CommandSetWarp.instance);
-        registerSubCommand(CommandColor.instance);
+//        registerSubCommand(CommandColor.instance);
     }
     
     public static void initCommands(FMLServerStartingEvent event) {
@@ -46,7 +46,13 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     public String getCommandUsage(ICommandSender sender) {
         return "/" + getCommandName() + " help";
     }
-    
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length > 0) {

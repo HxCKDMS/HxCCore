@@ -14,6 +14,12 @@ public class CommandHelp implements ISubCommand {
     public String getCommandName() {
         return "help";
     }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 0;
+    }
     
     @Override
     public void handleCommand(ICommandSender sender, String[] arguments) {

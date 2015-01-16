@@ -19,6 +19,12 @@ public class CommandHeal implements ISubCommand {
         return "heal";
     }
 
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
     public void handleCommand(ICommandSender sender, String[] args) {
         switch(args.length){
             case 1: {
