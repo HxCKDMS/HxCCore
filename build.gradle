@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "Beta-1.2"
+version = "1.6"
 group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
 
