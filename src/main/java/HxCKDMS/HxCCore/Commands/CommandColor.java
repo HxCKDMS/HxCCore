@@ -1,18 +1,10 @@
 package HxCKDMS.HxCCore.Commands;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.network.MessageColor;
-import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandColor implements ISubCommand {
     public static CommandColor instance = new CommandColor();
@@ -20,6 +12,12 @@ public class CommandColor implements ISubCommand {
     @Override
     public String getCommandName() {
         return "color";
+    }
+
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 1;
     }
     
     @Override
@@ -30,7 +28,7 @@ public class CommandColor implements ISubCommand {
         char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
         if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
         // Will be buggy if LAN network has people logging on/off (names will lose their colors)
-        HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
+//        HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
     }
     
     @Override

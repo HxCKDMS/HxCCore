@@ -19,6 +19,12 @@ public class CommandKill implements ISubCommand {
         return "kill";
     }
 
+    @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {

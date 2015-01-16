@@ -1,11 +1,5 @@
 package HxCKDMS.HxCCore;
 
-import java.io.File;
-import java.io.IOException;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Events.EventGod;
 import HxCKDMS.HxCCore.Events.EventJoinWorld;
@@ -24,10 +18,14 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
+import java.io.IOException;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
-
 public class HxCCore
 {
     public static File HxCCoreDir = null;
@@ -45,7 +43,7 @@ public class HxCCore
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit();
-        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
+//        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
