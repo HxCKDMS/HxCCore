@@ -5,7 +5,7 @@ import HxCKDMS.HxCCore.network.SimpleNetworkWrapperWrapper;
 import cpw.mods.fml.relauncher.Side;
 
 public abstract class CommonProxy {
-    
+
     public void preInit() {};
     public void registerNetworkStuff(SimpleNetworkWrapperWrapper network) {
         network.registerMessage(MessageColor.class, MessageColor.Message.class);

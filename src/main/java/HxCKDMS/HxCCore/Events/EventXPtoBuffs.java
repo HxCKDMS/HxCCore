@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Config;
+import HxCKDMS.HxCCore.Configs.Config;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.SharedMonsterAttributes;

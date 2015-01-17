@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore;
+package HxCKDMS.HxCCore.Configs;
 
 import net.minecraftforge.common.config.Configuration;
 

@@ -1,5 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.network.MessageColor;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -28,7 +30,7 @@ public class CommandColor implements ISubCommand {
         char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
         if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
         // Will be buggy if LAN network has people logging on/off (names will lose their colors)
-//        HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
+        HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
     }
     
     @Override

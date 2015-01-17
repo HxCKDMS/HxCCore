@@ -30,7 +30,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandRepairAll.instance);
         registerSubCommand(CommandWarp.instance);
         registerSubCommand(CommandSetWarp.instance);
-//        registerSubCommand(CommandColor.instance);
+        registerSubCommand(CommandColor.instance);
     }
     
     public static void initCommands(FMLServerStartingEvent event) {

@@ -1,23 +1,28 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.EventGod;
 import HxCKDMS.HxCCore.Events.EventJoinWorld;
 import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
+import HxCKDMS.HxCCore.Proxy.ClientProxy;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
 import HxCKDMS.HxCCore.network.SimpleNetworkWrapperWrapper;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -32,18 +37,21 @@ public class HxCCore
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
+    public static ClientProxy cproxy;
     public static SimpleNetworkWrapperWrapper network;
     
-    public static Config Config;
+    public static HxCKDMS.HxCCore.Configs.Config Config;
 
     @Instance(Reference.MOD_ID)
     public static HxCCore instance;
+
+    public static boolean ModHxCSkills;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit();
-//        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
+        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
@@ -56,10 +64,16 @@ public class HxCCore
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
+        ModHxCSkills = Loader.isModLoaded("HxCSkills");
         FMLCommonHandler.instance().bus().register(new KeyInputHandler());
-//        proxy.registerKeyBindings();
+        cproxy.registerKeyBindings();
     }
 
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        event.getModState();
+        if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", Reference.MOD_NAME);
+    }
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event)
