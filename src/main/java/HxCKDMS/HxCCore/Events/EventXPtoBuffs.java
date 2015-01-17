@@ -1,10 +1,12 @@
 package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Config;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
@@ -18,7 +20,14 @@ public class EventXPtoBuffs {
     public static UUID DMBuffUUID = UUID.fromString("17cb8d52-6376-11e4-b116-123b93f75cba");
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
-        if (event.entity instanceof EntityPlayerMP){
+        boolean xpbuff = (Config.XPBuffs && !Loader.isModLoaded("HxCSkills"));
+        if (event.entityLiving instanceof EntityPlayer && xpbuff) {
+            EntityPlayer player = (EntityPlayer)event.entityLiving;
+            if (player.xpCooldown > 0){
+                player.xpCooldown = 0;
+            }
+        }
+        if (event.entity instanceof EntityPlayerMP && Config.XPBuffs){
             EntityPlayerMP PMP = (EntityPlayerMP) event.entity;
             IAttributeInstance PlayerH = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
             IAttributeInstance PlayerD = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
