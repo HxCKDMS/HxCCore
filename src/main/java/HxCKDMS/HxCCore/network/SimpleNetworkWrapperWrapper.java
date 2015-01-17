@@ -1,8 +1,16 @@
 package HxCKDMS.HxCCore.network;
 
+import HxCKDMS.HxCCore.HxCCore;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+
 /** No joke intended **/
 public class SimpleNetworkWrapperWrapper {
-    /*private SimpleNetworkWrapper network;
+    private SimpleNetworkWrapper network;
     private int discriminatorN;
     
     public SimpleNetworkWrapperWrapper(SimpleNetworkWrapper network) {
@@ -30,13 +38,13 @@ public class SimpleNetworkWrapperWrapper {
         network.sendToDimension(message, dimensionId);
     }
     
-    *//** If dedicated server, sends to server. If integrated server, sends to everybody.
-     * Gotta just love the side system and how impossible it is to work with LAN packets **//*
+    /** If dedicated server, sends to server. If integrated server, sends to everybody.
+     * Gotta just love the side system and how impossible it is to work with LAN packets **/
     public void sendToServer(IMessage message) {
         if (MinecraftServer.getServer().isDedicatedServer()) {
             network.sendToServer(message);
         } else {
             network.sendToAll(message);
         }
-    }*/
+    }
 }

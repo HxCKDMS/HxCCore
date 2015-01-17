@@ -1,9 +1,7 @@
 package HxCKDMS.HxCCore.renderers;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Set;
-
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,11 +9,11 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Set;
 
 public class RenderHxCPlayer extends RenderPlayer {
     public static HashMap<String, Character> nameColors = new HashMap<String, Character>();
@@ -59,12 +57,12 @@ public class RenderHxCPlayer extends RenderPlayer {
             tessellator.addVertex((double) (xOff + 1), (double) (-1 + ears), 0.0D);
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            
-            /*if (++tmr >= 40) {
+           /*
+            if (++tmr >= 40) {
                 tmr = 0;
                 loadColors();
-            }*/
-            
+            }
+            */
             final int color = 0x20FFFFFF;
             if (entity instanceof EntityPlayer && nameColors.containsKey(entity.getUniqueID().toString())) {
                 name = "\u00A7" + nameColors.get(entity.getUniqueID().toString()).toString() + name;
@@ -81,7 +79,7 @@ public class RenderHxCPlayer extends RenderPlayer {
         }
     }
     
-    /*public static void loadColors() {
+    public static void loadColors() {
         File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
         NBTTagCompound data = NBTFileIO.getData(colorData);
         if (data != null) {
@@ -93,5 +91,5 @@ public class RenderHxCPlayer extends RenderPlayer {
                 }
             }
         }
-    }*/
+    }
 }

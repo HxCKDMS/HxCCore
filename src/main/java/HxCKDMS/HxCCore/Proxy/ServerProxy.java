@@ -6,6 +6,6 @@ import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
 public class ServerProxy extends CommonProxy {
     @Override
     public void preInit() {
-        //RenderHxCPlayer.loadColors();
+        RenderHxCPlayer.loadColors();
     }
 }

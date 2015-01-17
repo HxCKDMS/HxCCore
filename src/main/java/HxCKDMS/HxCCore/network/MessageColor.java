@@ -1,23 +1,31 @@
 package HxCKDMS.HxCCore.network;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+
+import java.io.File;
 
 public class MessageColor implements IMessageHandler<MessageColor.Message, IMessage> {
 
     @Override
     public IMessage onMessage(Message message, MessageContext ctx) {
-       /* if (HxCCore.proxy.getSide().equals(Side.CLIENT)) {
+        if (HxCCore.proxy.getSide().equals(Side.CLIENT)) {
             RenderHxCPlayer.nameColors.put(message.target, message.color);
         } else {
-            LogHelper.info("[DEBUG] Somebody changed their color", Reference.MOD_NAME);
+            LogHelper.debug("[DEBUG] Somebody changed their color", Reference.MOD_NAME);
             File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
             NBTFileIO.setString(colorData, message.target, String.valueOf(message.color));
             HxCCore.network.sendToAll(message);
-        }*/
+        }
 
         return null;
     }
