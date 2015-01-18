@@ -1,7 +1,6 @@
 package HxCKDMS.HxCCore.Utils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
