@@ -17,3 +17,5 @@ enchantment.flameTouch=Auto-Smelt
 enchantment.LeadFooted=Lead Footed
 enchantment.poison=Poison Tipped
 enchantment.Repair=Repair
+
+death.attack.command_kill=%1$s was killed by commands

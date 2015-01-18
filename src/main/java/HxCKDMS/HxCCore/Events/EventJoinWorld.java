@@ -4,7 +4,6 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -18,8 +17,8 @@ public class EventJoinWorld implements EventListener {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entity;
+        if (event.entity instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) event.entity;
             
             // Player data file
             try {
@@ -34,7 +33,7 @@ public class EventJoinWorld implements EventListener {
             }
             
             // Send username colors to player
-            if (HxCCore.proxy.getSide().equals(Side.SERVER) && player instanceof EntityPlayerMP) {
+            if (HxCCore.proxy.getSide().equals(Side.SERVER)) {
                 File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
                 NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
                 NBTFileIO.setNbtTagCompound(HxCCore.HxCCoreDir, "Permissions", Permissions);

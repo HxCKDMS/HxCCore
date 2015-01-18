@@ -25,6 +25,8 @@ public class Config
     public static String PermLevel4Color;
     public static String PermLevel5Color;
 
+    public static Integer TpaTimeout;
+
     public String derp[] = new String[16];
 
     public Config(Configuration config)
@@ -73,6 +75,9 @@ public class Config
         PermLevel3Color = config.getString("PermLevel3Color", "Permissions", "9", "", derp);
         PermLevel4Color = config.getString("PermLevel4Color", "Permissions", "6", "", derp);
         PermLevel5Color = config.getString("PermLevel5Color", "Permissions", "4", "", derp);
+
+        config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
+        TpaTimeout = config.getInt("TpaTimeout", "Commands", 600, 1200, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");
 
         if(config.hasChanged())
         {

@@ -4,6 +4,7 @@ import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.EventGod;
 import HxCKDMS.HxCCore.Events.EventJoinWorld;
+import HxCKDMS.HxCCore.Events.EventTpRequest;
 import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.ClientProxy;
@@ -11,6 +12,7 @@ import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
 import HxCKDMS.HxCCore.network.PacketPipeline;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -20,12 +22,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class HxCCore
@@ -33,6 +38,8 @@ public class HxCCore
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
+    public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<EntityPlayerMP, EntityPlayerMP>();
+    public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<EntityPlayerMP, Integer>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
@@ -65,6 +72,8 @@ public class HxCCore
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
+
+        FMLCommonHandler.instance().bus().register(new EventTpRequest());
     }
 
     @EventHandler

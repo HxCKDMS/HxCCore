@@ -19,5 +19,6 @@ logs/
 mods/
 resourcepacks/
 saves/
-options.txt
-usernamecache.json
+eclipse/options.txt
+server/usernamecache.json
+server
