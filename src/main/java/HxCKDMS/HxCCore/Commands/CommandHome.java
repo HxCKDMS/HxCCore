@@ -40,16 +40,13 @@ public class CommandHome implements ISubCommand {
                     throw new WrongUsageException("the home named: '" + hName + "' does not exist.");
                 }
                 NBTTagCompound home = homeDir.getCompoundTag(hName);
-                Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
+                if(player.dimension != home.getInteger("dim"))
+                    Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
+                else
+                    player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
-            NBTTagCompound home = homeDir.getCompoundTag(hName);
-            if(player.dimension != home.getInteger("dim"))
-                Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
-            else
-                player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
-
         }else{
             sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
         }
