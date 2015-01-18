@@ -36,7 +36,7 @@ public class EventJoinWorld implements EventListener {
             if (HxCCore.proxy.getSide().equals(Side.SERVER)) {
                 File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
                 NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-                NBTFileIO.setNbtTagCompound(HxCCore.HxCCoreDir, "Permissions", Permissions);
+                NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
                 NBTTagCompound PermLevel = Permissions.getCompoundTag("PermLevel");
 
                 int pl = (PermLevel.getInteger(player.getDisplayName()));
@@ -44,7 +44,7 @@ public class EventJoinWorld implements EventListener {
                 if (pl == 0) {
                     PermLevel.setInteger(player.getDisplayName(), 0);
                 }
-                NBTFileIO.setNbtTagCompound(HxCCore.HxCCoreDir, "Permissions", Permissions);
+                NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
 /*
                 File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
                 NBTTagCompound data;
