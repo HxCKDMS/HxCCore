@@ -48,7 +48,12 @@ public class EventJoinWorld implements EventListener {
                 NBTFileIO.setNbtTagCompound(HxCCore.HxCCoreDir, "Permissions", Permissions);
 /*
                 File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
-                NBTTagCompound data = NBTFileIO.getData(colorData);
+                NBTTagCompound data;
+                try {
+                    data = NBTFileIO.getData(colorData);
+                }catch(Exception unused){
+                    data = new NBTTagCompound();
+                }
                 Set keys = data.func_150296_c();
                 for (Object key : keys) {
                     if (key instanceof String) {
