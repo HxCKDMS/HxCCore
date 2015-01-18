@@ -27,7 +27,7 @@ public class CommandFeed implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.getFoodStats().addStats(20, 20F);
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the feed command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

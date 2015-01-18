@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
 
@@ -16,9 +17,13 @@ public class CommandRepair implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        EntityPlayerMP player = (EntityPlayerMP)sender;
-        ItemStack HeldItem = player.getHeldItem();
-        HeldItem.setItemDamage(0);
+        if(sender instanceof EntityPlayerMP){
+            EntityPlayerMP player = (EntityPlayerMP)sender;
+            ItemStack HeldItem = player.getHeldItem();
+            HeldItem.setItemDamage(0);
+        }else{
+            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ public class CommandBurn implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.setFire(750000000);
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the burn command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

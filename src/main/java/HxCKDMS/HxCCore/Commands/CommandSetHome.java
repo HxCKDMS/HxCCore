@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
 import java.util.List;
@@ -19,29 +20,33 @@ public class CommandSetHome implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        EntityPlayerMP player = (EntityPlayerMP)sender;
-        String UUID = player.getUniqueID().toString();
+        if(sender instanceof EntityPlayerMP){
+            EntityPlayerMP player = (EntityPlayerMP)sender;
+            String UUID = player.getUniqueID().toString();
 
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-        NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-        NBTTagCompound homeDir = new NBTTagCompound();
+            NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+            NBTTagCompound homeDir = new NBTTagCompound();
 
-        String hName = args.length == 1 ? "default" : args[1];
+            String hName = args.length == 1 ? "default" : args[1];
 
-        int x = (int)player.posX;
-        int y = (int)player.posY;
-        int z = (int)player.posZ;
-        int dim = player.dimension;
+            int x = (int)player.posX;
+            int y = (int)player.posY;
+            int z = (int)player.posZ;
+            int dim = player.dimension;
 
-        homeDir.setInteger("x", x);
-        homeDir.setInteger("y", y);
-        homeDir.setInteger("z", z);
-        homeDir.setInteger("dim", dim);
+            homeDir.setInteger("x", x);
+            homeDir.setInteger("y", y);
+            homeDir.setInteger("z", z);
+            homeDir.setInteger("dim", dim);
 
-        home.setTag(hName, homeDir);
+            home.setTag(hName, homeDir);
 
-        NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
+            NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
+        }else{
+            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+        }
     }
 
     @Override

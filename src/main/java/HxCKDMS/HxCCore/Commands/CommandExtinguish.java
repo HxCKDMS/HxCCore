@@ -26,7 +26,7 @@ public class CommandExtinguish implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.extinguish();
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the extinguish command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

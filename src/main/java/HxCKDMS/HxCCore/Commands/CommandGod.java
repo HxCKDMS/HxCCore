@@ -33,7 +33,7 @@ public class CommandGod implements ISubCommand {
                     NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                     player.addChatComponentMessage(new ChatComponentText("turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
                 }else {
-                    sender.addChatMessage(new ChatComponentText("the god command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

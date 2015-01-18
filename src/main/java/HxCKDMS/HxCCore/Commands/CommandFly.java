@@ -29,7 +29,7 @@ public class CommandFly implements ISubCommand {
                     player.sendPlayerAbilities();
                     player.addChatComponentMessage(new ChatComponentText("turned "+ (player.capabilities.allowFlying ? "on" : "off")+" flight"));
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the fly command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

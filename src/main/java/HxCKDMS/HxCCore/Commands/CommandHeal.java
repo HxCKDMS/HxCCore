@@ -27,7 +27,7 @@ public class CommandHeal implements ISubCommand {
                     float hth = player.getMaxHealth()-player.getHealth();
                     player.heal(hth);
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the heal command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;

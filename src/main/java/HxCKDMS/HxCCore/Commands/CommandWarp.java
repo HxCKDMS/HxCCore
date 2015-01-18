@@ -7,6 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
 import java.util.List;
@@ -22,16 +23,21 @@ public class CommandWarp implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        EntityPlayerMP player = (EntityPlayerMP)sender;
-        File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+        if(sender instanceof EntityPlayerMP){
+            EntityPlayerMP player = (EntityPlayerMP)sender;
+            File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
-        String wName = args.length == 1 ? "default" : args[1];
-        NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
-        if(!warpDir.hasKey(wName)){
-            throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
+            String wName = args.length == 1 ? "default" : args[1];
+            NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
+            if(!warpDir.hasKey(wName)){
+                throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
+            }
+            NBTTagCompound warp = warpDir.getCompoundTag(wName);
+            Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), player.mcServer.getConfigurationManager(), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
+
+        }else{
+            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
         }
-        NBTTagCompound warp = warpDir.getCompoundTag(wName);
-        Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), player.mcServer.getConfigurationManager(), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
     }
 
     @Override
