@@ -67,12 +67,12 @@ public class Config
         PermLevel5Name = config.getString("PermLevel5Name", "Permissions", "Owner", "Change this to anything you want as the group name, (Permissiosn Level 5)");
 
         config.addCustomCategoryComment("Permissions", "These Permissions colors are up to your preferences!");
-        PermLevel0Color = config.getString("PermLevel#Color", "Permissions", "f", "", derp);
-        PermLevel1Color = config.getString("PermLevel#Color", "Permissions", "2", "", derp);
-        PermLevel2Color = config.getString("PermLevel#Color", "Permissions", "e", "", derp);
-        PermLevel3Color = config.getString("PermLevel#Color", "Permissions", "9", "", derp);
-        PermLevel4Color = config.getString("PermLevel#Color", "Permissions", "6", "", derp);
-        PermLevel5Color = config.getString("PermLevel#Color", "Permissions", "4", "", derp);
+        PermLevel0Color = config.getString("PermLevel0Color", "Permissions", "f", "", derp);
+        PermLevel1Color = config.getString("PermLevel1Color", "Permissions", "2", "", derp);
+        PermLevel2Color = config.getString("PermLevel2Color", "Permissions", "e", "", derp);
+        PermLevel3Color = config.getString("PermLevel3Color", "Permissions", "9", "", derp);
+        PermLevel4Color = config.getString("PermLevel4Color", "Permissions", "6", "", derp);
+        PermLevel5Color = config.getString("PermLevel5Color", "Permissions", "4", "", derp);
 
         if(config.hasChanged())
         {

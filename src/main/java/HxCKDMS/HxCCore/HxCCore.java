@@ -87,7 +87,7 @@ public class HxCCore
         HxCCoreDir = WorldDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
-        File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+        File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
 
         try {
             if (!CustomWorldFile.exists()) CustomWorldFile.createNewFile();

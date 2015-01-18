@@ -2,7 +2,6 @@ package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.network.MessageColor;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +12,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.EventListener;
-import java.util.Set;
 
 public class EventJoinWorld implements EventListener {
     
@@ -46,7 +44,7 @@ public class EventJoinWorld implements EventListener {
                 if (pl == 0) {
                     PermLevel.setInteger(player.getDisplayName(), 0);
                 }
-
+/*
                 File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
                 NBTTagCompound data = NBTFileIO.getData(colorData);
                 Set keys = data.func_150296_c();
@@ -54,7 +52,7 @@ public class EventJoinWorld implements EventListener {
                     if (key instanceof String) {
                         HxCCore.packetPipeLine.sendTo(new MessageColor((String) key, data.getString((String) key).toCharArray()[0]), (EntityPlayerMP) player);
                     }
-                }
+                }*/
             }
         }
     }

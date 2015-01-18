@@ -37,7 +37,7 @@ public class CommandColor implements ISubCommand {
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
-        }else{
+        } else {
             sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
         }
     }
