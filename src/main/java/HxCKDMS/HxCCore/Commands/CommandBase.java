@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -58,7 +59,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
