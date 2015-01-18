@@ -6,14 +6,11 @@ import HxCKDMS.HxCCore.Events.EventGod;
 import HxCKDMS.HxCCore.Events.EventJoinWorld;
 import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
-import HxCKDMS.HxCCore.Handlers.KeyInputHandler;
 import HxCKDMS.HxCCore.Proxy.ClientProxy;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
 import HxCKDMS.HxCCore.network.SimpleNetworkWrapperWrapper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -54,6 +51,9 @@ public class HxCCore
         proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
+//        ModHxCSkills = Loader.isModLoaded("HxCSkills");
+//        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
+//        cproxy.registerKeyBindings();
         LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", Reference.MOD_NAME);
     }
@@ -64,9 +64,6 @@ public class HxCCore
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
-        ModHxCSkills = Loader.isModLoaded("HxCSkills");
-        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
-        cproxy.registerKeyBindings();
     }
 
     @EventHandler

@@ -20,12 +20,6 @@ public class CommandFeed implements ISubCommand {
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 4;
-    }
-
-    @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         switch(args.length){
             case 1: {

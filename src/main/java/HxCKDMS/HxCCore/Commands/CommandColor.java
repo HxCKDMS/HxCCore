@@ -17,12 +17,6 @@ public class CommandColor implements ISubCommand {
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 1;
-    }
-    
-    @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String UUID = player.getUniqueID().toString();
