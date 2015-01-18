@@ -1,9 +1,11 @@
 package HxCKDMS.HxCCore.Events;
 
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.Reference;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -13,8 +15,6 @@ import java.io.IOException;
 import java.util.EventListener;
 
 public class EventJoinWorld implements EventListener {
-    
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.entity instanceof EntityPlayerMP) {
@@ -24,9 +24,13 @@ public class EventJoinWorld implements EventListener {
             try {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-                
-                if (!CustomPlayerData.exists()) CustomPlayerData.createNewFile();
-                
+                boolean success;
+                if (!CustomPlayerData.exists()) {
+                    success = CustomPlayerData.createNewFile();
+                    if (Config.DebugMode) {
+                        LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), Reference.MOD_NAME);
+                    }
+                }
                 NBTFileIO.setString(CustomPlayerData, "username", player.getDisplayName());
             } catch (IOException exceptions) {
                 exceptions.printStackTrace();
@@ -35,18 +39,15 @@ public class EventJoinWorld implements EventListener {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
             NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            NBTTagCompound PermLevel = Permissions.getCompoundTag("PermLevel");
-
-            int pl = (PermLevel.getInteger(player.getDisplayName()));
+            int pl = Permissions.getInteger(player.getDisplayName());
 
             if (pl == 0) {
-                PermLevel.setInteger(player.getDisplayName(), 0);
+                Permissions.setInteger(player.getDisplayName(), 0);
             }
             NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
             
             // Send username colors to player
-            if (HxCCore.proxy.getSide().equals(Side.SERVER)) {
-/*
+            /*if (HxCCore.proxy.getSide().equals(Side.SERVER)) {
                 File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
                 NBTTagCompound data;
                 try {
@@ -59,8 +60,8 @@ public class EventJoinWorld implements EventListener {
                     if (key instanceof String) {
                         HxCCore.packetPipeLine.sendTo(new MessageColor((String) key, data.getString((String) key).toCharArray()[0]), (EntityPlayerMP) player);
                     }
-                }*/
-            }
+                }
+            }*/
         }
     }
 }

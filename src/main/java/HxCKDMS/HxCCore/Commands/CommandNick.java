@@ -4,6 +4,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.util.List;
@@ -21,13 +22,19 @@ public class CommandNick implements ISubCommand {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
 
-            String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+            int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+            if (SenderPermLevel >= 1 || isopped) {
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-            if(args.length == 1)
-                NBTFileIO.setString(CustomPlayerData, "nickname", "");
-            else
-                NBTFileIO.setString(CustomPlayerData, "nickname", args[1]);
+                if (args.length == 1)
+                    NBTFileIO.setString(CustomPlayerData, "nickname", "");
+                else
+                    NBTFileIO.setString(CustomPlayerData, "nickname", args[1]);
+            }
         }
     }
 

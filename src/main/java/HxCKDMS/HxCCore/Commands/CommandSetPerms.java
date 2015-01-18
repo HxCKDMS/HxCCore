@@ -36,11 +36,9 @@ public class CommandSetPerms implements ISubCommand {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
             boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
 
             String playername = player.getDisplayName();
-            NBTTagCompound PermLevel = Permissions.getCompoundTag("PermLevel");
 
             int PlayerPerms = (Permissions.getInteger(playername));
             if (PlayerPerms >= 4 || isopped) {
@@ -56,31 +54,30 @@ public class CommandSetPerms implements ISubCommand {
 
                 switch (permLevel) {
                     case 1:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL1 + CC + "6."));
                         break;
                     case 2:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL2 + CC + "6."));
                         break;
                     case 3:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL3 + CC + "6."));
                         break;
                     case 4:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL4 + CC + "6."));
                         break;
                     case 5:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL5 + CC + "6."));
                         break;
                     default:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + PL0 + CC + "6."));
                         break;
                 }
-
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
             } else {
                 player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
@@ -88,7 +85,6 @@ public class CommandSetPerms implements ISubCommand {
         } else {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            NBTTagCompound PermLevel = Permissions.getCompoundTag("PermLevel");
             if (!(sender instanceof EntityLiving)) {
                 if (args.length == 3) {
                     playerName = args[1];
@@ -102,27 +98,27 @@ public class CommandSetPerms implements ISubCommand {
 
                 switch (permLevel) {
                     case 1:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel1Name + "."));
                         break;
                     case 2:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel2Name + "."));
                         break;
                     case 3:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel3Name + "."));
                         break;
                     case 4:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel4Name + "."));
                         break;
                     case 5:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel5Name + "."));
                         break;
                     default:
-                        PermLevel.setInteger(playerName, permLevel);
+                        Permissions.setInteger(playerName, permLevel);
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel0Name + "."));
                         break;
                 }
