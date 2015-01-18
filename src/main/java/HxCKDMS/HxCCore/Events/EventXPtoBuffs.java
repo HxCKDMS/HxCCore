@@ -5,7 +5,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -35,13 +34,13 @@ public class EventXPtoBuffs {
                 player.xpCooldown = 0;
             }
         }
-        if (event.entityLiving instanceof EntityPlayerMP && Config.XPBuffs || !Loader.isModLoaded("HxCSkills")){
-            EntityPlayerMP PMP = (EntityPlayerMP) event.entityLiving;
-            IAttributeInstance PlayerH = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
-            IAttributeInstance PlayerD = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
-            MH = PMP.getMaxHealth() - 10;
+        if (event.entityLiving instanceof EntityPlayer && Config.XPBuffs && !Loader.isModLoaded("HxCSkills")){
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
+            IAttributeInstance PlayerH = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
+            IAttributeInstance PlayerD = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+            MH = player.getMaxHealth() - 10;
             MD = PlayerD.getAttributeValue();
-            XP = PMP.experienceLevel/LPB;
+            XP = player.experienceLevel/LPB;
             if (MH != XP*LPB && MH <= Config.HPMax){
                 AttributeModifier exHP = new AttributeModifier(HPBuffUUID, "DrZedHealthBuff", XP * HPB, 1);
                 PlayerH.removeModifier(exHP);
