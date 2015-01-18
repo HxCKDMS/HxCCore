@@ -34,9 +34,13 @@ public class CommandBurn implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.setFire(750000000);
             }
+            case 3: {
+                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                player2.setFire(Integer.parseInt(args[2]));
+            }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
 
             }
         }
