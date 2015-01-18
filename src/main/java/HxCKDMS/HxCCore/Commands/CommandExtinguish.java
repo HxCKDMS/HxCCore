@@ -1,13 +1,16 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandExtinguish implements ISubCommand {
@@ -22,9 +25,14 @@ public class CommandExtinguish implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         switch(args.length){
             case 1: {
-                if(sender instanceof EntityPlayer){
-                    EntityPlayerMP player = (EntityPlayerMP) sender;
-                    player.extinguish();
+                if(sender instanceof EntityPlayerMP){
+                    EntityPlayerMP player = (EntityPlayerMP)sender;
+                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                    int SenderPermLevel = (Integer.parseInt(Permissions.getString(player.getDisplayName())));
+                    if (SenderPermLevel >= 1) {
+                        player.extinguish();
+                    }
                 }else{
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }

@@ -1,11 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.network.MessageColor;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,10 +25,17 @@ public class CommandColor implements ISubCommand {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             String UUID = player.getUniqueID().toString();
-            char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
-            if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
-            // Will be buggy if LAN network has people logging on/off (names will lose their colors)
-            HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+            int SenderPermLevel = (Integer.parseInt(Permissions.getString(player.getDisplayName())));
+            if (SenderPermLevel >= 1) {
+                char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
+                if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
+                // Will be buggy if LAN network has people logging on/off (names will lose their colors)
+                HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
+            } else {
+                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+            }
         }else{
             sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
         }

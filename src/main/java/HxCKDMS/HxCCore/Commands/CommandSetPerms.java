@@ -34,10 +34,10 @@ public class CommandSetPerms implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
 
             String playername = player.getDisplayName();
-            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(CustomPlayerData, "Permissions");
             NBTTagCompound PermLevel0 = Permissions.getCompoundTag("PermLevel0");
             NBTTagCompound PermLevel1 = Permissions.getCompoundTag("PermLevel1");
             NBTTagCompound PermLevel2 = Permissions.getCompoundTag("PermLevel2");
@@ -84,13 +84,13 @@ public class CommandSetPerms implements ISubCommand {
                         break;
                 }
 
-                NBTFileIO.setNbtTagCompound(CustomPlayerData, "Permissions", Permissions);
+                NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
             } else {
                 player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
         } else {
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(CustomPlayerData, "Permissions");
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
             NBTTagCompound PermLevel0 = Permissions.getCompoundTag("PermLevel0");
             NBTTagCompound PermLevel1 = Permissions.getCompoundTag("PermLevel1");
             NBTTagCompound PermLevel2 = Permissions.getCompoundTag("PermLevel2");
@@ -134,7 +134,7 @@ public class CommandSetPerms implements ISubCommand {
                         sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevel0Name + "."));
                         break;
                 }
-                NBTFileIO.setNbtTagCompound(CustomPlayerData, "Permissions", Permissions);
+                NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
             }else{
                 sender.addChatMessage(new ChatComponentText("Please set your permissions from console or ask a(n) " + Config.PermLevel5Name + " to set your perms."));
             }
