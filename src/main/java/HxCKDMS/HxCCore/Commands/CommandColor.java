@@ -27,8 +27,9 @@ public class CommandColor implements ISubCommand {
             String UUID = player.getUniqueID().toString();
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            int SenderPermLevel = (Integer.parseInt(Permissions.getString(player.getDisplayName())));
-            if (SenderPermLevel >= 1) {
+            int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+            if (SenderPermLevel >= 1 || isopped) {
                 char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
                 if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
                 // Will be buggy if LAN network has people logging on/off (names will lose their colors)

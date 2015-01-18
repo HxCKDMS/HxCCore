@@ -1,10 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandSmite implements ISubCommand {
@@ -19,8 +23,16 @@ public class CommandSmite implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            player.worldObj.spawnEntityInWorld(new EntityLightningBolt(player.worldObj, player.posX+5, player.posY, player.posZ+5));
-        }else{
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+            int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+            if (SenderPermLevel >= 3 || isopped) {
+                player.worldObj.spawnEntityInWorld(new EntityLightningBolt(player.worldObj, player.posX + 5, player.posY, player.posZ + 5));
+            } else {
+                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+            }
+        } else {
             sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
         }
     }

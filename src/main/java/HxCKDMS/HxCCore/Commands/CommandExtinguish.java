@@ -29,8 +29,9 @@ public class CommandExtinguish implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP)sender;
                     File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
                     NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-                    int SenderPermLevel = (Integer.parseInt(Permissions.getString(player.getDisplayName())));
-                    if (SenderPermLevel >= 1) {
+                    int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+                    boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+                    if (SenderPermLevel >= 2 || isopped) {
                         player.extinguish();
                     }
                 }else{

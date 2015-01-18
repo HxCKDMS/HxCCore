@@ -1,14 +1,18 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandKill implements ISubCommand {
@@ -26,7 +30,16 @@ public class CommandKill implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+
+                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                    int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+                    boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+                    if (SenderPermLevel >= 5 || isopped) {
+                        player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+                    } else {
+                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                    }
                 }else{
                     sender.addChatMessage(new ChatComponentText("the kill command without arguments can only be executed from a player."));
                 }

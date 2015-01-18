@@ -1,19 +1,19 @@
 package HxCKDMS.HxCCore.Events;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.EventListener;
-import java.util.Set;
-
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.network.MessageColor;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.network.MessageColor;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.EventListener;
+import java.util.Set;
 
 public class EventJoinWorld implements EventListener {
     
@@ -37,6 +37,16 @@ public class EventJoinWorld implements EventListener {
             
             // Send username colors to player
             if (HxCCore.proxy.getSide().equals(Side.SERVER) && player instanceof EntityPlayerMP) {
+                File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                NBTTagCompound PermLevel = Permissions.getCompoundTag("PermLevel");
+
+                int pl = (PermLevel.getInteger(player.getDisplayName()));
+
+                if (pl == 0) {
+                    PermLevel.setInteger(player.getDisplayName(), 0);
+                }
+
                 File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
                 NBTTagCompound data = NBTFileIO.getData(colorData);
                 Set keys = data.func_150296_c();
