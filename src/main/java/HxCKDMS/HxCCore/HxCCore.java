@@ -2,10 +2,7 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
-import HxCKDMS.HxCCore.Events.EventGod;
-import HxCKDMS.HxCCore.Events.EventJoinWorld;
-import HxCKDMS.HxCCore.Events.EventTpRequest;
-import HxCKDMS.HxCCore.Events.EventXPtoBuffs;
+import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.ClientProxy;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
@@ -72,6 +69,7 @@ public class HxCCore
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
+        MinecraftForge.EVENT_BUS.register(new EventChat());
 
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
     }

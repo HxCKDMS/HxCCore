@@ -27,6 +27,8 @@ public class Config
 
     public static Integer TpaTimeout;
 
+    public static String ChatFormat;
+
     public String derp[] = new String[16];
 
     public Config(Configuration config)
@@ -77,7 +79,11 @@ public class Config
         PermLevel5Color = config.getString("PermLevel5Color", "Permissions", "4", "", derp);
 
         config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
-        TpaTimeout = config.getInt("TpaTimeout", "Commands", 600, 1200, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");
+        TpaTimeout = config.getInt("TpaTimeout", "Commands", 1200, 600, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");
+
+        config.addCustomCategoryComment("Chat", "These configuration settings are chat specific.");
+        ChatFormat = config.getString("ChatFormat", "Chat", "<%1$s> %2$s", "Chat format %1$s: username %2$s: message.");
+
 
         if(config.hasChanged())
         {
