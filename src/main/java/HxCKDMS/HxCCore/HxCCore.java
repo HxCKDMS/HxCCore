@@ -10,7 +10,7 @@ import HxCKDMS.HxCCore.Proxy.ClientProxy;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
-import HxCKDMS.HxCCore.network.SimpleNetworkWrapperWrapper;
+import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -19,8 +19,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -31,11 +31,12 @@ import java.io.IOException;
 public class HxCCore
 {
     public static File HxCCoreDir = null;
+    public static MinecraftServer server;
+    public static final PacketPipeline packetPipeLine = new PacketPipeline();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
     public static ClientProxy cproxy;
-    public static SimpleNetworkWrapperWrapper network;
     
     public static HxCKDMS.HxCCore.Configs.Config Config;
 
@@ -48,7 +49,6 @@ public class HxCCore
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit();
-        proxy.registerNetworkStuff(network = new SimpleNetworkWrapperWrapper(NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID)));
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
 //        ModHxCSkills = Loader.isModLoaded("HxCSkills");
@@ -61,6 +61,7 @@ public class HxCCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        packetPipeLine.initialize();
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
@@ -68,6 +69,7 @@ public class HxCCore
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        packetPipeLine.postInitialize();
         event.getModState();
         if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", Reference.MOD_NAME);
     }
@@ -75,6 +77,7 @@ public class HxCCore
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event)
     {
+        server = event.getServer();
         CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");

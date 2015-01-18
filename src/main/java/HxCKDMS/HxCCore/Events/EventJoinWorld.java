@@ -42,7 +42,7 @@ public class EventJoinWorld implements EventListener {
                 Set keys = data.func_150296_c();
                 for (Object key : keys) {
                     if (key instanceof String) {
-                        HxCCore.network.sendTo(new MessageColor.Message((String) key, data.getString((String) key).toCharArray()[0]), (EntityPlayerMP) player);
+                        HxCCore.packetPipeLine.sendTo(new MessageColor((String) key, data.getString((String) key).toCharArray()[0]), (EntityPlayerMP) player);
                     }
                 }
             }

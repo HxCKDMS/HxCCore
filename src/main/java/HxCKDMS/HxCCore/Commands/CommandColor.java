@@ -32,7 +32,7 @@ public class CommandColor implements ISubCommand {
                 char color = args.length == 1 ? 'f' : args[1].toCharArray()[0];
                 if ((color < 'a' || color > 'f') && (color < '0' || color > '9')) color = 'f';
                 // Will be buggy if LAN network has people logging on/off (names will lose their colors)
-                HxCCore.network.sendToServer(new MessageColor.Message(UUID, color));
+                HxCCore.packetPipeLine.sendToServer(new MessageColor(UUID, color));
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
