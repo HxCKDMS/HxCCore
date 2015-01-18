@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.network;
 
 import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
-import cpw.mods.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;

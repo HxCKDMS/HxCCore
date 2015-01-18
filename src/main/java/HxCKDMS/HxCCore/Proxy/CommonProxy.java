@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Proxy;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class CommonProxy {
 
