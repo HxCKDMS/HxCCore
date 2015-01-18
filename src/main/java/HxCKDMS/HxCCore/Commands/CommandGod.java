@@ -7,6 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
@@ -27,11 +28,21 @@ public class CommandGod implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    String UUID = player.getUniqueID().toString();
-                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-                    NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
-                    player.addChatComponentMessage(new ChatComponentText("turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
+                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                    int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+                    boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+                    if (SenderPermLevel >= 4 || isopped) {
+                        String UUID = player.getUniqueID().toString();
+                        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+
+                        NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
+                        player.addChatComponentMessage(new ChatComponentText("Turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
+                    } else {
+                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                    }
+
                 }else {
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }

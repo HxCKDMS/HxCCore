@@ -1,13 +1,17 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandHeal implements ISubCommand {
@@ -24,8 +28,16 @@ public class CommandHeal implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    float hth = player.getMaxHealth()-player.getHealth();
-                    player.heal(hth);
+                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                    int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+                    boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+                    if (SenderPermLevel >= 2 || isopped) {
+                        float hth = player.getMaxHealth()-player.getHealth();
+                        player.heal(hth);
+                    } else {
+                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                    }
                 }else{
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }

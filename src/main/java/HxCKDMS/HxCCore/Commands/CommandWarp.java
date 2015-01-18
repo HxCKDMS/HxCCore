@@ -25,12 +25,22 @@ public class CommandWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+            int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
+            if (SenderPermLevel >= 0 || isopped) {
+                File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
-            String wName = args.length == 1 ? "default" : args[1];
-            NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
-            if(!warpDir.hasKey(wName)){
-                throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
+                String wName = args.length == 1 ? "default" : args[1];
+                NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
+                if(!warpDir.hasKey(wName)){
+                    throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
+                }
+                NBTTagCompound warp = warpDir.getCompoundTag(wName);
+                Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), player.mcServer.getConfigurationManager(), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
+            } else {
+                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
             NBTTagCompound warp = warpDir.getCompoundTag(wName);
 

@@ -87,14 +87,14 @@ public class HxCCore
         HxCCoreDir = WorldDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
+        File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
 
         try {
             if (!CustomWorldFile.exists()) CustomWorldFile.createNewFile();
-        }catch(IOException e){
+            if (!PermissionsData.exists()) PermissionsData.createNewFile();
+        } catch(IOException e) {
             e.printStackTrace();
         }
-
-
     }
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private static void extendEnchantsArray()
