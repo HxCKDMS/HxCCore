@@ -1,9 +1,9 @@
 [
   {
     "modid": "HxCCore",
-    "name": "HxC-Core",
-    "description": "IDK",
-    "version": "1.6",
+    "name": "HxCKDMS-Core",
+    "description": "Core requirement for all mods made by HxCKDMS",
+    "version": "1.7",
     "credits": "Minor help from Opensource COFH core",
 	"logoFile": "assets/HxCCore/textures/HxC.png",
     "mcversion": "1.8",

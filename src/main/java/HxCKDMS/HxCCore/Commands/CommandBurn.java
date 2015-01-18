@@ -1,39 +1,44 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandBurn implements ISubCommand {
     public static CommandBurn instance = new CommandBurn();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "burn";
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 4;
-    }
-
-    @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1: {
-                if(sender instanceof EntityPlayer){
-                    EntityPlayerMP player = (EntityPlayerMP) sender;
-                    player.setFire(750000000);
+                if(sender instanceof EntityPlayerMP){
+                    EntityPlayerMP player = (EntityPlayerMP)sender;
+                    boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
+                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
+                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+                    int SenderPermLevel = Permissions.getInteger(player.getName());
+                    if (SenderPermLevel >= 3 || isopped) {
+                        player.setFire(750000000);
+                    } else {
+                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                    }
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the burn command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
                 }
             }
             break;
@@ -41,9 +46,13 @@ public class CommandBurn implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.setFire(750000000);
             }
+            case 3: {
+                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                player2.setFire(Integer.parseInt(args[2]));
+            }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
 
             }
         }

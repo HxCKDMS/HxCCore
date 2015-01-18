@@ -1,16 +1,15 @@
 package HxCKDMS.HxCCore.Commands;
 
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 
 import java.util.List;
 
 public interface ISubCommand {
-    public String getName();
+    public String getCommandName();
 
-    public void execute(ICommandSender sender, String[] args) throws CommandException;
-
-    public int getRequiredPermissionLevel();
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException;
 
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }

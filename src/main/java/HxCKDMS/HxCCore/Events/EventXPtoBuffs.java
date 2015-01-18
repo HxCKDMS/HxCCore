@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Config;
+import HxCKDMS.HxCCore.Configs.Config;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -31,7 +31,7 @@ public class EventXPtoBuffs {
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
         if (event.entityLiving instanceof EntityPlayer){
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            if (Config.XPCooldownWeaken){
+            if (Config.CooldownDisable){
                 player.xpCooldown = 0;
             }
         }

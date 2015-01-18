@@ -2,9 +2,9 @@ package HxCKDMS.HxCCore.Commands;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     
     public static CommandBase instance = new CommandBase();
     private static TMap<String, ISubCommand> commands = new THashMap<String, ISubCommand>();
-    
+
     static {
         registerSubCommand(CommandHeal.instance);
         registerSubCommand(CommandHelp.instance);
@@ -32,17 +32,20 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandWarp.instance);
         registerSubCommand(CommandSetWarp.instance);
 //        registerSubCommand(CommandColor.instance);
+        registerSubCommand(CommandSetPerms.instance);
+        registerSubCommand(CommandServerInfo.instance);
+        registerSubCommand(CommandSpawn.instance);
     }
     
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }
-
+    
     @Override
     public String getName() {
         return "HxCCore";
     }
-
+    
     @Override
     public String getCommandUsage(ICommandSender sender) {
         return "/" + getName() + " help";
@@ -51,15 +54,15 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     @Override
     public int getRequiredPermissionLevel()
     {
-        return 4;
+        return 0;
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
-                commands.get(k).execute(sender, args);
+                commands.get(k).handleCommand(sender, args);
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }
@@ -78,7 +81,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
     
     public static boolean registerSubCommand(ISubCommand subCommand) {
-        String k = subCommand.getName().toLowerCase();
+        String k = subCommand.getCommandName().toLowerCase();
         
         if (!commands.containsKey(k)) {
             commands.put(k, subCommand);
@@ -86,10 +89,12 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         }
         return false;
     }
-    public List addTabCompletionOptions(ICommandSender sender, String[] args) {
+    
+    @Override
+    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, String.valueOf(commands.keySet()));
+            return func_175762_a(args, commands.keySet());
         } else if (commands.containsKey(args[0])) {
             return commands.get(args[0]).addTabCompletionOptions(sender, args);
         }

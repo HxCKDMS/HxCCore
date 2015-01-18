@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Commands;
 
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -12,18 +11,12 @@ public class CommandHelp implements ISubCommand {
     public static CommandHelp instance = new CommandHelp();
     
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "help";
-    }
-
-    @Override
-    public int getRequiredPermissionLevel()
-    {
-        return 0;
     }
     
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException {
+    public void handleCommand(ICommandSender sender, String[] arguments) {
         sender.addChatMessage(new ChatComponentText("\u00A71Commands:"));
         
         boolean b = false;
@@ -56,8 +49,6 @@ public class CommandHelp implements ISubCommand {
             "/HxCCore smite [player]: used to smite your self or another player.",
             "/HxCCore setHome: used to set a home (waypoint) at your location.",
             "/HxCCore home: used to return to a home (waypoint).",
-            "/HxCCore repair: used to repair currently held item.",
-            "/HxCCore setWarp: used to set a public warp (waypoint) at your location.",
-            "/HxCCore warp: used to return to a public warp (waypoint).",
-            "/HxCCore repairAll: used to repair all items in your inventory." };
+            "/HxCCore repair: used to return to a home (waypoint).",
+            "/HxCCore repairAll: used to return to a home (waypoint)." };
 }
