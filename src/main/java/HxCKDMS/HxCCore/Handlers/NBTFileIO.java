@@ -1,5 +1,8 @@
 package HxCKDMS.HxCCore.Handlers;
 
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.Reference;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -22,8 +25,13 @@ public class NBTFileIO {
         try {
             tagCompound = CompressedStreamTools.read(dataFile);
         } catch (IOException e) {
-            e.printStackTrace();
-            return tagCompound;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return tagCompound;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return tagCompound;
+            }
         }
         return tagCompound.getCompoundTag(tag);
     }
@@ -50,8 +58,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return false;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return false;
+            }
         }
         return data.getBoolean(tag);
     }
@@ -78,8 +91,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return "";
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return "";
+            }
         }
         return data.getString(tag);
     }
@@ -106,8 +124,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getInteger(tag);
     }
@@ -134,8 +157,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getDouble(tag);
     }
@@ -162,8 +190,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getFloat(tag);
     }
@@ -190,8 +223,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getShort(tag);
     }
@@ -218,8 +256,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getLong(tag);
     }
@@ -246,8 +289,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return 0;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return 0;
+            }
         }
         return data.getByte(tag);
     }
@@ -274,8 +322,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return null;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return null;
+            }
         }
         return data.getIntArray(tag);
     }
@@ -302,8 +355,13 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return null;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), Reference.MOD_NAME);
+                return null;
+            }
         }
         return data.getByteArray(tag);
     }

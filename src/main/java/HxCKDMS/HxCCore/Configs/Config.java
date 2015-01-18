@@ -4,7 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config
 {
-    public boolean DebugMode;
+    public static boolean DebugMode;
 
     public static boolean CooldownDisable;
     public static boolean XPBuffs;
