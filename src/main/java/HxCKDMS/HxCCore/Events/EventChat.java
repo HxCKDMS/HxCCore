@@ -26,25 +26,25 @@ public class EventChat implements EventListener {
         //Color Code
         String CC = "\u00A7";
 
-        String group;
+        String rawgroup;
         switch(SenderPermLevel){
             case 1:
-                group = CC + Config.PermLevel1Color + Config.PermLevel1Name;
+                rawgroup = CC + Config.PermLevel1Color + Config.PermLevel1Name;
                 break;
             case 2:
-                group = CC + Config.PermLevel2Color + Config.PermLevel2Name;
+                rawgroup = CC + Config.PermLevel2Color + Config.PermLevel2Name;
                 break;
             case 3:
-                group = CC + Config.PermLevel3Color + Config.PermLevel3Name;
+                rawgroup = CC + Config.PermLevel3Color + Config.PermLevel3Name;
                 break;
             case 4:
-                group = CC + Config.PermLevel4Color + Config.PermLevel4Name;
+                rawgroup = CC + Config.PermLevel4Color + Config.PermLevel4Name;
                 break;
             case 5:
-                group = CC + Config.PermLevel5Color + Config.PermLevel5Name;
+                rawgroup = CC + Config.PermLevel5Color + Config.PermLevel5Name;
                 break;
             default:
-                group = CC + Config.PermLevel0Color + Config.PermLevel0Name;
+                rawgroup = CC + Config.PermLevel0Color + Config.PermLevel0Name;
                 break;
         }
 
@@ -54,16 +54,30 @@ public class EventChat implements EventListener {
 
         nick = nick.replace("&", CC) + CC + "f";
         message = message.replace("&", CC);
-        String chatgroup = GroupFormat.replace("%g", group);
-        String G = chatgroup.replace("&", CC);
+        String boxedgroup = GroupFormat.replace("%g", rawgroup);
+        String formattedgroup = boxedgroup.replace("&", CC);
 
         String nameOP = CC + "4" + event.player.getName() + CC + "f";
 
+        String opped;
+        String name;
+        String nicked;
+
+        if (Config.GroupInChat) {
+            opped = formattedgroup + nameOP;
+            name = formattedgroup + event.player.getName();
+            nicked = formattedgroup + nick;
+        } else {
+            opped = nameOP;
+            name = event.player.getName();
+            nicked = nick;
+        }
+
         if(isOpped && nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + nameOP, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, opped, message));
         else if(nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + event.player.getName(), message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, name, message));
         else
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + nick, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, nicked, message));
     }
 }

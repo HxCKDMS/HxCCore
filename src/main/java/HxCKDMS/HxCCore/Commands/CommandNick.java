@@ -37,7 +37,8 @@ public class CommandNick implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("Your nickname has been removed."));
                 } else {
                     NBTFileIO.setString(CustomPlayerData, "nickname", args[1]);
-                    player.addChatMessage(new ChatComponentText("Your nickname has been set to " + args[1]));
+                    ChatComponentText msg = new ChatComponentText(("Your nickname has been set to " + args[1]).replace("&", "\u00A7"));
+                    player.addChatMessage(msg);
                 }
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You don't have permission to use this command."));

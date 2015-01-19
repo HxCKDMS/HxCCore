@@ -90,8 +90,10 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         byteBuf.writeByte(discriminator);
         msg.encodeInto(ctx, byteBuf);
 
-        FMLProxyPacket proxyPacket = new FMLProxyPacket((PacketBuffer)byteBuf.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
-        out.add(proxyPacket);
+        if (byteBuf instanceof PacketBuffer) {
+            FMLProxyPacket proxyPacket = new FMLProxyPacket((PacketBuffer) byteBuf.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
+            out.add(proxyPacket);
+        }
     }
 
     @Override

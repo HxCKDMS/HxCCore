@@ -32,6 +32,7 @@ public class Config
 
     public static String ChatFormat;
     public static String GroupFormat;
+    public static boolean GroupInChat;
 
     public String derp[] = new String[16];
 
@@ -91,6 +92,7 @@ public class Config
         config.addCustomCategoryComment("Chat", "These configuration settings are chat specific.");
         ChatFormat = config.getString("ChatFormat", "Chat", "<%1$s> %2$s", "Chat format %1$s: username %2$s: message.");
         GroupFormat = config.getString("GroupFormat", "Chat", "&f[%g&f]", "Chat format %1$s: username %2$s: message.");
+        GroupInChat = config.getBoolean("ChatGroup", "Chat", true, "Change this to false if you don't want to see [Default|Owner|etc] beside player names");
 
 
         if(config.hasChanged())
