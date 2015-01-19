@@ -35,7 +35,11 @@ public class CommandFeed implements ISubCommand {
                     int SenderPermLevel = Permissions.getInteger(player.getName());
                     boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
                     if (SenderPermLevel >= 2 || isopped) {
+                        float plf = player.getFoodStats().getSaturationLevel() + player.getFoodStats().getFoodLevel();
+                        float nf = 40 - plf;
                         player.getFoodStats().addStats(20, 20F);
+                        player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
+                        sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player.getName() + "'s\u00A7e throat."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -46,7 +50,11 @@ public class CommandFeed implements ISubCommand {
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                float plf = player2.getFoodStats().getSaturationLevel() + player2.getFoodStats().getFoodLevel();
+                float nf = 40 - plf;
                 player2.getFoodStats().addStats(20, 20F);
+                player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player2.getName() + "'s\u00A7e throat."));
             }
             break;
             default: {

@@ -33,7 +33,9 @@ public class CommandBurn implements ISubCommand {
                     NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
                     int SenderPermLevel = Permissions.getInteger(player.getName());
                     if (SenderPermLevel >= 3 || isopped) {
+                        player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
+                        sender.addChatMessage(new ChatComponentText(player.getName() + " \u00A74has been set on fire for 750000000 ticks."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -44,11 +46,15 @@ public class CommandBurn implements ISubCommand {
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                 player2.setFire(750000000);
+                sender.addChatMessage(new ChatComponentText(player2.getName() + " \u00A74has been set on fire for 750000000 ticks."));
             }
             case 3: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                 player2.setFire(Integer.parseInt(args[2]));
+                sender.addChatMessage(new ChatComponentText(player2.getName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
             }
             break;
             default: {

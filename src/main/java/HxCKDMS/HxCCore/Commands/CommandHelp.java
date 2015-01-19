@@ -47,8 +47,18 @@ public class CommandHelp implements ISubCommand {
             "/HxCCore burn [player]: used to burn your self or another player.",
             "/HxCCore extinguish [player]: used to extinguish your self or another player.",
             "/HxCCore smite [player]: used to smite your self or another player.",
-            "/HxCCore setHome: used to set a home (waypoint) at your location.",
-            "/HxCCore home: used to return to a home (waypoint).",
-            "/HxCCore repair: used to return to a home (waypoint).",
-            "/HxCCore repairAll: used to return to a home (waypoint)." };
+            "/HxCCore setHome [home]: used to set a home (waypoint) at your location.",
+            "/HxCCore home [home]: used to return to a home (waypoint).",
+            "/HxCCore setWarp [warp]: used to set a server warp (waypoint) at your location.",
+            "/HxCCore warp [warp]: used to return to a server warp (waypoint).",
+            "/HxCCore repair: used to repair currently held item.",
+            "/HxCCore repairAll: used to repair all items in your inventory.",
+            "/HxCCore modlist: used to list all mods installed.",
+            "/HxCCore nick <nick>: used to rename yourself.",
+            "/HxCCore playerinfo <player>: used to get info about a player.",
+            "/HxCCore serverinfo: used to get info about the server.",
+            "/HxCCore setperms <player> [permlevel#]: used to set permmision levels for players on your server.",
+            "/HxCCore spawn: used to goto spawn.",
+            "/HxCCore tpa [accept|deny|player]: used to repair all items in your inventory."
+    };
 }

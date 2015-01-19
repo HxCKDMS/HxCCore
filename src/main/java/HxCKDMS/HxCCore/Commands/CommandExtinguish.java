@@ -34,6 +34,8 @@ public class CommandExtinguish implements ISubCommand {
                     boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
                     if (SenderPermLevel >= 2 || isopped) {
                         player.extinguish();
+                        player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
+                        sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player.getName()));
                     }
                 }else{
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
@@ -43,6 +45,8 @@ public class CommandExtinguish implements ISubCommand {
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.extinguish();
+                player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player2.getName()));
             }
             break;
             default: {

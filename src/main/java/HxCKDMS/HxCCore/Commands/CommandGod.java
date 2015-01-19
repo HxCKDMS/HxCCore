@@ -39,7 +39,7 @@ public class CommandGod implements ISubCommand {
                         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                         NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
-                        player.addChatComponentMessage(new ChatComponentText("Turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
+                        player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -56,7 +56,7 @@ public class CommandGod implements ISubCommand {
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
-                player.addChatComponentMessage(new ChatComponentText("turned " + (NBTFileIO.getBoolean(CustomPlayerData, "god") ? "on" : "off") + " god mode"));
+                player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getName()));
             }
             break;
             default: {

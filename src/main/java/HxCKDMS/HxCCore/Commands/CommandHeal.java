@@ -36,6 +36,7 @@ public class CommandHeal implements ISubCommand {
                     if (SenderPermLevel >= 2 || isopped) {
                         float hth = player.getMaxHealth()-player.getHealth();
                         player.heal(hth);
+                        sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -48,7 +49,8 @@ public class CommandHeal implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 float hth = player2.getMaxHealth()-player2.getHealth();
                 player2.heal(hth);
-
+                player2.addChatMessage(new ChatComponentText("\u00A76You have recieved some divine intervention."));
+                sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getName() + "."));
             }
             break;
             default: {
