@@ -39,7 +39,6 @@ public class CommandFeed implements ISubCommand {
                         float nf = 40 - plf;
                         player.getFoodStats().addStats(20, 20F);
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                        sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player.getName() + "'s\u00A7e throat."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -64,6 +63,7 @@ public class CommandFeed implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){

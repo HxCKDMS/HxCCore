@@ -39,6 +39,8 @@ public class CommandSetWarp implements ISubCommand {
                 int z = (int)player.posZ;
                 int dim = player.dimension;
 
+                player.addChatMessage(new ChatComponentText("\u00A72Warp point (" + wName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ")."));
+
                 warpDir.setInteger("x", x);
                 warpDir.setInteger("y", y);
                 warpDir.setInteger("z", z);

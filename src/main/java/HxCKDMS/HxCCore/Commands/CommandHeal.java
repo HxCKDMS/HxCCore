@@ -34,8 +34,7 @@ public class CommandHeal implements ISubCommand {
                     int SenderPermLevel = Permissions.getInteger(player.getName());
                     boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
                     if (SenderPermLevel >= 2 || isopped) {
-                        float hth = player.getMaxHealth()-player.getHealth();
-                        player.heal(hth);
+                        player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
@@ -47,9 +46,8 @@ public class CommandHeal implements ISubCommand {
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                float hth = player2.getMaxHealth()-player2.getHealth();
-                player2.heal(hth);
-                player2.addChatMessage(new ChatComponentText("\u00A76You have recieved some divine intervention."));
+                player2.setHealth(player2.getMaxHealth());
+                player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
                 sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getName() + "."));
             }
             break;

@@ -53,7 +53,7 @@ public class CommandFly implements ISubCommand {
                 player2.capabilities.allowFlying = !player2.capabilities.allowFlying;
                 player2.capabilities.isFlying = !player2.capabilities.isFlying;
                 player2.sendPlayerAbilities();
-                player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel lighter."));
+                player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel lighter." : "\u00A7bYou feel heavier."));
                 player.addChatComponentMessage(new ChatComponentText((player2.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled") + " flight, for player " + player2.getName() + "."));
 
             }
@@ -65,6 +65,7 @@ public class CommandFly implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){

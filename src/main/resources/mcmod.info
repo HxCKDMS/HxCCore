@@ -3,7 +3,7 @@
     "modid": "HxCCore",
     "name": "HxCKDMS-Core",
     "description": "Core requirement for all mods made by HxCKDMS",
-    "version": "1.7",
+    "version": "1.8",
     "credits": "Minor help from Opensource COFH core",
 	"logoFile": "assets/HxCCore/textures/HxC.png",
     "mcversion": "1.8",

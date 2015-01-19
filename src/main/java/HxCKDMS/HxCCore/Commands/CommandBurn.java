@@ -35,7 +35,6 @@ public class CommandBurn implements ISubCommand {
                     if (SenderPermLevel >= 3 || isopped) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                        sender.addChatMessage(new ChatComponentText(player.getName() + " \u00A74has been set on fire for 750000000 ticks."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -64,10 +63,11 @@ public class CommandBurn implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){
-            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+            return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
         }
         return null;
     }

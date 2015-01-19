@@ -37,13 +37,16 @@ public class CommandHome implements ISubCommand {
                 String hName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 if(!homeDir.hasKey(hName)){
-                    throw new WrongUsageException("the home named: '" + hName + "' does not exist.");
+                    throw new WrongUsageException("The home named: '" + hName + "' does not exist.");
                 }
                 NBTTagCompound home = homeDir.getCompoundTag(hName);
-                if(player.dimension != home.getInteger("dim"))
+                if(player.dimension != home.getInteger("dim")) {
                     Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
-                else
+                    player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
+                } else {
                     player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
+                    player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
+                }
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }

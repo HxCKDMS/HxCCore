@@ -11,5 +11,5 @@ public interface ISubCommand {
 
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException;
 
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
+    public List addTabCompletionOptions(ICommandSender sender, String[] args);
 }

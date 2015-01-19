@@ -42,23 +42,22 @@ public class CommandKill implements ISubCommand {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
                 }else{
-                    sender.addChatMessage(new ChatComponentText("the kill command without arguments can only be executed from a player."));
+                    sender.addChatMessage(new ChatComponentText("The kill command without arguments can only be executed from a player."));
                 }
             }
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
-
             }
             break;
             default: {
                 throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
-
             }
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){

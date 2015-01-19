@@ -30,6 +30,7 @@ public class CommandRepair implements ISubCommand {
             if (SenderPermLevel >= 3 || isopped) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setItemDamage(0);
+                sender.addChatMessage(new ChatComponentText("\u00A7b" + HeldItem.getDisplayName() + " has been repaired."));
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }

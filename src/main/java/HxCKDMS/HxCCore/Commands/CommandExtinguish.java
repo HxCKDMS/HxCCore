@@ -35,7 +35,6 @@ public class CommandExtinguish implements ISubCommand {
                     if (SenderPermLevel >= 2 || isopped) {
                         player.extinguish();
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
-                        sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player.getName()));
                     }
                 }else{
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
@@ -56,10 +55,11 @@ public class CommandExtinguish implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){
-            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+            return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
         }
         return null;
     }
