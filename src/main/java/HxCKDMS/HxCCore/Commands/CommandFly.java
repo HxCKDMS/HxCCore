@@ -36,7 +36,7 @@ public class CommandFly implements ISubCommand {
                         player.capabilities.allowFlying = !player.capabilities.allowFlying;
                         player.capabilities.isFlying = !player.capabilities.isFlying;
                         player.sendPlayerAbilities();
-                        player.addChatComponentMessage(new ChatComponentText("Turned "+ (player.capabilities.allowFlying ? "on" : "off")+" flight"));
+                        player.addChatComponentMessage(new ChatComponentText((player.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled")+" flight."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
@@ -52,7 +52,8 @@ public class CommandFly implements ISubCommand {
                 player2.capabilities.allowFlying = !player2.capabilities.allowFlying;
                 player2.capabilities.isFlying = !player2.capabilities.isFlying;
                 player2.sendPlayerAbilities();
-                player.addChatComponentMessage(new ChatComponentText("turned "+ (player2.capabilities.allowFlying ? "on" : "off")+" flight, for player "+args[1]));
+                player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel lighter." : "\u00A7bYou feel heavier."));
+                player.addChatComponentMessage(new ChatComponentText((player2.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled") + " flight, for player " + player2.getDisplayName() + "."));
 
             }
             break;
@@ -63,6 +64,7 @@ public class CommandFly implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length == 2){

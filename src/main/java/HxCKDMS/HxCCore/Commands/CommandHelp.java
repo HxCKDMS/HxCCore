@@ -52,7 +52,7 @@ public class CommandHelp implements ISubCommand {
             "/HxCCore setWarp [warp]: used to set a server warp (waypoint) at your location.",
             "/HxCCore warp [warp]: used to return to a server warp (waypoint).",
             "/HxCCore repair: used to repair currently held item.",
-            "/HxCCore repairAll: used to repair all items in your inventory.",
+            "/HxCCore repairAll [player]: used to repair all items in target player's inventory.",
             "/HxCCore modlist: used to list all mods installed.",
             "/HxCCore nick <nick>: used to rename yourself.",
             "/HxCCore playerinfo <player>: used to get info about a player.",

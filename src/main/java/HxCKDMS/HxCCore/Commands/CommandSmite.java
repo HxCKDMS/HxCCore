@@ -3,9 +3,12 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
@@ -20,7 +23,7 @@ public class CommandSmite implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
@@ -28,17 +31,35 @@ public class CommandSmite implements ISubCommand {
             int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
             boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
             if (SenderPermLevel >= 3 || isopped) {
-                player.worldObj.spawnEntityInWorld(new EntityLightningBolt(player.worldObj, player.posX + 5, player.posY, player.posZ + 5));
+                if (args.length == 2) {
+                    EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                    smite(player2);
+                } else {
+                    smite(player);
+                }
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
             }
         } else {
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+            if (args.length == 2) {
+                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                smite(player2);
+            } else {
+                sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+            }
         }
     }
 
+    public void smite(EntityPlayer target) {
+        target.worldObj.spawnEntityInWorld(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ));
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if(args.length == 2){
+            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+        }
         return null;
     }
 }

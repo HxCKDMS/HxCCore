@@ -38,10 +38,13 @@ public class CommandWarp implements ISubCommand {
                     throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
                 }
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
-                if(player.dimension != warp.getInteger("dim"))
+                if(player.dimension != warp.getInteger("dim")) {
                     Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), player.mcServer.getConfigurationManager(), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
-                else
+                    player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
+                } else {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);
+                    player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
+                }
 
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));

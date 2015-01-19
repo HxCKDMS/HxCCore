@@ -2,9 +2,10 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
@@ -39,6 +40,8 @@ public class CommandSetWarp implements ISubCommand {
                 int z = (int)player.posZ;
                 int dim = player.dimension;
 
+                player.addChatMessage(new ChatComponentText("\u00A72Warp point (" + wName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ")."));
+
                 warpDir.setInteger("x", x);
                 warpDir.setInteger("y", y);
                 warpDir.setInteger("z", z);
@@ -55,8 +58,12 @@ public class CommandSetWarp implements ISubCommand {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if(args.length == 2){
+            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+        }
         return null;
     }
 }
