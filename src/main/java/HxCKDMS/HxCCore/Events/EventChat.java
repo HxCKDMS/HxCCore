@@ -60,10 +60,10 @@ public class EventChat implements EventListener {
         String nameOP = CC + "4" + event.player.getName() + CC + "f";
 
         if(isOpped && nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G, nameOP, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + nameOP, message));
         else if(nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G, event.player.getName(), message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + event.player.getName(), message));
         else
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G, nick, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, G + nick, message));
     }
 }
