@@ -31,6 +31,7 @@ public class Config
     public static Integer TpaTimeout;
 
     public static String ChatFormat;
+    public static String GroupFormat;
 
     public String derp[] = new String[16];
 
@@ -89,6 +90,7 @@ public class Config
 
         config.addCustomCategoryComment("Chat", "These configuration settings are chat specific.");
         ChatFormat = config.getString("ChatFormat", "Chat", "<%1$s> %2$s", "Chat format %1$s: username %2$s: message.");
+        GroupFormat = config.getString("GroupFormat", "Chat", "&f[%g&f]", "Chat format %1$s: username %2$s: message.");
 
 
         if(config.hasChanged())
