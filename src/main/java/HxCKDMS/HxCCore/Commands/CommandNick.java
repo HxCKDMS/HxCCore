@@ -15,12 +15,12 @@ public class CommandNick implements ISubCommand {
     public static CommandNick instance = new CommandNick();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "nick";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
 

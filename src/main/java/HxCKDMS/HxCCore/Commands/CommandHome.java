@@ -17,12 +17,12 @@ public class CommandHome implements ISubCommand {
     public static CommandHome instance = new CommandHome();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "home";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
 

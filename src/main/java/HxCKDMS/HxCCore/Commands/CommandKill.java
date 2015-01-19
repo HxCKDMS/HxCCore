@@ -20,13 +20,13 @@ public class CommandKill implements ISubCommand {
     public static CommandKill instance = new CommandKill();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "kill";
     }
 
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer){
@@ -52,7 +52,7 @@ public class CommandKill implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
             }
         }
     }

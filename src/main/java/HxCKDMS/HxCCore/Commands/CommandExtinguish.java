@@ -18,12 +18,12 @@ public class CommandExtinguish implements ISubCommand {
     public static CommandExtinguish instance = new CommandExtinguish();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "extinguish";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
@@ -49,7 +49,7 @@ public class CommandExtinguish implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
 
             }
         }

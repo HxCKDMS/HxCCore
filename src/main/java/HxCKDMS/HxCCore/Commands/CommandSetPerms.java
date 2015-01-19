@@ -27,12 +27,12 @@ public class CommandSetPerms implements ISubCommand {
     String PL5 = (CC + Config.PermLevel5Color + Config.PermLevel5Name);
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "setPerms";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");

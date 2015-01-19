@@ -20,12 +20,12 @@ public class CommandFeed implements ISubCommand {
     public static CommandFeed instance = new CommandFeed();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "feed";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer){
@@ -57,7 +57,7 @@ public class CommandFeed implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
 
             }
         }

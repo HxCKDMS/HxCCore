@@ -18,12 +18,12 @@ public class CommandBurn implements ISubCommand {
     public static CommandBurn instance = new CommandBurn();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "burn";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
@@ -57,7 +57,7 @@ public class CommandBurn implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player] [time]");
 
             }
         }

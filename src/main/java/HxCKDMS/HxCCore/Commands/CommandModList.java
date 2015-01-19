@@ -12,12 +12,12 @@ public class CommandModList implements ISubCommand {
     public static CommandModList instance = new CommandModList();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "modList";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         int listSize = Loader.instance().getModList().size();
         int modsPerPage = 7;
         int pages = (int)Math.ceil(listSize / (float)modsPerPage);

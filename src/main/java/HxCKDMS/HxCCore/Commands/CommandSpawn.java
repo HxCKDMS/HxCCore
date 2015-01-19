@@ -13,12 +13,12 @@ public class CommandSpawn implements ISubCommand {
     public static CommandSpawn instance = new CommandSpawn();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "spawn";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP)sender;
 

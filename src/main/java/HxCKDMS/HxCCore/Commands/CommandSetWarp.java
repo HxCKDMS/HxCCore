@@ -14,12 +14,12 @@ public class CommandSetWarp implements ISubCommand {
     public static CommandSetWarp instance = new CommandSetWarp();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "setWarp";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");

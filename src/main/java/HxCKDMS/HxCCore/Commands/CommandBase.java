@@ -67,7 +67,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
-                commands.get(k).handleCommand(sender, args);
+                commands.get(k).execute(sender, args);
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }
@@ -86,7 +86,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
     
     public static boolean registerSubCommand(ISubCommand subCommand) {
-        String k = subCommand.getCommandName().toLowerCase();
+        String k = subCommand.getName().toLowerCase();
         
         if (!commands.containsKey(k)) {
             commands.put(k, subCommand);

@@ -14,12 +14,12 @@ public class CommandSetHome implements ISubCommand {
     public static CommandSetHome instance = new CommandSetHome();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "setHome";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
 

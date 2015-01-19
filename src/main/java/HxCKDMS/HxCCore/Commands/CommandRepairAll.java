@@ -19,13 +19,13 @@ public class CommandRepairAll implements ISubCommand
 
     EntityPlayer target;
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "repairAll";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");

@@ -19,12 +19,12 @@ public class CommandGod implements ISubCommand {
     public static CommandGod instance = new CommandGod();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "god";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer) {
@@ -61,7 +61,7 @@ public class CommandGod implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
             }
         }
     }

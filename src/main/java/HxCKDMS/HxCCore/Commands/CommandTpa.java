@@ -16,12 +16,12 @@ public class CommandTpa implements ISubCommand {
     public static CommandTpa instance = new CommandTpa();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "tpa";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         System.out.println(args[1]);
         EntityPlayerMP player = (EntityPlayerMP)sender;
 

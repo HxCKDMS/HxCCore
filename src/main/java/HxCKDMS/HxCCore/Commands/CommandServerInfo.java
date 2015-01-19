@@ -13,12 +13,12 @@ public class CommandServerInfo implements ISubCommand {
     public static CommandServerInfo instance = new CommandServerInfo();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "serverInfo";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         double totalMem = Runtime.getRuntime().totalMemory() / 1024 / 1024;
         double usedMem = totalMem - (Runtime.getRuntime().freeMemory() / 1024 / 1024);
         double memPercentage = usedMem / totalMem * 100;

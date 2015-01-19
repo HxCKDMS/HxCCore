@@ -15,12 +15,12 @@ public class CommandRepair implements ISubCommand {
     public static CommandRepair instance = new CommandRepair();
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "repair";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
