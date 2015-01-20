@@ -1,16 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
-import java.io.File;
 import java.util.List;
 
 public class CommandBurn implements ISubCommand {
@@ -27,11 +25,8 @@ public class CommandBurn implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP)sender;
-                    boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
-                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-                    int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
-                    if (SenderPermLevel >= 3 || isopped) {
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.BurnPL, player);
+                    if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
                     } else {

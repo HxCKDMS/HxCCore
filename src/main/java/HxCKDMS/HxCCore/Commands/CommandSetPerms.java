@@ -38,9 +38,7 @@ public class CommandSetPerms implements ISubCommand {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
             boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
-
             String playername = player.getDisplayName();
-
             int PlayerPerms = (Permissions.getInteger(playername));
             if (PlayerPerms >= 4 || isopped) {
                 if (args.length == 3) {

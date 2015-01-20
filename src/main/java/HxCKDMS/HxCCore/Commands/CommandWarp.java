@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
@@ -25,11 +27,8 @@ public class CommandWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
-            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
-            if (SenderPermLevel >= 0 || isopped) {
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.WarpPL, player);
+            if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
                 String wName = args.length == 1 ? "default" : args[1];
