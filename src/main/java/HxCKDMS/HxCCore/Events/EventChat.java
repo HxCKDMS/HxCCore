@@ -73,7 +73,7 @@ public class EventChat implements EventListener {
             nicked = nick;
         }
         String ChatColor;
-        if (playerColor == null || playerColor.equalsIgnoreCase("f")) {
+        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f")) {
             ChatColor = CC + "f";
         } else {
             ChatColor = CC + playerColor;
