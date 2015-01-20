@@ -1,18 +1,16 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
-import java.io.File;
 import java.util.List;
 
 public class CommandFly implements ISubCommand {
@@ -29,11 +27,8 @@ public class CommandFly implements ISubCommand {
             case 1: {
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-                    NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-                    int SenderPermLevel = Permissions.getInteger(player.getName());
-                    boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
-                    if (SenderPermLevel >= 3 || isopped) {
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.FlyPL, player);
+                    if (CanSend) {
                         player.capabilities.allowFlying = !player.capabilities.allowFlying;
                         player.capabilities.isFlying = !player.capabilities.isFlying;
                         player.sendPlayerAbilities();

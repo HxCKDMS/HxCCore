@@ -18,11 +18,11 @@ public class EventChat implements EventListener {
         String UUID = event.player.getUniqueID().toString();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
         String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
+        String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
         String message = event.message;
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(event.player.getName());
-        
         //Color Code
         String CC = "\u00A7";
 
@@ -72,12 +72,18 @@ public class EventChat implements EventListener {
             name = event.player.getName();
             nicked = nick;
         }
+        String ChatColor;
+        if (playerColor == null || playerColor.equalsIgnoreCase("f")) {
+            ChatColor = CC + "f";
+        } else {
+            ChatColor = CC + playerColor;
+        }
 
         if(isOpped && nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, opped, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, opped, ChatColor + message));
         else if(nick.equals(CC + "f"))
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, name, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, name, ChatColor + message));
         else
-            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, nicked, message));
+            event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, nicked, ChatColor + message));
     }
 }

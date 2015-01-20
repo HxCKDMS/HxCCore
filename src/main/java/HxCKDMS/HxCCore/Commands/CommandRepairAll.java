@@ -1,16 +1,15 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.HxCCore;
-import net.minecraft.command.*;
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
-import java.io.File;
 import java.util.List;
 
 public class CommandRepairAll implements ISubCommand
@@ -28,11 +27,8 @@ public class CommandRepairAll implements ISubCommand
     public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            int SenderPermLevel = Permissions.getInteger(player.getName());
-            boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
-            if (SenderPermLevel >= 3 || isopped) {
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.RepairAllPL, player);
+            if (CanSend) {
                 if (args.length == 2) {
                     target = CommandBase.getPlayer(sender, args[1]);
                 } else {

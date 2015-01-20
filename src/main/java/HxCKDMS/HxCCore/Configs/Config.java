@@ -28,6 +28,23 @@ public class Config
     public static String PermLevel4Color;
     public static String PermLevel5Color;
 
+    public static int BurnPL;
+    public static int ColorPL;
+    public static int ExtinguishPL;
+    public static int FeedPL;
+    public static int FlyPL;
+    public static int GodPL;
+    public static int HealPL;
+    public static int HomePL;
+    public static int KillPL;
+    public static int NickPL;
+    public static int RepairPL;
+    public static int RepairAllPL;
+    public static int SetHomePL;
+    public static int SetWarpPL;
+    public static int SmitePL;
+    public static int WarpPL;
+
     public static Integer TpaTimeout;
 
     public static String ChatFormat;
@@ -78,13 +95,29 @@ public class Config
         PermLevel4Name = config.getString("PermLevel4Name", "Permissions", "Admin", "Change this to anything you want as the group name, (Permissiosn Level 4)");
         PermLevel5Name = config.getString("PermLevel5Name", "Permissions", "Owner", "Change this to anything you want as the group name, (Permissiosn Level 5)");
 
-        config.addCustomCategoryComment("Permissions", "These Permissions colors are up to your preferences!");
         PermLevel0Color = config.getString("PermLevel0Color", "Permissions", "f", "", derp);
         PermLevel1Color = config.getString("PermLevel1Color", "Permissions", "2", "", derp);
         PermLevel2Color = config.getString("PermLevel2Color", "Permissions", "e", "", derp);
         PermLevel3Color = config.getString("PermLevel3Color", "Permissions", "9", "", derp);
         PermLevel4Color = config.getString("PermLevel4Color", "Permissions", "6", "", derp);
         PermLevel5Color = config.getString("PermLevel5Color", "Permissions", "4", "", derp);
+
+        BurnPL = config.getInt("Burn", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        ColorPL = config.getInt("Color", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        ExtinguishPL = config.getInt("Extinguish", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        FeedPL = config.getInt("Feed", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        FlyPL = config.getInt("Fly", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        GodPL = config.getInt("God", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        HealPL = config.getInt("Heal", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        HomePL = config.getInt("Home", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        KillPL = config.getInt("Kill", "Permissions", 5, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        NickPL = config.getInt("Nick", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        RepairPL = config.getInt("Repair", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        RepairAllPL = config.getInt("RepairAll", "Permissions", 4, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        SetHomePL = config.getInt("SetHome", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        SetWarpPL = config.getInt("SetWarp", "Permissions", 4, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        SmitePL = config.getInt("Smite", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        WarpPL = config.getInt("Warp", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
 
         config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
         TpaTimeout = config.getInt("TpaTimeout", "Commands", 1200, 600, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");
@@ -93,7 +126,6 @@ public class Config
         ChatFormat = config.getString("ChatFormat", "Chat", "<%1$s> %2$s", "Chat format %1$s: username %2$s: message.");
         GroupFormat = config.getString("GroupFormat", "Chat", "&f[%g&f]", "Chat format %1$s: username %2$s: message.");
         GroupInChat = config.getBoolean("ChatGroup", "Chat", true, "Change this to false if you don't want to see [Default|Owner|etc] beside player names");
-
 
         if(config.hasChanged())
         {
