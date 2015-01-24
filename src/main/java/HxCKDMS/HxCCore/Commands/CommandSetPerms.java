@@ -3,7 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import net.minecraft.command.*;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
