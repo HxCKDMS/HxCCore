@@ -7,10 +7,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CommandServerInfo implements ISubCommand {
     public static CommandServerInfo instance = new CommandServerInfo();
+    private static DecimalFormat TPSFormat = new DecimalFormat("###.###");
 
     @Override
     public String getCommandName() {
@@ -33,7 +35,7 @@ public class CommandServerInfo implements ISubCommand {
 
         TPSColor = MeanTPS >= 18 ? EnumChatFormatting.GREEN : MeanTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "Server TPS: " + TPSColor + MeanTPS + EnumChatFormatting.AQUA + "."));
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "Server TPS: " + TPSColor + TPSFormat.format(MeanTPS) + EnumChatFormatting.AQUA + "."));
 
         for(WorldServer worldServer : DimensionManager.getWorlds()){
             double WorldTickTime = mean(HxCCore.server.worldTickTimes.get(worldServer.provider.dimensionId)) * 1.0E-6D;
@@ -43,7 +45,7 @@ public class CommandServerInfo implements ISubCommand {
 
             TPSColor = WorldTPS >= 18 ? EnumChatFormatting.GREEN : MeanTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "DIM: " + DimColor + worldServer.provider.getDimensionName() + EnumChatFormatting.AQUA + ", TPS: " + TPSColor + WorldTPS + EnumChatFormatting.AQUA + ", entities: " + worldServer.loadedEntityList.size() + ", loaded chunks: " + worldServer.getChunkProvider().getLoadedChunkCount() + "."));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "DIM: " + DimColor + worldServer.provider.getDimensionName() + EnumChatFormatting.AQUA + ", TPS: " + TPSColor + TPSFormat.format(WorldTPS) + EnumChatFormatting.AQUA + ", entities: " + worldServer.loadedEntityList.size() + ", loaded chunks: " + worldServer.getChunkProvider().getLoadedChunkCount() + "."));
         }
     }
 
