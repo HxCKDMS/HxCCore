@@ -15,7 +15,7 @@ public class EventTpRequest implements EventListener {
     public void onServerTick(TickEvent.ServerTickEvent event){
         for (EntityPlayerMP key : HxCCore.TpaTimeoutList.keySet()) {
             if (HxCCore.TpaTimeoutList.get(key) > 0) {
-                HxCCore.TpaTimeoutList.replace(key, HxCCore.TpaTimeoutList.get(key) - 1);
+                HxCCore.TpaTimeoutList.put(key, HxCCore.TpaTimeoutList.get(key) - 1);
 
                 if((HxCCore.TpaTimeoutList.get(key) % 20) == 0){
                     int timeLeft = HxCCore.TpaTimeoutList.get(key) / 20;
