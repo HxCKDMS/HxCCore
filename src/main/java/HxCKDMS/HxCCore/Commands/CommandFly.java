@@ -5,7 +5,6 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -24,7 +23,7 @@ public class CommandFly implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         switch(args.length){
             case 1: {
-                if(sender instanceof EntityPlayer){
+                if(sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Config.FlyPL, player);
                     if (CanSend) {

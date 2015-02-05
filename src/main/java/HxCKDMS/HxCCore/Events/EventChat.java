@@ -12,6 +12,8 @@ import java.io.File;
 import java.util.EventListener;
 
 public class EventChat implements EventListener {
+    
+    public final static String CC = "\u00A7";
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event){
@@ -25,7 +27,6 @@ public class EventChat implements EventListener {
         int SenderPermLevel = Permissions.getInteger(event.player.getDisplayName());
 
         //Color Code
-        String CC = "\u00A7";
 
         String rawgroup;
         switch(SenderPermLevel){
