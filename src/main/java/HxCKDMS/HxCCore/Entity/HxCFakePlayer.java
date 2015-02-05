@@ -4,7 +4,9 @@ import HxCKDMS.HxCCore.network.NetHandlerFakePlayServer;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -95,5 +97,29 @@ public class HxCFakePlayer extends FakePlayer {
         }else{
             clearItemInUse();
         }
+    }
+
+    @Override
+    protected void updateItemUse(ItemStack itemStack, int integer) {
+        if(itemStack.getItemUseAction().equals(EnumAction.drink))
+            this.playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+        
+        if(itemStack.getItemUseAction().equals(EnumAction.eat))
+            this.playSound("random.eat", 0.5F + 0.5F * this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+    }
+
+    @Override
+    public String getDisplayName() {
+        return getCommandSenderName();
+    }
+
+    @Override
+    public void addChatComponentMessage(IChatComponent chatComponent) {
+        
+    }
+
+    @Override
+    public void addChatMessage(IChatComponent chatComponent) {
+        
     }
 }
