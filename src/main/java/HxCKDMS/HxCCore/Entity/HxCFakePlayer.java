@@ -50,7 +50,7 @@ public class HxCFakePlayer extends FakePlayer {
 
     @Override
     public double getDistance(double x, double y, double z) {
-        return 0F;
+        return 0D;
     }
     
     @Override
