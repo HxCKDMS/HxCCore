@@ -14,6 +14,6 @@ public class ClientProxy extends CommonProxy {
     */
     @Override
     public void preInit() {
-//        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer(Minecraft.getMinecraft().getRenderManager()));
     }
 }

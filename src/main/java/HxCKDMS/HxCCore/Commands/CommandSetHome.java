@@ -40,7 +40,7 @@ public class CommandSetHome implements ISubCommand {
                 int z = (int)player.posZ;
                 int dim = player.dimension;
 
-                player.addChatMessage(new ChatComponentText("\u00A72Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ")."));
+                player.addChatMessage(new ChatComponentText("\u00A72Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") \u00A72Z(" + z + ") Dimension(" + dim + ")."));
 
                 homeDir.setInteger("x", x);
                 homeDir.setInteger("y", y);

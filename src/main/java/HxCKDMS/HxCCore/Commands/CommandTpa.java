@@ -73,6 +73,6 @@ public class CommandTpa implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+        return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
     }
 }

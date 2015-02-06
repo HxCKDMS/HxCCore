@@ -30,12 +30,20 @@ public class CommandNick implements ISubCommand {
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 if (args.length == 1) {
-                    NBTFileIO.setString(CustomPlayerData, "nickname", "");
+                    NBTFileIO.setString(CustomPlayerData, "nickname", player.getName());
                     player.addChatMessage(new ChatComponentText("Your nickname has been removed."));
                 } else {
-                    NBTFileIO.setString(CustomPlayerData, "nickname", args[1]);
-                    ChatComponentText msg = new ChatComponentText(("Your nickname has been set to " + args[1]).replace("&", "\u00A7"));
-                    player.addChatMessage(msg);
+                    String nick = null;
+
+                    for(int i = 1; i < args.length; i++){
+                        if(nick == null)
+                            nick = args[i];
+                        else
+                            nick = nick + " " + args[i];
+                    }
+
+                    NBTFileIO.setString(CustomPlayerData, "nickname", nick);
+                    player.addChatMessage(new ChatComponentText("Your nickname has been set to " + nick));
                 }
             } else {
                 sender.addChatMessage(new ChatComponentText("\u00A74You don't have permission to use this command."));

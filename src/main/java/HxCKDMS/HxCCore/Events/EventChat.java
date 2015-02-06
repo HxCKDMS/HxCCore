@@ -11,7 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 import java.util.EventListener;
 
+@SuppressWarnings("unused")
 public class EventChat implements EventListener {
+
+    public final static String CC = "\u00A7";
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event){
@@ -23,8 +26,8 @@ public class EventChat implements EventListener {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(event.player.getName());
+
         //Color Code
-        String CC = "\u00A7";
 
         String rawgroup;
         switch(SenderPermLevel){
@@ -57,7 +60,7 @@ public class EventChat implements EventListener {
         String boxedgroup = GroupFormat.replace("%g", rawgroup);
         String formattedgroup = boxedgroup.replace("&", CC);
 
-        String nameOP = CC + "4" + event.player.getName() + CC + "f";
+        String nameOP = CC + "4" + event.player.getDisplayName() + CC + "f";
 
         String opped;
         String name;
@@ -65,7 +68,7 @@ public class EventChat implements EventListener {
 
         if (Config.GroupInChat) {
             opped = formattedgroup + nameOP;
-            name = formattedgroup + event.player.getName();
+            name = formattedgroup + event.player.getDisplayName();
             nicked = formattedgroup + nick;
         } else {
             opped = nameOP;

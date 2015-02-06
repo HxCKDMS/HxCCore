@@ -4,6 +4,8 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.Reference;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -47,14 +49,13 @@ public class CommandGod implements ISubCommand {
             }
             break;
             case 2: {
-                EntityPlayerMP player = (EntityPlayerMP) sender;
                 EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                 String UUID = player2.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                 player2.addChatMessage(new ChatComponentText(NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76You suddenly feel immortal." : "\u00A76You suddenly feel mortal."));
-                player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getName()));
+                LogHelper.info((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getName(), Reference.MOD_ID);
             }
             break;
             default: {
