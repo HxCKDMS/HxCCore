@@ -1,5 +1,9 @@
 package HxCKDMS.HxCCore.Proxy;
 
+import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraft.entity.player.EntityPlayer;
+
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
     /*public void registerKeyBindings(){
@@ -14,6 +18,6 @@ public class ClientProxy extends CommonProxy {
     */
     @Override
     public void preInit() {
-//        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer());
     }
 }
