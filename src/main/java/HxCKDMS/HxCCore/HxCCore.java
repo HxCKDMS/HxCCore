@@ -4,7 +4,6 @@ import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
-import HxCKDMS.HxCCore.Proxy.ClientProxy;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.Reference;
@@ -39,7 +38,6 @@ public class HxCCore
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
-    public static ClientProxy cproxy;
     
     public static HxCKDMS.HxCCore.Configs.Config Config;
 

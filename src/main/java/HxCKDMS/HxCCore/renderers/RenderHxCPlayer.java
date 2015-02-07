@@ -21,6 +21,7 @@ public class RenderHxCPlayer extends RenderPlayer {
         super();
     }
 
+    //TODO: add signature mark.
     protected void func_147906_a(Entity entity, String name, double x, double y, double z, int maxRenderDist) {
         String UUID = entity.getUniqueID().toString();
         if(sendCounter == 0)

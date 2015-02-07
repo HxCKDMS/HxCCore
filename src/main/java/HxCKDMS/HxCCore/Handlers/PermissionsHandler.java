@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Handlers;
 
-import HxCKDMS.HxCCore.Events.EventIsOp;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +11,7 @@ public class PermissionsHandler {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
-        boolean isopped = EventIsOp.OppedPlayers.get(player.getUniqueID().toString());
+        boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
         return (isopped || SenderPermLevel >= RequiredLevel);
     }
     public static int permLevel (EntityPlayer player) {

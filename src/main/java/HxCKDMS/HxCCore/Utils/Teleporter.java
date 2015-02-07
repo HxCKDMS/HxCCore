@@ -23,7 +23,8 @@ public class Teleporter {
 
         player.setWorld(newWorldServer);
     }
-
+    
+    //TODO: make work on all entities.
     public static void transferPlayerToDimension(EntityPlayerMP player, int dimension, ServerConfigurationManager configurationManager, int x, int y, int z){
         int startDim = player.dimension;
         WorldServer worldServer_old = player.mcServer.worldServerForDimension(player.dimension);
