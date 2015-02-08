@@ -36,7 +36,7 @@ public class CommandHelp implements ISubCommand {
         return null;
     }
     
-    /** TODO: THESE SHOULD ALL BE LOADED FROM A LANGUAGE FILE **/
+    // TODO: THESE SHOULD ALL BE LOADED FROM A LANGUAGE FILE
     private static final String[] LINES = {
             "/HxCCore help: shows all commands with explanation.",
             "/HxCCore heal [player]: used to heal your self or another player.",
