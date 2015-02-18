@@ -22,7 +22,7 @@ group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-con
 archivesBaseName = "HxCCore"
 
 minecraft {
-    version = "1.8-11.14.1.1306-1.8"
+    version = "1.8-11.14.1.1306"
     runDir = "eclipse"
 
     mappings = "snapshot_nodoc_20141130"
