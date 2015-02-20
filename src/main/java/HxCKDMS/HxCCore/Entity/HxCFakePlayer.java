@@ -14,10 +14,11 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class HxCFakePlayer extends FakePlayer {
     public boolean sneaking = false;
     public ItemStack prevItemStack = null;
-    private static String name = "[HxC]";
+    static String name = "[HxC]";
     
     private static GameProfile gameProfile = new GameProfile(UUID.fromString("a4a626f2-aca9-11e4-89d3-123b93f75cba"), "[HxC]");
     

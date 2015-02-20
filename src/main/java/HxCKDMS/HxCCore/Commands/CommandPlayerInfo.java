@@ -18,9 +18,13 @@ public class CommandPlayerInfo implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
+        if (args.length > 0) {
+            EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
 
-        sender.addChatMessage(new ChatComponentText(String.format("Player: %1$s is at x: %2$d, y: %3$d, z: %4$d in dimension: %5$d with gamemode: %6$s and connected from ip: %7$s with a ping of: %8$s.", player2.getCommandSenderName(), (int)player2.posX, (int)player2.posY, (int)player2.posZ, player2.dimension, player2.theItemInWorldManager.getGameType().getName(), player2.getPlayerIP(), player2.ping)));
+            sender.addChatMessage(new ChatComponentText(String.format("Player: %1$s is at x: %2$d, y: %3$d, z: %4$d in dimension: %5$d with gamemode: %6$s and connected from ip: %7$s with a ping of: %8$s.", player2.getCommandSenderName(), (int)player2.posX, (int)player2.posY, (int)player2.posZ, player2.dimension, player2.theItemInWorldManager.getGameType().getName(), player2.getPlayerIP(), player2.ping)));
+        } else {
+            sender.addChatMessage(new ChatComponentText("You must specify a player!"));
+        }
     }
 
     @SuppressWarnings("unchecked")

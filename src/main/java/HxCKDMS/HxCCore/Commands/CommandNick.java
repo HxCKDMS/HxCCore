@@ -29,7 +29,7 @@ public class CommandNick implements ISubCommand {
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 if (args.length == 1) {
-                    NBTFileIO.setString(CustomPlayerData, "nickname", "");
+                    NBTFileIO.setString(CustomPlayerData, "nickname", player.getDisplayName());
                     player.addChatMessage(new ChatComponentText("Your nickname has been removed."));
                 } else {
                     String nick = null;
