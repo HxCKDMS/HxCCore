@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Handlers.ConfigHandler;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.Utils.LogHelper;
@@ -40,6 +41,8 @@ public class HxCCore
     public static CommonProxy proxy;
     
     public static HxCKDMS.HxCCore.Configs.Config Config;
+    
+    public static ConfigHandler configHandler;
 
     @Instance(Reference.MOD_ID)
     public static HxCCore instance;
@@ -49,6 +52,10 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        configHandler = new ConfigHandler(new File("test.json"));
+        
+        configHandler.setValue("test", "hello", "troll");
+        
         proxy.preInit();
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();

@@ -53,7 +53,7 @@ public class Config
     public Config(Configuration config)
     {
         config.load();
-
+        
         derp[0] = "0";
         derp[1] = "1";
         derp[2] = "2";
@@ -70,7 +70,7 @@ public class Config
         derp[13] = "d";
         derp[14] = "e";
         derp[15] = "f";
-
+        
         DebugMode = config.get("DEBUG", "Debug Mode Enable?", false).getBoolean(false);
 
         config.addCustomCategoryComment("Features", "Any features are not required for anything else to work.");
