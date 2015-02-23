@@ -4,7 +4,7 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +30,7 @@ public class EventJoinWorld implements EventListener {
                     NBTFileIO.setFloat(CustomPlayerData, "Soul", 1f);
                     NBTFileIO.setInteger(CustomPlayerData, "SoulTimer", 12000);
                     if (Config.DebugMode) {
-                        LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), Reference.MOD_NAME);
+                        LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
                     }
                 }
                 NBTFileIO.setString(CustomPlayerData, "username", player.getDisplayName());

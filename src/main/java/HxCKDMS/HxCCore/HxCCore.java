@@ -1,12 +1,14 @@
 package HxCKDMS.HxCCore;
 
+import HxCKDMS.HxCCore.Api.HxCRegistry;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
+import HxCKDMS.HxCCore.Registry.ModRegistry;
 import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -27,7 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION)
 public class HxCCore
 {
     public static File HxCCoreDir = null;
@@ -42,7 +44,7 @@ public class HxCCore
     public static HxCKDMS.HxCCore.Configs.Config Config;
 
 
-    @Instance(Reference.MOD_ID)
+    @Instance(References.MOD_ID)
     public static HxCCore instance;
 
     public static boolean ModHxCSkills;
@@ -50,14 +52,15 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        ModRegistry.init(event.getAsmData().getAll(HxCRegistry.class.getCanonicalName()), event.getModState());
         proxy.preInit();
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
 //        ModHxCSkills = Loader.isModLoaded("HxCSkills");
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
 //        cproxy.registerKeyBindings();
-        LogHelper.info("Thank your for using HxCCore", Reference.MOD_NAME);
-        LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", Reference.MOD_NAME);
+        LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
+        LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
     }
 
     @EventHandler
@@ -78,7 +81,7 @@ public class HxCCore
     public void postInit(FMLPostInitializationEvent event) {
         packetPipeLine.postInitialize();
         event.getModState();
-        if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", Reference.MOD_NAME);
+        if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
     }
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -107,11 +110,11 @@ public class HxCCore
     private static void extendEnchantsArray()
     {
         int enchantsOffset;
-        LogHelper.info("Extending Enchants Array", Reference.MOD_NAME);
+        LogHelper.info("Extending Enchants Array", References.MOD_NAME);
         enchantsOffset = Enchantment.enchantmentsList.length;
         Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
         HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
-        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, Reference.MOD_NAME);
+        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, References.MOD_NAME);
     }
 }

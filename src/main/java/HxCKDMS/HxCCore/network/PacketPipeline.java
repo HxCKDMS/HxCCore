@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.network;
 
 import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -31,17 +31,17 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
 
     public boolean registerPacket(Class<? extends AbstractPacket> packetClass){
         if(this.packets.size() >= 256){
-            LogHelper.fatal("Mod registered more than 256 packets please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registered more than 256 packets please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
         if(this.packets.contains(packetClass)){
-            LogHelper.fatal("Mod registered same packet twice please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registered same packet twice please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
         if(this.isPostInitialized){
-            LogHelper.fatal("Mod registed the packet to late please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registed the packet to late please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
@@ -50,7 +50,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
     }
 
     public void initialize(){
-        this.channels = NetworkRegistry.INSTANCE.newChannel(Reference.PACKET_CHANNEL_NAME, this);
+        this.channels = NetworkRegistry.INSTANCE.newChannel(References.PACKET_CHANNEL_NAME, this);
 
         registerPackets();
     }
