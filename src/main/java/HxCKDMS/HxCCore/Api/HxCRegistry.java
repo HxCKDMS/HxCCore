@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Api;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.IItemRenderer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,7 +21,5 @@ public @interface HxCRegistry {
     
     Class<? extends TileEntitySpecialRenderer> tileEntitySpecialRenderer() default TileEntitySpecialRenderer.class;
     
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public @interface Instance {}
+    Class<? extends IItemRenderer> itemRenderer() default IItemRenderer.class;
 }

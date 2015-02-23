@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -82,24 +84,32 @@ public class ModRegistry {
                     GameRegistry.registerBlock(block, registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
                     successful = true;
                 }
+                
+                if(registryClass.getAnnotation(HxCRegistry.class).itemRenderer() != IItemRenderer.class && HxCCore.proxy.getSide() == Side.CLIENT){
+                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), registryClass.getAnnotation(HxCRegistry.class).itemRenderer().newInstance());
+                }
+                
             }else if(type == EnumHxCRegistryType.ITEM){
                 Item item = (Item)registryClass.newInstance();
                 item.setUnlocalizedName(registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
                 itemRegistry.put(registryClass, item);
-                
                 GameRegistry.registerItem(item, registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
-                successful = true;
-            }else if(type == EnumHxCRegistryType.TILEENTITY) {
-                if(registryClass.getAnnotation(HxCRegistry.class).tileEntitySpecialRenderer() != TileEntitySpecialRenderer.class && HxCCore.proxy.getSide() == Side.CLIENT){
-                    TileEntity tileEntity = (TileEntity) registryClass.newInstance();
-                    GameRegistry.registerTileEntity(tileEntity.getClass(), registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
-                    ClientRegistry.bindTileEntitySpecialRenderer(tileEntity.getClass(), registryClass.getAnnotation(HxCRegistry.class).tileEntitySpecialRenderer().newInstance());
-                    successful = true;
-                }else{
-                    TileEntity tileEntity = (TileEntity) registryClass.newInstance();
-                    GameRegistry.registerTileEntity(tileEntity.getClass(), registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
+                
+                if(registryClass.getAnnotation(HxCRegistry.class).itemRenderer() != IItemRenderer.class && HxCCore.proxy.getSide() == Side.CLIENT){
+                    MinecraftForgeClient.registerItemRenderer(item, registryClass.getAnnotation(HxCRegistry.class).itemRenderer().newInstance());
                     successful = true;
                 }
+                
+                successful = true;
+            }else if(type == EnumHxCRegistryType.TILEENTITY) {
+                TileEntity tileEntity = (TileEntity) registryClass.newInstance();
+                GameRegistry.registerTileEntity(tileEntity.getClass(), registryClass.getAnnotation(HxCRegistry.class).unlocalizedName());
+                
+                if(registryClass.getAnnotation(HxCRegistry.class).tileEntitySpecialRenderer() != TileEntitySpecialRenderer.class && HxCCore.proxy.getSide() == Side.CLIENT){
+                    ClientRegistry.bindTileEntitySpecialRenderer(tileEntity.getClass(), registryClass.getAnnotation(HxCRegistry.class).tileEntitySpecialRenderer().newInstance());
+                }
+                
+                successful = true;
             }
         }catch(Exception e){
             e.printStackTrace();
