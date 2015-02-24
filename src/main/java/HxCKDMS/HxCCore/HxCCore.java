@@ -1,12 +1,12 @@
 package HxCKDMS.HxCCore;
 
-import HxCKDMS.HxCCore.Api.HxCRegistry;
+import HxCKDMS.HxCCore.Api.HxCCommonRegistry;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
-import HxCKDMS.HxCCore.Registry.ModRegistry;
+import HxCKDMS.HxCCore.Registry.CommonModRegistry;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.PacketPipeline;
@@ -52,8 +52,8 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        ModRegistry.init(event.getAsmData().getAll(HxCRegistry.class.getCanonicalName()), event.getModState());
-        proxy.preInit();
+        CommonModRegistry.init(event.getAsmData().getAll(HxCCommonRegistry.class.getCanonicalName()), event.getModState());
+        proxy.preInit(event);
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
 //        ModHxCSkills = Loader.isModLoaded("HxCSkills");

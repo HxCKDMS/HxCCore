@@ -1,7 +1,10 @@
 package HxCKDMS.HxCCore.Proxy;
 
+import HxCKDMS.HxCCore.Api.HxCClientRegistry;
+import HxCKDMS.HxCCore.Registry.ClientModRegistry;
 import HxCKDMS.HxCCore.renderers.RenderHxCPlayer;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.entity.player.EntityPlayer;
 
 @SuppressWarnings("unused")
@@ -17,7 +20,8 @@ public class ClientProxy extends CommonProxy {
     }
     */
     @Override
-    public void preInit() {
+    public void preInit(FMLPreInitializationEvent event) {
+        ClientModRegistry.init(event.getAsmData().getAll(HxCClientRegistry.class.getCanonicalName()), event.getModState());
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderHxCPlayer());
     }
 }
