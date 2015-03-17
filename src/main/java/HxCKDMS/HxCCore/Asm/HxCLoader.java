@@ -6,6 +6,7 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({"HxCKDMS.HxCCore.Asm"})
+@IFMLLoadingPlugin.SortingIndex(1001)
 public class HxCLoader implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {

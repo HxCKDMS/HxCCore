@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.7.10-1.1"
-group= "HxCKDMS" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
 
 minecraft {
@@ -26,9 +26,9 @@ minecraft {
     runDir = "eclipse"
 }
 
-sourceSets {
+def root = project.projectDir.parentFile
+sourceSets{
     main {
-        def root = project.projectDir.parentFile
         java {
             srcDir new File(root, "src")
         }
@@ -36,11 +36,6 @@ sourceSets {
             srcDir new File(root, "resources")
         }
     }
-}
-
-def commonManifest = {
-    attributes 'FMLCorePlugin': 'HxCKDMS.HxCCore.Asm.HxCLoader'
-    attributes 'FMLAT': 'accessTransformer.cfg'
 }
 
 processResources {
@@ -53,14 +48,22 @@ processResources {
 jar {
 	classifier = 'universal'
 
-	manifest commonManifest
+    manifest {
+        attributes 'FMLAT': 'accessTransformer.cfg'
+        attributes "FMLCorePluginContainsFMLMod": "true"
+        attributes "FMLCorePlugin": 'HxCKDMS.HxCCore.Asm.HxCLoader'
+    }
 }
 
 task devJar(type: Jar) {
 	from sourceSets.main.output
 	classifier = 'dev'
 
-	manifest commonManifest
+	manifest {
+        attributes 'FMLAT': 'accessTransformer.cfg'
+        attributes "FMLCorePluginContainsFMLMod": "true"
+        attributes "FMLCorePlugin": 'HxCKDMS.HxCCore.Asm.HxCLoader'
+    }
 }
 
 artifacts {
