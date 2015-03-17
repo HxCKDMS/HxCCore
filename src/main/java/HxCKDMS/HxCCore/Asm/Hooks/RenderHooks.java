@@ -9,8 +9,6 @@ public class RenderHooks {
     public static HashMap<String, String> nameNicks = new HashMap<String, String>();
     public static HashMap<String, Boolean> isPlayerOp = new HashMap<String, Boolean>();
 
-    private static int counter;
-
     public static String getName(String name, Entity entity){
         String UUID = entity.getUniqueID().toString();
 
@@ -18,8 +16,6 @@ public class RenderHooks {
             if(isPlayerOp.get(entity.getUniqueID().toString()))
                 name = EventChat.CC + "4" + name;
         }catch(NullPointerException ignored){}
-
-        System.out.println(counter);
 
         String nick;
         try{

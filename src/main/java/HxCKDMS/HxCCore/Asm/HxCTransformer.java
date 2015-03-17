@@ -20,12 +20,11 @@ public class HxCTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] classBeingTransformed) {
-        boolean isObfuscated = !name.equals(transformedName);
         int index = Arrays.asList(classesBeingTransformed).indexOf(transformedName);
-        return index != -1 ? transform(index, classBeingTransformed, isObfuscated) : classBeingTransformed;
+        return index != -1 ? transform(index, classBeingTransformed) : classBeingTransformed;
     }
 
-    private static byte[] transform(int index, byte[] classBeingTransformed, boolean isObfuscated) {
+    private static byte[] transform(int index, byte[] classBeingTransformed) {
         LogHelper.info("Transforming: " + classesBeingTransformed[index], References.MOD_NAME + " ASM");
         try{
             ClassNode classNode = new ClassNode();
@@ -33,7 +32,8 @@ public class HxCTransformer implements IClassTransformer {
             classReader.accept(classNode, 0);
             switch (index){
                 case 0:
-                    TransformRender(classNode, isObfuscated);
+                    LogHelper.info("Transforming: starting", References.MOD_NAME + " ASM");
+                    TransformRender(classNode);
                     break;
             }
 
@@ -46,9 +46,9 @@ public class HxCTransformer implements IClassTransformer {
         return classBeingTransformed;
     }
 
-    private static void TransformRender(ClassNode classNode, boolean isObfuscated) {
-        final String RENDERER = isObfuscated ? "a" : "func_147906_a";
-        final String RENDERER_DESC = isObfuscated ? "(Lsa;Ljava/lang/String;DDDI)V" : "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
+    private static void TransformRender(ClassNode classNode) {
+        final String RENDERER = "func_147906_a";
+        final String RENDERER_DESC = "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
         for (MethodNode methodNode : classNode.methods){
             if(methodNode.name.equals(RENDERER) && methodNode.desc.equals(RENDERER_DESC)){
                 AbstractInsnNode targetNode = methodNode.instructions.get(0);
@@ -57,7 +57,7 @@ public class HxCTransformer implements IClassTransformer {
                     toInsert.add(new VarInsnNode(ALOAD, 2));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
 
-                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(RenderHooks.class), "getName", isObfuscated ? "(Ljava/lang/String;Lsa;)Ljava/lang/String;" : "(Ljava/lang/String;Lnet/minecraft/entity/Entity;)Ljava/lang/String;", false));
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(RenderHooks.class), "getName", "(Ljava/lang/String;Lnet/minecraft/entity/Entity;)Ljava/lang/String;", false));
                     toInsert.add(new VarInsnNode(ASTORE, 2));
 
                     methodNode.instructions.insert(targetNode, toInsert);
