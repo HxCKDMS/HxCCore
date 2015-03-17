@@ -38,7 +38,7 @@ public class CommandWarp implements ISubCommand {
                 }
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
-                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), player.mcServer.getConfigurationManager(), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
+                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 } else {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);

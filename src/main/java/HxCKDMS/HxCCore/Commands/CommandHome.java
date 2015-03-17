@@ -39,7 +39,7 @@ public class CommandHome implements ISubCommand {
                 }
                 NBTTagCompound home = homeDir.getCompoundTag(hName);
                 if(player.dimension != home.getInteger("dim")) {
-                    Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), player.mcServer.getConfigurationManager(), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
+                    Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 } else {
                     player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);

@@ -51,6 +51,11 @@ jar {
 	manifest {
 		attributes 'FMLAT': 'accessTransformer.cfg'
 	}
+
+    manifest {
+        attributes 'FMLCorePlugin': 'HxCKDMS.HxCCore.Asm.HxCLoader'
+        attributes 'FMLCorePluginContainsMod': 'true'
+    }
 }
 
 task devJar(type: Jar) {
@@ -60,6 +65,11 @@ task devJar(type: Jar) {
 	manifest {
 		attributes 'FMLAT': 'accessTransformer.cfg'
 	}
+
+    manifest {
+        attributes 'FMLCorePlugin': 'HxCKDMS.HxCCore.Asm.HxCLoader'
+        attributes 'FMLCorePluginContainsMod': 'true'
+    }
 }
 
 artifacts {
