@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore;
 import HxCKDMS.HxCCore.Api.HxCCommonRegistry;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
@@ -39,6 +40,7 @@ public class HxCCore
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<EntityPlayerMP, EntityPlayerMP>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<EntityPlayerMP, Integer>();
+    public static Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<UUID>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<UUID>();
     public static volatile ArrayList<UUID> supporters = new ArrayList<UUID>();
@@ -58,6 +60,8 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        CodersCheckThread.start();
+
         CommonModRegistry.init(event.getAsmData().getAll(HxCCommonRegistry.class.getCanonicalName()), event.getModState());
         proxy.preInit(event);
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
@@ -90,9 +94,6 @@ public class HxCCore
         event.getModState();
         if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
 
-        for(UUID uuid : coders){
-            System.out.println(uuid.toString());
-        }
     }
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Asm;
 
-import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
@@ -9,13 +8,6 @@ import java.util.Map;
 @IFMLLoadingPlugin.TransformerExclusions({"HxCKDMS.HxCCore.Asm"})
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class HxCLoader implements IFMLLoadingPlugin {
-    public static Thread CodersCheckThread = new Thread(new CodersCheck());
-
-    static {
-        System.out.println("Hello");
-        CodersCheckThread.start();
-    }
-
     @Override
     public String[] getASMTransformerClass() {
         return new String[]{
