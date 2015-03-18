@@ -27,7 +27,9 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION)
 public class HxCCore
@@ -37,6 +39,7 @@ public class HxCCore
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<EntityPlayerMP, EntityPlayerMP>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<EntityPlayerMP, Integer>();
+    public static volatile ArrayList<UUID> coders = new ArrayList<UUID>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
@@ -83,6 +86,10 @@ public class HxCCore
         packetPipeLine.postInitialize();
         event.getModState();
         if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
+
+        for(UUID uuid : coders){
+            System.out.println(uuid.toString());
+        }
     }
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
