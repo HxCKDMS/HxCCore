@@ -64,6 +64,8 @@ public class EventChat implements EventListener {
 
         boolean isOpped = event.player.mcServer.getConfigurationManager().func_152596_g(event.player.getGameProfile());
 
+        nick = CC + "f" + nick;
+
         String opped = CC + "4" + event.player.getDisplayName() + CC + "f";
         String name = event.player.getDisplayName();
         String nicked = nick;
@@ -88,7 +90,11 @@ public class EventChat implements EventListener {
         }
 
         nicked = nicked.replace("&", CC) + CC + "f";
+        opped = opped.replace("&", CC) + CC + "f";
+        name = name.replace("&", CC) + CC + "f";
         message = message.replace("&", CC);
+
+        System.out.println(nicked);
 
         if(isOpped && nick.equals(CC + "f"))
             event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, opped, ChatColor + message));

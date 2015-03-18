@@ -30,7 +30,6 @@ public class EventJoinWorld implements EventListener {
                     success = CustomPlayerData.createNewFile();
                     NBTFileIO.setFloat(CustomPlayerData, "Soul", 1f);
                     NBTFileIO.setInteger(CustomPlayerData, "SoulTimer", 12000);
-                    NBTFileIO.setString(CustomPlayerData, "nickname", player.getDisplayName());
                     if (Config.DebugMode) {
                         LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
                     }
