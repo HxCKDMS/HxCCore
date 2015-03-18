@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Asm;
 
-import HxCKDMS.HxCCore.Contributers.CodersCheck;
+import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;

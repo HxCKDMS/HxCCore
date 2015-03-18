@@ -40,6 +40,9 @@ public class HxCCore
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<EntityPlayerMP, EntityPlayerMP>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<EntityPlayerMP, Integer>();
     public static volatile ArrayList<UUID> coders = new ArrayList<UUID>();
+    public static volatile ArrayList<UUID> helpers = new ArrayList<UUID>();
+    public static volatile ArrayList<UUID> supporters = new ArrayList<UUID>();
+    public static volatile ArrayList<UUID> artists = new ArrayList<UUID>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
