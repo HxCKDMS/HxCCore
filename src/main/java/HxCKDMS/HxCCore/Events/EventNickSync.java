@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import java.io.File;
 import java.util.EventListener;
 
+@SuppressWarnings("unused")
 public class EventNickSync implements EventListener {
     private int counter = 0;
 

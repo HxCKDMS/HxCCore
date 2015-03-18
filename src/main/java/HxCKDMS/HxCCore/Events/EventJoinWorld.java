@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.EventListener;
 
+@SuppressWarnings("unused")
 public class EventJoinWorld implements EventListener {
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {

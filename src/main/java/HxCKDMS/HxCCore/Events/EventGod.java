@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.io.File;
 import java.util.EventListener;
 
+@SuppressWarnings("unused")
 public class EventGod implements EventListener {
     private int HealTimer = 0;
 

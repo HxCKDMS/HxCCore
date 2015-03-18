@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.EventListener;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class EventChat implements EventListener {
     
     public final static String CC = "\u00A7";

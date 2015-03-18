@@ -23,6 +23,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import java.util.*;
 
 @ChannelHandler.Sharable
+@SuppressWarnings({"unused"})
 public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, AbstractPacket> {
 
     private EnumMap<Side, FMLEmbeddedChannel> channels;

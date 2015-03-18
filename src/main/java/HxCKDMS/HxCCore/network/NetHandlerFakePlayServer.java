@@ -1,7 +1,5 @@
 package HxCKDMS.HxCCore.network;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -12,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
 
 import javax.crypto.SecretKey;
-import java.net.InetAddress;
 import java.net.SocketAddress;
 
 public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
@@ -100,15 +97,6 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
 
         @Override
         public IChatComponent getExitMessage() {
-            return null;
-        }
-
-        @SideOnly(Side.CLIENT)
-        public static NetworkManager provideLanClient(InetAddress inetAddress, int integer) {
-            return null;
-        }
-        @SideOnly(Side.CLIENT)
-        public static NetworkManager provideLocalClient(SocketAddress socketAddress) {
             return null;
         }
     }

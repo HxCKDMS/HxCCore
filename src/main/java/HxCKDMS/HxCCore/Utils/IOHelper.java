@@ -33,6 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * I DrZed have copied this file for use in HxC but all code belongs to MineMaarten and Dynious the authors.
  * Thank you guys for this quite helpful set of methods.
  */
+@SuppressWarnings("unused")
 public class IOHelper{
     public static IInventory getInventoryForTE(TileEntity te){
         if(te instanceof IInventory) {

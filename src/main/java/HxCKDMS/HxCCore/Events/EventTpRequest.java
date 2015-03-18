@@ -8,6 +8,7 @@ import net.minecraft.util.ChatComponentText;
 
 import java.util.EventListener;
 
+@SuppressWarnings("unused")
 public class EventTpRequest implements EventListener {
 
     @SuppressWarnings("unused")

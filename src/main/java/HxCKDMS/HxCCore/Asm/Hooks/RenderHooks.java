@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import java.util.HashMap;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class RenderHooks {
     public static HashMap<String, String> nameNicks = new HashMap<String, String>();
     public static HashMap<String, Boolean> isPlayerOp = new HashMap<String, Boolean>();

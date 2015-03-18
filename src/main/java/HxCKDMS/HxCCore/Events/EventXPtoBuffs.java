@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class EventXPtoBuffs {
     public double MH;
     public double MD;

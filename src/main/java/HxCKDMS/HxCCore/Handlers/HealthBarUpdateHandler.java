@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import java.util.Queue;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class HealthBarUpdateHandler {
     /* Most of this code was from Tinkers' Construct
      * I grabbed some from the Github and then Modified it

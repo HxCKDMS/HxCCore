@@ -29,8 +29,6 @@ public class CommandFeed implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Config.FeedPL, player);
                     if (CanSend) {
-                        float plf = player.getFoodStats().getSaturationLevel() + player.getFoodStats().getFoodLevel();
-                        float nf = 40 - plf;
                         player.getFoodStats().addStats(20, 20F);
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
                     } else {

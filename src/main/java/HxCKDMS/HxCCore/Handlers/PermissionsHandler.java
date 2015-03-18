@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 
+@SuppressWarnings("unused")
 public class PermissionsHandler {
     public static boolean canUseCommand (int RequiredLevel, EntityPlayer player) {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");

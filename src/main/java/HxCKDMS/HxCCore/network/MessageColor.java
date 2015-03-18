@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 
+@SuppressWarnings("unused")
 public class MessageColor extends AbstractPacket {
     public String nick;
     public String UUID;

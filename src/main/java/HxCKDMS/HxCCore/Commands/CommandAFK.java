@@ -33,7 +33,6 @@ public class CommandAFK implements ISubCommand {
             ChatComponentText AFK = new ChatComponentText(p.getCommandSenderName() + " \u00A73has gone AFK.");
             ChatComponentText Back = new ChatComponentText(p.getCommandSenderName() + " \u00A73is no longer AFK.");
             IAttributeInstance ps = p.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-            double lel = ps.getBaseValue();
             AttributeModifier SpeedBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -2, 1);
             String UUID = p.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

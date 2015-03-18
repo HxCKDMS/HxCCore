@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Handlers;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 
+@SuppressWarnings("unused")
 public class KeyInputHandler {
 
     @SubscribeEvent

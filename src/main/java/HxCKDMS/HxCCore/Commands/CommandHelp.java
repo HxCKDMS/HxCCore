@@ -20,7 +20,6 @@ public class CommandHelp implements ISubCommand {
         sender.addChatMessage(new ChatComponentText("\u00A71Commands:"));
         
         boolean b = false;
-        final int len = 35;
         for (String line : LINES) {
             ChatComponentText message = new ChatComponentText(line);
             message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
