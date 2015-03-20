@@ -32,6 +32,6 @@ public class HxCLoader implements IFMLLoadingPlugin {
 
     @Override
     public String getAccessTransformerClass() {
-        return null;
+        return HxCAccessTransformer.class.getName();
     }
 }
