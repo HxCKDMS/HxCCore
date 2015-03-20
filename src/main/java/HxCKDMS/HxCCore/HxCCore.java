@@ -68,7 +68,6 @@ public class HxCCore
         extendEnchantsArray();
 //        ModHxCSkills = Loader.isModLoaded("HxCSkills");
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
-//        cproxy.registerKeyBindings();
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
     }
