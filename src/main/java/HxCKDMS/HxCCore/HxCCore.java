@@ -22,6 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -66,6 +67,7 @@ public class HxCCore
         proxy.preInit(event);
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
+        extendPotionsArray();
 //        ModHxCSkills = Loader.isModLoaded("HxCSkills");
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
@@ -116,10 +118,14 @@ public class HxCCore
         } catch(IOException e) {
             e.printStackTrace();
         }
+        System.out.println(Potion.potionTypes.length);
     }
-    @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private static void extendEnchantsArray()
     {
+        /**
+         * Made by DrZed inspired by
+         * Biomes O'Plenty
+         **/
         int enchantsOffset;
         LogHelper.info("Extending Enchants Array", References.MOD_NAME);
         enchantsOffset = Enchantment.enchantmentsList.length;
@@ -127,5 +133,20 @@ public class HxCCore
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
         HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
         LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, References.MOD_NAME);
+    }
+    private static void extendPotionsArray()
+    {
+        /**
+         * Taken From Biomes O'Plenty
+         * modified to fit my interest
+         * The License for BOP is CC
+         * I Thank BOP Team for this
+         **/
+        int potionOffset;
+        LogHelper.info("Extending Potions Array.", References.MOD_NAME);
+        potionOffset = Potion.potionTypes.length;
+        Potion[] potionTypes = new Potion[potionOffset + 256];
+        System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
+        HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
     }
 }
