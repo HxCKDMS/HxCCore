@@ -39,13 +39,13 @@ public class HxCCore
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
-    public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<EntityPlayerMP, EntityPlayerMP>();
-    public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<EntityPlayerMP, Integer>();
+    public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
+    public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
     public static Thread CodersCheckThread = new Thread(new CodersCheck());
-    public static volatile ArrayList<UUID> coders = new ArrayList<UUID>();
-    public static volatile ArrayList<UUID> helpers = new ArrayList<UUID>();
-    public static volatile ArrayList<UUID> supporters = new ArrayList<UUID>();
-    public static volatile ArrayList<UUID> artists = new ArrayList<UUID>();
+    public static volatile ArrayList<UUID> coders = new ArrayList<>();
+    public static volatile ArrayList<UUID> helpers = new ArrayList<>();
+    public static volatile ArrayList<UUID> supporters = new ArrayList<>();
+    public static volatile ArrayList<UUID> artists = new ArrayList<>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;

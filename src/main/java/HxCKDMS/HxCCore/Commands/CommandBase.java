@@ -1,18 +1,17 @@
 package HxCKDMS.HxCCore.Commands;
 
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommandBase extends net.minecraft.command.CommandBase {
     
     public static CommandBase instance = new CommandBase();
-    private static TMap<String, ISubCommand> commands = new THashMap<String, ISubCommand>();
+    private static HashMap<String, ISubCommand> commands = new HashMap<>();
 
     static {
         registerSubCommand(CommandHeal.instance);
