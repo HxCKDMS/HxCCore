@@ -61,6 +61,7 @@ public class HxCCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
 
         CommonModRegistry.init(event.getAsmData().getAll(HxCCommonRegistry.class.getCanonicalName()), event.getModState());
