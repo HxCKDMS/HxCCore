@@ -19,9 +19,9 @@ import java.util.Set;
 
 
 public class CommonModRegistry {
-    public static ArrayList<Class<HxCCommonRegistry>> registryClasses = new ArrayList<Class<HxCCommonRegistry>>();
-    public static HashMap<Class, Block> blockRegistry = new HashMap<Class, Block>();
-    public static HashMap<Class, Item> itemRegistry = new HashMap<Class, Item>();
+    public static ArrayList<Class<HxCCommonRegistry>> registryClasses = new ArrayList<>();
+    public static HashMap<Class, Block> blockRegistry = new HashMap<>();
+    public static HashMap<Class, Item> itemRegistry = new HashMap<>();
     
     private static void registerObjects(Set<ASMDataTable.ASMData> asmData){
         if(asmData != null && !asmData.isEmpty()){

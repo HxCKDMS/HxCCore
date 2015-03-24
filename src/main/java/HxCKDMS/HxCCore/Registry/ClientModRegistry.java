@@ -21,7 +21,7 @@ import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public class ClientModRegistry {
-    public static ArrayList<Class<HxCClientRegistry>> registryClasses = new ArrayList<Class<HxCClientRegistry>>();
+    public static ArrayList<Class<HxCClientRegistry>> registryClasses = new ArrayList<>();
 
     private static void registerObjects(Set<ASMDataTable.ASMData> asmData){
         if(asmData != null && !asmData.isEmpty()){

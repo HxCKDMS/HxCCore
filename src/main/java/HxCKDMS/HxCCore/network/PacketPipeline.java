@@ -27,7 +27,7 @@ import java.util.*;
 public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, AbstractPacket> {
 
     private EnumMap<Side, FMLEmbeddedChannel> channels;
-    private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<Class<? extends AbstractPacket>>();
+    private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<>();
     private boolean isPostInitialized = false;
 
     public boolean registerPacket(Class<? extends AbstractPacket> packetClass){
