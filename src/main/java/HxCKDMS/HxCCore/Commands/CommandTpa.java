@@ -32,40 +32,43 @@ public class CommandTpa implements ISubCommand {
             }
         }
 
-        if(args[1].equals("accept")){
-            if(HxCCore.TpaTimeoutList.containsKey(PlayerThatTPs) && PlayerThatTPs != null){
-                HxCCore.tpaRequestList.remove(PlayerThatTPs);
-                HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
-                player.addChatComponentMessage(new ChatComponentText("You accepted: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
-                PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " accepted your tp request."));
+        switch (args[1]) {
+            case "accept":
+                if (HxCCore.TpaTimeoutList.containsKey(PlayerThatTPs) && PlayerThatTPs != null) {
+                    HxCCore.tpaRequestList.remove(PlayerThatTPs);
+                    HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
+                    player.addChatComponentMessage(new ChatComponentText("You accepted: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
+                    PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " accepted your tp request."));
 
-                if(PlayerThatTPs.dimension != player.dimension)
-                    Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, (int)player.posX, (int)player.posY, (int)player.posZ);
-                else
-                    PlayerThatTPs.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-            }else{
-                player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "There is no tpa request to accept."));
-            }
-        }else if(args[1].equals("deny")){
-            if(HxCCore.TpaTimeoutList.containsKey(PlayerThatTPs) && PlayerThatTPs != null){
-                HxCCore.tpaRequestList.remove(PlayerThatTPs);
-                HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
-                player.addChatComponentMessage(new ChatComponentText("You denied: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
-                PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " denied your tp request."));
-            }else{
-                player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "There is no tpa request to deny."));
-            }
-        }else{
-            EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-            if(PlayerThatTPs == null){
-                HxCCore.tpaRequestList.put(player, player2);
-                HxCCore.TpaTimeoutList.put(player, Config.TpaTimeout);
-                player2.addChatComponentMessage(new ChatComponentText("Player: " + player.getDisplayName() + " wants to teleport to you."));
-                player.addChatComponentMessage(new ChatComponentText("Teleport request successfully sent to player: " + player2.getDisplayName() + "."));
-            }else{
-                player.addChatComponentMessage(new ChatComponentText("Player is already being tpa'd to."));
-            }
-
+                    if (PlayerThatTPs.dimension != player.dimension)
+                        Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, (int) player.posX, (int) player.posY, (int) player.posZ);
+                    else
+                        PlayerThatTPs.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+                } else {
+                    player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "There is no tpa request to accept."));
+                }
+                break;
+            case "deny":
+                if (HxCCore.TpaTimeoutList.containsKey(PlayerThatTPs) && PlayerThatTPs != null) {
+                    HxCCore.tpaRequestList.remove(PlayerThatTPs);
+                    HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
+                    player.addChatComponentMessage(new ChatComponentText("You denied: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
+                    PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " denied your tp request."));
+                } else {
+                    player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "There is no tpa request to deny."));
+                }
+                break;
+            default:
+                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                if (PlayerThatTPs == null) {
+                    HxCCore.tpaRequestList.put(player, player2);
+                    HxCCore.TpaTimeoutList.put(player, Config.TpaTimeout);
+                    player2.addChatComponentMessage(new ChatComponentText("Player: " + player.getDisplayName() + " wants to teleport to you."));
+                    player.addChatComponentMessage(new ChatComponentText("Teleport request successfully sent to player: " + player2.getDisplayName() + "."));
+                } else {
+                    player.addChatComponentMessage(new ChatComponentText("Player is already being tpa'd to."));
+                }
+                break;
         }
     }
 

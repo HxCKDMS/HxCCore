@@ -41,7 +41,7 @@ public class HxCCore
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static Thread CodersCheckThread = new Thread(new CodersCheck());
+    public static final Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
     public static volatile ArrayList<UUID> supporters = new ArrayList<>();
