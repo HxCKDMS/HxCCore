@@ -17,6 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
 version = "1.7.10-1.2"
 group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
