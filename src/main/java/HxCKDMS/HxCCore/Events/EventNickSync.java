@@ -38,7 +38,7 @@ public class EventNickSync implements EventListener {
             }
         }
         counter++;
-        if(counter >= 400){
+        if(counter >= 2400){
             counter = 0;
         }
     }
