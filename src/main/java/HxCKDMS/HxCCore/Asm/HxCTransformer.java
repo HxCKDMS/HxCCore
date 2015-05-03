@@ -32,7 +32,6 @@ public class HxCTransformer implements IClassTransformer {
             classReader.accept(classNode, 0);
             switch (index){
                 case 0:
-                    LogHelper.info("Transforming: starting", References.MOD_NAME + " ASM");
                     TransformRender(classNode);
                     break;
             }
