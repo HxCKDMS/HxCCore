@@ -31,7 +31,7 @@ public class CommandServerInfo implements ISubCommand {
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Server TPS: %1$s.", getServerTPSStyled())));
 
         for(WorldServer worldServer : DimensionManager.getWorlds()){
-            sender.addChatMessage(new ChatComponentText(TPSDefaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$d, loaded chunks: %4$d.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), worldServer.loadedEntityList.size(), worldServer.getChunkProvider().getLoadedChunkCount())));
+            sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
         }
     }
 
@@ -67,7 +67,7 @@ public class CommandServerInfo implements ISubCommand {
 
         EnumChatFormatting MemColor = memPercentage >= 75 ? EnumChatFormatting.RED : memPercentage <= 25 ? EnumChatFormatting.GREEN : EnumChatFormatting.GOLD;
 
-        return MemColor.toString() + (int) usedMem + "MB/ " + EnumChatFormatting.AQUA + (int) totalMem + "MB" + defaultColor;
+        return MemColor.toString() + (int) usedMem + "MB/ " + defaultColor + (int) totalMem + "MB";
     }
 
     private DecimalFormat TPSFormat = new DecimalFormat("###.###");
@@ -78,7 +78,7 @@ public class CommandServerInfo implements ISubCommand {
 
         EnumChatFormatting TPSColor = MeanTPS >= 18 ? EnumChatFormatting.GREEN : MeanTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 
-        return TPSColor + TPSFormat.format(MeanTPS) + TPSDefaultColor;
+        return TPSColor + TPSFormat.format(MeanTPS) + defaultColor;
     }
 
     private String getWorldTPSStyled(WorldServer worldServer){
@@ -87,13 +87,13 @@ public class CommandServerInfo implements ISubCommand {
 
         EnumChatFormatting TPSColor = WorldTPS >= 18 ? EnumChatFormatting.GREEN : WorldTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 
-        return TPSColor + TPSFormat.format(WorldTPS) + TPSDefaultColor;
+        return TPSColor + TPSFormat.format(WorldTPS) + defaultColor;
     }
 
     private String getDimensionStyled(WorldServer worldServer){
         String DimName = worldServer.provider.getDimensionName();
         EnumChatFormatting DimColor = DimName.equalsIgnoreCase("the end") ? EnumChatFormatting.YELLOW : DimName.equalsIgnoreCase("nether") ? EnumChatFormatting.RED : DimName.equalsIgnoreCase("overworld") ? EnumChatFormatting.GREEN : EnumChatFormatting.WHITE;
 
-        return DimColor + StringUtils.capitalize(DimName) + TPSDefaultColor;
+        return DimColor + StringUtils.capitalize(DimName) + defaultColor;
     }
 }
