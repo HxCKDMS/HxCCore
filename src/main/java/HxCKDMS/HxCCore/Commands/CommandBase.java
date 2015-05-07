@@ -33,7 +33,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandSetPerms.instance);
         registerSubCommand(CommandServerInfo.instance);
         registerSubCommand(CommandSpawn.instance);
-        registerSubCommand(CommandPlayerInfo.instance);
+        registerSubCommand(CommandClientInfo.instance);
         registerSubCommand(CommandModList.instance);
         registerSubCommand(CommandTpa.instance);
         registerSubCommand(CommandNick.instance);

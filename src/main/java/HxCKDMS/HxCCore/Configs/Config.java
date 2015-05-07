@@ -6,7 +6,7 @@ public class Config
 {
     public static boolean DebugMode;
 
-    public static boolean CooldownDisable;
+    public static boolean CoolDownDisable;
     public static boolean XPBuffs;
     public static int HPMax;
     public static int DMMax;
@@ -76,7 +76,7 @@ public class Config
         DebugMode = config.get("DEBUG", "Debug Mode Enable?", false).getBoolean(false);
 
         config.addCustomCategoryComment("Features", "Any features are not required for anything else to work.");
-        CooldownDisable = config.getBoolean("XPCooldown", "Features", true, "True means you can absorb more XP per second, Aprox. 2x as much");
+        CoolDownDisable = config.getBoolean("XPCoolDown", "Features", true, "True means you can absorb more XP per second, Aprox. 2x as much");
         XPBuffs = config.getBoolean("XPBuffs", "Features", true, "Do you want to enable XP Buffs? (Only works when HxCSkills isn't installed.)");
 
         config.addCustomCategoryComment("Limits", "Any limitations are applied to HxCSkills as well");
@@ -84,12 +84,12 @@ public class Config
         DMMax = config.getInt("MaxDMG", "Limits", 100, 10, 2147000000, "The higher the number the more Max Damage!");
 
         config.addCustomCategoryComment("Permissions", "These Permissions names are up to you what you want them called!");
-        PermLevel0Name = config.getString("PermLevel0", "Permissions", "Default", "Change this to anything you want as the group name, (Permissiosn Level 0)");
-        PermLevel1Name = config.getString("PermLevel1", "Permissions", "Friend", "Change this to anything you want as the group name, (Permissiosn Level 1)");
-        PermLevel2Name = config.getString("PermLevel2", "Permissions", "Helper", "Change this to anything you want as the group name, (Permissiosn Level 2)");
-        PermLevel3Name = config.getString("PermLevel3", "Permissions", "Moderator", "Change this to anything you want as the group name, (Permissiosn Level 3)");
-        PermLevel4Name = config.getString("PermLevel4", "Permissions", "Admin", "Change this to anything you want as the group name, (Permissiosn Level 4)");
-        PermLevel5Name = config.getString("PermLevel5", "Permissions", "Owner", "Change this to anything you want as the group name, (Permissiosn Level 5)");
+        PermLevel0Name = config.getString("PermLevel0", "Permissions", "Default", "Change this to anything you want as the group name, (Permission Level 0)");
+        PermLevel1Name = config.getString("PermLevel1", "Permissions", "Friend", "Change this to anything you want as the group name, (Permission Level 1)");
+        PermLevel2Name = config.getString("PermLevel2", "Permissions", "Helper", "Change this to anything you want as the group name, (Permission Level 2)");
+        PermLevel3Name = config.getString("PermLevel3", "Permissions", "Moderator", "Change this to anything you want as the group name, (Permission Level 3)");
+        PermLevel4Name = config.getString("PermLevel4", "Permissions", "Admin", "Change this to anything you want as the group name, (Permission Level 4)");
+        PermLevel5Name = config.getString("PermLevel5", "Permissions", "Owner", "Change this to anything you want as the group name, (Permission Level 5)");
 
         PermLevel0Color = config.getString("PermLevel0Color", "Permissions", "f", "", derp);
         PermLevel1Color = config.getString("PermLevel1Color", "Permissions", "2", "", derp);

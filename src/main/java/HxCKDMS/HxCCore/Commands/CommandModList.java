@@ -32,7 +32,7 @@ public class CommandModList implements ISubCommand {
 
             ModContainer mod = Loader.instance().getModList().get(i);
 
-            EnumChatFormatting color = isPrime(i) ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA;
+            EnumChatFormatting color = isWholeNumber(i) ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA;
 
             sender.addChatMessage(new ChatComponentText(color + "MOD_NAME: " + mod.getName() + ", VERSION: " + mod.getVersion() + "."));
         }
@@ -43,7 +43,7 @@ public class CommandModList implements ISubCommand {
         return null;
     }
 
-    public boolean isPrime(int i){
+    public boolean isWholeNumber(int i){
         return (i % 2) == 0;
     }
 
