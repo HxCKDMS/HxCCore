@@ -383,7 +383,7 @@ public class NBTFileIO {
         }
     }
 
-    public static boolean hasTag(File dataFile, String tag){
+    public static boolean hasKey(File dataFile, String tag){
         NBTTagCompound data;
         try{
             data = CompressedStreamTools.read(dataFile);
