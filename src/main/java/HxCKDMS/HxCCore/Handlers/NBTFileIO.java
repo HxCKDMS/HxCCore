@@ -382,4 +382,20 @@ public class NBTFileIO {
             }
         }
     }
+
+    public static boolean hasTag(File dataFile, String tag){
+        NBTTagCompound data;
+        try{
+            data = CompressedStreamTools.read(dataFile);
+        } catch (Exception e) {
+            if (Config.DebugMode) {
+                e.printStackTrace();
+                return false;
+            } else {
+                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
+                return false;
+            }
+        }
+        return data.hasKey(tag);
+    }
 }
