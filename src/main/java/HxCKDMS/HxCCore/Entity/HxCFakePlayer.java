@@ -60,7 +60,17 @@ public class HxCFakePlayer extends FakePlayer {
     public boolean isSneaking(){
         return sneaking;
     }
-    
+
+    @Override
+    public boolean isEntityInvulnerable() {
+        return true;
+    }
+
+    @Override
+    public boolean canAttackWithItem() {
+        return true;
+    }
+
     @Override
     public void onUpdate(){
         ItemStack itemStack1 = prevItemStack;
