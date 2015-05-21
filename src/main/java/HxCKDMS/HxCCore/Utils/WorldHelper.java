@@ -72,17 +72,6 @@ public class WorldHelper {
      */
     public static void drawSphere(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
         for(float xr = -radius; xr <= radius; xr += checkCounter){
-            float zrSquared = (float) Math.pow(radius, 2) - (float) Math.pow(xr, 2);
-            if (zrSquared < 0) continue;
-            int zl = Math.round((float) Math.sqrt(zrSquared));
-
-            world.setBlock(x + Math.round(xr), y, z + zl, block);
-            world.setBlock(x + Math.round(xr), y, z - zl, block);
-
-            if(!hollow)
-                for(int zf = y - zl; zf <= y + zl; zf++)
-                    world.setBlock(x + Math.round(xr), y, zf, block);
-
             for(float zr = -radius; zr <= radius; zr += checkCounter){
                 float yrSquared = (float) Math.pow(radius, 2) - ((float) Math.pow(xr, 2) + (float) Math.pow(zr, 2));
                 if (yrSquared < 0) continue;
