@@ -10,6 +10,7 @@ import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -55,6 +56,12 @@ public class HxCCore
     public static HxCCore instance;
 
     public static boolean ModHxCSkills;
+    public static boolean ModHxCEnchants;
+    public static boolean ModHxCWorldGen;
+    public static boolean ModHxCLinkPads;
+    public static boolean ModHxCBlocks;
+    public static boolean ModHxCMagicEnergy;
+    public static boolean ModHxCBows;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -66,10 +73,10 @@ public class HxCCore
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         extendPotionsArray();
-//        ModHxCSkills = Loader.isModLoaded("HxCSkills");
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
+        LogHelper.warn("Please guys can you start reporting the bugs as soon as you find them it's not hard and only takes like 2 minutes", References.MOD_NAME);
     }
 
     @EventHandler
@@ -89,17 +96,31 @@ public class HxCCore
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        ModHxCSkills = Loader.isModLoaded("HxCSkills");
+        ModHxCEnchants = Loader.isModLoaded("HxCEnchants");
+        ModHxCWorldGen = Loader.isModLoaded("HxCWorldGen");
+        ModHxCLinkPads = Loader.isModLoaded("hxclinkpads");
+        ModHxCBlocks = Loader.isModLoaded("HxCBlocks");
+        ModHxCMagicEnergy = Loader.isModLoaded("magicenergy");
+        ModHxCBows = Loader.isModLoaded("hxcbows");
         packetPipeLine.postInitialize();
         event.getModState();
         if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
+        if (ModHxCEnchants)LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
+        if (ModHxCWorldGen)LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
+        if (ModHxCLinkPads)LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
+        if (ModHxCBlocks)LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
+        if (ModHxCMagicEnergy)LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
+        if (ModHxCBows)LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
 
     }
+
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event)
     {
         server = event.getServer();
-        CommandBase.initCommands(event);
+        if (Config.commands) CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists()) {

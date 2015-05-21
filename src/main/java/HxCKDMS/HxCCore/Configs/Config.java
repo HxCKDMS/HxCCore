@@ -8,22 +8,12 @@ public class Config
 
     public static boolean CoolDownDisable;
     public static boolean XPBuffs;
+    public boolean commands;
     public static int HPMax;
     public static int DMMax;
 
-    public static String PermLevel0Name;
-    public static String PermLevel1Name;
-    public static String PermLevel2Name;
-    public static String PermLevel3Name;
-    public static String PermLevel4Name;
-    public static String PermLevel5Name;
-
-    public static String PermLevel0Color;
-    public static String PermLevel1Color;
-    public static String PermLevel2Color;
-    public static String PermLevel3Color;
-    public static String PermLevel4Color;
-    public static String PermLevel5Color;
+    public static String[] PermLevelName;
+    public static String[] PermLevelColor;
 
     public static int BurnPL;
     public static int ColorPL;
@@ -50,53 +40,26 @@ public class Config
     public static boolean GroupInChat;
     public static boolean TagInChat;
 
-    public String derp[] = new String[16];
+    public String derp[] = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     public Config(Configuration config)
     {
         config.load();
-        
-        derp[0] = "0";
-        derp[1] = "1";
-        derp[2] = "2";
-        derp[3] = "3";
-        derp[4] = "4";
-        derp[5] = "5";
-        derp[6] = "6";
-        derp[7] = "7";
-        derp[8] = "8";
-        derp[9] = "9";
-        derp[10] = "a";
-        derp[11] = "b";
-        derp[12] = "c";
-        derp[13] = "d";
-        derp[14] = "e";
-        derp[15] = "f";
-        
+
         DebugMode = config.get("DEBUG", "Debug Mode Enable?", false).getBoolean(false);
 
         config.addCustomCategoryComment("Features", "Any features are not required for anything else to work.");
         CoolDownDisable = config.getBoolean("XPCoolDown", "Features", true, "True means you can absorb more XP per second, Aprox. 2x as much");
-        XPBuffs = config.getBoolean("XPBuffs", "Features", true, "Do you want to enable XP Buffs? (Only works when HxCSkills isn't installed.)");
+        XPBuffs = config.getBoolean("XPBuffs", "Features", true, "Do you want to enable XP Buffs?");
+        commands = config.getBoolean("EnableCommands?", "Features", true, "Enable all HxCCommands. (Disable if you don't want any new commands)");
 
         config.addCustomCategoryComment("Limits", "Any limitations are applied to HxCSkills as well");
         HPMax = config.getInt("MaxHP", "Limits", 100, 10, 2147000000, "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.");
         DMMax = config.getInt("MaxDMG", "Limits", 100, 10, 2147000000, "The higher the number the more Max Damage!");
 
         config.addCustomCategoryComment("Permissions", "These Permissions names are up to you what you want them called!");
-        PermLevel0Name = config.getString("PermLevel0", "Permissions", "Default", "Change this to anything you want as the group name, (Permission Level 0)");
-        PermLevel1Name = config.getString("PermLevel1", "Permissions", "Friend", "Change this to anything you want as the group name, (Permission Level 1)");
-        PermLevel2Name = config.getString("PermLevel2", "Permissions", "Helper", "Change this to anything you want as the group name, (Permission Level 2)");
-        PermLevel3Name = config.getString("PermLevel3", "Permissions", "Moderator", "Change this to anything you want as the group name, (Permission Level 3)");
-        PermLevel4Name = config.getString("PermLevel4", "Permissions", "Admin", "Change this to anything you want as the group name, (Permission Level 4)");
-        PermLevel5Name = config.getString("PermLevel5", "Permissions", "Owner", "Change this to anything you want as the group name, (Permission Level 5)");
-
-        PermLevel0Color = config.getString("PermLevel0Color", "Permissions", "f", "", derp);
-        PermLevel1Color = config.getString("PermLevel1Color", "Permissions", "2", "", derp);
-        PermLevel2Color = config.getString("PermLevel2Color", "Permissions", "e", "", derp);
-        PermLevel3Color = config.getString("PermLevel3Color", "Permissions", "9", "", derp);
-        PermLevel4Color = config.getString("PermLevel4Color", "Permissions", "6", "", derp);
-        PermLevel5Color = config.getString("PermLevel5Color", "Permissions", "4", "", derp);
+        PermLevelName = config.getStringList("GroupNames", "Permissions", new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"}, "Change this to anything you want as the group name, (Permission Level 0)");
+        PermLevelColor = config.getStringList("PermLevelColor", "Permissions", new String[]{"f","2","e","9", "6", "4"}, "PermLevel 0 - 5 Colours", derp);
 
         BurnPL = config.getInt("Burn", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
         ColorPL = config.getInt("Color", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
