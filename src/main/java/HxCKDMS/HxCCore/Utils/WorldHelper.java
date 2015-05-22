@@ -32,7 +32,7 @@ public class WorldHelper {
      */
     public static void drawCircle(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
         for(float xr = -radius; xr <= radius; xr += checkCounter){
-            float zrSquared =  (float)Math.pow(radius, 2) - (float)Math.pow(xr, 2);
+            float zrSquared =  (float)square(radius) - (float)square(xr);
             if(zrSquared < 0) continue;
             int zl = Math.round((float) Math.sqrt(zrSquared));
 
@@ -73,7 +73,7 @@ public class WorldHelper {
     public static void drawSphere(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
         for(float xr = -radius; xr <= radius; xr += checkCounter){
             for(float zr = -radius; zr <= radius; zr += checkCounter){
-                float yrSquared = (float) Math.pow(radius, 2) - ((float) Math.pow(xr, 2) + (float) Math.pow(zr, 2));
+                float yrSquared = (float) square(radius) - ((float) square(xr) + (float) square(zr));
                 if (yrSquared < 0) continue;
                 int yl = Math.round((float) Math.sqrt(yrSquared));
 
@@ -86,5 +86,9 @@ public class WorldHelper {
 
             }
         }
+    }
+    
+    private static double square(double d){
+        return d * d;
     }
 }
