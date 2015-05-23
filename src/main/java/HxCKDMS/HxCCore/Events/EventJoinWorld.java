@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +17,7 @@ import java.util.EventListener;
 
 @SuppressWarnings("unused")
 public class EventJoinWorld implements EventListener {
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) event.entity;
@@ -48,23 +49,6 @@ public class EventJoinWorld implements EventListener {
                 Permissions.setInteger(player.getDisplayName(), 0);
             }
             NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            
-            // Send username colors to player
-            /*if (HxCCore.proxy.getSide().equals(Side.SERVER)) {
-                File colorData = new File(HxCCore.HxCCoreDir, "HxCColorData.dat");
-                NBTTagCompound data;
-                try {
-                    data = NBTFileIO.getData(colorData);
-                }catch(Exception unused){
-                    data = new NBTTagCompound();
-                }
-                Set keys = data.func_150296_c();
-                for (Object key : keys) {
-                    if (key instanceof String) {
-                        HxCCore.packetPipeLine.sendTo(new MessageColor((String) key, data.getString((String) key).toCharArray()[0]), (EntityPlayerMP) player);
-                    }
-                }
-            }*/
         }
     }
 }
