@@ -25,22 +25,22 @@ public class NickHandler {
         String rawGroup;
         switch(SenderPermLevel){
             case 1:
-                rawGroup = CC + Config.PermLevelColor[0] + Config.PermLevelName[0];
-                break;
-            case 2:
                 rawGroup = CC + Config.PermLevelColor[1] + Config.PermLevelName[1];
                 break;
-            case 3:
+            case 2:
                 rawGroup = CC + Config.PermLevelColor[2] + Config.PermLevelName[2];
                 break;
-            case 4:
+            case 3:
                 rawGroup = CC + Config.PermLevelColor[3] + Config.PermLevelName[3];
                 break;
-            case 5:
+            case 4:
                 rawGroup = CC + Config.PermLevelColor[4] + Config.PermLevelName[4];
                 break;
-            default:
+            case 5:
                 rawGroup = CC + Config.PermLevelColor[5] + Config.PermLevelName[5];
+                break;
+            default:
+                rawGroup = CC + Config.PermLevelColor[0] + Config.PermLevelName[0];
                 break;
         }
 
