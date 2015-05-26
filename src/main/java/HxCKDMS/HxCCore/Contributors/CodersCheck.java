@@ -47,8 +47,11 @@ public class CodersCheck implements Runnable {
                         HxCCore.mascots.add(UUID.fromString(inputLine.replace("Mascot:","").trim()));
                     }
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
                 LogHelper.error("Something went wrong in loading HxCLib report this to DrZed on github @ http://github.com/HxCLib/issues", References.MOD_NAME);
+                if (Config.DebugMode) {
+                    e.printStackTrace();
+                }
             }
         }
     }
