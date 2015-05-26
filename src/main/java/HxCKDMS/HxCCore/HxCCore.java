@@ -45,6 +45,7 @@ public class HxCCore
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
     public static volatile ArrayList<UUID> supporters = new ArrayList<>();
     public static volatile ArrayList<UUID> artists = new ArrayList<>();
+    public static volatile ArrayList<UUID> mascots = new ArrayList<>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static CommonProxy proxy;
@@ -99,7 +100,7 @@ public class HxCCore
         ModHxCSkills = Loader.isModLoaded("HxCSkills");
         ModHxCEnchants = Loader.isModLoaded("HxCEnchants");
         ModHxCWorldGen = Loader.isModLoaded("HxCWorldGen");
-        ModHxCLinkPads = Loader.isModLoaded("hxclinkpads");
+        ModHxCLinkPads = Loader.isModLoaded("HxCLinkPads");
         ModHxCBlocks = Loader.isModLoaded("HxCBlocks");
         ModHxCMagicEnergy = Loader.isModLoaded("magicenergy");
         ModHxCBows = Loader.isModLoaded("hxcbows");

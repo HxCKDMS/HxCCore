@@ -1,103 +1,55 @@
 package HxCKDMS.HxCCore.Contributors;
 
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
 public class CodersCheck implements Runnable {
     @Override
     public void run() {
-        loadCoders();
-        loadSupporters();
-        loadHelpers();
-        loadArtists();
+        loadFile();
     }
-
-    public void loadCoders(){
-        try{
-            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCCore/master/coders.txt");
+    public void loadFile(){
+        try {
+            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCLib.txt");
             InputStream inputStream = url.openStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String inputLine;
-            while((inputLine = bufferedReader.readLine()) != null){
-                HxCCore.coders.add(UUID.fromString(inputLine));
+            loadAll(bufferedReader);
+        } catch (Exception e) {
+            LogHelper.error("Can not resolve HxCLib.txt", References.MOD_NAME);
+            if (Config.DebugMode) {
+                e.printStackTrace();
             }
-
-
-        }catch(MalformedURLException exception){
-            LogHelper.error("Can not resolve coders.txt", References.MOD_NAME);
-            exception.printStackTrace();
-        }catch(IOException exception){
-            LogHelper.error("Can not read coders.txt", References.MOD_NAME);
         }
     }
 
-    public void loadSupporters(){
-        try{
-            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCCore/master/supporters.txt");
-            InputStream inputStream = url.openStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
+    public void loadAll(BufferedReader reader){
+        if (reader != null) {
+            try {
             String inputLine;
-            while((inputLine = bufferedReader.readLine()) != null){
-                HxCCore.supporters.add(UUID.fromString(inputLine));
+                while((inputLine = reader.readLine()) != null){
+                    if (inputLine.startsWith("Coder:")) {
+                        HxCCore.coders.add(UUID.fromString(inputLine.replace("Coder:","").trim()));
+                    } else if (inputLine.startsWith("Helper:")) {
+                        HxCCore.supporters.add(UUID.fromString(inputLine.replace("Helper:","").trim()));
+                    } else if (inputLine.startsWith("Supporter:")) {
+                        HxCCore.helpers.add(UUID.fromString(inputLine.replace("Supporter:","").trim()));
+                    } else if (inputLine.startsWith("Artist:")) {
+                        HxCCore.artists.add(UUID.fromString(inputLine.replace("Artist:","").trim()));
+                    } else if (inputLine.startsWith("Mascot:")) {
+                        HxCCore.mascots.add(UUID.fromString(inputLine.replace("Mascot:","").trim()));
+                    }
+                }
+            } catch (Exception ignored) {
+                LogHelper.error("Something went wrong in loading HxCLib report this to DrZed on github @ http://github.com/HxCLib/issues", References.MOD_NAME);
             }
-
-
-        }catch(MalformedURLException exception){
-            LogHelper.error("Can not resolve supporters.txt", References.MOD_NAME);
-            exception.printStackTrace();
-        }catch(IOException exception){
-            LogHelper.error("Can not read supporters.txt", References.MOD_NAME);
-        }
-    }
-
-    public void loadHelpers(){
-        try{
-            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCCore/master/helpers.txt");
-            InputStream inputStream = url.openStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String inputLine;
-            while((inputLine = bufferedReader.readLine()) != null){
-                HxCCore.helpers.add(UUID.fromString(inputLine));
-            }
-
-
-        }catch(MalformedURLException exception){
-            LogHelper.error("Can not resolve helpers.txt", References.MOD_NAME);
-            exception.printStackTrace();
-        }catch(IOException exception){
-            LogHelper.error("Can not read helpers.txt", References.MOD_NAME);
-        }
-    }
-
-    public void loadArtists(){
-        try{
-            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCCore/master/artists.txt");
-            InputStream inputStream = url.openStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String inputLine;
-            while((inputLine = bufferedReader.readLine()) != null){
-                HxCCore.artists.add(UUID.fromString(inputLine));
-            }
-
-
-        }catch(MalformedURLException exception){
-            LogHelper.error("Can not resolve artists.txt", References.MOD_NAME);
-            exception.printStackTrace();
-        }catch(IOException exception){
-            LogHelper.error("Can not read artists.txt", References.MOD_NAME);
         }
     }
 }
