@@ -112,7 +112,6 @@ public class HxCCore
         if (ModHxCBlocks)LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
         if (ModHxCMagicEnergy)LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
         if (ModHxCBows)LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
-
     }
 
     @EventHandler
