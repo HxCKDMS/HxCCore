@@ -40,6 +40,7 @@ public class HxCCore
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
+
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
@@ -56,14 +57,6 @@ public class HxCCore
     @Instance(References.MOD_ID)
     public static HxCCore instance;
 
-    public static boolean ModHxCSkills;
-    public static boolean ModHxCEnchants;
-    public static boolean ModHxCWorldGen;
-    public static boolean ModHxCLinkPads;
-    public static boolean ModHxCBlocks;
-    public static boolean ModHxCMagicEnergy;
-    public static boolean ModHxCBows;
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -73,7 +66,7 @@ public class HxCCore
         proxy.preInit(event);
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
-        extendPotionsArray();
+        if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
@@ -97,22 +90,16 @@ public class HxCCore
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ModHxCSkills = Loader.isModLoaded("HxCSkills");
-        ModHxCEnchants = Loader.isModLoaded("HxCEnchants");
-        ModHxCWorldGen = Loader.isModLoaded("HxCWorldGen");
-        ModHxCLinkPads = Loader.isModLoaded("HxCLinkPads");
-        ModHxCBlocks = Loader.isModLoaded("HxCBlocks");
-        ModHxCMagicEnergy = Loader.isModLoaded("magicenergy");
-        ModHxCBows = Loader.isModLoaded("hxcbows");
         packetPipeLine.postInitialize();
-        event.getModState();
-        if (ModHxCSkills)LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
-        if (ModHxCEnchants)LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
-        if (ModHxCWorldGen)LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
-        if (ModHxCLinkPads)LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
-        if (ModHxCBlocks)LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
-        if (ModHxCMagicEnergy)LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
-        if (ModHxCBows)LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
+        if (HxCKDMS.HxCCore.Configs.Config.DebugMode)event.getModState();
+
+        if (Loader.isModLoaded("HxCSkills"))LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCEnchants"))LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCWorldGen"))LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCLinkPads"))LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCBlocks"))LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
+        if (Loader.isModLoaded("magicenergy"))LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcbows"))LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
     }
 
     @EventHandler
@@ -137,7 +124,7 @@ public class HxCCore
         } catch(IOException e) {
             e.printStackTrace();
         }
-        System.out.println(Potion.potionTypes.length);
+        LogHelper.info(Potion.potionTypes.length, References.MOD_NAME);
     }
     private static void extendEnchantsArray()
     {
