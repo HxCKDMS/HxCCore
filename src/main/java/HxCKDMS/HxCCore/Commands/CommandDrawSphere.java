@@ -34,9 +34,11 @@ public class CommandDrawSphere implements ISubCommand{
             String unlocalizedName = args[5];
             boolean hollow = Boolean.parseBoolean(args[6]);
             Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
+            double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
 
-            WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, 0.05);
-            sender.addChatMessage(new ChatComponentText(String.format(color + "Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d " + color + "with a radius of %5$d with block: %6$s.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName)));
+            long cNano = System.nanoTime();
+            WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
+            sender.addChatMessage(new ChatComponentText(String.format(color + "Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d " + color + "with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano)/ 1000000000)));
         }
     }
 
