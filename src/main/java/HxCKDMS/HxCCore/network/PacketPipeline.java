@@ -50,8 +50,8 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         return true;
     }
 
-    public void initialize(){
-        this.channels = NetworkRegistry.INSTANCE.newChannel(References.PACKET_CHANNEL_NAME, this);
+    public void initialize(String channelName){
+        this.channels = NetworkRegistry.INSTANCE.newChannel(channelName, this);
 
         registerPackets();
     }

@@ -76,7 +76,7 @@ public class HxCCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        packetPipeLine.initialize();
+        packetPipeLine.initialize(References.PACKET_CHANNEL_NAME);
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());

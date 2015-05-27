@@ -21,7 +21,7 @@ sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 version = "1.7.10-1.4"
-group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "HxCKDMS.HxCCore"
 archivesBaseName = "HxCCore"
 
 minecraft {
