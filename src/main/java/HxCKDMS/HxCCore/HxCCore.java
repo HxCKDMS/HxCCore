@@ -6,7 +6,7 @@ import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION)
-public class HxCCore
-{
+public class HxCCore {
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
@@ -58,8 +58,7 @@ public class HxCCore
     public static HxCCore instance;
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
 
@@ -74,12 +73,11 @@ public class HxCCore
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         packetPipeLine.initialize(References.PACKET_CHANNEL_NAME);
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
-        MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
+        if (!Loader.isModLoaded("HxCSkills")) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
 
         FMLCommonHandler.instance().bus().register(new EventNickSync());
@@ -99,12 +97,12 @@ public class HxCCore
         if (Loader.isModLoaded("HxCBlocks"))LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
         if (Loader.isModLoaded("magicenergy"))LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
         if (Loader.isModLoaded("hxcbows"))LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcdiseases"))LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
     }
 
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void serverStart(FMLServerStartingEvent event)
-    {
+    public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
         if (Config.commands) CommandBase.initCommands(event);
 
@@ -125,8 +123,8 @@ public class HxCCore
         }
         LogHelper.info(Potion.potionTypes.length, References.MOD_NAME);
     }
-    private static void extendEnchantsArray()
-    {
+
+    private static void extendEnchantsArray() {
         /**
          * Made by DrZed inspired by
          * Biomes O'Plenty
@@ -139,8 +137,8 @@ public class HxCCore
         HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
         LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, References.MOD_NAME);
     }
-    private static void extendPotionsArray()
-    {
+
+    private static void extendPotionsArray() {
         /**
          * Taken From Biomes O'Plenty
          * modified to fit my interest
