@@ -4,9 +4,9 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.network.MessageColor;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.io.File;
 import java.util.EventListener;
@@ -44,25 +44,21 @@ public class EventNickSync implements EventListener {
     }
 
     @SubscribeEvent
-    public void onPlayerJoin(EntityJoinWorldEvent event){
-        if(event.entity instanceof EntityPlayerMP){
-            for(Object object : HxCCore.server.getConfigurationManager().playerEntityList){
-                if(object instanceof EntityPlayerMP){
-                    EntityPlayerMP player = (EntityPlayerMP) object;
-                    String UUID = player.getUniqueID().toString();
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event){
+        for(Object object : HxCCore.server.getConfigurationManager().playerEntityList){
+            if(object instanceof EntityPlayerMP){
+                EntityPlayerMP player = (EntityPlayerMP) object;
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                String nick;
 
-                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-
-                    String nick;
-
-                    try{
-                        nick = NBTFileIO.getString(CustomPlayerData, "nickname");
-                    }catch(NullPointerException unhandled){
-                        nick = "";
-                    }
-
-                    HxCCore.packetPipeLine.sendToAll(new MessageColor(UUID, nick, player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile())));
+                try{
+                    nick = NBTFileIO.getString(CustomPlayerData, "nickname");
+                }catch(NullPointerException unhandled){
+                    nick = "";
                 }
+
+                HxCCore.packetPipeLine.sendToAll(new MessageColor(UUID, nick, player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile())));
             }
         }
     }
