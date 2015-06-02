@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Commands;
+package HxCKDMS.HxCCore.api;
 
 import net.minecraft.command.ICommandSender;
 

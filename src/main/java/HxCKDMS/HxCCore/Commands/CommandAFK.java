@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;

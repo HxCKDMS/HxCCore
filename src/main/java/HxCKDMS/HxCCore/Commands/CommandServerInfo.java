@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;

@@ -2,7 +2,7 @@ package HxCKDMS.HxCCore.Contributors;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 
 import java.io.BufferedReader;

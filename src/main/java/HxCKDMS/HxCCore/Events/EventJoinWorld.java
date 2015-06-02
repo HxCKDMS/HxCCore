@@ -3,7 +3,7 @@ package HxCKDMS.HxCCore.Events;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

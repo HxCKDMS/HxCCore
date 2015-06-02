@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Utils.Teleporter;
+import HxCKDMS.HxCCore.api.Utils.Teleporter;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;

@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;

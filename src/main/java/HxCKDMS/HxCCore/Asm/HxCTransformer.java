@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Asm;
 
 import HxCKDMS.HxCCore.Asm.Hooks.RenderHooks;
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;

@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.api.ISubCommand;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;

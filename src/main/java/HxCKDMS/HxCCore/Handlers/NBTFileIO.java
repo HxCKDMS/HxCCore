@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Handlers;
 
 import HxCKDMS.HxCCore.Configs.Config;
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;

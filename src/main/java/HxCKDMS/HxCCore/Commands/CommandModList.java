@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.api.ISubCommand;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.command.ICommandSender;

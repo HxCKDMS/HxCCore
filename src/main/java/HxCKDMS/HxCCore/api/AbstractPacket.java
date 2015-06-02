@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.network;
+package HxCKDMS.HxCCore.api;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

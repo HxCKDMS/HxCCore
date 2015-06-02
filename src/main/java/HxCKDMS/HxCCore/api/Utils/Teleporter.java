@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Utils;
+package HxCKDMS.HxCCore.api.Utils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayerMP;

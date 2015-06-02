@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.network;
 
-import HxCKDMS.HxCCore.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.AbstractPacket;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;

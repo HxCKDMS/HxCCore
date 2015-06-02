@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Utils;
+package HxCKDMS.HxCCore.api.Utils;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;

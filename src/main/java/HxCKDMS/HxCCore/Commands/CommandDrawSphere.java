@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Utils.WorldHelper;
+import HxCKDMS.HxCCore.api.Utils.WorldHelper;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandDrawSphere implements ISubCommand{
+public class CommandDrawSphere implements ISubCommand {
     public static CommandDrawSphere instance = new CommandDrawSphere();
 
     private String color = EnumChatFormatting.GREEN.toString();
@@ -27,7 +28,7 @@ public class CommandDrawSphere implements ISubCommand{
 
             EntityPlayerMP player = (EntityPlayerMP) sender;
 
-            int x = (int)CommandBase.func_110666_a(sender, player.posX, args[1]);
+            int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);
             int y = (int)CommandBase.func_110665_a(sender, player.posY, args[2], 0, 0);
             int z = (int)CommandBase.func_110666_a(sender, player.posZ, args[3]);
             int radius = Integer.parseInt(args[4]);

@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.network;
 
 import HxCKDMS.HxCCore.Asm.Hooks.RenderHooks;
+import HxCKDMS.HxCCore.api.AbstractPacket;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

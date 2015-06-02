@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Utils;
+package HxCKDMS.HxCCore.api.Utils;
 
 @SuppressWarnings("unused")
 public class PlaceHelper {

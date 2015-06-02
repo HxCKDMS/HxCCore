@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Utils;
+package HxCKDMS.HxCCore.api.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
