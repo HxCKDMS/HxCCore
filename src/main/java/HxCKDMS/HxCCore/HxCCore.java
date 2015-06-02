@@ -80,12 +80,11 @@ public class HxCCore
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
-        MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
         MinecraftForge.EVENT_BUS.register(new EventChat());
-        MinecraftForge.EVENT_BUS.register(new EventNickSync());
 
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
+        FMLCommonHandler.instance().bus().register(new EventJoinWorld());
     }
 
     @EventHandler
