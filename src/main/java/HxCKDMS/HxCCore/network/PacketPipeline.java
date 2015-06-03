@@ -31,7 +31,9 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
     private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<>();
     private boolean isPostInitialized = false;
 
-    public boolean registerPacket(Class<? extends AbstractPacket> packetClass){
+    private LinkedList<Class<? extends AbstractPacket>> packetsToBeRegistered = new LinkedList<>();
+
+    private boolean registerPacket(Class<? extends AbstractPacket> packetClass){
         if(this.packets.size() >= 256){
             LogHelper.fatal("Mod registered more than 256 packets please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
@@ -74,8 +76,14 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         });
     }
 
-    public void registerPackets(){
-        registerPacket(MessageColor.class);
+    private void registerPackets(){
+        for(Class<? extends AbstractPacket> packetClass : packetsToBeRegistered){
+            registerPacket(packetClass);
+        }
+    }
+
+    public void addPacket(Class<? extends AbstractPacket> packetClass){
+        packetsToBeRegistered.add(packetClass);
     }
 
     @Override
@@ -131,6 +139,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
     }
 
     public void sendToAll(AbstractPacket message) {
+        System.out.println(packets);
         this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
         this.channels.get(Side.SERVER).writeAndFlush(message);
     }

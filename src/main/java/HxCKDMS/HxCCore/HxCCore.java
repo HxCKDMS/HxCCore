@@ -8,6 +8,7 @@ import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.CommonProxy;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
+import HxCKDMS.HxCCore.network.MessageColor;
 import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -74,6 +75,7 @@ public class HxCCore {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        registerPackets();
         packetPipeLine.initialize(References.PACKET_CHANNEL_NAME);
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
@@ -151,5 +153,9 @@ public class HxCCore {
         Potion[] potionTypes = new Potion[potionOffset + 256];
         System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
         HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
+    }
+
+    private static void registerPackets() {
+        packetPipeLine.addPacket(MessageColor.class);
     }
 }

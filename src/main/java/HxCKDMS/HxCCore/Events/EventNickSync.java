@@ -17,29 +17,31 @@ public class EventNickSync implements EventListener {
 
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event){
-        if(counter == 0){
-            for(Object object : HxCCore.server.getConfigurationManager().playerEntityList){
-                if(object instanceof EntityPlayerMP){
-                    EntityPlayerMP player = (EntityPlayerMP) object;
-                    String UUID = player.getUniqueID().toString();
+        if(event.phase == TickEvent.Phase.START){
+            if(counter == 0){
+                for(Object object : HxCCore.server.getConfigurationManager().playerEntityList){
+                    if(object instanceof EntityPlayerMP){
+                        EntityPlayerMP player = (EntityPlayerMP) object;
+                        String UUID = player.getUniqueID().toString();
 
-                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-                    String nick;
+                        String nick;
 
-                    try{
-                        nick = NBTFileIO.getString(CustomPlayerData, "nickname");
-                    }catch(NullPointerException unhandled){
-                        nick = "";
+                        try{
+                            nick = NBTFileIO.getString(CustomPlayerData, "nickname");
+                        }catch(NullPointerException unhandled){
+                            nick = "";
+                        }
+
+                        HxCCore.packetPipeLine.sendToAll(new MessageColor(UUID, nick, player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile())));
                     }
-
-                    HxCCore.packetPipeLine.sendToAll(new MessageColor(UUID, nick, player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile())));
                 }
             }
-        }
-        counter++;
-        if(counter >= 2400){
-            counter = 0;
+            counter++;
+            if(counter >= 2400){
+                counter = 0;
+            }
         }
     }
 
