@@ -123,7 +123,6 @@ public class HxCCore {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        LogHelper.info(Potion.potionTypes.length, References.MOD_NAME);
     }
 
     private static void extendEnchantsArray() {
