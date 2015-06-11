@@ -27,7 +27,7 @@ public class CommandColor implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.ColorPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[1], player);
             if (CanSend) {
                 char color = 'f';
                 if (args.length >= 2) color = args[1].charAt(0);

@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES)
 public class HxCCore {
     public static File HxCCoreDir = null;
     public static MinecraftServer server;

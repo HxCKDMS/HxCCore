@@ -14,23 +14,8 @@ public class Config
 
     public static String[] PermLevelName;
     public static String[] PermLevelColor;
-
-    public static int BurnPL;
-    public static int ColorPL;
-    public static int ExtinguishPL;
-    public static int FeedPL;
-    public static int FlyPL;
-    public static int GodPL;
-    public static int HealPL;
-    public static int HomePL;
-    public static int KillPL;
-    public static int NickPL;
-    public static int RepairPL;
-    public static int RepairAllPL;
-    public static int SetHomePL;
-    public static int SetWarpPL;
-    public static int SmitePL;
-    public static int WarpPL;
+    private static String[] PermDummy;
+    public static int[] PermLevels;
 
     public static Integer TpaTimeout;
 
@@ -61,22 +46,8 @@ public class Config
         PermLevelName = config.getStringList("GroupNames", "Permissions", new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"}, "Change this to anything you want as the group name, (Permission Level 0)");
         PermLevelColor = config.getStringList("PermLevelColor", "Permissions", new String[]{"f","2","e","9", "6", "4"}, "PermLevel 0 - 5 Colours", derp);
 
-        BurnPL = config.getInt("Burn", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        ColorPL = config.getInt("Color", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        ExtinguishPL = config.getInt("Extinguish", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        FeedPL = config.getInt("Feed", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        FlyPL = config.getInt("Fly", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        GodPL = config.getInt("God", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        HealPL = config.getInt("Heal", "Permissions", 2, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        HomePL = config.getInt("Home", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        KillPL = config.getInt("Kill", "Permissions", 5, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        NickPL = config.getInt("Nick", "Permissions", 1, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        RepairPL = config.getInt("Repair", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        RepairAllPL = config.getInt("RepairAll", "Permissions", 4, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        SetHomePL = config.getInt("SetHome", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        SetWarpPL = config.getInt("SetWarp", "Permissions", 4, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        SmitePL = config.getInt("Smite", "Permissions", 3, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
-        WarpPL = config.getInt("Warp", "Permissions", 0, 0, 5, "The integer you set this to corresponds to the Permissions Level of the same number");
+        PermDummy = config.getStringList("DummyPermList", "Permissions", new String[]{"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp"}, "This is for below");
+        PermLevels = config.get("Permissions", "PermLevels", new int[]{3, 1, 2, 2, 1, 3, 2, 0, 5, 1, 3, 4, 0, 4, 3, 0}).getIntList();
 
         config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
         TpaTimeout = config.getInt("TpaTimeout", "Commands", 1200, 600, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");
