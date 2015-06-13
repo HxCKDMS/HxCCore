@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Utils;
+package HxCKDMS.HxCCore.api.Utils;
 
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;

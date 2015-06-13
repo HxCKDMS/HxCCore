@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -21,40 +22,33 @@ public class CommandBurn implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP)sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.BurnPL, player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[0], player);
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                    } else {
-                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-                }else{
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
-                }
+                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
             }
             break;
             case 2: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                 player2.setFire(750000000);
-                sender.addChatMessage(new ChatComponentText(player2.getName() + " \u00A74has been set on fire for 750000000 ticks."));
+                sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for 750000000 ticks."));
             }
             case 3: {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                 player2.setFire(Integer.parseInt(args[2]));
-                sender.addChatMessage(new ChatComponentText(player2.getName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
+                sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
             }
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player] [time]");
-
-            }
+            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player] [time]");
         }
     }
 

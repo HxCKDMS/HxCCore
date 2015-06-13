@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.8-1.0a"
+version = "1.8-1.5.0"
 group= "HxCKDMS.HxCCore" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "HxCCore"
 
 minecraft {
-    version = "1.8-11.14.1.1306-1.8"
+    version = "1.8-11.14.2.1436"
     runDir = "eclipse"
 
     mappings = "snapshot_nodoc_20141130"

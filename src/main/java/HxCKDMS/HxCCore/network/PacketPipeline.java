@@ -1,7 +1,8 @@
 package HxCKDMS.HxCCore.network;
 
-import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.api.AbstractPacket;
+import HxCKDMS.HxCCore.api.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.References;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -24,25 +25,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.*;
 
 @ChannelHandler.Sharable
+@SuppressWarnings({"unused"})
 public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, AbstractPacket> {
 
     private EnumMap<Side, FMLEmbeddedChannel> channels;
-    private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<Class<? extends AbstractPacket>>();
+    private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<>();
     private boolean isPostInitialized = false;
 
-    public boolean registerPacket(Class<? extends AbstractPacket> packetClass){
+    private LinkedList<Class<? extends AbstractPacket>> packetsToBeRegistered = new LinkedList<>();
+
+    private boolean registerPacket(Class<? extends AbstractPacket> packetClass){
         if(this.packets.size() >= 256){
-            LogHelper.fatal("Mod registered more than 256 packets please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registered more than 256 packets please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
         if(this.packets.contains(packetClass)){
-            LogHelper.fatal("Mod registered same packet twice please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registered same packet twice please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
         if(this.isPostInitialized){
-            LogHelper.fatal("Mod registed the packet to late please report this to the mod author: karelmikie3.", Reference.MOD_NAME);
+            LogHelper.fatal("Mod registed the packet to late please report this to the mod author: karelmikie3.", References.MOD_NAME);
             return false;
         }
 
@@ -50,8 +54,8 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         return true;
     }
 
-    public void initialize(){
-        this.channels = NetworkRegistry.INSTANCE.newChannel(Reference.CHANNEL_NAME, this);
+    public void initialize(String channelName){
+        this.channels = NetworkRegistry.INSTANCE.newChannel(channelName, this);
 
         registerPackets();
     }
@@ -73,8 +77,14 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         });
     }
 
-    public void registerPackets(){
-        registerPacket(MessageColor.class);
+    private void registerPackets(){
+        for(Class<? extends AbstractPacket> packetClass : packetsToBeRegistered){
+            registerPacket(packetClass);
+        }
+    }
+
+    public void addPacket(Class<? extends AbstractPacket> packetClass){
+        packetsToBeRegistered.add(packetClass);
     }
 
     @Override
@@ -90,13 +100,12 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         byteBuf.writeByte(discriminator);
         msg.encodeInto(ctx, byteBuf);
 
-        if (byteBuf instanceof PacketBuffer) {
-            FMLProxyPacket proxyPacket = new FMLProxyPacket((PacketBuffer) byteBuf.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
-            out.add(proxyPacket);
-        }
+        FMLProxyPacket proxyPacket = new FMLProxyPacket(new PacketBuffer(byteBuf.copy()), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
+        out.add(proxyPacket);
     }
 
     @Override
+    @SuppressWarnings("all")
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteBuf payload = msg.payload();
         byte discriminator = payload.readByte();

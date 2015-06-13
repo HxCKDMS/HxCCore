@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,15 +21,11 @@ public class CommandHelp implements ISubCommand {
         sender.addChatMessage(new ChatComponentText("\u00A71Commands:"));
         
         boolean b = false;
-        final int len = 35;
         for (String line : LINES) {
             ChatComponentText message = new ChatComponentText(line);
             message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
             sender.addChatMessage(message);
         }
-        
-        //sender.addChatMessage(new ChatComponentText("\u00A73/HxCCore warp: used to return to a warp(Public WayPoint)."));
-        //sender.addChatMessage(new ChatComponentText("\u00A79/HxCCore setWarp: used to return to a warp(Public WayPoint)."));
     }
     
     @Override
@@ -36,7 +33,7 @@ public class CommandHelp implements ISubCommand {
         return null;
     }
     
-    /** TODO: THESE SHOULD ALL BE LOADED FROM A LANGUAGE FILE **/
+    // TODO: THESE SHOULD ALL BE LOADED FROM A LANGUAGE FILE
     private static final String[] LINES = {
             "/HxCCore help: shows all commands with explanation.",
             "/HxCCore heal [player]: used to heal your self or another player.",

@@ -1,11 +1,11 @@
 package HxCKDMS.HxCCore.Handlers;
 
-
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
 @SuppressWarnings("unused")
 public class HxCReflectionHandler
 {

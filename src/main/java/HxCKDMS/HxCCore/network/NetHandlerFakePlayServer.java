@@ -7,12 +7,8 @@ import net.minecraft.network.*;
 import net.minecraft.network.play.client.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.crypto.SecretKey;
-import java.net.InetAddress;
-import java.net.SocketAddress;
 
 public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
     
@@ -47,20 +43,10 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
             
         }
 
-//        @Override
-//        public void scheduleOutboundPacket(Packet packet, GenericFutureListener... genericFutureListeners) {
-//
-//        }
-
         @Override
         public void processReceivedPackets() {
             
         }
-
-//        @Override
-//        public SocketAddress getSocketAddress() {
-//            return null;
-//        }
 
         @Override
         public void closeChannel(IChatComponent chatComponent) {
@@ -101,25 +87,11 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         public IChatComponent getExitMessage() {
             return null;
         }
-
-        @SideOnly(Side.CLIENT)
-        public static NetworkManager provideLanClient(InetAddress inetAddress, int integer) {
-            return null;
-        }
-        @SideOnly(Side.CLIENT)
-        public static NetworkManager provideLocalClient(SocketAddress socketAddress) {
-            return null;
-        }
     }
     
     public NetHandlerFakePlayServer(MinecraftServer minecraftServer, EntityPlayerMP player) {
         super(minecraftServer, new FakeNetworkManager(), player);
     }
-
-//    @Override
-//    public void onNetworkTick() {
-//
-//    }
 
     @Override
     public void kickPlayerFromServer(String kickMessage) {
@@ -170,11 +142,6 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
     public void processChatMessage(C01PacketChatMessage packetChatMessage) {
         
     }
-
-//    @Override
-//    public void processAnimation(C0APacketAnimation packetAnimation) {
-//
-//    }
 
     @Override
     public void processEntityAction(C0BPacketEntityAction packetEntityAction) {
@@ -245,9 +212,4 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
     public void processVanilla250Packet(C17PacketCustomPayload packetCustomPayload) {
         
     }
-
-//    @Override
-//    public void onConnectionStateTransition(EnumConnectionState enumConnectionState, EnumConnectionState enumConnectionState2) {
-//
-//    }
 }

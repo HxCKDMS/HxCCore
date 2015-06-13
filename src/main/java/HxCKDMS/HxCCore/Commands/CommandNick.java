@@ -2,11 +2,13 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
@@ -21,16 +23,16 @@ public class CommandNick implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP){
-            EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.NickPL, player);
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+        if(sender instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) sender;
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[9], player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 if (args.length == 1) {
-                    NBTFileIO.setString(CustomPlayerData, "nickname", player.getName());
+                    NBTFileIO.setString(CustomPlayerData, "nickname", "");
                     player.addChatMessage(new ChatComponentText("Your nickname has been removed."));
                 } else {
                     String nick = null;
@@ -43,22 +45,14 @@ public class CommandNick implements ISubCommand {
                     }
 
                     NBTFileIO.setString(CustomPlayerData, "nickname", nick);
-                    player.addChatMessage(new ChatComponentText("Your nickname has been set to " + nick));
+                    player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", NickHandler.CC)));
                 }
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You don't have permission to use this command."));
-            }
-        } else {
-            sender.addChatMessage(new ChatComponentText("Only a player can use this command."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("Only a player can use this command."));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length == 2){
-            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-        }
         return null;
     }
 }

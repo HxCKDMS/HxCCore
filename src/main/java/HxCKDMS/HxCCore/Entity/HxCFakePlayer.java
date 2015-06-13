@@ -3,10 +3,10 @@ package HxCKDMS.HxCCore.Entity;
 import HxCKDMS.HxCCore.network.NetHandlerFakePlayServer;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -30,17 +30,13 @@ public class HxCFakePlayer extends FakePlayer {
         this.addedToChunk = false;
     }
     
-    public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, int x, int y, int z){
-        IBlockState blockState = world.getBlockState(new BlockPos(x, y, z));
-        Block block = blockState.getBlock();
-        if(fakePlayer == null){
-            return block.getBlockHardness(world, new BlockPos(x, y, z)) >= 0;
-        }else{
-            return block.getPlayerRelativeBlockHardness(fakePlayer, world, new BlockPos(x, y, z)) >= 0;
-        }
+    public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, BlockPos pos){
+        Block block = world.getBlockState(pos).getBlock();
+        if (fakePlayer == null)  return block.getBlockHardness(world, pos) >= 0;
+        else return block.getPlayerRelativeBlockHardness(fakePlayer, world, pos) >= 0;
     }
     
-    public void setItemInHand(ItemStack itemInHand){
+    public void setItemInHand(ItemStack itemInHand) {
         this.inventory.setInventorySlotContents(0, itemInHand);
         this.inventory.currentItem = 0;
     }
@@ -63,7 +59,17 @@ public class HxCFakePlayer extends FakePlayer {
     public boolean isSneaking(){
         return sneaking;
     }
-    
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source) {
+        return true;
+    }
+
+    @Override
+    public boolean canAttackWithItem() {
+        return true;
+    }
+
     @Override
     public void onUpdate(){
         ItemStack itemStack1 = prevItemStack;
@@ -113,8 +119,8 @@ public class HxCFakePlayer extends FakePlayer {
     }
 
     @Override
-    public String getName() {
-        return getCommandSenderEntity().getName();
+    public String getDisplayNameString() {
+        return super.getDisplayNameString();
     }
 
     @Override

@@ -4,9 +4,12 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
@@ -21,10 +24,10 @@ public class CommandSetWarp implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.SetWarpPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[13], player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
@@ -48,16 +51,16 @@ public class CommandSetWarp implements ISubCommand {
                 warp.setTag(wName, warpDir);
 
                 NBTFileIO.setNbtTagCompound(HxCWorldData, "warp", warp);
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-        }else{
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if(args.length == 2){
+            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+        }
         return null;
     }
 }

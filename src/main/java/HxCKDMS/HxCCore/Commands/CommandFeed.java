@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -23,15 +24,13 @@ public class CommandFeed implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.FeedPL, player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[3], player);
                     if (CanSend) {
-                        float plf = player.getFoodStats().getSaturationLevel() + player.getFoodStats().getFoodLevel();
-                        float nf = 40 - plf;
                         player.getFoodStats().addStats(20, 20F);
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
                     } else {
@@ -48,7 +47,7 @@ public class CommandFeed implements ISubCommand {
                 float nf = 40 - plf;
                 player2.getFoodStats().addStats(20, 20F);
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player2.getName() + "'s\u00A7e throat."));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
             }
             break;
             default: {

@@ -4,8 +4,7 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.Reference;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -27,40 +26,32 @@ public class CommandGod implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
-            case 1: {
+            case 1:
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.GodPL, player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[5], player);
                     if (CanSend) {
                         String UUID = player.getUniqueID().toString();
                         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                         NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                         player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode."));
-                    } else {
-                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-
-                }else {
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
-                }
-            }
+                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
             break;
-            case 2: {
+            case 2:
+                EntityPlayerMP player = (EntityPlayerMP) sender;
                 EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                 String UUID = player2.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                 player2.addChatMessage(new ChatComponentText(NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76You suddenly feel immortal." : "\u00A76You suddenly feel mortal."));
-                LogHelper.info((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getName(), Reference.MOD_ID);
-            }
+                player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getDisplayName()));
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
-            }
+            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
         }
     }
 

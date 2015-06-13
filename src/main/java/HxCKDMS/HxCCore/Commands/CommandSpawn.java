@@ -1,6 +1,9 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Utils.Teleporter;
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,15 +23,18 @@ public class CommandSpawn implements ISubCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
-            EntityPlayerMP player = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP)sender;
-
-            if(player.dimension != 0) {
-                Teleporter.transferPlayerToDimension(player, 0, player.mcServer.getConfigurationManager(), player.worldObj.getSpawnPoint().getX(), player.worldObj.getSpawnPoint().getY(), player.worldObj.getSpawnPoint().getZ());
-                player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
-            } else {
-                player.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().getX(), player.worldObj.getSpawnPoint().getY(), player.worldObj.getSpawnPoint().getZ(), player.rotationYaw, player.rotationPitch);
-                player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
-            }
+            EntityPlayerMP player = (EntityPlayerMP) sender;
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[17], player);
+            if (CanSend) {
+                EntityPlayerMP target = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
+                if (player.dimension != 0) {
+                    Teleporter.transferPlayerToDimension(player, 0, player.worldObj.getSpawnPoint());
+                    player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
+                } else {
+                    player.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().getX(), player.worldObj.getSpawnPoint().getY(), player.worldObj.getSpawnPoint().getZ(), player.rotationYaw, player.rotationPitch);
+                    player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
+                }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         }
     }
 

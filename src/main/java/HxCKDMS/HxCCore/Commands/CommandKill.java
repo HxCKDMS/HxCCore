@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -26,28 +27,19 @@ public class CommandKill implements ISubCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
-            case 1: {
+            case 1:
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.KillPL, player);
-                    if (CanSend) {
-                        player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
-                    } else {
-                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-                }else{
-                    sender.addChatMessage(new ChatComponentText("The kill command without arguments can only be executed from a player."));
-                }
-            }
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[8], player);
+                    if (CanSend) player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+                    else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else  sender.addChatMessage(new ChatComponentText("The kill command without arguments can only be executed from a player."));
             break;
-            case 2: {
+            case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
-            }
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
-            }
+            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
         }
     }
 

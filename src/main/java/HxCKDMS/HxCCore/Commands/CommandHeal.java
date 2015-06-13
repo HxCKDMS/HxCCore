@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -24,32 +25,25 @@ public class CommandHeal implements ISubCommand {
 
     public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
-            case 1: {
+            case 1:
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.HealPL, player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[6], player);
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
-                }else{
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
-                }
-            }
-            break;
-            case 2: {
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                break;
+            case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.setHealth(player2.getMaxHealth());
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
-                sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getName() + "."));
-            }
+                sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
-
-            }
+            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
         }
     }
 

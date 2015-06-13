@@ -2,7 +2,9 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -18,20 +20,16 @@ public class CommandRepair implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.RepairPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[10], player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setItemDamage(0);
                 sender.addChatMessage(new ChatComponentText("\u00A7b" + HeldItem.getDisplayName() + " has been repaired."));
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-        }else{
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
     @Override

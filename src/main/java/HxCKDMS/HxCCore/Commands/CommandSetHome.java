@@ -4,9 +4,12 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
@@ -21,10 +24,10 @@ public class CommandSetHome implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.SetHomePL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[12], player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
 
@@ -40,7 +43,7 @@ public class CommandSetHome implements ISubCommand {
                 int z = (int)player.posZ;
                 int dim = player.dimension;
 
-                player.addChatMessage(new ChatComponentText("\u00A72Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") \u00A72Z(" + z + ") Dimension(" + dim + ")."));
+                player.addChatMessage(new ChatComponentText("\u00A72Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ")."));
 
                 homeDir.setInteger("x", x);
                 homeDir.setInteger("y", y);
@@ -50,16 +53,16 @@ public class CommandSetHome implements ISubCommand {
                 home.setTag(hName, homeDir);
 
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-        } else {
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else  sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if(args.length == 2){
+            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
+        }
         return null;
     }
 }
