@@ -26,7 +26,7 @@ public class CommandSetHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.SetHomePL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[12], player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
 
@@ -52,12 +52,8 @@ public class CommandSetHome implements ISubCommand {
                 home.setTag(hName, homeDir);
 
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-        } else {
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else  sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
     @SuppressWarnings("unchecked")

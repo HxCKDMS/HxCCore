@@ -28,15 +28,13 @@ public class CommandWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.WarpPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[15], player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
                 String wName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
-                if(!warpDir.hasKey(wName)){
-                    throw new WrongUsageException("the warp named: '" + wName + "' does not exist.");
-                }
+                if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
                     Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
@@ -45,14 +43,8 @@ public class CommandWarp implements ISubCommand {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 }
-
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-
-        }else{
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
     @Override

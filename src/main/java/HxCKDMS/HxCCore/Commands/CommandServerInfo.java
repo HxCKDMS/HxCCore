@@ -1,9 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.WorldServer;
@@ -27,13 +30,16 @@ public class CommandServerInfo implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
-        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));
-        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Server TPS: %1$s.", getServerTPSStyled())));
+        EntityPlayerMP player = (EntityPlayerMP) sender;
+        boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[16], player);
+        if (CanSend) {
+            sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
+            sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));
+            sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Server TPS: %1$s.", getServerTPSStyled())));
 
-        for(WorldServer worldServer : DimensionManager.getWorlds()){
-            sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
-        }
+            for (WorldServer worldServer : DimensionManager.getWorlds())
+                sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
     }
 
     @Override

@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
@@ -37,10 +38,8 @@ public class CommandSetPerms implements ISubCommand {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            boolean isopped = HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile());
-            String playername = player.getDisplayName();
-            int PlayerPerms = (Permissions.getInteger(playername));
-            if (PlayerPerms >= 4 || isopped) {
+            boolean CanUse = PermissionsHandler.canUseCommand(5, player);
+            if (CanUse) {
                 if (args.length == 3) {
                     playerName = args[1];
                     permLevel = Integer.parseInt(args[2]);
@@ -75,12 +74,8 @@ public class CommandSetPerms implements ISubCommand {
                             break;
                     }
                     NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-                } else {
-                    player.addChatMessage(new ChatComponentText("\u00A74Correct usage is: " + "\u00A72/HxCCore setPerms <Player> <PermLevel(0-5)>"));
-                }
-            } else {
-                player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
+                } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+            } else player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         } else {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
@@ -118,9 +113,7 @@ public class CommandSetPerms implements ISubCommand {
                         break;
                 }
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            } else {
-                sender.addChatMessage(new ChatComponentText("Correct usage is: /HxCCore setPerms <Player> <PermLevel(0-5)>"));
-            }
+            } else sender.addChatMessage(new ChatComponentText("Correct usage is: /HxCCore setPerms <Player> <PermLevel(0-5)>"));
         }
     }
 

@@ -30,12 +30,8 @@ public class CommandBurn implements ISubCommand {
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                    } else {
-                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-                }else{
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
-                }
+                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
             }
             break;
             case 2: {
@@ -51,10 +47,7 @@ public class CommandBurn implements ISubCommand {
                 sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
             }
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
-
-            }
+            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
         }
     }
 

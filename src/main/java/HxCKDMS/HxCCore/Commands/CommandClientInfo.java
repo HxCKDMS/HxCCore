@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -25,12 +27,15 @@ public class CommandClientInfo implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
-        if (args.length <= 2) {
-            EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
-            getClientInfo(sender, player);
-        } else {
-            sender.addChatMessage(new ChatComponentText("You must specify a player!"));
-        }
+        boolean CanUse = true;
+        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Config.PermLevels[20], (EntityPlayerMP)sender);
+        if (CanUse) {
+            if (args.length <= 3) {
+                if (!(sender instanceof EntityPlayerMP && args.length > 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
+                EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
+                getClientInfo(sender, player);
+            }
+        } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
     }
 
     private void getClientInfo(ICommandSender sender, EntityPlayerMP player) {

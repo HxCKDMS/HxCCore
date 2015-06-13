@@ -1,5 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.block.Block;
@@ -25,21 +27,23 @@ public class CommandDrawSphere implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
-
             EntityPlayerMP player = (EntityPlayerMP) sender;
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[19], player);
 
-            int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);
-            int y = (int)CommandBase.func_110665_a(sender, player.posY, args[2], 0, 0);
-            int z = (int)CommandBase.func_110666_a(sender, player.posZ, args[3]);
-            int radius = Integer.parseInt(args[4]);
-            String unlocalizedName = args[5];
-            boolean hollow = Boolean.parseBoolean(args[6]);
-            Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
-            double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
+            if (CanSend) {
+                int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);
+                int y = (int) CommandBase.func_110665_a(sender, player.posY, args[2], 0, 0);
+                int z = (int) CommandBase.func_110666_a(sender, player.posZ, args[3]);
+                int radius = Integer.parseInt(args[4]);
+                String unlocalizedName = args[5];
+                boolean hollow = Boolean.parseBoolean(args[6]);
+                Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
+                double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
 
-            long cNano = System.nanoTime();
-            WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
-            sender.addChatMessage(new ChatComponentText(String.format(color + "Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d " + color + "with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano)/ 1000000000)));
+                long cNano = System.nanoTime();
+                WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
+                sender.addChatMessage(new ChatComponentText(String.format(color + "Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d " + color + "with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000)));
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         }
     }
 

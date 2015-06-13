@@ -26,7 +26,7 @@ public class CommandSetWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.SetWarpPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[13], player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
@@ -50,12 +50,8 @@ public class CommandSetWarp implements ISubCommand {
                 warp.setTag(wName, warpDir);
 
                 NBTFileIO.setNbtTagCompound(HxCWorldData, "warp", warp);
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
-        }else{
-            sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
     }
 
     @SuppressWarnings("unchecked")

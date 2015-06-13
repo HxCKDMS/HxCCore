@@ -26,9 +26,6 @@ public class CommandHelp implements ISubCommand {
             message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
             sender.addChatMessage(message);
         }
-        
-        //sender.addChatMessage(new ChatComponentText("\u00A73/HxCCore warp: used to return to a warp(Public WayPoint)."));
-        //sender.addChatMessage(new ChatComponentText("\u00A79/HxCCore setWarp: used to return to a warp(Public WayPoint)."));
     }
     
     @Override

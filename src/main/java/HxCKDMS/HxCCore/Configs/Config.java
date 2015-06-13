@@ -46,8 +46,8 @@ public class Config
         PermLevelName = config.getStringList("GroupNames", "Permissions", new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"}, "Change this to anything you want as the group name, (Permission Level 0)");
         PermLevelColor = config.getStringList("PermLevelColor", "Permissions", new String[]{"f","2","e","9", "6", "4"}, "PermLevel 0 - 5 Colours", derp);
 
-        PermDummy = config.getStringList("DummyPermList", "Permissions", new String[]{"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp"}, "This is for below");
-        PermLevels = config.get("Permissions", "PermLevels", new int[]{3, 1, 2, 2, 1, 3, 2, 0, 5, 1, 3, 4, 0, 4, 3, 0}).getIntList();
+        PermDummy = config.getStringList("DummyPermList", "Permissions", new String[]{"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"}, "This is for below");
+        PermLevels = config.get("Permissions", "PermLevels", new int[]{3, 1, 2, 2, 1, 3, 2, 0, 5, 1, 3, 4, 0, 4, 3, 0, 4, 0, 0, 5, 4}).getIntList();
 
         config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
         TpaTimeout = config.getInt("TpaTimeout", "Commands", 1200, 600, 72000, "Sets the amount of ticks it takes for a tpa request to time out.");

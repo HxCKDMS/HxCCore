@@ -25,29 +25,19 @@ public class CommandSmite implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.SmitePL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[14], player);
             if (CanSend) {
-                if (args.length == 2) {
-                    EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                    smite(player2);
-                } else {
-                    smite(player);
-                }
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            }
+                if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
+                else smite(player);
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         } else {
-            if (args.length == 2) {
-                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                smite(player2);
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
-            }
+            if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
+            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
         }
     }
 
     public void smite(EntityPlayer target) {
-        target.worldObj.spawnEntityInWorld(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ));
+        target.worldObj.spawnEntityInWorld(new EntityLightningBolt(target.worldObj, target.posX, target.posY+100, target.posZ));
     }
 
     @SuppressWarnings("unchecked")

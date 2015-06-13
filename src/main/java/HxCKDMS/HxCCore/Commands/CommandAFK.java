@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
@@ -29,30 +31,33 @@ public class CommandAFK implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
-            EntityPlayer p = (EntityPlayer)sender;
-            UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
-            ChatComponentText AFK = new ChatComponentText(p.getCommandSenderName() + " \u00A73has gone AFK.");
-            ChatComponentText Back = new ChatComponentText(p.getCommandSenderName() + " \u00A73is no longer AFK.");
-            IAttributeInstance ps = p.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-            AttributeModifier SpeedBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -2, 1);
-            String UUID = p.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            boolean AFKStatus;
-            try {
-                AFKStatus = NBTFileIO.getBoolean(CustomPlayerData, "AFK");
-                NBTFileIO.setBoolean(CustomPlayerData, "AFK", !AFKStatus);
-            } catch (Exception ignored) {
-                AFKStatus = false;
-                NBTFileIO.setBoolean(CustomPlayerData, "AFK", true);
-            }
-            NBTFileIO.setBoolean(CustomPlayerData, "god", !AFKStatus);
-            p.setInvisible(!AFKStatus);
-            if (!AFKStatus) ps.applyModifier(SpeedBuff);
-            else ps.removeModifier(SpeedBuff);
-            List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
-            for (EntityPlayerMP player : list) {
-                player.addChatMessage(AFKStatus ? Back : AFK);
-            }
+            EntityPlayer player = (EntityPlayer)sender;
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[14], player);
+            if (CanSend) {
+                UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
+                ChatComponentText AFK = new ChatComponentText(player.getCommandSenderName() + " \u00A73has gone AFK.");
+                ChatComponentText Back = new ChatComponentText(player.getCommandSenderName() + " \u00A73is no longer AFK.");
+                IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
+                AttributeModifier SpeedBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -100, 1);
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                boolean AFKStatus;
+                try {
+                    AFKStatus = NBTFileIO.getBoolean(CustomPlayerData, "AFK");
+                    NBTFileIO.setBoolean(CustomPlayerData, "AFK", !AFKStatus);
+                } catch (Exception ignored) {
+                    AFKStatus = false;
+                    NBTFileIO.setBoolean(CustomPlayerData, "AFK", true);
+                }
+                NBTFileIO.setBoolean(CustomPlayerData, "god", !AFKStatus);
+                player.setInvisible(!AFKStatus);
+                if (!AFKStatus) ps.applyModifier(SpeedBuff);
+                else ps.removeModifier(SpeedBuff);
+                List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
+                for (EntityPlayerMP p : list) {
+                    p.addChatMessage(AFKStatus ? Back : AFK);
+                }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         }
     }
 

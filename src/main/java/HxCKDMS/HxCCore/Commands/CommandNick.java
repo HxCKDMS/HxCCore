@@ -25,7 +25,7 @@ public class CommandNick implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.NickPL, player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[9], player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -46,12 +46,8 @@ public class CommandNick implements ISubCommand {
                     NBTFileIO.setString(CustomPlayerData, "nickname", nick);
                     player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", NickHandler.CC)));
                 }
-            } else {
-                sender.addChatMessage(new ChatComponentText("\u00A74You don't have permission to use this command."));
-            }
-        } else {
-            sender.addChatMessage(new ChatComponentText("Only a player can use this command."));
-        }
+            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else sender.addChatMessage(new ChatComponentText("Only a player can use this command."));
     }
 
     @Override
