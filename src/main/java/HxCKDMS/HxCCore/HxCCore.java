@@ -5,7 +5,7 @@ import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
-import HxCKDMS.HxCCore.Proxy.CommonProxy;
+import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
@@ -50,7 +50,7 @@ public class HxCCore {
     public static volatile ArrayList<UUID> mascots = new ArrayList<>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
-    public static CommonProxy proxy;
+    public static IProxy proxy;
     
     public static HxCKDMS.HxCCore.Configs.Config Config;
 
