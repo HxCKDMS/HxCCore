@@ -107,8 +107,6 @@ public class HxCCore {
         if (Loader.isModLoaded("magicenergy"))LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
         if (Loader.isModLoaded("hxcbows"))LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
         if (Loader.isModLoaded("hxcdiseases"))LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
-
-        System.out.println(2 / 0);
     }
 
     @EventHandler

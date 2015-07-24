@@ -19,24 +19,16 @@ public class CrashReportThread extends Thread {
         if(CrashHandler.hasCrashed){
             System.out.println("CRASH!!!!!!!");
             try{
-                if(checkCrash(FMLCommonHandler.instance().getSide().isClient())) {
-                    System.err.println("Crash-report successfully sent to github.");
-                }else{
-                    System.err.println("Crash-report wasn't sent due an unknown issue.");
-                }
-            }catch (Exception exception){
-                System.err.println("We failed to analyze crash-reports, reason: " + exception);
-            }
-        }else{
-            System.err.println("No crashes have happened");
+                checkCrash(FMLCommonHandler.instance().getSide().isClient());
+            }catch (Exception ignored){}
         }
     }
 
-    private boolean checkCrash(final boolean isClient) throws IOException {
+    private void checkCrash(final boolean isClient) throws IOException {
         File folder = new File(isClient ? Minecraft.getMinecraft().mcDataDir : new File("."), "crash-reports");
         File[] logs = folder.listFiles(new filter(isClient));
 
-        if (logs == null) return false;
+        if (logs == null) return;
 
         File mostRecent = null;
         for (File log : logs) {
@@ -44,16 +36,16 @@ public class CrashReportThread extends Thread {
                 mostRecent = log;
             }
         }
-        if (mostRecent == null) return false;
+        if (mostRecent == null) return;
 
         byte[] crashFileBytes = Files.readAllBytes(Paths.get(mostRecent.getPath()));
         String crashFileString = new String(crashFileBytes, "UTF-8");
 
-        return crashFileString.contains("at " + HxCCore.class.getPackage().getName()) && sendCrash(crashFileString);
+        if (crashFileString.contains("at " + HxCCore.class.getPackage().getName())) sendCrash(crashFileString);
 
     }
 
-    private boolean sendCrash(String crash) throws IOException{
+    private void sendCrash(String crash) throws IOException{
         System.out.println(crash);
 
         HttpURLConnection connection = (HttpURLConnection) new URL("http://paste.ee/api").openConnection();
@@ -61,7 +53,7 @@ public class CrashReportThread extends Thread {
 
         Gson gson = new Gson();
         OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        writer.write("key=1fead29cd2729b1786fe6b11df369328&description=HxCKDMS crash&language=java&paste=" + crash);
+        //writer.write("key=1fead29cd2729b1786fe6b11df369328&description=HxCKDMS crash&language=java&paste=" + crash);
         writer.flush();
         writer.close();
 
@@ -78,7 +70,6 @@ public class CrashReportThread extends Thread {
         }
 
         connection.disconnect();
-        return true;
     }
 
     class filter implements FileFilter {
