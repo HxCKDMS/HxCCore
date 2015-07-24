@@ -3,6 +3,8 @@ package HxCKDMS.HxCCore;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
+import HxCKDMS.HxCCore.Crash.CrashHandler;
+import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
@@ -42,6 +44,7 @@ public class HxCCore {
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
 
+    public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
@@ -62,6 +65,10 @@ public class HxCCore {
     public void preInit(FMLPreInitializationEvent event) {
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
+
+        FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+        crashReportThread.setName("HxCKDMS Crash check thread");
+        Runtime.getRuntime().addShutdownHook(crashReportThread);
 
         proxy.preInit(event);
         Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
