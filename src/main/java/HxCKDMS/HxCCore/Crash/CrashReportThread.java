@@ -60,7 +60,7 @@ public class CrashReportThread extends Thread {
         Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-        String json = gson.toJson(new crashSendTemplate(crash, mod, title, References.VERSION));
+        String json = gson.toJson(new crashSendTemplate(crash, mod, title));
 
         writer.write(json);
         writer.flush();
@@ -91,13 +91,11 @@ public class CrashReportThread extends Thread {
         String crash;
         String mod;
         String title;
-        String version;
 
-        public crashSendTemplate(String crash, String mod, String title, String version) {
+        public crashSendTemplate(String crash, String mod, String title) {
             this.crash = crash;
             this.mod = mod;
             this.title = title;
-            this.version = version;
         }
     }
 }
