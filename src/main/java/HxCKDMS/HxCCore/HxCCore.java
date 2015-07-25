@@ -55,7 +55,7 @@ public class HxCCore {
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
     
-    public static HxCKDMS.HxCCore.Configs.Config Config;
+    public static Config config;
 
     @Instance(References.MOD_ID)
     public static HxCCore instance;
@@ -65,13 +65,14 @@ public class HxCCore {
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
 
-        FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
-
-        crashReportThread.setName("HxCKDMS Crash check thread");
-        Runtime.getRuntime().addShutdownHook(crashReportThread);
+        if(Config.autoCrashReporterEnabled){
+            FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+            crashReportThread.setName("HxCKDMS Crash check thread");
+            Runtime.getRuntime().addShutdownHook(crashReportThread);
+        }
 
         proxy.preInit(event);
-        Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
+        config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
@@ -113,7 +114,7 @@ public class HxCCore {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Config.commands) CommandBase.initCommands(event);
+        if (config.commands) CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists()) {

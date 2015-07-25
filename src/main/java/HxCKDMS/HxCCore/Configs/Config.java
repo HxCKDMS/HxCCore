@@ -24,6 +24,7 @@ public class Config
     public static String TagFormat;
     public static boolean GroupInChat;
     public static boolean TagInChat;
+    public static boolean autoCrashReporterEnabled;
 
     public String derp[] = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
@@ -37,6 +38,7 @@ public class Config
         CoolDownDisable = config.getBoolean("XPCoolDown", "Features", true, "True means you can absorb more XP per second, Aprox. 2x as much");
         XPBuffs = config.getBoolean("XPBuffs", "Features", true, "Do you want to enable XP Buffs?");
         commands = config.getBoolean("EnableCommands?", "Features", true, "Enable all HxCCommands. (Disable if you don't want any new commands)");
+        autoCrashReporterEnabled = config.getBoolean("CrashReporter", "Features", true, "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.");
 
         config.addCustomCategoryComment("Limits", "Any limitations are applied to HxCSkills as well");
         HPMax = config.getInt("MaxHP", "Limits", 100, 10, 2147000000, "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.");
@@ -44,7 +46,7 @@ public class Config
 
         config.addCustomCategoryComment("Permissions", "These Permissions names are up to you what you want them called!");
         PermLevelName = config.getStringList("GroupNames", "Permissions", new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"}, "Change this to anything you want as the group name, (Permission Level 0)");
-        PermLevelColor = config.getStringList("PermLevelColor", "Permissions", new String[]{"f","2","e","9", "6", "4"}, "PermLevel 0 - 5 Colours", derp);
+        PermLevelColor = config.getStringList("PermLevelColor", "Permissions", new String[]{"f", "2", "e", "9", "6", "4"}, "PermLevel 0 - 5 Colours", derp);
 
         PermDummy = config.getStringList("DummyPermList", "Permissions", new String[]{"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"}, "This is for below");
         PermLevels = config.get("Permissions", "PermLevels", new int[]{3, 1, 2, 2, 1, 3, 2, 0, 5, 1, 3, 4, 0, 4, 3, 0, 4, 0, 0, 5, 4}).getIntList();
