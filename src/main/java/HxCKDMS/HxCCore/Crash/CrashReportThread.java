@@ -57,7 +57,7 @@ public class CrashReportThread extends Thread {
     }
 
     private void sendToServer(String crash, String title, String mod) throws IOException {
-        Socket socket = new Socket(InetAddress.getLocalHost(), References.ERROR_REPORT_PORT);
+        Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
         String json = gson.toJson(new crashSendTemplate(crash, mod, title, References.VERSION));
