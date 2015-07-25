@@ -62,8 +62,7 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        CodersCheckThread.setName("HxCKDMS Contributors check thread");
-        CodersCheckThread.start();
+        config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
 
         if(Config.autoCrashReporterEnabled){
             FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
@@ -71,8 +70,9 @@ public class HxCCore {
             Runtime.getRuntime().addShutdownHook(crashReportThread);
         }
 
+        CodersCheckThread.setName("HxCKDMS Contributors check thread");
+        CodersCheckThread.start();
         proxy.preInit(event);
-        config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());

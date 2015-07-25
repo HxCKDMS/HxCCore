@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Crash;
 
-import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -43,19 +42,25 @@ public class CrashReportThread extends Thread {
         int lineNumber = 0;
         StringBuilder stringBuilder = new StringBuilder();
         String line;
+        String mod = null;
         while ((line = reader.readLine()) != null) {
             if(++lineNumber == 7) title = line;
             stringBuilder.append(line).append("\n");
+
+            if(mod == null && line.contains("at HxCKDMS.")) {
+                String[] test;
+                if((test = line.split("\\.")).length >= 2) mod = test[1];
+            }
         }
 
-        if (stringBuilder.toString().contains("at " + HxCCore.class.getPackage().getName())) sendToServer(stringBuilder.toString(), title);
+        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), title, mod);
     }
 
-    private void sendToServer(String crash, String title) throws IOException {
+    private void sendToServer(String crash, String title, String mod) throws IOException {
         Socket socket = new Socket(InetAddress.getLocalHost(), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-        String json = gson.toJson(new crashSendTemplate(crash, "HxCCore", title, References.VERSION));
+        String json = gson.toJson(new crashSendTemplate(crash, mod, title, References.VERSION));
 
         writer.write(json);
         writer.flush();
@@ -78,7 +83,7 @@ public class CrashReportThread extends Thread {
             calendar2.setTimeInMillis(file.lastModified());
 
             String name = file.getName();
-            return calendar.before(calendar2) && name.startsWith("crash-") && name.endsWith(isClient ? "-client.txt" : "-server.txt");
+            return calendar2.after(calendar) && name.startsWith("crash-");
         }
     }
 
