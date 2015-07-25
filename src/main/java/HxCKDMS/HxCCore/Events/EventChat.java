@@ -22,7 +22,6 @@ public class EventChat implements EventListener {
     public void onServerChatEvent(ServerChatEvent event){
         UUID UUID = event.player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-        String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
         String message = event.message;
 
