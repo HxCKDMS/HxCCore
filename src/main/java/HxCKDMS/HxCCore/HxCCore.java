@@ -57,7 +57,6 @@ public class HxCCore {
     
     public static HxCKDMS.HxCCore.Configs.Config Config;
 
-
     @Instance(References.MOD_ID)
     public static HxCCore instance;
 
@@ -67,6 +66,7 @@ public class HxCCore {
         CodersCheckThread.start();
 
         FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+
         crashReportThread.setName("HxCKDMS Crash check thread");
         Runtime.getRuntime().addShutdownHook(crashReportThread);
 

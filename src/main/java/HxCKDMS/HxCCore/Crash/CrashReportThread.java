@@ -1,23 +1,22 @@
 package HxCKDMS.HxCCore.Crash;
 
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class CrashReportThread extends Thread {
+    private Gson gson = new Gson();
+
     @Override
     public void run() {
         if(CrashHandler.hasCrashed){
-            System.out.println("CRASH!!!!!!!");
             try{
                 checkCrash(FMLCommonHandler.instance().getSide().isClient());
             }catch (Exception ignored){}
@@ -38,38 +37,30 @@ public class CrashReportThread extends Thread {
         }
         if (mostRecent == null) return;
 
-        byte[] crashFileBytes = Files.readAllBytes(Paths.get(mostRecent.getPath()));
-        String crashFileString = new String(crashFileBytes, "UTF-8");
+        BufferedReader reader = new BufferedReader(new FileReader(mostRecent));
 
-        if (crashFileString.contains("at " + HxCCore.class.getPackage().getName())) sendCrash(crashFileString);
-
-    }
-
-    private void sendCrash(String crash) throws IOException{
-        System.out.println(crash);
-
-        HttpURLConnection connection = (HttpURLConnection) new URL("http://paste.ee/api").openConnection();
-        connection.setDoOutput(true); connection.setDoInput(true);
-
-        Gson gson = new Gson();
-        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        //writer.write("key=1fead29cd2729b1786fe6b11df369328&description=HxCKDMS crash&language=java&paste=" + crash);
-        writer.flush();
-        writer.close();
-
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder sb = new StringBuilder();
+        String title = null;
+        int lineNumber = 0;
+        StringBuilder stringBuilder = new StringBuilder();
         String line;
-        while ((line = reader.readLine()) != null) sb.append(line).append("\n");
-
-        String status = (gson.fromJson(sb.toString(), pasteeeTemplate.class).status);
-
-        if(Objects.equals(status, "success")){
-            //GITHUB CODE
+        while ((line = reader.readLine()) != null) {
+            if(++lineNumber == 7) title = line;
+            stringBuilder.append(line).append("\n");
         }
 
-        connection.disconnect();
+        if (stringBuilder.toString().contains("at " + HxCCore.class.getPackage().getName())) sendToServer(stringBuilder.toString(), title);
+    }
+
+    private void sendToServer(String crash, String title) throws IOException {
+        Socket socket = new Socket(InetAddress.getLocalHost(), References.ERROR_REPORT_PORT);
+        PrintWriter writer = new PrintWriter(socket.getOutputStream());
+
+        String json = gson.toJson(new crashSendTemplate(crash, "HxCCore", title, References.VERSION));
+
+        writer.write(json);
+        writer.flush();
+        writer.close();
+        socket.close();
     }
 
     class filter implements FileFilter {
@@ -91,7 +82,17 @@ public class CrashReportThread extends Thread {
         }
     }
 
-    class pasteeeTemplate {
-        String status;
+    class crashSendTemplate {
+        String crash;
+        String mod;
+        String title;
+        String version;
+
+        public crashSendTemplate(String crash, String mod, String title, String version) {
+            this.crash = crash;
+            this.mod = mod;
+            this.title = title;
+            this.version = version;
+        }
     }
 }
