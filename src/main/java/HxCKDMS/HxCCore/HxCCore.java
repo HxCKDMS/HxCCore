@@ -3,6 +3,8 @@ package HxCKDMS.HxCCore;
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
+import HxCKDMS.HxCCore.Crash.CrashHandler;
+import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
@@ -42,6 +44,7 @@ public class HxCCore {
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
 
+    public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
@@ -52,8 +55,7 @@ public class HxCCore {
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
     
-    public static HxCKDMS.HxCCore.Configs.Config Config;
-
+    public static Config config;
 
     @Instance(References.MOD_ID)
     public static HxCCore instance;
@@ -63,8 +65,14 @@ public class HxCCore {
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
 
+        if(Config.autoCrashReporterEnabled){
+            FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+            crashReportThread.setName("HxCKDMS Crash check thread");
+            Runtime.getRuntime().addShutdownHook(crashReportThread);
+        }
+
         proxy.preInit(event);
-        Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
+        config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
@@ -106,7 +114,7 @@ public class HxCCore {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Config.commands) CommandBase.initCommands(event);
+        if (config.commands) CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists()) {
