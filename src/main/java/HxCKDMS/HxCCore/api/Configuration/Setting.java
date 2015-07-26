@@ -47,7 +47,19 @@ class Setting<T> {
         return name;
     }
 
+    public long getMaxValue() {
+        return maxValue;
+    }
+
+    public long getMinValue() {
+        return minValue;
+    }
+
+    public String[] getValidValues() {
+        return validValues;
+    }
+
     enum Type {
-        STRING, INTEGER, SHORT, BYTE, MAP, LIST, LONG, BOOLEAN
+        STRING, INTEGER, MAP, LIST, LONG, BOOLEAN
     }
 }
