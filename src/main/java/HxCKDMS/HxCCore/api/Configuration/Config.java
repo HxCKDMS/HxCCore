@@ -1,0 +1,58 @@
+package HxCKDMS.HxCCore.api.Configuration;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Config {
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Integer {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        int minValue();
+        int maxValue();
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Long {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        long minValue();
+        long maxValue();
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface String {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        java.lang.String[] validValues() default "";
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Boolean {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface List {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Map {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+    }
+}

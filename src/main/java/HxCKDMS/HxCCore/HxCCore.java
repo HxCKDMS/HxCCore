@@ -2,12 +2,15 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
 import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.ConfigurationFile;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
+import HxCKDMS.HxCCore.api.Configuration.Category;
+import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
@@ -43,6 +46,7 @@ public class HxCCore {
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
+    public static File HxCConfigDir;
 
     public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
@@ -62,6 +66,12 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
+        if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
+
+        HxCConfig hxCConfig = new HxCConfig();
+        registerCategories(hxCConfig);
+        hxCConfig.handleConfig(ConfigurationFile.class, new File(HxCConfigDir, "HxCCore.cfg"));
         config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
 
         if(Config.autoCrashReporterEnabled){
@@ -164,5 +174,10 @@ public class HxCCore {
 
     private static void registerPackets() {
         packetPipeLine.addPacket(MessageColor.class);
+    }
+
+    public static void registerCategories(HxCConfig config) {
+        config.registerCategory(new Category("Limits", "Any limitations are applied to HxCSkills as well"));
+        config.registerCategory(new Category("Testing", "Testing the new configuration system."));
     }
 }
