@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -27,13 +27,11 @@ public class EventChat implements EventListener {
 
 
         String ChatColor;
-        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f")) {
+        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
             ChatColor = CC + "f";
-        } else {
+        else
             ChatColor = CC + playerColor;
-        }
-        message = message.replace("&", CC).replace("%", "%%");
 
-        event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, getPlayerNickName(event.player), ChatColor + message));
+        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getPlayerNickName(event.player), ChatColor + message));
     }
 }

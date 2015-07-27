@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
@@ -22,7 +22,7 @@ public class CommandRepair implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[10], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Repair"), player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setItemDamage(0);

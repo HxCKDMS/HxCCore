@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
@@ -28,10 +28,10 @@ public class CommandClientInfo implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         boolean CanUse = true;
-        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Config.PermLevels[20], (EntityPlayerMP)sender);
+        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {
             if (args.length <= 3) {
-                if (!(sender instanceof EntityPlayerMP && args.length > 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
+                if (!(sender instanceof EntityPlayerMP && args.length <= 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
             }

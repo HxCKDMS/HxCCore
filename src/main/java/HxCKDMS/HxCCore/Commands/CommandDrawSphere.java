@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import HxCKDMS.HxCCore.api.ISubCommand;
@@ -28,7 +28,7 @@ public class CommandDrawSphere implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[19], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
                 int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);

@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Handlers;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -25,7 +25,7 @@ public class NBTFileIO {
         try {
             tagCompound = CompressedStreamTools.read(dataFile);
         } catch (IOException e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return tagCompound;
             } else {
@@ -58,7 +58,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return false;
             } else {
@@ -91,7 +91,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return "";
             } else {
@@ -124,7 +124,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -157,7 +157,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -190,7 +190,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -223,7 +223,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -256,7 +256,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -289,7 +289,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return 0;
             } else {
@@ -322,7 +322,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return null;
             } else {
@@ -355,7 +355,7 @@ public class NBTFileIO {
         try {
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return null;
             } else {
@@ -388,7 +388,7 @@ public class NBTFileIO {
         try{
             data = CompressedStreamTools.read(dataFile);
         } catch (Exception e) {
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
                 return false;
             } else {

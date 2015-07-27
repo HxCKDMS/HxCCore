@@ -1,10 +1,10 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,12 +20,12 @@ public class CommandSetPerms implements ISubCommand {
     String playerName;
     String CC = "\u00A7";
 
-    String PL0 = (CC + Config.PermLevelColor[0] + Config.PermLevelName[0]);
-    String PL1 = (CC + Config.PermLevelColor[1] + Config.PermLevelName[1]);
-    String PL2 = (CC + Config.PermLevelColor[2] + Config.PermLevelName[2]);
-    String PL3 = (CC + Config.PermLevelColor[3] + Config.PermLevelName[3]);
-    String PL4 = (CC + Config.PermLevelColor[4] + Config.PermLevelName[4]);
-    String PL5 = (CC + Config.PermLevelColor[5] + Config.PermLevelName[5]);
+    String PL0 = (CC + References.permColours[0] + References.permNames[0]);
+    String PL1 = (CC + References.permColours[1] + References.permNames[1]);
+    String PL2 = (CC + References.permColours[2] + References.permNames[2]);
+    String PL3 = (CC + References.permColours[3] + References.permNames[3]);
+    String PL4 = (CC + References.permColours[4] + References.permNames[4]);
+    String PL5 = (CC + References.permColours[5] + References.permNames[5]);
 
     @Override
     public String getCommandName() {
@@ -89,27 +89,27 @@ public class CommandSetPerms implements ISubCommand {
                 switch (permLevel) {
                     case 1:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[1] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL1 + "."));
                         break;
                     case 2:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[2] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL2 + "."));
                         break;
                     case 3:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[3] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL3 + "."));
                         break;
                     case 4:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[4] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL4 + "."));
                         break;
                     case 5:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[5] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL5 + "."));
                         break;
                     default:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[0] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PL0 + "."));
                         break;
                 }
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);

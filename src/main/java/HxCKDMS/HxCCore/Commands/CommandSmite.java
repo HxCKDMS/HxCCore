@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
@@ -25,7 +25,7 @@ public class CommandSmite implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[14], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Smite"), player);
             if (CanSend) {
                 if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
                 else smite(player);
