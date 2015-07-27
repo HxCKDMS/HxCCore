@@ -100,7 +100,7 @@ public class HxCConfig {
 
     private void handleLong(Class<?> clazz, Field field, Config.Long annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), null));
-        Setting<Long> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LONG, field.getName());
+        Setting<Long> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LONG, field.getName(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
