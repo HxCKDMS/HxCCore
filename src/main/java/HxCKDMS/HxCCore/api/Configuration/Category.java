@@ -33,7 +33,61 @@ public class Category {
 
             if(line.contains(":")) {
                 if(line.contains("<")) {
-                    if(line.contains(">")) continue;
+                    boolean hasNotEncounteredText = true;
+                    boolean hasEncounteredColumn = false;
+                    char[] chars = line.toCharArray();
+                    List<Object> values = new ArrayList<>();
+                    String type = "";
+                    String variableName = "";
+
+                    for(Character character : chars) {
+                        if(!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
+                            hasNotEncounteredText = false;
+                            type = character.toString();
+                        } else if (character.equals(':')) {
+                            hasEncounteredColumn = true;
+                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
+                            variableName += character.toString();
+                        } else if(character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
+                            break;
+                        }
+                    }
+
+                    while(!(line = reader.readLine()).contains(">")) {
+                        chars = line.toCharArray();
+                        String value = "";
+                        for (Character character : chars) {
+                            if (!character.equals('\t')) {
+                                value += character.toString();
+                            }
+                        }
+                        if(!value.equals("")) values.add(value);
+                    }
+
+                    switch (type) {
+                        case "I":
+                            List<Integer> list1 = new ArrayList<>();
+                            for(Object value : values) list1.add(Integer.parseInt((String) value));
+                            clazz.getField(variableName).set(clazz, list1);
+                            break;
+                        case "S":
+                            List<String> list2 = new ArrayList<>();
+                            for(Object value : values) list2.add((String) value);
+                            clazz.getField(variableName).set(clazz, list2);
+                            break;
+                        case "B":
+                            List<Boolean> list3 = new ArrayList<>();
+                            for(Object value : values) list3.add(Boolean.parseBoolean((String) value));
+                            clazz.getField(variableName).set(clazz, list3);
+                            break;
+                        case "L":
+                            List<Long> list4 = new ArrayList<>();
+                            for(Object value : values) list4.add(Long.parseLong((String) value));
+                            clazz.getField(variableName).set(clazz, list4);
+                            break;
+                    }
+
+
 
                     //List checking code
                 } else if(line.contains("[")) {
@@ -57,9 +111,9 @@ public class Category {
                         } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && character.equals('=')) {
                             hasEncounteredEquals = true;
                         } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && !hasEncounteredEquals) {
-                            variableName = variableName + character;
+                            variableName += character;
                         } else if(hasEncounteredColumn && hasEncounteredEquals) {
-                            contents = contents + character;
+                            contents += character;
                         }
                     }
 
@@ -108,12 +162,12 @@ public class Category {
                 stringBuilder.append("\tB:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
             } else if(setting.getType() == Setting.Type.LIST) {
                 Setting<List> aSetting = (Setting<List>) setting;
-                stringBuilder.append("\tList-").append(getTypeLetterForList(aSetting.getValue())).append(":").append(aSetting.getName()).append(" <\n");
+                stringBuilder.append("\t").append(getTypeLetterForList(aSetting.getValue())).append(":").append(aSetting.getName()).append(" <\n");
                 for(Object object : aSetting.getValue()) stringBuilder.append("\t\t").append(object).append("\n");
                 stringBuilder.append("\t>\n");
             } else if(setting.getType() == Setting.Type.MAP) {
                 Setting<Map> aSetting = (Setting<Map>) setting;
-                stringBuilder.append("\tMap-").append(getTypeLettersForMap(aSetting.getValue())).append(":").append(aSetting.getName()).append(" [\n");
+                stringBuilder.append("\t").append(getTypeLettersForMap(aSetting.getValue())).append(":").append(aSetting.getName()).append(" [\n");
                 for(Object object : aSetting.getValue().keySet()) stringBuilder.append("\t\t").append(object).append(" ~ ").append(aSetting.getValue().get(object)).append("\n");
                 stringBuilder.append("\t]\n");
             } else if(setting.getType() == Setting.Type.LONG) {
@@ -152,7 +206,7 @@ public class Category {
                 break;
             }
         }
-        stringBuilder.append("*");
+        stringBuilder.append("-");
         for(Object object : map.values()) {
             if (object instanceof String) {
                 stringBuilder.append("S");
