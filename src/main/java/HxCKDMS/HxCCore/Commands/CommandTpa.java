@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
@@ -26,7 +26,7 @@ public class CommandTpa implements ISubCommand {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             EntityPlayerMP PlayerThatTPs = null;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[18], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(18), player);
             if (CanSend) {
                 for (EntityPlayerMP key : HxCCore.tpaRequestList.keySet()) {
                     if (HxCCore.tpaRequestList.get(key) == player) {
@@ -64,7 +64,7 @@ public class CommandTpa implements ISubCommand {
                         EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                         if (PlayerThatTPs == null) {
                             HxCCore.tpaRequestList.put(player, player2);
-                            HxCCore.TpaTimeoutList.put(player, Config.TpaTimeout);
+                            HxCCore.TpaTimeoutList.put(player, Configurations.TpaTimeout);
                             player2.addChatComponentMessage(new ChatComponentText("Player: " + player.getDisplayName() + " wants to teleport to you."));
                             player.addChatComponentMessage(new ChatComponentText("Teleport request successfully sent to player: " + player2.getDisplayName() + "."));
                         } else {

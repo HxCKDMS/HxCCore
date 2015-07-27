@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -34,6 +34,6 @@ public class EventChat implements EventListener {
         }
         message = message.replace("&", CC).replace("%", "%%");
 
-        event.component = new ChatComponentTranslation(String.format(Config.ChatFormat, getPlayerNickName(event.player), ChatColor + message));
+        event.component = new ChatComponentTranslation(String.format(Configurations.ChatFormat, getPlayerNickName(event.player), ChatColor + message));
     }
 }

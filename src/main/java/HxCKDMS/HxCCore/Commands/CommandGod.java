@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -30,7 +30,7 @@ public class CommandGod implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[5], player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(5), player);
                     if (CanSend) {
                         String UUID = player.getUniqueID().toString();
                         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -20,12 +20,12 @@ public class CommandSetPerms implements ISubCommand {
     String playerName;
     String CC = "\u00A7";
 
-    String PL0 = (CC + Config.PermLevelColor[0] + Config.PermLevelName[0]);
-    String PL1 = (CC + Config.PermLevelColor[1] + Config.PermLevelName[1]);
-    String PL2 = (CC + Config.PermLevelColor[2] + Config.PermLevelName[2]);
-    String PL3 = (CC + Config.PermLevelColor[3] + Config.PermLevelName[3]);
-    String PL4 = (CC + Config.PermLevelColor[4] + Config.PermLevelName[4]);
-    String PL5 = (CC + Config.PermLevelColor[5] + Config.PermLevelName[5]);
+    String PL0 = (CC + Configurations.PermLevelColor.get(0) + Configurations.PermLevelName.get(0));
+    String PL1 = (CC + Configurations.PermLevelColor.get(1) + Configurations.PermLevelName.get(1));
+    String PL2 = (CC + Configurations.PermLevelColor.get(2) + Configurations.PermLevelName.get(2));
+    String PL3 = (CC + Configurations.PermLevelColor.get(3) + Configurations.PermLevelName.get(3));
+    String PL4 = (CC + Configurations.PermLevelColor.get(4) + Configurations.PermLevelName.get(4));
+    String PL5 = (CC + Configurations.PermLevelColor.get(5) + Configurations.PermLevelName.get(5));
 
     @Override
     public String getCommandName() {
@@ -89,27 +89,27 @@ public class CommandSetPerms implements ISubCommand {
                 switch (permLevel) {
                     case 1:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[1] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(1) + "."));
                         break;
                     case 2:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[2] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(2) + "."));
                         break;
                     case 3:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[3] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(3) + "."));
                         break;
                     case 4:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[4] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(4) + "."));
                         break;
                     case 5:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[5] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(5) + "."));
                         break;
                     default:
                         Permissions.setInteger(playerName, permLevel);
-                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Config.PermLevelName[0] + "."));
+                        sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + Configurations.PermLevelName.get(0) + "."));
                         break;
                 }
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);

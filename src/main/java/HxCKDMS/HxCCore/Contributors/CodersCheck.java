@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Contributors;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
@@ -24,7 +24,7 @@ public class CodersCheck implements Runnable {
             loadAll(bufferedReader);
         } catch (Exception e) {
             LogHelper.error("Can not resolve HxCLib.txt", References.MOD_NAME);
-            if (Config.DebugMode) {
+            if (Configurations.DebugMode) {
                 e.printStackTrace();
             }
         }
@@ -49,7 +49,7 @@ public class CodersCheck implements Runnable {
                 }
             } catch (Exception e) {
                 LogHelper.error("Something went wrong in loading HxCLib report this to DrZed on github @ http://github.com/HxCLib/issues", References.MOD_NAME);
-                if (Config.DebugMode) {
+                if (Configurations.DebugMode) {
                     e.printStackTrace();
                 }
             }

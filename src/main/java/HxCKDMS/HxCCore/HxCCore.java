@@ -1,8 +1,7 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Configs.Config;
-import HxCKDMS.HxCCore.Configs.ConfigurationFile;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
@@ -30,7 +29,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,8 +56,6 @@ public class HxCCore {
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
-    
-    public static Config config;
 
     @Instance(References.MOD_ID)
     public static HxCCore instance;
@@ -71,10 +67,9 @@ public class HxCCore {
 
         HxCConfig hxCConfig = new HxCConfig();
         registerCategories(hxCConfig);
-        hxCConfig.handleConfig(ConfigurationFile.class, new File(HxCConfigDir, "HxCCore.cfg"));
-        config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
+        hxCConfig.handleConfig(Configurations.class, new File(HxCConfigDir, "HxCCore.cfg"));
 
-        if(Config.autoCrashReporterEnabled){
+        if(Configurations.autoCrashReporterEnabled){
             FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
             crashReportThread.setName("HxCKDMS Crash check thread");
             Runtime.getRuntime().addShutdownHook(crashReportThread);
@@ -108,23 +103,31 @@ public class HxCCore {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         packetPipeLine.postInitialize();
-        if (HxCKDMS.HxCCore.Configs.Config.DebugMode)event.getModState();
+        if (Configurations.DebugMode)event.getModState();
 
-        if (Loader.isModLoaded("HxCSkills"))LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCEnchants"))LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCWorldGen"))LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCLinkPads"))LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCBlocks"))LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
-        if (Loader.isModLoaded("magicenergy"))LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcbows"))LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcdiseases"))LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCSkills"))
+            LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCEnchants"))
+            LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCWorldGen"))
+            LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCLinkPads"))
+            LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCBlocks"))
+            LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
+        if (Loader.isModLoaded("magicenergy"))
+            LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcbows"))
+            LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcdiseases"))
+            LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
     }
 
     @EventHandler
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (config.commands) CommandBase.initCommands(event);
+        if (Configurations.commands) CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists()) {

@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import HxCKDMS.HxCCore.api.ISubCommand;
@@ -23,7 +23,7 @@ public class CommandSpawn implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[17], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(17), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 if (player.dimension != 0) {
