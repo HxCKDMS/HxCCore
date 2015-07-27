@@ -41,11 +41,11 @@ public class Category {
                         readNormalVariable(line, clazz);
                     }
                 }
-            }catch (NumberFormatException | NoSuchFieldException| IllegalAccessException ignored) {}
+            }catch (NumberFormatException | NoSuchFieldException | IllegalAccessException | NullPointerException ignored) {}
         }
     }
 
-    public void readNormalVariable(String line, Class<?> clazz) throws NoSuchFieldException, IllegalAccessException, NumberFormatException {
+    public void readNormalVariable(String line, Class<?> clazz) throws NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         boolean hasEncounteredEquals = false;
@@ -96,7 +96,7 @@ public class Category {
         }
     }
 
-    public void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException {
+    public void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
@@ -351,7 +351,7 @@ public class Category {
             }
     }
 
-    public void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException {
+    public void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
