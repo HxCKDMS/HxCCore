@@ -463,10 +463,10 @@ public class Category {
                 stringBuilder.append("\tL:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
             } else if(setting.getType() == Setting.Type.FLOAT) {
                 Setting<Float> aSetting = (Setting<Float>) setting;
-                stringBuilder.append("\tI:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
+                stringBuilder.append("\tF:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
             } else if(setting.getType() == Setting.Type.DOUBLE) {
                 Setting<Double> aSetting = (Setting<Double>) setting;
-                stringBuilder.append("\tB:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
+                stringBuilder.append("\tD:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
             }
             if(iterator.hasNext()) stringBuilder.append("\n");
         }
