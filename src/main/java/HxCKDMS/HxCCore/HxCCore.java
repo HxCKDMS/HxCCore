@@ -107,6 +107,10 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        System.out.println(ConfigurationFile.test);
+        System.out.println(ConfigurationFile.test2);
+        System.out.println(ConfigurationFile.test3);
+        System.out.println(ConfigurationFile.test4);
         packetPipeLine.postInitialize();
         if (HxCKDMS.HxCCore.Configs.Config.DebugMode)event.getModState();
 
@@ -177,7 +181,6 @@ public class HxCCore {
     }
 
     public static void registerCategories(HxCConfig config) {
-        config.registerCategory(new Category("Limits", "Any limitations are applied to HxCSkills as well"));
-        config.registerCategory(new Category("Testing", "Testing the new configuration system."));
+        config.registerCategory(new Category("General", "General Shitz aka it doesn't have its own fucking category"));
     }
 }

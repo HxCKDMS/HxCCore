@@ -1,8 +1,11 @@
 package HxCKDMS.HxCCore.api.Configuration;
 
+import java.lang.reflect.Field;
+
 class Setting<T> {
+    private Class<?> clazz;
     private String comment;
-    private T value;
+    private Field field;
     private Type type;
     private String name;
 
@@ -11,25 +14,28 @@ class Setting<T> {
 
     private String[] validValues;
 
-    public Setting(String comment, T value, Type type, String name) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name) {
+        this.clazz = clazz;
         this.comment = comment;
-        this.value = value;
+        this.field = field;
         this.type = type;
         this.name = name;
     }
 
-    public Setting(String comment, T value, Type type, String name, long minValue, long maxValue) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, long minValue, long maxValue) {
+        this.clazz = clazz;
         this.comment = comment;
-        this.value = value;
+        this.field = field;
         this.type = type;
         this.name = name;
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
 
-    public Setting(String comment, T value, Type type, String name, String[] validValues) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, String[] validValues) {
+        this.clazz = clazz;
         this.comment = comment;
-        this.value = value;
+        this.field = field;
         this.type = type;
         this.name = name;
         this.validValues = validValues;
@@ -40,7 +46,11 @@ class Setting<T> {
     }
 
     public T getValue() {
-        return value;
+        try {
+            return (T) field.get(clazz);
+        } catch (IllegalAccessException e) {
+            return null;
+        }
     }
 
     public String getComment() {

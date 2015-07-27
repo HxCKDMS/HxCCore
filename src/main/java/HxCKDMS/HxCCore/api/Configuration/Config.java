@@ -14,8 +14,8 @@ public @interface Config {
     @interface Integer {
         java.lang.String category() default "General";
         java.lang.String description() default "";
-        int minValue();
-        int maxValue();
+        int minValue() default java.lang.Integer.MIN_VALUE;
+        int maxValue() default java.lang.Integer.MAX_VALUE;
     }
 
     @Target(ElementType.FIELD)
@@ -23,8 +23,8 @@ public @interface Config {
     @interface Long {
         java.lang.String category() default "General";
         java.lang.String description() default "";
-        long minValue();
-        long maxValue();
+        long minValue() default java.lang.Long.MIN_VALUE;
+        long maxValue() default java.lang.Long.MAX_VALUE;
     }
 
     @Target(ElementType.FIELD)

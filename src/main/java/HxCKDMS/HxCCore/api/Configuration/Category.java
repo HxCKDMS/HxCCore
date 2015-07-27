@@ -2,10 +2,9 @@ package HxCKDMS.HxCCore.api.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.*;
 
 public class Category {
     private String name;
@@ -26,9 +25,66 @@ public class Category {
         return name;
     }
 
+    public void read(Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException {
+        String line;
+        while((line = reader.readLine()) != null) {
+            if(line.equals("}")) return;
+            if(line.contains("#")) continue;
+
+            if(line.contains(":")) {
+                if(line.contains("<")) {
+                    if(line.contains(">")) continue;
+
+                    //List checking code
+                } else if(line.contains("[")) {
+                    if(line.contains("]")) continue;
+
+                    //Map checking code
+                } else {
+                    boolean hasNotEncounteredText = true;
+                    boolean hasEncounteredColumn = false;
+                    boolean hasEncounteredEquals = false;
+                    char[] chars = line.toCharArray();
+                    String type = "";
+                    String variableName = "";
+                    String contents = "";
+                    for(Character character : chars) {
+                        if(!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
+                            hasNotEncounteredText = false;
+                            type = character.toString();
+                        } else if(character.equals(':')) {
+                            hasEncounteredColumn = true;
+                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && character.equals('=')) {
+                            hasEncounteredEquals = true;
+                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && !hasEncounteredEquals) {
+                            variableName = variableName + character;
+                        } else if(hasEncounteredColumn && hasEncounteredEquals) {
+                            contents = contents + character;
+                        }
+                    }
+
+                    switch (type) {
+                        case "I":
+                            clazz.getField(variableName).set(clazz, Integer.parseInt(contents));
+                            break;
+                        case "S":
+                            clazz.getField(variableName).set(clazz, contents);
+                            break;
+                        case "B":
+                            clazz.getField(variableName).set(clazz, Boolean.parseBoolean(contents));
+                            break;
+                        case "L":
+                            clazz.getField(variableName).set(clazz, Long.parseLong(contents));
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public StringBuilder write(StringBuilder stringBuilder) {
-        stringBuilder.append("\n").append(StringUtils.repeat('#', 106)).append("\n");
+        stringBuilder.append(StringUtils.repeat('#', 106)).append("\n");
         stringBuilder.append("# ").append(name).append("\n");
         stringBuilder.append(StringUtils.repeat('#', 106)).append("\n");
         stringBuilder.append("# ").append(comment).append("\n");
@@ -67,7 +123,7 @@ public class Category {
             if(iterator.hasNext()) stringBuilder.append("\n");
         }
 
-        stringBuilder.append("}\n\n");
+        stringBuilder.append("}\n\n\n");
         return stringBuilder;
     }
 
