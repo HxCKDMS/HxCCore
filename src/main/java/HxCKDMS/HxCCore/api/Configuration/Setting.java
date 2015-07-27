@@ -8,40 +8,36 @@ class Setting<T> {
     private Field field;
     private Type type;
     private String name;
-    private boolean force;
 
     private double minValue;
     private double maxValue;
 
     private String[] validValues;
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
-        this.force = force;
     }
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, double minValue, double maxValue) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, double minValue, double maxValue) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
-        this.force = force;
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, String[] validValues) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, String[] validValues) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
-        this.force = force;
         this.validValues = validValues;
     }
 
@@ -49,6 +45,7 @@ class Setting<T> {
         this.validValues = validValues;
     }
 
+    @SuppressWarnings("unchecked")
     public T getValue() {
         try {
             return (T) field.get(clazz);
@@ -67,10 +64,6 @@ class Setting<T> {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isForced() {
-        return force;
     }
 
     public double getMaxValue() {

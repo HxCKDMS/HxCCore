@@ -74,49 +74,49 @@ public class HxCConfig {
 
     private void handleString(Class<?> clazz, Field field, Config.String annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<String> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.STRING, field.getName(), annotation.forceReset(), annotation.validValues());
+        Setting<String> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.STRING, field.getName(), annotation.validValues());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleInteger(Class<?> clazz, Field field, Config.Integer annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Integer> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.INTEGER, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        Setting<Integer> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.INTEGER, field.getName(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleBoolean(Class<?> clazz, Field field, Config.Boolean annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Boolean> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.BOOLEAN, field.getName(), annotation.forceReset());
+        Setting<Boolean> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.BOOLEAN, field.getName());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleList(Class<?> clazz, Field field, Config.List annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<List> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LIST, field.getName(), annotation.forceReset());
+        Setting<List> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LIST, field.getName());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleMap(Class<?> clazz, Field field, Config.Map annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Map> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.MAP, field.getName(), annotation.forceReset());
+        Setting<Map> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.MAP, field.getName());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleLong(Class<?> clazz, Field field, Config.Long annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Long> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LONG, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        Setting<Long> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LONG, field.getName(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleFloat(Class<?> clazz, Field field, Config.Float annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Float> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.FLOAT, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        Setting<Float> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.FLOAT, field.getName(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
     private void handleDouble(Class<?> clazz, Field field, Config.Double annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
-        Setting<Double> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.DOUBLE, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        Setting<Double> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.DOUBLE, field.getName(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 
