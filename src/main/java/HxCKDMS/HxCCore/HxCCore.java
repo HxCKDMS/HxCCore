@@ -44,6 +44,7 @@ public class HxCCore {
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
+    public static File HxCConfigDir;
     public static File HxCConfigFile;
     public static HxCConfig hxCConfig = new HxCConfig();
 
@@ -63,7 +64,7 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        File HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
+        HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         registerCategories(hxCConfig);
