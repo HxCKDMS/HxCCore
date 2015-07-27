@@ -2,10 +2,7 @@ package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigurationFile {
     @Config.Integer(description = "Testing this pile of shit")
@@ -19,7 +16,7 @@ public class ConfigurationFile {
     @Config.Long(description = "Testing this pile of shit")
     public static Long test4 = 532138543264L;
     @Config.Map(description = "Testing this pile of shit")
-    public static Map<String, Integer> test6 = new HashMap<>();
+    public static Map<String, Integer> test6 = new LinkedHashMap<>();
 
     static {
         test6.put("test1", 1);

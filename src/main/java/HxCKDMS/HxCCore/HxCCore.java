@@ -107,11 +107,6 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        System.out.println(ConfigurationFile.test);
-        System.out.println(ConfigurationFile.test2);
-        System.out.println(ConfigurationFile.test3);
-        System.out.println(ConfigurationFile.test4);
-        System.out.println(ConfigurationFile.test5);
         packetPipeLine.postInitialize();
         if (HxCKDMS.HxCCore.Configs.Config.DebugMode)event.getModState();
 
