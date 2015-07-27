@@ -16,6 +16,7 @@ public @interface Config {
         java.lang.String description() default "";
         int minValue() default java.lang.Integer.MIN_VALUE;
         int maxValue() default java.lang.Integer.MAX_VALUE;
+        boolean forceReset() default false;
     }
 
     @Target(ElementType.FIELD)
@@ -25,6 +26,7 @@ public @interface Config {
         java.lang.String description() default "";
         long minValue() default java.lang.Long.MIN_VALUE;
         long maxValue() default java.lang.Long.MAX_VALUE;
+        boolean forceReset() default false;
     }
 
     @Target(ElementType.FIELD)
@@ -33,6 +35,7 @@ public @interface Config {
         java.lang.String category() default "General";
         java.lang.String description() default "";
         java.lang.String[] validValues() default "";
+        boolean forceReset() default false;
     }
 
     @Target(ElementType.FIELD)
@@ -40,6 +43,7 @@ public @interface Config {
     @interface Boolean {
         java.lang.String category() default "General";
         java.lang.String description() default "";
+        boolean forceReset() default false;
     }
 
     @Target(ElementType.FIELD)
@@ -47,6 +51,7 @@ public @interface Config {
     @interface List {
         java.lang.String category() default "General";
         java.lang.String description() default "";
+        boolean forceReset() default false;
     }
 
     @Target(ElementType.FIELD)
@@ -54,5 +59,6 @@ public @interface Config {
     @interface Map {
         java.lang.String category() default "General";
         java.lang.String description() default "";
+        boolean forceReset() default false;
     }
 }

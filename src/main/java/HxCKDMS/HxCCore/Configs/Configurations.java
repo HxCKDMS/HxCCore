@@ -7,42 +7,39 @@ import java.util.LinkedHashMap;
 
 @SuppressWarnings("unused")
 public class Configurations {
-//    config.addCustomCategoryComment("Chat", "These configuration settings are chat specific.");
-//    config.addCustomCategoryComment("Commands", "These command options specify specific values for commands.");
-//    config.addCustomCategoryComment("Permissions", "These Permissions names are up to you what you want them called!");
-//    config.addCustomCategoryComment("Limits", "Any limitations are applied to HxCSkills as well");
-//    config.addCustomCategoryComment("Features", "Any features are not required for anything else to work.");
-
     @Config.Boolean(description = "Debug Mode Enable? Can cause lag and console spam!")
     public static boolean DebugMode;
 
-    @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much")
-    public static boolean CoolDownDisable = true, test = false, fart = false, lepoot = true;
-    @Config.Boolean(description = "Do you want to enable XP Buffs?")
+    @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much", category = "Features")
+    public static boolean CoolDownDisable = true;
+    @Config.Boolean(description = "Do you want to enable XP Buffs?", category = "Features")
     public static boolean XPBuffs = true;
 
-    @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)")
+    @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
-    @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.")
+    @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")
     public static int HPMax = 100;
-    @Config.Integer(description = "The higher the number the more Max Damage!")
+    @Config.Integer(description = "The higher the number the more Max Damage!", category = "Features")
     public static int DMMax = 100;
-    @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.")
+    @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
     public static Integer TpaTimeout = 100;
 
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
-    @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
+    @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
     public static boolean autoCrashReporterEnabled = true;
     
-    @Config.Map(description = "")
+    @Config.Map(category = "Commands")
     public static LinkedHashMap<String, Integer> commands = new LinkedHashMap<>();
-    @Config.Map(description = "")
+    @Config.Map(category = "Permissions")
     public static LinkedHashMap<String, String> perms = new LinkedHashMap<>();
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
     public static HashMap<String, String> formats = new HashMap<>();
 
     @Config.Boolean()
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
+
+    @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT",forceReset = true)
+    public static String lastCheckedCrash = "";
     
     static {
         commands.put("Burn", 3);

@@ -44,7 +44,8 @@ public class HxCCore {
     public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCConfigDir;
+    public static File HxCConfigFile;
+    public static HxCConfig hxCConfig = new HxCConfig();
 
     public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
@@ -62,12 +63,11 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
+        File HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
-
-        HxCConfig hxCConfig = new HxCConfig();
+        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         registerCategories(hxCConfig);
-        hxCConfig.handleConfig(Configurations.class, new File(HxCConfigDir, "HxCCore.cfg"));
+        hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
 
         if(Configurations.autoCrashReporterEnabled){
             FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
@@ -148,9 +148,7 @@ public class HxCCore {
                 CustomWorldFile.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        } catch(IOException ignored) {}
     }
 
     private static void extendEnchantsArray() {
@@ -187,6 +185,10 @@ public class HxCCore {
     }
 
     public static void registerCategories(HxCConfig config) {
-        config.registerCategory(new Category("General", "General Shitz aka it doesn't have its own fucking category"));
+        config.registerCategory(new Category("General", "General Stuff"));
+        config.registerCategory(new Category("Features", "General Features"));
+        config.registerCategory(new Category("Commands", "Commands Configurations"));
+        config.registerCategory(new Category("Permissions", "Permissions System"));
+        config.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
     }
 }

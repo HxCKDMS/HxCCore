@@ -1,5 +1,7 @@
 package HxCKDMS.HxCCore.Crash;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -53,6 +55,10 @@ public class CrashReportThread extends Thread {
                 if((test = line.split("\\.")).length >= 2) mod = test[1];
             }
         }
+        if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
+
+        Configurations.lastCheckedCrash = mostRecent.getName();
+        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
 
         if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), title, mod);
     }

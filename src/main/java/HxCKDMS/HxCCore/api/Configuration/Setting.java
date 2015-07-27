@@ -8,36 +8,40 @@ class Setting<T> {
     private Field field;
     private Type type;
     private String name;
+    private boolean force;
 
     private long minValue;
     private long maxValue;
 
     private String[] validValues;
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
+        this.force = force;
     }
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, long minValue, long maxValue) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, long minValue, long maxValue) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
+        this.force = force;
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, String[] validValues) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, String[] validValues) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
         this.type = type;
         this.name = name;
+        this.force = force;
         this.validValues = validValues;
     }
 
@@ -63,6 +67,10 @@ class Setting<T> {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isForced() {
+        return force;
     }
 
     public long getMaxValue() {

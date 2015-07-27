@@ -27,12 +27,10 @@ public class EventChat implements EventListener {
 
 
         String ChatColor;
-        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f")) {
+        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
             ChatColor = CC + "f";
-        } else {
+        else
             ChatColor = CC + playerColor;
-        }
-        message = message.replace("&", CC).replace("%", "%%");
 
         event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getPlayerNickName(event.player), ChatColor + message));
     }
