@@ -17,6 +17,7 @@ public class CrashReportThread extends Thread {
     public void run() {
         if(CrashHandler.hasCrashed){
             try{
+                sleep(5000);
                 checkCrash(FMLCommonHandler.instance().getSide().isClient());
             }catch (Exception ignored){}
         }

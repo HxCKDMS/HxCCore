@@ -29,7 +29,7 @@ public class CommandKill implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(8), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Kill"), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
                     else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                 } else  sender.addChatMessage(new ChatComponentText("The kill command without arguments can only be executed from a player."));

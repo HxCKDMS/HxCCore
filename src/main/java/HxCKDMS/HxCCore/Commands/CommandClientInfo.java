@@ -28,7 +28,7 @@ public class CommandClientInfo implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         boolean CanUse = true;
-        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(20), (EntityPlayerMP)sender);
+        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {
             if (args.length <= 3) {
                 if (!(sender instanceof EntityPlayerMP && args.length > 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}

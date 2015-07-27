@@ -26,7 +26,7 @@ public class CommandSetHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(12), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("SetHome"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
 

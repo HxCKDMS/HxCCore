@@ -28,7 +28,7 @@ public class CommandHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(7), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("home"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

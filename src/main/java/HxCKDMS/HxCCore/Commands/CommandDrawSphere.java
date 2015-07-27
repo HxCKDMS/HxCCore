@@ -28,7 +28,7 @@ public class CommandDrawSphere implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(19), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
                 int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);

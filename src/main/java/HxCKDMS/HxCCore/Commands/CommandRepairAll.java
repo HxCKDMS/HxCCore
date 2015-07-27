@@ -27,7 +27,7 @@ public class CommandRepairAll implements ISubCommand
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(11), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
             if (CanSend) {
                 if (args.length == 2) target = CommandBase.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);

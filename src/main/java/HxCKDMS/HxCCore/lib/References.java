@@ -9,4 +9,7 @@ public class References {
 
     public static final String ERROR_REPORT_ADDRESS = "game.kappador.com";
     public static final int ERROR_REPORT_PORT = 7643;
+
+    public static String[] permNames = new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"};
+    public static char[] permColours = new char[]{'f', 'a', 'e', '1', '6', '4'};
 }

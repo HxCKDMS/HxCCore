@@ -28,7 +28,7 @@ public class CommandWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(15), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Warp"), player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 

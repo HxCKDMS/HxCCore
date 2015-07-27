@@ -26,7 +26,7 @@ public class CommandFly implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(4), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Fly"), player);
                     if (CanSend) {
                         player.capabilities.allowFlying = !player.capabilities.allowFlying;
                         player.capabilities.isFlying = !player.capabilities.isFlying;

@@ -56,7 +56,7 @@ public class Category {
                         }
 
                         while ((line = reader.readLine()) != null) {
-                            if (line.contains(">")) break;
+                            if (line.contains("\t>")) break;
                             chars = line.toCharArray();
                             String value = "";
                             for (Character character : chars) {
@@ -116,7 +116,8 @@ public class Category {
                         }
 
                         while ((line = reader.readLine()) != null) {
-                            if (line.contains("]")) break;
+                            if (line.startsWith("\t]")) break;
+                            System.out.println(line);
                             chars = line.toCharArray();
                             boolean hasEncounteredEquals = false;
                             String key = "";

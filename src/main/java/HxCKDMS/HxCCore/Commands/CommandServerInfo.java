@@ -31,7 +31,7 @@ public class CommandServerInfo implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP) sender;
-        boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(16), player);
+        boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("ServerInfo"), player);
         if (CanSend) {
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));

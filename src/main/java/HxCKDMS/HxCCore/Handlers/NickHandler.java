@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Handlers;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -25,34 +26,36 @@ public class NickHandler {
         String rawGroup;
         switch(SenderPermLevel){
             case 1:
-                rawGroup = CC + Configurations.PermLevelColor.get(1) + Configurations.PermLevelName.get(1);
+                rawGroup = CC + References.permColours[1] + References.permNames[1];
                 break;
             case 2:
-                rawGroup = CC + Configurations.PermLevelColor.get(2) + Configurations.PermLevelName.get(2);
+                rawGroup = CC + References.permColours[2] + References.permNames[2];
                 break;
             case 3:
-                rawGroup = CC + Configurations.PermLevelColor.get(3) + Configurations.PermLevelName.get(3);
+                rawGroup = CC + References.permColours[3] + References.permNames[3];
                 break;
             case 4:
-                rawGroup = CC + Configurations.PermLevelColor.get(4) + Configurations.PermLevelName.get(4);
+                rawGroup = CC + References.permColours[4] + References.permNames[4];
                 break;
             case 5:
-                rawGroup = CC + Configurations.PermLevelColor.get(5) + Configurations.PermLevelName.get(5);
+                rawGroup = CC + References.permColours[5] + References.permNames[5];
                 break;
             default:
-                rawGroup = CC + Configurations.PermLevelColor.get(0) + Configurations.PermLevelName.get(0);
+                rawGroup = CC + References.permColours[0] + References.permNames[0];
                 break;
         }
 
-        String tag = "";
+        String tag = Configurations.formats.get("HxCTag");
         if(HxCCore.coders.contains(UUID))
-            tag = String.format(Configurations.TagFormat, "&bHxC");
+            tag = String.format(tag, "&bHxC");
         else if(HxCCore.supporters.contains(UUID))
-            tag = String.format(Configurations.TagFormat, "&4HxC Supporter");
+            tag = String.format(tag, "&4HxC Supporter");
         else if(HxCCore.helpers.contains(UUID))
-            tag = String.format(Configurations.TagFormat, "&aHxC Helper");
+            tag = String.format(tag, "&aHxC Helper");
         else if(HxCCore.artists.contains(UUID))
-            tag = String.format(Configurations.TagFormat, "&cHxC Artist");
+            tag = String.format(tag, "&cHxC Artist");
+        else
+            tag = "";
 
         boolean isOpped = player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
 
@@ -62,13 +65,13 @@ public class NickHandler {
         String name = player.getDisplayName();
         String nicked = nick;
 
-        if (Configurations.GroupInChat) {
-            opped = String.format(Configurations.GroupFormat, rawGroup) + opped;
-            name = String.format(Configurations.GroupFormat, rawGroup) + name;
-            nicked = String.format(Configurations.GroupFormat, rawGroup) + nicked;
+        if (Configurations.EnableGroupTagInChat) {
+            opped = String.format(Configurations.formats.get("GroupTag"), rawGroup) + opped;
+            name = String.format(Configurations.formats.get("GroupTag"), rawGroup) + name;
+            nicked = String.format(Configurations.formats.get("GroupTag"), rawGroup) + nicked;
         }
 
-        if(Configurations.TagInChat && !tag.equalsIgnoreCase("")){
+        if(Configurations.EnableHxCTagInChat && !tag.equalsIgnoreCase("")){
             opped = tag + opped;
             name = tag + name;
             nicked = tag + nicked;

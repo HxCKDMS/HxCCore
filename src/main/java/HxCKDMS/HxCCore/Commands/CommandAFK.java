@@ -32,7 +32,7 @@ public class CommandAFK implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(14), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("AFK"), player);
             if (CanSend) {
                 UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
                 ChatComponentText AFK = new ChatComponentText(player.getCommandSenderName() + " \u00A73has gone AFK.");

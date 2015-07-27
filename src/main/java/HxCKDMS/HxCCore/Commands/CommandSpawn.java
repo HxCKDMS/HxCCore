@@ -23,7 +23,7 @@ public class CommandSpawn implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(17), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Spawn"), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 if (player.dimension != 0) {

@@ -25,7 +25,7 @@ public class CommandNick implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(9), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Nick"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

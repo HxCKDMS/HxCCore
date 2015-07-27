@@ -75,6 +75,11 @@ public class HxCCore {
             Runtime.getRuntime().addShutdownHook(crashReportThread);
         }
 
+        for (int i = 0; i < 6; i++) {
+            References.permNames[i] = (String)Configurations.perms.keySet().toArray()[i];
+            References.permColours[i] = Configurations.perms.get(References.permNames[i]).charAt(0);
+        }
+
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
         proxy.preInit(event);
@@ -127,20 +132,22 @@ public class HxCCore {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Configurations.commands) CommandBase.initCommands(event);
+        if (Configurations.enableCommands)
+            CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
-        if (!WorldDir.exists()) {
+        if (!WorldDir.exists())
             WorldDir.mkdirs();
-        }
         HxCCoreDir = WorldDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
 
         try {
-            if (!CustomWorldFile.exists()) CustomWorldFile.createNewFile();
-            if (!PermissionsData.exists()) PermissionsData.createNewFile();
+            if (!CustomWorldFile.exists())
+                CustomWorldFile.createNewFile();
+            if (!PermissionsData.exists())
+                PermissionsData.createNewFile();
         } catch(IOException e) {
             e.printStackTrace();
         }

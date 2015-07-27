@@ -34,6 +34,6 @@ public class EventChat implements EventListener {
         }
         message = message.replace("&", CC).replace("%", "%%");
 
-        event.component = new ChatComponentTranslation(String.format(Configurations.ChatFormat, getPlayerNickName(event.player), ChatColor + message));
+        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getPlayerNickName(event.player), ChatColor + message));
     }
 }

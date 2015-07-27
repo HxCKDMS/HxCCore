@@ -22,7 +22,7 @@ public class CommandRepair implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.PermLevels.get(10), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Repair"), player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setItemDamage(0);
