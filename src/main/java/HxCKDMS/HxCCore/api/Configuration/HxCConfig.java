@@ -57,7 +57,7 @@ public class HxCConfig {
 
     private void handleString(Class<?> clazz, Field field, Config.String annotation) throws IllegalAccessException {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), null));
-        Setting<String> setting = new Setting<>(annotation.description(), (String) field.get(clazz), Setting.Type.STRING, field.getName());
+        Setting<String> setting = new Setting<>(annotation.description(), (String) field.get(clazz), Setting.Type.STRING, field.getName(), annotation.validValues());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 

@@ -30,7 +30,7 @@ public class Category {
     public StringBuilder write(StringBuilder stringBuilder) {
         stringBuilder.append("\n").append(StringUtils.repeat('#', 106)).append("\n");
         stringBuilder.append("# ").append(name).append("\n");
-        stringBuilder.append("#").append(StringUtils.repeat('#', 104)).append("#\n");
+        stringBuilder.append(StringUtils.repeat('#', 106)).append("\n");
         stringBuilder.append("# ").append(comment).append("\n");
         stringBuilder.append(StringUtils.repeat('#', 106)).append("\n").append("\n");
 
@@ -58,7 +58,7 @@ public class Category {
             } else if(setting.getType() == Setting.Type.MAP) {
                 Setting<Map> aSetting = (Setting<Map>) setting;
                 stringBuilder.append("\tMap-").append(getTypeLettersForMap(aSetting.getValue())).append(":").append(aSetting.getName()).append(" [\n");
-                for(Object object : aSetting.getValue().keySet()) stringBuilder.append("\t\t").append(object).append(" > ").append(aSetting.getValue().get(object)).append("\n");
+                for(Object object : aSetting.getValue().keySet()) stringBuilder.append("\t\t").append(object).append(" ~ ").append(aSetting.getValue().get(object)).append("\n");
                 stringBuilder.append("\t]\n");
             } else if(setting.getType() == Setting.Type.LONG) {
                 Setting<Long> aSetting = (Setting<Long>) setting;

@@ -27,6 +27,14 @@ class Setting<T> {
         this.maxValue = maxValue;
     }
 
+    public Setting(String comment, T value, Type type, String name, String[] validValues) {
+        this.comment = comment;
+        this.value = value;
+        this.type = type;
+        this.name = name;
+        this.validValues = validValues;
+    }
+
     public Setting(String[] validValues) {
         this.validValues = validValues;
     }
