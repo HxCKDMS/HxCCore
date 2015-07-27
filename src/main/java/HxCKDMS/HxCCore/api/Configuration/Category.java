@@ -32,7 +32,7 @@ public class Category {
             if(line.contains("#")) continue;
 
             if(line.contains(":")) {
-                if(line.contains("<")) {
+                if(line.contains("<") && !line.contains("=")) {
                     boolean hasNotEncounteredText = true;
                     boolean hasEncounteredColumn = false;
                     char[] chars = line.toCharArray();
@@ -53,7 +53,8 @@ public class Category {
                         }
                     }
 
-                    while(!(line = reader.readLine()).contains(">")) {
+                    while((line = reader.readLine()) != null) {
+                        if(line.contains(">")) break;
                         chars = line.toCharArray();
                         String value = "";
                         for (Character character : chars) {
@@ -86,7 +87,7 @@ public class Category {
                             clazz.getField(variableName).set(clazz, list4);
                             break;
                     }
-                } else if(line.contains("[")) {
+                } else if(line.contains("[") && !line.contains("=")) {
                     boolean hasNotEncounteredText = true;
                     boolean hasEncounteredColumn = false;
                     char[] chars = line.toCharArray();
@@ -112,7 +113,8 @@ public class Category {
                         prevChar = character;
                     }
 
-                    while(!(line = reader.readLine()).contains("]")) {
+                    while((line = reader.readLine()) != null) {
+                        if(line.contains("]")) break;
                         chars = line.toCharArray();
                         boolean hasEncounteredEquals = false;
                         String key = "";
