@@ -277,8 +277,12 @@ public class Category {
         stringBuilder.append(StringUtils.repeat('#', 106)).append("\n");
         stringBuilder.append("# ").append(name).append("\n");
         stringBuilder.append(StringUtils.repeat('#', 106)).append("\n");
-        stringBuilder.append("# ").append(comment).append("\n");
-        stringBuilder.append(StringUtils.repeat('#', 106)).append("\n").append("\n");
+
+        if (!comment.equals("")) {
+            stringBuilder.append("# ").append(comment).append("\n");
+            stringBuilder.append(StringUtils.repeat('#', 106)).append("\n").append("\n");
+        }
+
 
         stringBuilder.append(name).append(" {\n");
 
@@ -286,7 +290,7 @@ public class Category {
         while(iterator.hasNext()){
             Setting setting = iterator.next();
 
-            stringBuilder.append("\t# ").append(setting.getComment()).append("\n");
+            if(!setting.getComment().equals("")) stringBuilder.append("\t# ").append(setting.getComment()).append("\n");
             if(setting.getType() == Setting.Type.STRING) {
                 Setting<String> aSetting = (Setting<String>) setting;
                 stringBuilder.append("\tS:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
