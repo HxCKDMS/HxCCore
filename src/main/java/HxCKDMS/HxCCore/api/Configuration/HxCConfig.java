@@ -51,7 +51,7 @@ public class HxCConfig {
                     categories.get(stringBuilder.toString()).read(clazz, reader);
                 }
             }
-        } catch (IOException | IllegalAccessException | NoSuchFieldException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

@@ -25,249 +25,269 @@ public class Category {
         return name;
     }
 
-    public void read(Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public void read(Class<?> clazz, BufferedReader reader) throws IOException {
         String line;
         while((line = reader.readLine()) != null) {
-            if(line.equals("}")) return;
-            if(line.contains("#")) continue;
+            try {
 
-            if(line.contains(":")) {
-                if(line.contains("<") && !line.contains("=")) {
-                    boolean hasNotEncounteredText = true;
-                    boolean hasEncounteredColumn = false;
-                    char[] chars = line.toCharArray();
-                    List<String> values = new ArrayList<>();
-                    String type = "";
-                    String variableName = "";
+                if (line.equals("}")) return;
+                if (line.contains("#")) continue;
 
-                    for(Character character : chars) {
-                        if(!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
-                            hasNotEncounteredText = false;
-                            type = character.toString();
-                        } else if (character.equals(':')) {
-                            hasEncounteredColumn = true;
-                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
-                            variableName += character.toString();
-                        } else if(character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
-                            break;
-                        }
-                    }
+                if (line.contains(":")) {
+                    if (line.contains("<") && !line.contains("=")) {
+                        boolean hasNotEncounteredText = true;
+                        boolean hasEncounteredColumn = false;
+                        char[] chars = line.toCharArray();
+                        List<String> values = new ArrayList<>();
+                        String type = "";
+                        String variableName = "";
 
-                    while((line = reader.readLine()) != null) {
-                        if(line.contains(">")) break;
-                        chars = line.toCharArray();
-                        String value = "";
                         for (Character character : chars) {
-                            if (!character.equals('\t')) {
-                                value += character.toString();
+                            if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
+                                hasNotEncounteredText = false;
+                                type = character.toString();
+                            } else if (character.equals(':')) {
+                                hasEncounteredColumn = true;
+                            } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
+                                variableName += character.toString();
+                            } else if (character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
+                                break;
                             }
                         }
-                        if(!value.equals("")) values.add(value);
-                    }
 
-                    switch (type) {
-                        case "I":
-                            List<Integer> list1 = new ArrayList<>();
-                            for(String value : values) list1.add(Integer.parseInt(value));
-                            clazz.getField(variableName).set(clazz, list1);
-                            break;
-                        case "S":
-                            List<String> list2 = new ArrayList<>();
-                            for(String value : values) list2.add(value);
-                            clazz.getField(variableName).set(clazz, list2);
-                            break;
-                        case "B":
-                            List<Boolean> list3 = new ArrayList<>();
-                            for(String value : values) list3.add(Boolean.parseBoolean(value));
-                            clazz.getField(variableName).set(clazz, list3);
-                            break;
-                        case "L":
-                            List<Long> list4 = new ArrayList<>();
-                            for(String value : values) list4.add(Long.parseLong(value));
-                            clazz.getField(variableName).set(clazz, list4);
-                            break;
-                    }
-                } else if(line.contains("[") && !line.contains("=")) {
-                    boolean hasNotEncounteredText = true;
-                    boolean hasEncounteredColumn = false;
-                    char[] chars = line.toCharArray();
-                    Character prevChar = ' ';
-                    Map<String, String> values = new LinkedHashMap<>();
-                    String keyType = "";
-                    String valueType = "";
-                    String variableName = "";
-
-                    for(Character character : chars) {
-                        if(!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
-                            hasNotEncounteredText = false;
-                            keyType = character.toString();
-                        } else if(prevChar.equals('-')) {
-                            valueType = character.toString();
-                        } else if (character.equals(':')) {
-                            hasEncounteredColumn = true;
-                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
-                            variableName += character.toString();
-                        } else if(character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
-                            break;
-                        }
-                        prevChar = character;
-                    }
-
-                    while((line = reader.readLine()) != null) {
-                        if(line.contains("]")) break;
-                        chars = line.toCharArray();
-                        boolean hasEncounteredEquals = false;
-                        String key = "";
-                        String value = "";
-
-                        for(Character character : chars) {
-                            if(character.equals('=') && !hasEncounteredEquals) {
-                                hasEncounteredEquals = true;
-                            } else if(!character.equals('\t') && !hasEncounteredEquals){
-                                key += character.toString();
-                            } else if(!character.equals('\t') && hasEncounteredEquals){
-                                value += character.toString();
-                            }
-                        }
-                        if(!key.equals("")) values.put(key, value);
-
-                        switch (keyType) {
-                            case "I":
-                                switch (valueType) {
-                                    case "I":
-                                        Map<Integer, Integer> map1 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map1.put(Integer.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map1);
-                                        break;
-                                    case "S":
-                                        Map<Integer, String> map2 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map2.put(Integer.valueOf(mapKey), values.get(mapKey));
-                                        clazz.getField(variableName).set(clazz, map2);
-                                        break;
-                                    case "B":
-                                        Map<Integer, Boolean> map3 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map3.put(Integer.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map3);
-                                        break;
-                                    case "L":
-                                        Map<Integer, Long> map4 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map4.put(Integer.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map4);
-                                        break;
+                        while ((line = reader.readLine()) != null) {
+                            if (line.contains(">")) break;
+                            chars = line.toCharArray();
+                            String value = "";
+                            for (Character character : chars) {
+                                if (!character.equals('\t')) {
+                                    value += character.toString();
                                 }
+                            }
+                            if (!value.equals("")) values.add(value);
+                        }
+
+                        switch (type) {
+                            case "I":
+                                List<Integer> list1 = new ArrayList<>();
+                                for (String value : values) list1.add(Integer.parseInt(value));
+                                clazz.getField(variableName).set(clazz, list1);
                                 break;
                             case "S":
-                                switch (valueType) {
-                                    case "I":
-                                        Map<String, Integer> map1 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map1.put(mapKey, Integer.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map1);
-                                        break;
-                                    case "S":
-                                        Map<String, String> map2 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map2.put(mapKey, values.get(mapKey));
-                                        clazz.getField(variableName).set(clazz, map2);
-                                        break;
-                                    case "B":
-                                        Map<String, Boolean> map3 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map3.put(mapKey, Boolean.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map3);
-                                        break;
-                                    case "L":
-                                        Map<String, Long> map4 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map4.put(mapKey, Long.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map4);
-                                        break;
-                                }
+                                List<String> list2 = new ArrayList<>();
+                                for (String value : values) list2.add(value);
+                                clazz.getField(variableName).set(clazz, list2);
                                 break;
                             case "B":
-                                switch (valueType) {
-                                    case "I":
-                                        Map<Boolean, Integer> map1 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map1.put(Boolean.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map1);
-                                        break;
-                                    case "S":
-                                        Map<Boolean, String> map2 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map2.put(Boolean.valueOf(mapKey), values.get(mapKey));
-                                        clazz.getField(variableName).set(clazz, map2);
-                                        break;
-                                    case "B":
-                                        Map<Boolean, Boolean> map3 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map3.put(Boolean.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map3);
-                                        break;
-                                    case "L":
-                                        Map<Boolean, Long> map4 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map4.put(Boolean.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map4);
-                                        break;
-                                }
+                                List<Boolean> list3 = new ArrayList<>();
+                                for (String value : values) list3.add(Boolean.parseBoolean(value));
+                                clazz.getField(variableName).set(clazz, list3);
                                 break;
                             case "L":
-                                switch (valueType) {
-                                    case "I":
-                                        Map<Long, Integer> map1 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map1.put(Long.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map1);
-                                        break;
-                                    case "S":
-                                        Map<Long, String> map2 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map2.put(Long.valueOf(mapKey), values.get(mapKey));
-                                        clazz.getField(variableName).set(clazz, map2);
-                                        break;
-                                    case "B":
-                                        Map<Long, Boolean> map3 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map3.put(Long.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map3);
-                                        break;
-                                    case "L":
-                                        Map<Long, Long> map4 = new LinkedHashMap<>();
-                                        for(String mapKey : values.keySet()) map4.put(Long.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
-                                        clazz.getField(variableName).set(clazz, map4);
-                                        break;
+                                List<Long> list4 = new ArrayList<>();
+                                for (String value : values) list4.add(Long.parseLong(value));
+                                clazz.getField(variableName).set(clazz, list4);
+                                break;
+                        }
+                    } else if (line.contains("[") && !line.contains("=")) {
+                        boolean hasNotEncounteredText = true;
+                        boolean hasEncounteredColumn = false;
+                        char[] chars = line.toCharArray();
+                        Character prevChar = ' ';
+                        Map<String, String> values = new LinkedHashMap<>();
+                        String keyType = "";
+                        String valueType = "";
+                        String variableName = "";
+
+                        for (Character character : chars) {
+                            if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
+                                hasNotEncounteredText = false;
+                                keyType = character.toString();
+                            } else if (prevChar.equals('-')) {
+                                valueType = character.toString();
+                            } else if (character.equals(':')) {
+                                hasEncounteredColumn = true;
+                            } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
+                                variableName += character.toString();
+                            } else if (character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
+                                break;
+                            }
+                            prevChar = character;
+                        }
+
+                        while ((line = reader.readLine()) != null) {
+                            if (line.contains("]")) break;
+                            chars = line.toCharArray();
+                            boolean hasEncounteredEquals = false;
+                            String key = "";
+                            String value = "";
+
+                            for (Character character : chars) {
+                                if (character.equals('=') && !hasEncounteredEquals) {
+                                    hasEncounteredEquals = true;
+                                } else if (!character.equals('\t') && !hasEncounteredEquals) {
+                                    key += character.toString();
+                                } else if (!character.equals('\t') && hasEncounteredEquals) {
+                                    value += character.toString();
                                 }
+                            }
+                            if (!key.equals("")) values.put(key, value);
+
+                            switch (keyType) {
+                                case "I":
+                                    switch (valueType) {
+                                        case "I":
+                                            Map<Integer, Integer> map1 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map1.put(Integer.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map1);
+                                            break;
+                                        case "S":
+                                            Map<Integer, String> map2 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map2.put(Integer.valueOf(mapKey), values.get(mapKey));
+                                            clazz.getField(variableName).set(clazz, map2);
+                                            break;
+                                        case "B":
+                                            Map<Integer, Boolean> map3 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map3.put(Integer.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map3);
+                                            break;
+                                        case "L":
+                                            Map<Integer, Long> map4 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map4.put(Integer.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map4);
+                                            break;
+                                    }
+                                    break;
+                                case "S":
+                                    switch (valueType) {
+                                        case "I":
+                                            Map<String, Integer> map1 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map1.put(mapKey, Integer.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map1);
+                                            break;
+                                        case "S":
+                                            Map<String, String> map2 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet()) map2.put(mapKey, values.get(mapKey));
+                                            clazz.getField(variableName).set(clazz, map2);
+                                            break;
+                                        case "B":
+                                            Map<String, Boolean> map3 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map3.put(mapKey, Boolean.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map3);
+                                            break;
+                                        case "L":
+                                            Map<String, Long> map4 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map4.put(mapKey, Long.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map4);
+                                            break;
+                                    }
+                                    break;
+                                case "B":
+                                    switch (valueType) {
+                                        case "I":
+                                            Map<Boolean, Integer> map1 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map1.put(Boolean.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map1);
+                                            break;
+                                        case "S":
+                                            Map<Boolean, String> map2 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map2.put(Boolean.valueOf(mapKey), values.get(mapKey));
+                                            clazz.getField(variableName).set(clazz, map2);
+                                            break;
+                                        case "B":
+                                            Map<Boolean, Boolean> map3 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map3.put(Boolean.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map3);
+                                            break;
+                                        case "L":
+                                            Map<Boolean, Long> map4 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map4.put(Boolean.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map4);
+                                            break;
+                                    }
+                                    break;
+                                case "L":
+                                    switch (valueType) {
+                                        case "I":
+                                            Map<Long, Integer> map1 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map1.put(Long.valueOf(mapKey), Integer.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map1);
+                                            break;
+                                        case "S":
+                                            Map<Long, String> map2 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map2.put(Long.valueOf(mapKey), values.get(mapKey));
+                                            clazz.getField(variableName).set(clazz, map2);
+                                            break;
+                                        case "B":
+                                            Map<Long, Boolean> map3 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map3.put(Long.valueOf(mapKey), Boolean.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map3);
+                                            break;
+                                        case "L":
+                                            Map<Long, Long> map4 = new LinkedHashMap<>();
+                                            for (String mapKey : values.keySet())
+                                                map4.put(Long.valueOf(mapKey), Long.valueOf(values.get(mapKey)));
+                                            clazz.getField(variableName).set(clazz, map4);
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                    } else {
+                        boolean hasNotEncounteredText = true;
+                        boolean hasEncounteredColumn = false;
+                        boolean hasEncounteredEquals = false;
+                        char[] chars = line.toCharArray();
+                        String type = "";
+                        String variableName = "";
+                        String contents = "";
+                        for (Character character : chars) {
+                            if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
+                                hasNotEncounteredText = false;
+                                type = character.toString();
+                            } else if (character.equals(':')) {
+                                hasEncounteredColumn = true;
+                            } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && character.equals('=')) {
+                                hasEncounteredEquals = true;
+                            } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && !hasEncounteredEquals) {
+                                variableName += character;
+                            } else if (hasEncounteredColumn && hasEncounteredEquals) {
+                                contents += character;
+                            }
+                        }
+
+                        switch (type) {
+                            case "I":
+                                clazz.getField(variableName).set(clazz, Integer.parseInt(contents));
+                                break;
+                            case "S":
+                                clazz.getField(variableName).set(clazz, contents);
+                                break;
+                            case "B":
+                                clazz.getField(variableName).set(clazz, Boolean.parseBoolean(contents));
+                                break;
+                            case "L":
+                                clazz.getField(variableName).set(clazz, Long.parseLong(contents));
                                 break;
                         }
                     }
-                } else {
-                    boolean hasNotEncounteredText = true;
-                    boolean hasEncounteredColumn = false;
-                    boolean hasEncounteredEquals = false;
-                    char[] chars = line.toCharArray();
-                    String type = "";
-                    String variableName = "";
-                    String contents = "";
-                    for(Character character : chars) {
-                        if(!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
-                            hasNotEncounteredText = false;
-                            type = character.toString();
-                        } else if(character.equals(':')) {
-                            hasEncounteredColumn = true;
-                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && character.equals('=')) {
-                            hasEncounteredEquals = true;
-                        } else if(!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && !hasEncounteredEquals) {
-                            variableName += character;
-                        } else if(hasEncounteredColumn && hasEncounteredEquals) {
-                            contents += character;
-                        }
-                    }
-
-                    switch (type) {
-                        case "I":
-                            clazz.getField(variableName).set(clazz, Integer.parseInt(contents));
-                            break;
-                        case "S":
-                            clazz.getField(variableName).set(clazz, contents);
-                            break;
-                        case "B":
-                            clazz.getField(variableName).set(clazz, Boolean.parseBoolean(contents));
-                            break;
-                        case "L":
-                            clazz.getField(variableName).set(clazz, Long.parseLong(contents));
-                            break;
-                    }
                 }
+            }catch (NumberFormatException | NoSuchFieldException| IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }
