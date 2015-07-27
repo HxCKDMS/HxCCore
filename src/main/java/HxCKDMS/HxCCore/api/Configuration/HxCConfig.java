@@ -34,6 +34,10 @@ public class HxCConfig {
                         handleMap(clazz, field, (Config.Map) annotation);
                     } else if (annotation.annotationType() == Config.Long.class) {
                         handleLong(clazz, field, (Config.Long) annotation);
+                    } else if (annotation.annotationType() == Config.Float.class) {
+                        handleFloat(clazz, field, (Config.Float) annotation);
+                    } else if (annotation.annotationType() == Config.Double.class) {
+                        handleDouble(clazz, field, (Config.Double) annotation);
                     }
                 }
             }
@@ -101,6 +105,18 @@ public class HxCConfig {
     private void handleLong(Class<?> clazz, Field field, Config.Long annotation) {
         if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
         Setting<Long> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.LONG, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
+    }
+
+    private void handleFloat(Class<?> clazz, Field field, Config.Float annotation) {
+        if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
+        Setting<Float> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.FLOAT, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
+        categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
+    }
+
+    private void handleDouble(Class<?> clazz, Field field, Config.Double annotation) {
+        if(!categories.keySet().contains(annotation.category())) categories.put(annotation.category(), new Category(annotation.category(), ""));
+        Setting<Double> setting = new Setting<>(clazz, annotation.description(), field, Setting.Type.DOUBLE, field.getName(), annotation.forceReset(), annotation.minValue(), annotation.maxValue());
         categories.put(annotation.category(), categories.get(annotation.category()).addSetting(setting));
     }
 

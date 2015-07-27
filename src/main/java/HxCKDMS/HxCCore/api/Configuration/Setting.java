@@ -10,8 +10,8 @@ class Setting<T> {
     private String name;
     private boolean force;
 
-    private long minValue;
-    private long maxValue;
+    private double minValue;
+    private double maxValue;
 
     private String[] validValues;
 
@@ -24,7 +24,7 @@ class Setting<T> {
         this.force = force;
     }
 
-    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, long minValue, long maxValue) {
+    public Setting(Class<?> clazz, String comment, Field field, Type type, String name, boolean force, double minValue, double maxValue) {
         this.clazz = clazz;
         this.comment = comment;
         this.field = field;
@@ -73,11 +73,11 @@ class Setting<T> {
         return force;
     }
 
-    public long getMaxValue() {
+    public double getMaxValue() {
         return maxValue;
     }
 
-    public long getMinValue() {
+    public double getMinValue() {
         return minValue;
     }
 
@@ -86,6 +86,6 @@ class Setting<T> {
     }
 
     enum Type {
-        STRING, INTEGER, MAP, LIST, LONG, BOOLEAN
+        STRING, INTEGER, MAP, LIST, LONG, FLOAT, DOUBLE, BOOLEAN
     }
 }

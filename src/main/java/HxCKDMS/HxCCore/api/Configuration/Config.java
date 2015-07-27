@@ -31,6 +31,26 @@ public @interface Config {
 
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
+    @interface Float {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        float minValue() default java.lang.Float.MIN_VALUE;
+        float maxValue() default java.lang.Float.MAX_VALUE;
+        boolean forceReset() default false;
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Double {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        double minValue() default java.lang.Double.MIN_VALUE;
+        double maxValue() default java.lang.Double.MAX_VALUE;
+        boolean forceReset() default false;
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
     @interface String {
         java.lang.String category() default "General";
         java.lang.String description() default "";
