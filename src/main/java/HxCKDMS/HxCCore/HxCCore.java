@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES)
 public class HxCCore {
     public static File HxCCoreDir = null;
@@ -130,7 +130,6 @@ public class HxCCore {
     }
 
     @EventHandler
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
         if (Configurations.enableCommands)
