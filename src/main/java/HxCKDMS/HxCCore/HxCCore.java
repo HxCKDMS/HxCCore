@@ -64,17 +64,15 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+        crashReportThread.setName("HxCKDMS Crash check thread");
+        Runtime.getRuntime().addShutdownHook(crashReportThread);
+
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         registerCategories(hxCConfig);
         hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
-
-        if(Configurations.autoCrashReporterEnabled){
-            FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
-            crashReportThread.setName("HxCKDMS Crash check thread");
-            Runtime.getRuntime().addShutdownHook(crashReportThread);
-        }
 
         for (int i = 0; i < 6; i++) {
             References.permNames[i] = (String)Configurations.perms.keySet().toArray()[i];

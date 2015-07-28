@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Crash;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
 import cpw.mods.fml.common.ICrashCallable;
 
 public class CrashHandler implements ICrashCallable {
@@ -12,7 +13,12 @@ public class CrashHandler implements ICrashCallable {
 
     @Override
     public String call() throws Exception {
-        hasCrashed = true;
-        return "Will analyze crash log and send the error to github if HxCKDMS Core is possibly involved.";
+        if(Configurations.autoCrashReporterEnabled) {
+            hasCrashed = true;
+            return "Will analyze crash log and send the error to github if HxCKDMS Core is possibly involved.";
+        } else {
+            return "Auto reporter is disabled.";
+        }
+
     }
 }
