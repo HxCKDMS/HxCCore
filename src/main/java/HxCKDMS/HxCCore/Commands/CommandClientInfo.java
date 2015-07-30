@@ -40,7 +40,7 @@ public class CommandClientInfo implements ISubCommand {
 
     private void getClientInfo(ICommandSender sender, EntityPlayerMP player) {
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Player: %1$s.", getPlayerNameStyled(player))));
-        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("NickName: %1$s.", NickHandler.getPlayerNickName(player) + defaultColor)));
+        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("NickName: %1$s.", NickHandler.getMessageHeader(player) + defaultColor)));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Location: X: %1$s, Y: %2$s, Z: %3$s.", getCoordStyled(player.posX), getCoordStyled(player.posY), getCoordStyled(player.posZ))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Dimension: %1$s.", getDimensionStyled(player.dimension))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("GameMode: %1$s.", getGameModeStyled(player))));

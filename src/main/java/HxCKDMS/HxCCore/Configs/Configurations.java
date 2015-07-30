@@ -64,6 +64,11 @@ public class Configurations {
         commands.put("DrawSphere", 5);
         commands.put("ClientInfo", 4);
         commands.put("AFK", 0);
+        commands.put("Cannon", 3);
+        commands.put("Drain", 4);
+        commands.put("Broadcast", 4);
+        commands.put("Hat", 1);
+        commands.put("Path", 4);
 
         perms.put("Default", "f");
         perms.put("Friend", "2");
@@ -75,5 +80,6 @@ public class Configurations {
         formats.put("ChatFormat", "<%1$s> %2$s");
         formats.put("HxCTag", "&f[%1$s&f]");
         formats.put("GroupTag", "&f[%1$s&f]");
+        formats.put("BroadcastVariable", "[&6SERVER&f] <SENDER> &4MESSAGE");
     }
 }

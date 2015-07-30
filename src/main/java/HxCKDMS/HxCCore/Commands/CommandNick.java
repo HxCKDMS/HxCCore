@@ -2,10 +2,10 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
@@ -44,7 +44,7 @@ public class CommandNick implements ISubCommand {
                     }
 
                     NBTFileIO.setString(CustomPlayerData, "nickname", nick);
-                    player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", NickHandler.CC)));
+                    player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", References.CC)));
                 }
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         } else sender.addChatMessage(new ChatComponentText("Only a player can use this command."));

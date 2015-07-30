@@ -1,91 +1,79 @@
 package HxCKDMS.HxCCore.Handlers;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.util.UUID;
 
-public class NickHandler {
-    public final static String CC = "\u00A7";
+import static HxCKDMS.HxCCore.lib.References.*;
+import static HxCKDMS.HxCCore.Configs.Configurations.*;
 
-    public static String getPlayerNickName(EntityPlayerMP player){
+public class NickHandler {
+    public static String getMessageHeader(EntityPlayerMP player){
         UUID UUID = player.getUniqueID();
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-        String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
+        String colouredNick = getColouredNick(player);
 
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
 
-        //Color Code
-
-        String rawGroup;
+        String rawGroup, formattedString = colouredNick;
         switch(SenderPermLevel){
             case 1:
-                rawGroup = CC + References.permColours[1] + References.permNames[1];
+                rawGroup = CC + permColours[1] + permNames[1];
                 break;
             case 2:
-                rawGroup = CC + References.permColours[2] + References.permNames[2];
+                rawGroup = CC + permColours[2] + permNames[2];
                 break;
             case 3:
-                rawGroup = CC + References.permColours[3] + References.permNames[3];
+                rawGroup = CC + permColours[3] + permNames[3];
                 break;
             case 4:
-                rawGroup = CC + References.permColours[4] + References.permNames[4];
+                rawGroup = CC + permColours[4] + permNames[4];
                 break;
             case 5:
-                rawGroup = CC + References.permColours[5] + References.permNames[5];
+                rawGroup = CC + permColours[5] + permNames[5];
                 break;
             default:
-                rawGroup = CC + References.permColours[0] + References.permNames[0];
+                rawGroup = CC + permColours[0] + permNames[0];
                 break;
         }
 
-        String tag = Configurations.formats.get("HxCTag");
+        if (EnableGroupTagInChat)
+            formattedString = String.format(formats.get("GroupTag"), rawGroup) + formattedString;
+
+        String tag = formats.get("HxCTag");
         if(HxCCore.coders.contains(UUID))
-            tag = String.format(tag, "&bHxC");
+            tag = String.format(tag, CC + "bHxC");
         else if(HxCCore.supporters.contains(UUID))
-            tag = String.format(tag, "&4HxC Supporter");
+            tag = String.format(tag, CC + "4HxC Supporter");
         else if(HxCCore.helpers.contains(UUID))
-            tag = String.format(tag, "&aHxC Helper");
+            tag = String.format(tag, CC + "aHxC Helper");
         else if(HxCCore.artists.contains(UUID))
-            tag = String.format(tag, "&cHxC Artist");
+            tag = String.format(tag, CC + "cHxC Artist");
         else
             tag = "";
 
+
+        if(EnableHxCTagInChat && !tag.equalsIgnoreCase(""))
+            formattedString = tag + formattedString;
+
+        return formattedString.replaceAll("&",CC);
+    }
+
+    public static String getColouredNick(EntityPlayerMP player) {
+        UUID UUID = player.getUniqueID();
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
+        String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
         boolean isOpped = player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
 
-        nick = CC + "f" + nick;
+        String tmp = nick.isEmpty() ? player.getDisplayName() : nick;
 
-        String opped = CC + "4" + player.getDisplayName() + CC + "f";
-        String name = player.getDisplayName();
-        String nicked = nick;
+        if (nick.isEmpty() && isOpped) tmp = CC + '4' + tmp;
+        else if (nick.isEmpty()) tmp = CC + 'f' + tmp;
 
-        if (Configurations.EnableGroupTagInChat) {
-            opped = String.format(Configurations.formats.get("GroupTag"), rawGroup) + opped;
-            name = String.format(Configurations.formats.get("GroupTag"), rawGroup) + name;
-            nicked = String.format(Configurations.formats.get("GroupTag"), rawGroup) + nicked;
-        }
-
-        if(Configurations.EnableHxCTagInChat && !tag.equalsIgnoreCase("")){
-            opped = tag + opped;
-            name = tag + name;
-            nicked = tag + nicked;
-        }
-
-        nicked = nicked.replace("&", CC) + CC + "f";
-        opped = opped.replace("&", CC) + CC + "f";
-        name = name.replace("&", CC) + CC + "f";
-
-        if(isOpped && nick.equals(CC + "f"))
-            return opped;
-        else if(nick.equals(CC + "f"))
-            return name;
-        else
-            return nicked;
+        return tmp + CC + 'f';
     }
 }

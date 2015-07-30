@@ -40,6 +40,14 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandNick.instance);
         registerSubCommand(CommandAFK.instance);
         registerSubCommand(CommandDrawSphere.instance);
+        registerSubCommand(CommandCannon.instance);
+        registerSubCommand(CommandDrain.instance);
+        registerSubCommand(CommandBack.instance);
+        registerSubCommand(CommandBroadcast.instance);
+        registerSubCommand(CommandExterminate.instance);
+        registerSubCommand(CommandHat.instance);
+        registerSubCommand(CommandPath.instance);
+        registerSubCommand(CommandMakeItRain.instance);
     }
     
     public static void initCommands(FMLServerStartingEvent event) {

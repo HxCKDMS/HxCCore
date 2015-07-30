@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandDrawSphere implements ISubCommand {
+    //TODO: Draw 3dShape and Draw Shape commands
+    //Pyramid, Cube, oval, rectangle :D MAYBE player
     public static CommandDrawSphere instance = new CommandDrawSphere();
 
     private String color = EnumChatFormatting.GREEN.toString();

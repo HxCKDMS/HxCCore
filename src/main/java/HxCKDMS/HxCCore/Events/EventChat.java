@@ -11,8 +11,8 @@ import java.io.File;
 import java.util.EventListener;
 import java.util.UUID;
 
-import static HxCKDMS.HxCCore.Handlers.NickHandler.CC;
-import static HxCKDMS.HxCCore.Handlers.NickHandler.getPlayerNickName;
+import static HxCKDMS.HxCCore.lib.References.CC;
+import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 
 @SuppressWarnings("unused")
 public class EventChat implements EventListener {
@@ -32,6 +32,6 @@ public class EventChat implements EventListener {
         else
             ChatColor = CC + playerColor;
 
-        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getPlayerNickName(event.player), ChatColor + message));
+        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), ChatColor + message));
     }
 }

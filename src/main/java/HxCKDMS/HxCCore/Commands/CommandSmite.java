@@ -37,7 +37,7 @@ public class CommandSmite implements ISubCommand {
     }
 
     public void smite(EntityPlayer target) {
-        target.worldObj.spawnEntityInWorld(new EntityLightningBolt(target.worldObj, target.posX, target.posY+100, target.posZ));
+        target.worldObj.addWeatherEffect(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ));
     }
 
     @SuppressWarnings("unchecked")

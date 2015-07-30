@@ -12,4 +12,6 @@ public class References {
 
     public static String[] permNames = new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"};
     public static char[] permColours = new char[]{'f', 'a', 'e', '1', '6', '4'};
+
+    public static final String CC = "\u00a7";
 }
