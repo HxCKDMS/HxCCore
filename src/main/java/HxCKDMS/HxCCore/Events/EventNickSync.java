@@ -21,7 +21,6 @@ public class EventNickSync implements EventListener {
     public void onServerTick(TickEvent.ServerTickEvent event){
         if(event.phase == TickEvent.Phase.START){
             if((counter++) == 200){
-                System.out.println("test");
                 List<EntityPlayerMP> players = (List<EntityPlayerMP>) HxCCore.server.getConfigurationManager().playerEntityList;
                 HxCCore.network.sendToAll(new MessageColor(getNickTagCompound(players)));
             }
