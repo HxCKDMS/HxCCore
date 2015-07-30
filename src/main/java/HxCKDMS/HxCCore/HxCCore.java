@@ -13,7 +13,6 @@ import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
-import HxCKDMS.HxCCore.network.PacketPipeline;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -24,6 +23,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
@@ -41,7 +43,6 @@ import java.util.UUID;
 public class HxCCore {
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
-    public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
     public static File HxCConfigDir;
@@ -55,6 +56,7 @@ public class HxCCore {
     public static volatile ArrayList<UUID> supporters = new ArrayList<>();
     public static volatile ArrayList<UUID> artists = new ArrayList<>();
     public static volatile ArrayList<UUID> mascots = new ArrayList<>();
+    public static SimpleNetworkWrapper network;
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
@@ -79,6 +81,9 @@ public class HxCCore {
             References.permColours[i] = Configurations.perms.get(References.permNames[i]).charAt(0);
         }
 
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(References.PACKET_CHANNEL_NAME);
+        network.registerMessage(MessageColor.Handler.class, MessageColor.class, 0, Side.CLIENT);
+
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
         proxy.preInit(event);
@@ -92,9 +97,6 @@ public class HxCCore {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        registerPackets();
-        packetPipeLine.initialize(References.PACKET_CHANNEL_NAME);
-
         MinecraftForge.EVENT_BUS.register(new EventGod());
         if (!Loader.isModLoaded("HxCSkills")) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
@@ -106,7 +108,6 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        packetPipeLine.postInitialize();
         if (Configurations.DebugMode)event.getModState();
 
         if (Loader.isModLoaded("HxCSkills"))
@@ -176,10 +177,6 @@ public class HxCCore {
         Potion[] potionTypes = new Potion[potionOffset + 256];
         System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
         HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
-    }
-
-    private static void registerPackets() {
-        packetPipeLine.addPacket(MessageColor.class);
     }
 
     public static void registerCategories(HxCConfig config) {
