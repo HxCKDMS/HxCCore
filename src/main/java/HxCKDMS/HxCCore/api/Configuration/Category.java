@@ -41,7 +41,7 @@ public class Category {
                         readNormalVariable(line, clazz);
                     }
                 }
-            }catch (NumberFormatException | NoSuchFieldException | IllegalAccessException | NullPointerException ignored) {}
+            }catch (NumberFormatException | NoSuchFieldException | IllegalAccessException | NullPointerException | ClassCastException ignored) {}
         }
     }
 
@@ -96,7 +96,8 @@ public class Category {
         }
     }
 
-    public void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException {
+    @SuppressWarnings("unchecked")
+    public void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException, ClassCastException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
@@ -147,32 +148,32 @@ public class Category {
                 case "I":
                     switch (valueType) {
                         case "I":
-                            Map<Integer, Integer> map1 = new LinkedHashMap<>();
+                            Map<Integer, Integer> map1 = (Map<Integer, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(Integer.parseInt(mapKey), Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<Integer, String> map2 = new LinkedHashMap<>();
+                            Map<Integer, String> map2 = (Map<Integer, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(Integer.parseInt(mapKey), values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<Integer, Boolean> map3 = new LinkedHashMap<>();
+                            Map<Integer, Boolean> map3 = (Map<Integer, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(Integer.parseInt(mapKey), Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<Integer, Long> map4 = new LinkedHashMap<>();
+                            Map<Integer, Long> map4 = (Map<Integer, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(Integer.parseInt(mapKey), Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<Integer, Float> map5 = new LinkedHashMap<>();
+                            Map<Integer, Float> map5 = (Map<Integer, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(Integer.parseInt(mapKey), Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<Integer, Double> map6 = new LinkedHashMap<>();
+                            Map<Integer, Double> map6 = (Map<Integer, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(Integer.parseInt(mapKey), Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
@@ -181,32 +182,32 @@ public class Category {
                 case "S":
                     switch (valueType) {
                         case "I":
-                            Map<String, Integer> map1 = new LinkedHashMap<>();
+                            Map<String, Integer> map1 = (Map<String, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(mapKey, Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<String, String> map2 = new LinkedHashMap<>();
+                            Map<String, String> map2 = (Map<String, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(mapKey, values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<String, Boolean> map3 = new LinkedHashMap<>();
+                            Map<String, Boolean> map3 = (Map<String, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(mapKey, Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<String, Long> map4 = new LinkedHashMap<>();
+                            Map<String, Long> map4 = (Map<String, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(mapKey, Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<String, Float> map5 = new LinkedHashMap<>();
+                            Map<String, Float> map5 = (Map<String, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(mapKey, Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<String, Double> map6 = new LinkedHashMap<>();
+                            Map<String, Double> map6 = (Map<String, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(mapKey, Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
@@ -215,32 +216,32 @@ public class Category {
                 case "B":
                     switch (valueType) {
                         case "I":
-                            Map<Boolean, Integer> map1 = new LinkedHashMap<>();
+                            Map<Boolean, Integer> map1 = (Map<Boolean, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(Boolean.parseBoolean(mapKey), Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<Boolean, String> map2 = new LinkedHashMap<>();
+                            Map<Boolean, String> map2 = (Map<Boolean, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(Boolean.parseBoolean(mapKey), values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<Boolean, Boolean> map3 = new LinkedHashMap<>();
+                            Map<Boolean, Boolean> map3 = (Map<Boolean, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(Boolean.parseBoolean(mapKey), Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<Boolean, Long> map4 = new LinkedHashMap<>();
+                            Map<Boolean, Long> map4 = (Map<Boolean, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(Boolean.parseBoolean(mapKey), Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<Boolean, Float> map5 = new LinkedHashMap<>();
+                            Map<Boolean, Float> map5 = (Map<Boolean, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(Boolean.parseBoolean(mapKey), Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<Boolean, Double> map6 = new LinkedHashMap<>();
+                            Map<Boolean, Double> map6 = (Map<Boolean, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(Boolean.parseBoolean(mapKey), Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
@@ -249,32 +250,32 @@ public class Category {
                 case "L":
                     switch (valueType) {
                         case "I":
-                            Map<Long, Integer> map1 = new LinkedHashMap<>();
+                            Map<Long, Integer> map1 = (Map<Long, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(Long.parseLong(mapKey), Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<Long, String> map2 = new LinkedHashMap<>();
+                            Map<Long, String> map2 = (Map<Long, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(Long.parseLong(mapKey), values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<Long, Boolean> map3 = new LinkedHashMap<>();
+                            Map<Long, Boolean> map3 = (Map<Long, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(Long.parseLong(mapKey), Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<Long, Long> map4 = new LinkedHashMap<>();
+                            Map<Long, Long> map4 = (Map<Long, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(Long.parseLong(mapKey), Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<Long, Float> map5 = new LinkedHashMap<>();
+                            Map<Long, Float> map5 = (Map<Long, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(Long.parseLong(mapKey), Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<Long, Double> map6 = new LinkedHashMap<>();
+                            Map<Long, Double> map6 = (Map<Long, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(Long.parseLong(mapKey), Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
@@ -283,32 +284,32 @@ public class Category {
                 case "F":
                     switch (valueType) {
                         case "I":
-                            Map<Float, Integer> map1 = new LinkedHashMap<>();
+                            Map<Float, Integer> map1 = (Map<Float, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(Float.parseFloat(mapKey), Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<Float, String> map2 = new LinkedHashMap<>();
+                            Map<Float, String> map2 = (Map<Float, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(Float.parseFloat(mapKey), values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<Float, Boolean> map3 = new LinkedHashMap<>();
+                            Map<Float, Boolean> map3 = (Map<Float, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(Float.parseFloat(mapKey), Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<Float, Long> map4 = new LinkedHashMap<>();
+                            Map<Float, Long> map4 = (Map<Float, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(Float.parseFloat(mapKey), Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<Float, Float> map5 = new LinkedHashMap<>();
+                            Map<Float, Float> map5 = (Map<Float, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(Float.parseFloat(mapKey), Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<Float, Double> map6 = new LinkedHashMap<>();
+                            Map<Float, Double> map6 =  (Map<Float, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(Float.parseFloat(mapKey), Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
@@ -317,32 +318,32 @@ public class Category {
                 case "D":
                     switch (valueType) {
                         case "I":
-                            Map<Double, Integer> map1 = new LinkedHashMap<>();
+                            Map<Double, Integer> map1 =  (Map<Double, Integer>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map1.put(Double.parseDouble(mapKey), Integer.parseInt(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map1);
                             break;
                         case "S":
-                            Map<Double, String> map2 = new LinkedHashMap<>();
+                            Map<Double, String> map2 =  (Map<Double, String>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map2.put(Double.parseDouble(mapKey), values.get(mapKey));
                             clazz.getField(variableName).set(clazz, map2);
                             break;
                         case "B":
-                            Map<Double, Boolean> map3 = new LinkedHashMap<>();
+                            Map<Double, Boolean> map3 =  (Map<Double, Boolean>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map3.put(Double.parseDouble(mapKey), Boolean.parseBoolean(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map3);
                             break;
                         case "L":
-                            Map<Double, Long> map4 = new LinkedHashMap<>();
+                            Map<Double, Long> map4 =  (Map<Double, Long>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map4.put(Double.parseDouble(mapKey), Long.parseLong(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map4);
                             break;
                         case "F":
-                            Map<Double, Float> map5 = new LinkedHashMap<>();
+                            Map<Double, Float> map5 =  (Map<Double, Float>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map5.put(Double.parseDouble(mapKey), Float.parseFloat(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map5);
                             break;
                         case "D":
-                            Map<Double, Double> map6 = new LinkedHashMap<>();
+                            Map<Double, Double> map6 = (Map<Double, Double>) clazz.getField(variableName).get(clazz);
                             for (String mapKey : values.keySet()) map6.put(Double.parseDouble(mapKey), Double.parseDouble(values.get(mapKey)));
                             clazz.getField(variableName).set(clazz, map6);
                             break;
