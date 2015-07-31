@@ -15,7 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class HxCTransformer implements IClassTransformer {
     private static final String[] classesBeingTransformed = {
-            "net.minecraft.client.renderer.entity.Render",
+            "net.minecraft.client.renderer.entity.RendererLivingEntity"
     };
 
     @Override
@@ -32,7 +32,7 @@ public class HxCTransformer implements IClassTransformer {
             classReader.accept(classNode, 0);
             switch (index){
                 case 0:
-                    TransformRender(classNode);
+                    TransformRendererLivingEntity(classNode);
                     break;
             }
 
@@ -45,26 +45,34 @@ public class HxCTransformer implements IClassTransformer {
         return classBeingTransformed;
     }
 
-    private static void TransformRender(ClassNode classNode) {
-        final String RENDERER = "func_147906_a";
-        final String RENDERER_DESC = "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
-        for (MethodNode methodNode : classNode.methods){
-            if(methodNode.name.equals(RENDERER) && methodNode.desc.equals(RENDERER_DESC)){
-                AbstractInsnNode targetNode = methodNode.instructions.get(0);
-                if(targetNode != null){
+    private static void TransformRendererLivingEntity(ClassNode classNode) {
+        final String RENDERER_LIVING_ENTITY = HxCLoader.RuntimeDeobf ? "func_77033_b" : "passSpecialRender";
+        final String RENDERER_LIVING_ENTITY_DESC = "(Lnet/minecraft/entity/EntityLivingBase;DDD)V";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if(methodNode.name.equals(RENDERER_LIVING_ENTITY) && methodNode.desc.equals(RENDERER_LIVING_ENTITY_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for(AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == INVOKEVIRTUAL && instruction.getNext().getNext().getOpcode() == INVOKEINTERFACE && instruction.getNext().getNext().getNext().getOpcode() == ASTORE)
+                        targetNode = instruction.getNext().getNext().getNext().getNext();
+
+                if(targetNode != null) {
+                    LabelNode newLabelNode = new LabelNode();
+
                     InsnList toInsert = new InsnList();
-                    toInsert.add(new VarInsnNode(ALOAD, 2));
+                    toInsert.add(new VarInsnNode(ALOAD, 13));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
 
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(RenderHooks.class), "getName", "(Ljava/lang/String;Lnet/minecraft/entity/Entity;)Ljava/lang/String;", false));
-                    toInsert.add(new VarInsnNode(ASTORE, 2));
+                    toInsert.add(new VarInsnNode(ASTORE, 13));
 
                     methodNode.instructions.insert(targetNode, toInsert);
-                    LogHelper.info("Succeeded transforming: Render", References.MOD_NAME + " ASM");
-                }else{
-                    LogHelper.info("Failed to transform: Render", References.MOD_NAME + " ASM");
+                    methodNode.instructions.insert(targetNode, newLabelNode);
                 }
+                hasTransformed = true;
+                LogHelper.info("Successfully transformed: RendererLivingEntity.", References.MOD_NAME + " ASM");
             }
         }
+        if(!hasTransformed) LogHelper.error("Failed to transform: RendererLivingEntity.", References.MOD_NAME + " ASM");
     }
 }
