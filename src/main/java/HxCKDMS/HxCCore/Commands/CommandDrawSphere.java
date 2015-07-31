@@ -33,9 +33,9 @@ public class CommandDrawSphere implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
-                int x = (int) CommandBase.func_110666_a(sender, player.posX, args[1]);
-                int y = (int) CommandBase.func_110665_a(sender, player.posY, args[2], 0, 0);
-                int z = (int) CommandBase.func_110666_a(sender, player.posZ, args[3]);
+                int x = (int) CommandBase.clamp_coord(sender, player.posX, args[1]);
+                int y = (int) CommandBase.clamp_double(sender, player.posY, args[2], 0, 0);
+                int z = (int) CommandBase.clamp_coord(sender, player.posZ, args[3]);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);

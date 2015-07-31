@@ -67,7 +67,7 @@ public class NickHandler {
         UUID UUID = player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
         String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
-        boolean isOpped = player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
+        boolean isOpped = player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
 
         String tmp = nick.isEmpty() ? player.getDisplayName() : nick;
 

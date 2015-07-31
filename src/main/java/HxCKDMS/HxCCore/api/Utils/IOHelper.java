@@ -40,7 +40,7 @@ public class IOHelper{
             IInventory inv = (IInventory)te;
             Block block = te.getBlockType();
             if(block instanceof BlockChest) {
-                inv = ((BlockChest)block).func_149951_m(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+                inv = ((BlockChest)block).getInventory(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
             }
             return inv;
         } else {
@@ -48,7 +48,7 @@ public class IOHelper{
         }
     }
     public static TileEntity getNeighbor(TileEntity te, ForgeDirection dir){
-        return te.getWorldObj().getTileEntity(te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ);
+        return te.getWorld().getTileEntity(te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ);
     }
     public static ItemStack extract(TileEntity inventory, ForgeDirection direction, boolean simulate){
         IInventory inv = getInventoryForTE(inventory);
@@ -58,7 +58,7 @@ public class IOHelper{
     public static ItemStack extract(IInventory inventory, ForgeDirection direction, boolean simulate){
         if(inventory instanceof ISidedInventory) {
             ISidedInventory isidedinventory = (ISidedInventory)inventory;
-            int[] accessibleSlotsFromSide = isidedinventory.getAccessibleSlotsFromSide(direction.ordinal());
+            int[] accessibleSlotsFromSide = isidedinventory.getSlotsForFace(direction.ordinal());
             for(int anAccessibleSlotsFromSide : accessibleSlotsFromSide) {
                 ItemStack stack = extract(inventory, direction, anAccessibleSlotsFromSide, simulate);
                 if(stack != null) return stack;
@@ -87,7 +87,7 @@ public class IOHelper{
         int[] accessibleSlots;
         if(inv != null) {
             if(inv instanceof ISidedInventory) {
-                accessibleSlots = ((ISidedInventory)inv).getAccessibleSlotsFromSide(side.ordinal());
+                accessibleSlots = ((ISidedInventory)inv).getSlotsForFace(side.ordinal());
             } else {
                 accessibleSlots = new int[inv.getSizeInventory()];
                 for(int i = 0; i < accessibleSlots.length; i++)
@@ -118,7 +118,7 @@ public class IOHelper{
         if(inv != null) {
             int[] accessibleSlots;
             if(inv instanceof ISidedInventory) {
-                accessibleSlots = ((ISidedInventory)inv).getAccessibleSlotsFromSide(direction.ordinal());
+                accessibleSlots = ((ISidedInventory)inv).getSlotsForFace(direction.ordinal());
             } else {
                 accessibleSlots = new int[inv.getSizeInventory()];
                 for(int i = 0; i < accessibleSlots.length; i++)
@@ -165,7 +165,7 @@ public class IOHelper{
         if(inv != null) {
             int[] accessibleSlots;
             if(inv instanceof ISidedInventory) {
-                accessibleSlots = ((ISidedInventory)inv).getAccessibleSlotsFromSide(dir.ordinal());
+                accessibleSlots = ((ISidedInventory)inv).getSlotsForFace(dir.ordinal());
             } else {
                 accessibleSlots = new int[inv.getSizeInventory()];
                 for(int i = 0; i < accessibleSlots.length; i++)
@@ -196,7 +196,7 @@ public class IOHelper{
     public static ItemStack insert(IInventory inventory, ItemStack itemStack, int side, boolean simulate){
         if(inventory instanceof ISidedInventory && side > -1) {
             ISidedInventory isidedinventory = (ISidedInventory)inventory;
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(side);
+            int[] aint = isidedinventory.getSlotsForFace(side);
             for(int j = 0; j < aint.length && itemStack != null && itemStack.stackSize > 0; ++j) {
                 itemStack = insert(inventory, itemStack, aint[j], side, simulate);
             }
@@ -272,7 +272,7 @@ public class IOHelper{
         float dX = world.rand.nextFloat() * 0.8F + 0.1F;
         float dY = world.rand.nextFloat() * 0.8F + 0.1F;
         float dZ = world.rand.nextFloat() * 0.8F + 0.1F;
-        EntityItem entityItem = new EntityItem(world, x + dX, y + dY, z + dZ, new ItemStack(itemStack.getItem(), itemStack.stackSize, itemStack.getItemDamage()));
+        EntityItem entityItem = new EntityItem(world, x + dX, y + dY, z + dZ, new ItemStack(itemStack.getItem(), itemStack.stackSize, itemStack.getMetadata()));
         if(itemStack.hasTagCompound()) {
             entityItem.getEntityItem().setTagCompound((NBTTagCompound)itemStack.getTagCompound().copy());
         }
@@ -285,7 +285,7 @@ public class IOHelper{
     }
     public static boolean canInterfaceWith(TileEntity tile, ForgeDirection direction){
         if(tile instanceof IInventory) {
-            return !(tile instanceof ISidedInventory) || ((ISidedInventory)tile).getAccessibleSlotsFromSide(direction.ordinal()).length > 0;
+            return !(tile instanceof ISidedInventory) || ((ISidedInventory)tile).getSlotsForFace(direction.ordinal()).length > 0;
         }
         return false;
     }

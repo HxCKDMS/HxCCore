@@ -56,7 +56,7 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         }
 
         @Override
-        public SocketAddress getSocketAddress() {
+        public SocketAddress getRemoteAddress() {
             return null;
         }
 
