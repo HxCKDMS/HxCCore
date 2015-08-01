@@ -23,6 +23,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
@@ -36,10 +37,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
-@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES)
+@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
@@ -107,6 +109,7 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
         FMLCommonHandler.instance().bus().register(new EventJoinWorld());
+        FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
     }
 
     @EventHandler
@@ -180,6 +183,11 @@ public class HxCCore {
         Potion[] potionTypes = new Potion[potionOffset + 256];
         System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
         HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
+    }
+
+    @NetworkCheckHandler
+    public boolean checkNetwork(Map<String, String> test, Side side) {
+        return !test.containsKey("HxCCore") || test.get("HxCCore").equals(References.VERSION);
     }
 
     public static void registerCategories(HxCConfig config) {

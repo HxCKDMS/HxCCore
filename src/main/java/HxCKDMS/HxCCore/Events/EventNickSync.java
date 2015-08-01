@@ -22,7 +22,7 @@ public class EventNickSync implements EventListener {
         if(event.phase == TickEvent.Phase.START){
             if((counter++) == 200){
                 List<EntityPlayerMP> players = (List<EntityPlayerMP>) HxCCore.server.getConfigurationManager().playerEntityList;
-                HxCCore.network.sendToAll(new MessageColor(getNickTagCompound(players)));
+                for(EntityPlayerMP player : players) if(EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID())) HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
             }
             if(counter > 200) counter = 0;
         }
@@ -31,7 +31,7 @@ public class EventNickSync implements EventListener {
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event){
         List<EntityPlayerMP> players = (List<EntityPlayerMP>) HxCCore.server.getConfigurationManager().playerEntityList;
-        HxCCore.network.sendToAll(new MessageColor(getNickTagCompound(players)));
+        for(EntityPlayerMP player : players) if(EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID())) HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
     }
 
     private NBTTagCompound getNickTagCompound(List<EntityPlayerMP> players) {
