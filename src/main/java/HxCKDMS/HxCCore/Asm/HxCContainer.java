@@ -6,7 +6,7 @@ import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class HxCContainer extends DummyModContainer {
     public HxCContainer() {
@@ -16,7 +16,7 @@ public class HxCContainer extends DummyModContainer {
         metadata.name = References.MOD_NAME + " ASM";
         metadata.description = "The HxC-Core ASM";
         metadata.version = References.VERSION;
-        metadata.authorList = Arrays.asList("Karelmikie3", "KeldonSlayer");
+        metadata.authorList = Collections.singletonList("HxCKDMS");
     }
 
     @Override
