@@ -53,6 +53,8 @@ public class CrashReportThread extends Thread {
                 if((words = line.split("\\.")).length >= 2) mod = words[1];
             }
         }
+        reader.close();
+
         if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
 
         Configurations.lastCheckedCrash = mostRecent.getName();

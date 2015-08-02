@@ -8,7 +8,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.TransformerExclusions({"HxCKDMS.HxCCore.Asm"})
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class HxCLoader implements IFMLLoadingPlugin {
-    public static boolean RuntimeDeobf = false;
+    static boolean RuntimeDeobf = false;
 
     @Override
     public String[] getASMTransformerClass() {
