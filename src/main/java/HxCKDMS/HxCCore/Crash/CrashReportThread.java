@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Calendar;
 
 public class CrashReportThread extends Thread {
     private Gson gson = new Gson();
@@ -26,7 +25,7 @@ public class CrashReportThread extends Thread {
 
     private void checkCrash(final boolean isClient) throws IOException {
         File folder = new File(isClient ? Minecraft.getMinecraft().mcDataDir : new File("."), "crash-reports");
-        File[] logs = folder.listFiles(new filter(isClient));
+        File[] logs = folder.listFiles(new filter());
 
         if (logs == null) return;
 
@@ -50,8 +49,8 @@ public class CrashReportThread extends Thread {
             stringBuilder.append(line).append("\n");
 
             if(mod == null && line.contains("at HxCKDMS.")) {
-                String[] test;
-                if((test = line.split("\\.")).length >= 2) mod = test[1];
+                String[] words;
+                if((words = line.split("\\.")).length >= 2) mod = words[1];
             }
         }
         if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
@@ -75,21 +74,9 @@ public class CrashReportThread extends Thread {
     }
 
     class filter implements FileFilter {
-        boolean isClient;
-
-        public filter(boolean isClient){
-            this.isClient = isClient;
-        }
-
         @Override
         public boolean accept(File file) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -7);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTimeInMillis(file.lastModified());
-
-            String name = file.getName();
-            return calendar2.after(calendar) && name.startsWith("crash-");
+            return file.getName().startsWith("crash-");
         }
     }
 
