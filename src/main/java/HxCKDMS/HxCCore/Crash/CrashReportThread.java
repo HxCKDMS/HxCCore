@@ -41,15 +41,8 @@ public class CrashReportThread extends Thread {
 
         StringBuilder stringBuilder = new StringBuilder();
         String line;
-        String mod = null;
-        while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line).append("\n");
+        while ((line = reader.readLine()) != null) stringBuilder.append(line).append("\n");
 
-            if((mod == null || mod.equals("HxCCore")) && line.contains("at HxCKDMS.")) {
-                String[] words;
-                if((words = line.split("\\.")).length >= 2) mod = words[1];
-            }
-        }
         reader.close();
 
         if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
@@ -57,14 +50,14 @@ public class CrashReportThread extends Thread {
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
 
-        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), mod);
+        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString());
     }
 
-    private void sendToServer(String crash, String mod) throws IOException {
+    private void sendToServer(String crash) throws IOException {
         Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-        String json = gson.toJson(new crashSendTemplate(crash, mod));
+        String json = gson.toJson(new crashSendTemplate(crash));
 
         writer.write(json);
         writer.flush();
@@ -81,11 +74,9 @@ public class CrashReportThread extends Thread {
 
     class crashSendTemplate {
         String crash;
-        String mod;
 
-        public crashSendTemplate(String crash, String mod) {
+        public crashSendTemplate(String crash) {
             this.crash = crash;
-            this.mod = mod;
         }
     }
 }
