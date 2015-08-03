@@ -48,7 +48,7 @@ public class CrashReportThread extends Thread {
             if(++lineNumber == 7) title = line;
             stringBuilder.append(line).append("\n");
 
-            if(mod == null && line.contains("at HxCKDMS.")) {
+            if((mod == null || mod.equals("HxCCore")) && line.contains("at HxCKDMS.")) {
                 String[] words;
                 if((words = line.split("\\.")).length >= 2) mod = words[1];
             }
