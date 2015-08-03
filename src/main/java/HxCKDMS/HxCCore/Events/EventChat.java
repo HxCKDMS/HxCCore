@@ -19,20 +19,20 @@ public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
-        try {
-            UUID UUID = event.player.getUniqueID();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-            String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
-            String message = event.message;
+        UUID UUID = event.player.getUniqueID();
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
+        if(!CustomPlayerData.exists()) return;
+
+        String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
+        String message = event.message;
 
 
-            String ChatColor;
-            if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
-                ChatColor = CC + "f";
-            else
-                ChatColor = CC + playerColor;
+        String ChatColor;
+        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
+            ChatColor = CC + "f";
+        else
+            ChatColor = CC + playerColor;
 
-            event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), ChatColor + message));
-        } catch (Exception ignored) {}
+        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), ChatColor + message));
     }
 }

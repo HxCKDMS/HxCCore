@@ -12,9 +12,7 @@ public class EventPlayerNetworkCheck implements EventListener {
 
     @SubscribeEvent
     public void NetworkChnnelRegistration(FMLNetworkEvent.CustomPacketRegistrationEvent event) {
-        if(event.operation.equals("REGISTER") && event.registrations.contains(References.PACKET_CHANNEL_NAME) && event.handler instanceof NetHandlerPlayServer) {
-            System.out.println("test");
+        if(event.operation.equals("REGISTER") && event.registrations.contains(References.PACKET_CHANNEL_NAME) && event.handler instanceof NetHandlerPlayServer)
             hasPlayerMod.add(((NetHandlerPlayServer) event.handler).playerEntity.getUniqueID());
-        }
     }
 }
