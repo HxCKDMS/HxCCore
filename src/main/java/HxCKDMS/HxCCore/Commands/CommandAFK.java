@@ -24,12 +24,12 @@ public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "afk";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("AFK"), player);

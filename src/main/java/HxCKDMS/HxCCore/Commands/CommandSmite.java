@@ -17,12 +17,12 @@ public class CommandSmite implements ISubCommand {
     public static CommandSmite instance = new CommandSmite();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "smite";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Smite"), player);
@@ -32,7 +32,7 @@ public class CommandSmite implements ISubCommand {
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         } else {
             if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
-            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
         }
     }
 

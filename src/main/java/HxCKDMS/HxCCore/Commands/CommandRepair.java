@@ -14,12 +14,12 @@ public class CommandRepair implements ISubCommand {
     public static CommandRepair instance = new CommandRepair();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "repair";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Repair"), player);
@@ -28,7 +28,7 @@ public class CommandRepair implements ISubCommand {
                 HeldItem.setItemDamage(0);
                 sender.addChatMessage(new ChatComponentText("\u00A7b" + HeldItem.getDisplayName() + " has been repaired."));
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be handleCommandd by a player."));
     }
 
     @Override

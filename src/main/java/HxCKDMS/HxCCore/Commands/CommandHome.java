@@ -21,12 +21,12 @@ public class CommandHome implements ISubCommand {
     public static CommandHome instance = new CommandHome();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "home";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("home"), player);
@@ -48,7 +48,7 @@ public class CommandHome implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 }
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be handleCommandd by a player."));
     }
 
     @Override

@@ -16,12 +16,12 @@ public class CommandPath implements ISubCommand {
     public static CommandPath instance = new CommandPath();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "path";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Path"), player);

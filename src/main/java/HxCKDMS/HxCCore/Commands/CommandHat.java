@@ -13,12 +13,12 @@ public class CommandHat implements ISubCommand {
     public static CommandHat instance = new CommandHat();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "hat";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Hat"), player);

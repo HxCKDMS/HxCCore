@@ -24,12 +24,12 @@ public class CommandServerInfo implements ISubCommand {
     private EnumChatFormatting TPSDefaultColor = EnumChatFormatting.AQUA;
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "serverInfo";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("ServerInfo"), player);
         if (CanSend) {

@@ -7,7 +7,7 @@ import net.minecraft.entity.Entity;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static HxCKDMS.HxCCore.lib.References.*;
+import static HxCKDMS.HxCCore.lib.References.CC;
 
 @SuppressWarnings("unused")
 public class RenderHooks {

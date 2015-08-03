@@ -16,12 +16,12 @@ public class CommandSpawn implements ISubCommand {
     public static CommandSpawn instance = new CommandSpawn();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "spawn";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Spawn"), player);

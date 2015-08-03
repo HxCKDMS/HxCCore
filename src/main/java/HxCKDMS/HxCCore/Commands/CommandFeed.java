@@ -19,12 +19,12 @@ public class CommandFeed implements ISubCommand {
     public static CommandFeed instance = new CommandFeed();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "feed";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayer){
@@ -37,7 +37,7 @@ public class CommandFeed implements ISubCommand {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
                 }else{
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
                 }
             }
             break;
@@ -51,7 +51,7 @@ public class CommandFeed implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
             }
         }
     }

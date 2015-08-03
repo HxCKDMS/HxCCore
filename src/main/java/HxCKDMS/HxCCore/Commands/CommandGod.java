@@ -21,12 +21,12 @@ public class CommandGod implements ISubCommand {
     public static CommandGod instance = new CommandGod();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "god";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1:
                 if(sender instanceof EntityPlayer) {
@@ -39,7 +39,7 @@ public class CommandGod implements ISubCommand {
                         NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                         player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode."));
                     } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
             break;
             case 2:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -51,7 +51,7 @@ public class CommandGod implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText(NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76You suddenly feel immortal." : "\u00A76You suddenly feel mortal."));
                 player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getDisplayName()));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
         }
     }
 

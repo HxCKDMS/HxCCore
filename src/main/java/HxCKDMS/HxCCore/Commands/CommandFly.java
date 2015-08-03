@@ -17,12 +17,12 @@ public class CommandFly implements ISubCommand {
     public static CommandFly instance = new CommandFly();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "fly";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1:
                 if(sender instanceof EntityPlayerMP){
@@ -34,7 +34,7 @@ public class CommandFly implements ISubCommand {
                         player.sendPlayerAbilities();
                         player.addChatComponentMessage(new ChatComponentText((player.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled")+" flight."));
                     } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
             break;
             case 2:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -45,7 +45,7 @@ public class CommandFly implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel lighter." : "\u00A7bYou feel heavier."));
                 player.addChatComponentMessage(new ChatComponentText((player2.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled") + " flight, for player " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
         }
     }
 

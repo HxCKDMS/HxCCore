@@ -12,12 +12,12 @@ public class CommandHelp implements ISubCommand {
     public static CommandHelp instance = new CommandHelp();
     
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "help";
     }
     
     @Override
-    public void execute(ICommandSender sender, String[] arguments) {
+    public void handleCommand(ICommandSender sender, String[] arguments) {
         sender.addChatMessage(new ChatComponentText("\u00A71Commands:"));
         
         boolean b = false;

@@ -58,21 +58,21 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
     
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "HxCCore";
     }
     
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + getName() + " help";
+        return "/" + getCommandName() + " help";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
+    public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
-                commands.get(k).execute(sender, args);
+                commands.get(k).handleCommand(sender, args);
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }
@@ -83,7 +83,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List getAliases() {
+    public List getCommandAliases() {
         List aliases = new ArrayList();
         aliases.add("HxCCore");
         aliases.add("HxC");
@@ -91,7 +91,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
     
     public static boolean registerSubCommand(ISubCommand subCommand) {
-        String k = subCommand.getName().toLowerCase();
+        String k = subCommand.getCommandName().toLowerCase();
         
         if (!commands.containsKey(k)) {
             commands.put(k, subCommand);

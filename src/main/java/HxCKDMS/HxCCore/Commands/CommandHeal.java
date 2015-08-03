@@ -19,11 +19,11 @@ public class CommandHeal implements ISubCommand {
     public static CommandHeal instance = new CommandHeal();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "heal";
     }
 
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1:
                 if(sender instanceof EntityPlayer){
@@ -35,7 +35,7 @@ public class CommandHeal implements ISubCommand {
                     } else {
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
                     }
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
                 break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
@@ -43,7 +43,7 @@ public class CommandHeal implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
                 sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
         }
     }
 

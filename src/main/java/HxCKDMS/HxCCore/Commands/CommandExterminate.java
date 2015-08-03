@@ -22,12 +22,12 @@ public class CommandExterminate implements ISubCommand {
     public static CommandExterminate instance = new CommandExterminate();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "exterminate";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Broadcast"), player);

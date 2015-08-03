@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -105,6 +107,7 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
         FMLCommonHandler.instance().bus().register(new EventJoinWorld());
+        FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
     }
 
     @Mod.EventHandler
@@ -150,7 +153,6 @@ public class HxCCore {
                 PermissionsData.createNewFile();
         } catch(IOException ignored) {}
     }
-
     private static void extendEnchantsArray() {
         /**
          * Made by DrZed inspired by
@@ -178,6 +180,11 @@ public class HxCCore {
         Potion[] potionTypes = new Potion[potionOffset + 256];
         System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
         HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
+    }
+
+    @NetworkCheckHandler
+    public boolean checkNetwork(Map<String, String> test, Side side) {
+        return !test.containsKey("HxCCore") || test.get("HxCCore").equals(References.VERSION);
     }
 
     public static void registerCategories(HxCConfig config) {

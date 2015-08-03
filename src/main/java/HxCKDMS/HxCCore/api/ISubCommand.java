@@ -9,9 +9,9 @@ import net.minecraft.command.WrongUsageException;
 import java.util.List;
 
 public interface ISubCommand {
-    String getName();
+    String getCommandName();
 
-    void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException, NumberInvalidException;
+    void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException, NumberInvalidException;
 
     List addTabCompletionOptions(ICommandSender sender, String[] args);
 }

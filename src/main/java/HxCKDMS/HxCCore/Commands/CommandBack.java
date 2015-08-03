@@ -17,12 +17,12 @@ public class CommandBack implements ISubCommand {
     public static CommandBack instance = new CommandBack();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "back";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Back"), player);

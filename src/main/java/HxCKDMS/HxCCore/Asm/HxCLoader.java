@@ -4,10 +4,12 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.MCVersion("1.8")
 @IFMLLoadingPlugin.TransformerExclusions({"HxCKDMS.HxCCore.Asm"})
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class HxCLoader implements IFMLLoadingPlugin {
+    static boolean RuntimeDeobf = false;
+
     @Override
     public String[] getASMTransformerClass() {
         return new String[]{
@@ -27,7 +29,7 @@ public class HxCLoader implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-
+        RuntimeDeobf = (Boolean) data.get("runtimeDeobfuscationEnabled");
     }
 
     @Override

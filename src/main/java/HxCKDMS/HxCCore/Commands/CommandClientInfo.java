@@ -22,12 +22,12 @@ public class CommandClientInfo implements ISubCommand {
     public static CommandClientInfo instance = new CommandClientInfo();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "clientInfo";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         boolean CanUse = true;
         if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {

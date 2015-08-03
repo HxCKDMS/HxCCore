@@ -23,18 +23,18 @@ public class CommandDrawSphere implements ISubCommand {
     private String color = EnumChatFormatting.GREEN.toString();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "drawSphere";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws NumberInvalidException {
+    public void handleCommand(ICommandSender sender, String[] args) throws NumberInvalidException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
-                BlockPos pos = CommandBase.func_175757_a(sender, args, 1, true);
+                BlockPos pos = CommandBase.parseBlockPos(sender, args, 1, true);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);

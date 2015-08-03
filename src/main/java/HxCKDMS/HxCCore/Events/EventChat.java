@@ -17,11 +17,12 @@ import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 @SuppressWarnings("unused")
 public class EventChat implements EventListener {
 
-
     @SubscribeEvent
-    public void onServerChatEvent(ServerChatEvent event){
+    public void onServerChatEvent(ServerChatEvent event) {
         UUID UUID = event.player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
+        if(!CustomPlayerData.exists()) return;
+
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
         String message = event.message;
 

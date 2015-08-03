@@ -17,12 +17,12 @@ public class CommandExtinguish implements ISubCommand {
     public static CommandExtinguish instance = new CommandExtinguish();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "extinguish";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
@@ -33,7 +33,7 @@ public class CommandExtinguish implements ISubCommand {
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
                     }
                 }else{
-                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                    sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
                 }
             }
             break;
@@ -45,7 +45,7 @@ public class CommandExtinguish implements ISubCommand {
             }
             break;
             default: {
-                throw new WrongUsageException("Correct usage is: /"+getName()+" [player]");
+                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
 
             }
         }

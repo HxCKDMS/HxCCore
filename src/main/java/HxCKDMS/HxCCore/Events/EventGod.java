@@ -21,6 +21,7 @@ public class EventGod implements EventListener {
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            if(!CustomPlayerData.exists()) return;
 
             if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
                 event.setCanceled(true);
@@ -34,6 +35,7 @@ public class EventGod implements EventListener {
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            if(!CustomPlayerData.exists()) return;
 
             if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
                 event.setCanceled(true);
@@ -47,6 +49,7 @@ public class EventGod implements EventListener {
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            if(!CustomPlayerData.exists()) return;
             if(NBTFileIO.getBoolean(CustomPlayerData, "god")){
                 player.heal(player.getMaxHealth() - player.getHealth());
                 player.getFoodStats().addStats(20, 20F);

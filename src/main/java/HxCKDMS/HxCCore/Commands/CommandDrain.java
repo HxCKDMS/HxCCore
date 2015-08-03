@@ -16,12 +16,12 @@ public class CommandDrain implements ISubCommand {
     public static CommandDrain instance = new CommandDrain();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "drain";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Drain"), player);

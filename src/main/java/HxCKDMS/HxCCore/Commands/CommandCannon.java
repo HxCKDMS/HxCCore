@@ -16,12 +16,12 @@ public class CommandCannon implements ISubCommand {
     public static CommandCannon instance = new CommandCannon();
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "cannon";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Cannon"), player);

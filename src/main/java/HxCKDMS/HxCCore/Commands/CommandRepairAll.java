@@ -19,13 +19,13 @@ public class CommandRepairAll implements ISubCommand
 
     EntityPlayer target;
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "repairAll";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
@@ -36,7 +36,7 @@ public class CommandRepairAll implements ISubCommand
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         } else {
             if (args.length == 2) repairItems(target);
-            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
         }
     }
 

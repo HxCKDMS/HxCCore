@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class HxCContainer extends DummyModContainer {
     public HxCContainer() {
@@ -16,7 +16,7 @@ public class HxCContainer extends DummyModContainer {
         metadata.name = References.MOD_NAME + " ASM";
         metadata.description = "The HxC-Core ASM";
         metadata.version = References.VERSION;
-        metadata.authorList = Arrays.asList("Karelmikie3", "KeldonSlayer");
+        metadata.authorList = Collections.singletonList("HxCKDMS");
     }
 
     @Override
