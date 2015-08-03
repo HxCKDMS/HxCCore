@@ -39,13 +39,10 @@ public class CrashReportThread extends Thread {
 
         BufferedReader reader = new BufferedReader(new FileReader(mostRecent));
 
-        String title = null;
-        int lineNumber = 0;
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         String mod = null;
         while ((line = reader.readLine()) != null) {
-            if(++lineNumber == 7) title = line;
             stringBuilder.append(line).append("\n");
 
             if((mod == null || mod.equals("HxCCore")) && line.contains("at HxCKDMS.")) {
@@ -60,14 +57,14 @@ public class CrashReportThread extends Thread {
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
 
-        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), title, mod);
+        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), mod);
     }
 
-    private void sendToServer(String crash, String title, String mod) throws IOException {
+    private void sendToServer(String crash, String mod) throws IOException {
         Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-        String json = gson.toJson(new crashSendTemplate(crash, mod, title));
+        String json = gson.toJson(new crashSendTemplate(crash, mod));
 
         writer.write(json);
         writer.flush();
@@ -85,12 +82,10 @@ public class CrashReportThread extends Thread {
     class crashSendTemplate {
         String crash;
         String mod;
-        String title;
 
-        public crashSendTemplate(String crash, String mod, String title) {
+        public crashSendTemplate(String crash, String mod) {
             this.crash = crash;
             this.mod = mod;
-            this.title = title;
         }
     }
 }
