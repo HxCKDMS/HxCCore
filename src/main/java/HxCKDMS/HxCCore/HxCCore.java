@@ -1,21 +1,23 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandBase;
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
+import HxCKDMS.HxCCore.Crash.CrashHandler;
+import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
+import HxCKDMS.HxCCore.api.Configuration.Category;
+import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
-import HxCKDMS.HxCCore.network.PacketPipeline;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +26,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,35 +41,56 @@ import java.util.UUID;
 public class HxCCore {
     public static File HxCCoreDir = null;
     public static MinecraftServer server;
-    public static final PacketPipeline packetPipeLine = new PacketPipeline();
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
+    public static File HxCConfigDir;
+    public static File HxCConfigFile;
+    public static HxCConfig hxCConfig = new HxCConfig();
 
+    public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
     public static volatile ArrayList<UUID> coders = new ArrayList<>();
     public static volatile ArrayList<UUID> helpers = new ArrayList<>();
     public static volatile ArrayList<UUID> supporters = new ArrayList<>();
     public static volatile ArrayList<UUID> artists = new ArrayList<>();
     public static volatile ArrayList<UUID> mascots = new ArrayList<>();
+    public static SimpleNetworkWrapper network;
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
-
-    public static HxCKDMS.HxCCore.Configs.Config Config;
-
 
     @Mod.Instance(References.MOD_ID)
     public static HxCCore instance;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
+        crashReportThread.setName("HxCKDMS Crash check thread");
+        Runtime.getRuntime().addShutdownHook(crashReportThread);
+
+        HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
+        if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
+        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
+        registerCategories(hxCConfig);
+        hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
+
+        if (Configurations.enableCommands)
+            MinecraftForge.EVENT_BUS.register(new EventBuildPath());
+
+        for (int i = 0; i < 6; i++) {
+            References.permNames[i] = (String)Configurations.perms.keySet().toArray()[i];
+            References.permColours[i] = Configurations.perms.get(References.permNames[i]).charAt(0);
+        }
+
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(References.PACKET_CHANNEL_NAME);
+        network.registerMessage(MessageColor.Handler.class, MessageColor.class, 0, Side.CLIENT);
+
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
-
         proxy.preInit(event);
-        Config = new Config(new Configuration(event.getSuggestedConfigurationFile()));
         extendEnchantsArray();
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
+//        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
         LogHelper.warn("Please guys can you start reporting the bugs as soon as you find them it's not hard and only takes like 2 minutes", References.MOD_NAME);
@@ -72,9 +98,6 @@ public class HxCCore {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        registerPackets();
-        packetPipeLine.initialize(References.PACKET_CHANNEL_NAME);
-
         MinecraftForge.EVENT_BUS.register(new EventGod());
         if (!Loader.isModLoaded("HxCSkills")) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
@@ -86,41 +109,46 @@ public class HxCCore {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInit(event);
-        packetPipeLine.postInitialize();
-        if (HxCKDMS.HxCCore.Configs.Config.DebugMode)event.getModState();
+        if (Configurations.DebugMode)event.getModState();
 
-        if (Loader.isModLoaded("HxCSkills"))LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCEnchants"))LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCWorldGen"))LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCLinkPads"))LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCBlocks"))LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
-        if (Loader.isModLoaded("magicenergy"))LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcbows"))LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcdiseases"))LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCSkills"))
+            LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCEnchants"))
+            LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCWorldGen"))
+            LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCLinkPads"))
+            LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCBlocks"))
+            LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
+        if (Loader.isModLoaded("magicenergy"))
+            LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcbows"))
+            LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
+        if (Loader.isModLoaded("hxcdiseases"))
+            LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
     }
 
     @Mod.EventHandler
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Config.commands) CommandBase.initCommands(event);
+        if (Configurations.enableCommands)
+            CommandBase.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
-        if (!WorldDir.exists()) {
+        if (!WorldDir.exists())
             WorldDir.mkdirs();
-        }
         HxCCoreDir = WorldDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
 
         try {
-            if (!CustomWorldFile.exists()) CustomWorldFile.createNewFile();
-            if (!PermissionsData.exists()) PermissionsData.createNewFile();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+            if (!CustomWorldFile.exists())
+                CustomWorldFile.createNewFile();
+            if (!PermissionsData.exists())
+                PermissionsData.createNewFile();
+        } catch(IOException ignored) {}
     }
 
     private static void extendEnchantsArray() {
@@ -152,7 +180,11 @@ public class HxCCore {
         HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
     }
 
-    private static void registerPackets() {
-        packetPipeLine.addPacket(MessageColor.class);
+    public static void registerCategories(HxCConfig config) {
+        config.registerCategory(new Category("General", "General Stuff"));
+        config.registerCategory(new Category("Features", "General Features"));
+        config.registerCategory(new Category("Commands", "Commands Configurations"));
+        config.registerCategory(new Category("Permissions", "Permissions System"));
+        config.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
     }
 }

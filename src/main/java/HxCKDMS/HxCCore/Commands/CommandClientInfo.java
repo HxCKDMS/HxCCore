@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
@@ -29,10 +29,10 @@ public class CommandClientInfo implements ISubCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
         boolean CanUse = true;
-        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Config.PermLevels[20], (EntityPlayerMP)sender);
+        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {
             if (args.length <= 3) {
-                if (!(sender instanceof EntityPlayerMP && args.length > 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
+                if (!(sender instanceof EntityPlayerMP && args.length <= 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
             }
@@ -41,7 +41,7 @@ public class CommandClientInfo implements ISubCommand {
 
     private void getClientInfo(ICommandSender sender, EntityPlayerMP player) {
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Player: %1$s.", getPlayerNameStyled(player))));
-        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("NickName: %1$s.", NickHandler.getPlayerNickName(player) + defaultColor)));
+        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("NickName: %1$s.", NickHandler.getMessageHeader(player) + defaultColor)));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Location: X: %1$s, Y: %2$s, Z: %3$s.", getCoordStyled(player.posX), getCoordStyled(player.posY), getCoordStyled(player.posZ))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Dimension: %1$s.", getDimensionStyled(player.dimension))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("GameMode: %1$s.", getGameModeStyled(player))));
@@ -72,7 +72,7 @@ public class CommandClientInfo implements ISubCommand {
     }
 
     private String getCoordStyled(double coord){
-        return EnumChatFormatting.AQUA + String.valueOf((int)coord) + defaultColor;
+        return EnumChatFormatting.AQUA.toString() +(int) coord + defaultColor;
     }
 
     private String getPlayerNameStyled(EntityPlayerMP player){

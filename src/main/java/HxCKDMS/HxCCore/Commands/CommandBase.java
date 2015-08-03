@@ -1,12 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.api.ISubCommand;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,34 +43,32 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandNick.instance);
         registerSubCommand(CommandAFK.instance);
         registerSubCommand(CommandDrawSphere.instance);
+        registerSubCommand(CommandCannon.instance);
+        registerSubCommand(CommandDrain.instance);
+        registerSubCommand(CommandBack.instance);
+        registerSubCommand(CommandBroadcast.instance);
+        registerSubCommand(CommandExterminate.instance);
+        registerSubCommand(CommandHat.instance);
+        registerSubCommand(CommandPath.instance);
+        registerSubCommand(CommandMakeItRain.instance);
     }
-
+    
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }
-
+    
     @Override
     public String getName() {
         return "HxCCore";
     }
-
+    
     @Override
     public String getCommandUsage(ICommandSender sender) {
         return "/" + getName() + " help";
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 0;
-    }
-
-    @Override
-    public boolean canCommandSenderUse(ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException, NumberInvalidException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
@@ -91,22 +89,21 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         aliases.add("HxC");
         return aliases;
     }
-
+    
     public static boolean registerSubCommand(ISubCommand subCommand) {
         String k = subCommand.getName().toLowerCase();
-
+        
         if (!commands.containsKey(k)) {
             commands.put(k, subCommand);
             return true;
         }
         return false;
     }
-
+    
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-
         if (args.length == 1) {
-            return func_175762_a(args, commands.keySet());
+            return getListOfStringsMatchingLastWord(args, commands.keySet().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
         } else if (commands.containsKey(args[0])) {
             return commands.get(args[0]).addTabCompletionOptions(sender, args);
         }

@@ -46,7 +46,7 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void TransformRender(ClassNode classNode) {
-        final String RENDERER = "renderLivingLabel";
+        final String RENDERER = "func_147906_a";
         final String RENDERER_DESC = "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
         for (MethodNode methodNode : classNode.methods){
             if(methodNode.name.equals(RENDERER) && methodNode.desc.equals(RENDERER_DESC)){

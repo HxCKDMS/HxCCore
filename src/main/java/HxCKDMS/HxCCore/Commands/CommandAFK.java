@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -30,14 +29,14 @@ public class CommandAFK implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void execute(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[14], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("AFK"), player);
             if (CanSend) {
                 UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
-                ChatComponentText AFK = new ChatComponentText(player.getDisplayName() + " \u00A73has gone AFK.");
-                ChatComponentText Back = new ChatComponentText(player.getDisplayName() + " \u00A73is no longer AFK.");
+                ChatComponentText AFK = new ChatComponentText(player.getDisplayNameString() + " \u00A73has gone AFK.");
+                ChatComponentText Back = new ChatComponentText(player.getDisplayNameString() + " \u00A73is no longer AFK.");
                 IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
                 AttributeModifier SpeedBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -100, 1);
                 String UUID = player.getUniqueID().toString();

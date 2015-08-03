@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
@@ -22,12 +22,12 @@ public class CommandBurn implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP)sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[0], player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Burn"), player);
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);

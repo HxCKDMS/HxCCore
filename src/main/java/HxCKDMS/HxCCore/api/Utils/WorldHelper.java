@@ -54,6 +54,8 @@ public class WorldHelper {
         drawSphere(world, pos, block, radius, hollow, checkCounter, 0);
     }
 
+    //TODO: Math helper takes math problem and draws in world :D Based on graphing equations
+    //if possible
     /**
      * @param world {@link World} where the sphere is going to be made.
      * @param pos the position of the block.
@@ -65,7 +67,7 @@ public class WorldHelper {
      */
     public static void drawSphere(World world, BlockPos pos, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
         for(float xr = -radius; xr <= radius; xr += checkCounter){
-            for(float zr = -radius; zr <= radius; zr += checkCounter){
+            for(float zr = -radius; zr <= radius; zr += checkCounter) {
                 float yrSquared = (float) square(radius) - ((float) square(xr) + (float) square(zr));
                 if (yrSquared < 0) continue;
                 int yl = Math.round((float) Math.sqrt(yrSquared));
@@ -74,13 +76,12 @@ public class WorldHelper {
                 world.setBlockState(pos.add(Math.round(xr), -yl, Math.round(zr)), block.getStateFromMeta(blockMeta));
 
                 if(!hollow)
-                    for(int yf = pos.getY() - yl; yf <= pos.getY() + yl; yf++)
+                    for(int yf = -yl; yf <= +yl; yf++)
                         world.setBlockState(pos.add(Math.round(xr), yf, Math.round(zr)), block.getStateFromMeta(blockMeta));
-
             }
         }
     }
-    
+
     private static double square(double d){
         return d * d;
     }

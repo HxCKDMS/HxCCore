@@ -1,14 +1,14 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class EventJoinWorld implements EventListener {
                 success = CustomPlayerData.createNewFile();
                 NBTFileIO.setFloat(CustomPlayerData, "Soul", 1f);
                 NBTFileIO.setInteger(CustomPlayerData, "SoulTimer", 12000);
-                if (Config.DebugMode) {
+                if (Configurations.DebugMode) {
                     LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
                 }
             }

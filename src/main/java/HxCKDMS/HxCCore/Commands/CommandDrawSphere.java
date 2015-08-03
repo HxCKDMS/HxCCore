@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandDrawSphere implements ISubCommand {
+    //TODO: Draw 3dShape and Draw Shape commands
+    //Pyramid, Cube, oval, rectangle :D MAYBE player
     public static CommandDrawSphere instance = new CommandDrawSphere();
 
     private String color = EnumChatFormatting.GREEN.toString();
@@ -29,10 +31,10 @@ public class CommandDrawSphere implements ISubCommand {
     public void execute(ICommandSender sender, String[] args) throws NumberInvalidException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[19], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
-                BlockPos pos = CommandBase.func_175757_a(sender, args, 2, true);
+                BlockPos pos = CommandBase.func_175757_a(sender, args, 1, true);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
@@ -53,7 +55,7 @@ public class CommandDrawSphere implements ISubCommand {
 
         if(args.length == 2 || args.length == 3 || args.length == 4) return Collections.singletonList("~");
         else if(args.length == 5) return Collections.singletonList(Integer.toString(8));
-        else if(args.length == 6) return CommandBase.getListOfStringsMatchingLastWord(args, (String[])Block.blockRegistry.getKeys().toArray());
+        else if(args.length == 6) return CommandBase.getListOfStringsMatchingLastWord(args, Block.blockRegistry.getKeys().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
         else if(args.length == 7) return CommandBase.getListOfStringsMatchingLastWord(args, booleans);
         return null;
     }

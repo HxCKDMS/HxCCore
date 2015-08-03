@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Config;
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
+import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,10 +26,10 @@ public class CommandWarp implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public void execute(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Config.PermLevels[15], player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Warp"), player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 
@@ -39,7 +38,7 @@ public class CommandWarp implements ISubCommand {
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
-                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), new BlockPos( warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z")));
+                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), new BlockPos(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z")));
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 } else {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);

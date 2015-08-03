@@ -1,11 +1,13 @@
 package HxCKDMS.HxCCore.Asm.Hooks;
 
-import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.entity.Entity;
 
 import java.util.HashMap;
 import java.util.UUID;
+
+import static HxCKDMS.HxCCore.lib.References.*;
 
 @SuppressWarnings("unused")
 public class RenderHooks {
@@ -17,7 +19,7 @@ public class RenderHooks {
 
         try {
             if (isPlayerOp.get(UUID.toString()))
-                name = NickHandler.CC + "4" + name;
+                name = References.CC + "4" + name;
         } catch (NullPointerException ignored) {}
 
         String nick;
@@ -31,16 +33,16 @@ public class RenderHooks {
             name = nick;
         }
 
-        name = name.replace("&", NickHandler.CC) + NickHandler.CC + "f";
+        name = name.replace("&", CC) + CC + "f";
 
         if(HxCCore.coders.contains(UUID))
-            return NickHandler.CC + "b[HxC] " + NickHandler.CC + "r" + name;
+            return CC + "b[HxC] " + CC + "r" + name;
         else if(HxCCore.supporters.contains(UUID))
-            return NickHandler.CC + "4[HxC Supporter] " + NickHandler.CC + "r" + name;
+            return CC + "4[HxC Supporter] " + CC + "r" + name;
         else if(HxCCore.helpers.contains(UUID))
-            return NickHandler.CC + "a[HxC Helper] " + NickHandler.CC + "r" + name;
+            return CC + "a[HxC Helper] " + CC + "r" + name;
         else if(HxCCore.artists.contains(UUID))
-            return NickHandler.CC + "c[HxC Artist] " + NickHandler.CC + "r" + name;
+            return CC + "c[HxC Artist] " + CC + "r" + name;
         else
             return name;
     }

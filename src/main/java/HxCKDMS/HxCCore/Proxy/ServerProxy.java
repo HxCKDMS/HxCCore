@@ -6,9 +6,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @SuppressWarnings("unused")
 public class ServerProxy implements IProxy {
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-
     }
 
     @Override

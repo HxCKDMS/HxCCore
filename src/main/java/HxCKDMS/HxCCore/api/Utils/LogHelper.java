@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore.api.Utils;
 
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 @SuppressWarnings("unused")
 public class LogHelper {
-
     public static void log(Level logLevel, Object object, String modName){
-        FMLLog.log(modName, logLevel, String.valueOf(object));
+        LogManager.getLogger(modName).log(logLevel, object);
     }
 
     public static void all(Object object, String modName){
