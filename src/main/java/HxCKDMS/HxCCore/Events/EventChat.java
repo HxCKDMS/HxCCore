@@ -24,8 +24,7 @@ public class EventChat implements EventListener {
         if(!CustomPlayerData.exists()) return;
 
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
-        String message = event.message;
-
+        String message = event.message.replace("&", CC);
 
         String ChatColor;
         if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
