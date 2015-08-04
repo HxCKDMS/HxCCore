@@ -5,10 +5,12 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -35,7 +37,7 @@ public class CommandSetPerms implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
@@ -45,9 +47,8 @@ public class CommandSetPerms implements ISubCommand {
                 if (args.length == 3) {
                     playerName = args[1];
                     permLevel = Integer.parseInt(args[2]);
-                    if (permLevel > 5 || permLevel < 0) {
-                        player.addChatMessage(new ChatComponentText("\u00A74Correct usage is: " + "\u00A72/HxCCore setPerms <Player> <PermLevel(0-5)>"));
-                    }
+                    if (permLevel > 5 || permLevel < 0)
+                        throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
 
                     switch (permLevel) {
                         case 1:
@@ -76,8 +77,8 @@ public class CommandSetPerms implements ISubCommand {
                             break;
                     }
                     NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-                } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            } else player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else throw new WrongUsageException("commands.exception.permission");
+            } else throw new WrongUsageException("commands.exception.permission");
         } else {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
@@ -115,7 +116,7 @@ public class CommandSetPerms implements ISubCommand {
                         break;
                 }
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            } else sender.addChatMessage(new ChatComponentText("Correct usage is: /HxCCore setPerms <Player> <PermLevel(0-5)>"));
+            } else throw new WrongUsageException("command."+getCommandName()+".usage");
         }
     }
 

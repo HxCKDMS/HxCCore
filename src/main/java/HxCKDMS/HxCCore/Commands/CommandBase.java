@@ -52,7 +52,12 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandPath.instance);
         registerSubCommand(CommandMakeItRain.instance);
     }
-    
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+        return true;
+    }
+
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }

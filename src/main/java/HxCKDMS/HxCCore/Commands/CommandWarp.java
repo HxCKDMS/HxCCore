@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -44,8 +45,8 @@ public class CommandWarp implements ISubCommand {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 }
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be handleCommandd by a player."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @Override

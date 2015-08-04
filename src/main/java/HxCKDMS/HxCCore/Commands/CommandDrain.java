@@ -5,9 +5,11 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class CommandDrain implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Drain"), player);
@@ -35,7 +37,8 @@ public class CommandDrain implements ISubCommand {
                         for (int k = z-range; k < z+range; k++)
                             if (args.length == 3 ? player.worldObj.getBlockState(new BlockPos(i, j, k)) == Block.getBlockFromName(block) : (player.worldObj.getBlockState(new BlockPos(i, j, k)) instanceof IFluidBlock || player.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock().getMaterial().isLiquid()))
                                 player.worldObj.setBlockToAir(new BlockPos(i, j, k));
-        }
+            else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

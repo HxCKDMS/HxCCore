@@ -7,10 +7,12 @@ import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +30,7 @@ public class CommandDrawSphere implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws NumberInvalidException {
+    public void handleCommand(ICommandSender sender, String[] args) throws NumberInvalidException, WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
@@ -44,8 +46,8 @@ public class CommandDrawSphere implements ISubCommand {
                 long cNano = System.nanoTime();
                 WorldHelper.drawSphere(player.worldObj, pos, block, radius, hollow, updateAmount);
                 sender.addChatMessage(new ChatComponentText(String.format(color + "Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d " + color + "with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", pos.getX(), pos.getY(), pos.getZ(), radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000)));
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

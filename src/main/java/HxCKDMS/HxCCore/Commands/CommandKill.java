@@ -10,8 +10,8 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -32,14 +32,14 @@ public class CommandKill implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Kill"), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
-                    else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else  sender.addChatMessage(new ChatComponentText("The kill command without arguments can only be handleCommandd from a player."));
+                    else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
             break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
         }
     }
 

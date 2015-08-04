@@ -5,11 +5,13 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class CommandRepairAll implements ISubCommand
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
@@ -33,10 +35,10 @@ public class CommandRepairAll implements ISubCommand
                 if (args.length == 2) target = CommandBase.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);
                 sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayName() + "'s items have been repaired."));
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             if (args.length == 2) repairItems(target);
-            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
+            else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }
 

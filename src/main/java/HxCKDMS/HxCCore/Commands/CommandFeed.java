@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -25,34 +26,28 @@ public class CommandFeed implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        switch(args.length){
-            case 1: {
-                if(sender instanceof EntityPlayer){
+        switch(args.length) {
+            case 1:
+                if (sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Feed"), player);
                     if (CanSend) {
                         player.getFoodStats().addStats(20, 20F);
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                    } else {
+                    } else
                         sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-                }else{
+                } else
                     sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
-                }
-            }
             break;
-            case 2: {
+            case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 float plf = player2.getFoodStats().getSaturationLevel() + player2.getFoodStats().getFoodLevel();
                 float nf = 40 - plf;
                 player2.getFoodStats().addStats(20, 20F);
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + "oz. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
-            }
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
             break;
-            default: {
-                throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
-            }
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
         }
     }
 

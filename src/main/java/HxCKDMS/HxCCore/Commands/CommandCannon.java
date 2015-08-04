@@ -4,10 +4,12 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class CommandCannon implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Cannon"), player);
@@ -38,8 +40,8 @@ public class CommandCannon implements ISubCommand {
                 kitty.setVelocity(x * speed, y * speed, z * speed);
                 tnt.setVelocity(x * speed, y * speed, z * speed);
                 player.worldObj.spawnEntityInWorld(isKitty ? kitty : tnt);
-            }
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

@@ -7,8 +7,10 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +24,7 @@ public class CommandBack implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Back"), player);
@@ -35,7 +37,7 @@ public class CommandBack implements ISubCommand {
                 else player.playerNetServerHandler.setPlayerLocation(tmp[0], tmp[1], tmp[2], player.cameraPitch, player.cameraYaw);
                 NBTFileIO.setIntArray(CustomPlayerData, "BackPos", nb);
             }
-        }
+        } else  throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

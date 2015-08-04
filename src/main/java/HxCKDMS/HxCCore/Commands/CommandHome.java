@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CommandHome implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("home"), player);
             if (CanSend) {
@@ -37,7 +38,7 @@ public class CommandHome implements ISubCommand {
                 String hName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 if(!homeDir.hasKey(hName)){
-                    throw new WrongUsageException("The home named: '" + hName + "' does not exist.");
+                    throw new WrongUsageException("\u00a74\u00a7oThe home named: '" + hName + "' does not exist.");
                 }
                 NBTTagCompound home = homeDir.getCompoundTag(hName);
                 if(player.dimension != home.getInteger("dim")) {
@@ -47,8 +48,8 @@ public class CommandHome implements ISubCommand {
                     player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 }
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be handleCommandd by a player."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @Override

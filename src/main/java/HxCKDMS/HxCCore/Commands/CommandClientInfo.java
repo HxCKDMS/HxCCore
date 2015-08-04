@@ -7,10 +7,12 @@ import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,7 +29,7 @@ public class CommandClientInfo implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         boolean CanUse = true;
         if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {
@@ -36,7 +38,7 @@ public class CommandClientInfo implements ISubCommand {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
             }
-        } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }
 
     private void getClientInfo(ICommandSender sender, EntityPlayerMP player) {

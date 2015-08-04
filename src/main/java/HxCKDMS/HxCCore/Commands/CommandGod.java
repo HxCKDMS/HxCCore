@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -27,9 +28,9 @@ public class CommandGod implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        switch(args.length){
+        switch(args.length) {
             case 1:
-                if(sender instanceof EntityPlayer) {
+                if (sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("God"), player);
                     if (CanSend) {
@@ -38,8 +39,8 @@ public class CommandGod implements ISubCommand {
 
                         NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                         player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode."));
-                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be handleCommandd by a player."));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
             break;
             case 2:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -51,7 +52,7 @@ public class CommandGod implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText(NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76You suddenly feel immortal." : "\u00A76You suddenly feel mortal."));
                 player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getDisplayName()));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
         }
     }
 

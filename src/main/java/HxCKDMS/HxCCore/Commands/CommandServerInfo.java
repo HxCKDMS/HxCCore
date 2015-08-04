@@ -6,9 +6,11 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +31,7 @@ public class CommandServerInfo implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("ServerInfo"), player);
         if (CanSend) {
@@ -39,7 +41,7 @@ public class CommandServerInfo implements ISubCommand {
 
             for (WorldServer worldServer : DimensionManager.getWorlds())
                 sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
     }
 
     @Override
