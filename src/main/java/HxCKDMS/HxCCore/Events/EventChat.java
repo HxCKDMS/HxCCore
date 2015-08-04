@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Events;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,6 +50,7 @@ public class EventChat implements EventListener {
             }
             else tmp2 = tmp2 + " " + ChatColor + str;
         }
-        event.setComponent(new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%"))));
+        if (!tmp2.replaceAll(References.CC, "").trim().isEmpty())
+            event.setComponent(new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%"))));
     }
 }

@@ -4,8 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.client.Minecraft;
 
 import java.io.*;
 import java.net.InetAddress;
