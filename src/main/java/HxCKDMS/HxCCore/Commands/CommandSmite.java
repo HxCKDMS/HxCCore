@@ -5,11 +5,12 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -22,17 +23,17 @@ public class CommandSmite implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Smite"), player);
             if (CanSend) {
                 if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
                 else smite(player);
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
-            else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+            else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }
 

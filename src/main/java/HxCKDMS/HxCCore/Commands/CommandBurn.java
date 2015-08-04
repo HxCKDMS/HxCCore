@@ -5,10 +5,12 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class CommandBurn implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1: {
                 if(sender instanceof EntityPlayerMP){
@@ -30,8 +32,8 @@ public class CommandBurn implements ISubCommand {
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
             }
             break;
             case 2: {
@@ -47,7 +49,7 @@ public class CommandBurn implements ISubCommand {
                 sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
             }
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player] [time]");
+            default: throw new WrongUsageException(StatCollector.translateToLocal("command."+getCommandName()+".usage"));
         }
     }
 

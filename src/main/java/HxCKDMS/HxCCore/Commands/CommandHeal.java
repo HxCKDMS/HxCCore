@@ -5,11 +5,13 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -22,19 +24,17 @@ public class CommandHeal implements ISubCommand {
         return "heal";
     }
 
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1:
-                if(sender instanceof EntityPlayer){
+                if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Heal"), player);
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
-                    } else {
-                        sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                    }
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
                 break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
@@ -42,7 +42,7 @@ public class CommandHeal implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
                 sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
         }
     }
 

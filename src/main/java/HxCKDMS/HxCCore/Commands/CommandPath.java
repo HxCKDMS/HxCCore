@@ -7,7 +7,9 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -21,8 +23,8 @@ public class CommandPath implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP){
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Path"), player);
             String UUID = player.getUniqueID().toString();
@@ -32,8 +34,8 @@ public class CommandPath implements ISubCommand {
                     NBTFileIO.setBoolean(CustomPlayerData, "Pathing", !NBTFileIO.getBoolean(CustomPlayerData, "Pathing"));
                     NBTFileIO.setString(CustomPlayerData, "PathMat", args.length >= 2 ? args[1] : "minecraft:cobblestone");
                 }
-            }
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

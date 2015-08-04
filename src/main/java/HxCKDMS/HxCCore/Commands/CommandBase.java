@@ -1,6 +1,8 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.api.ISubCommand;
+import net.minecraft.command.NumberInvalidException;
+import net.minecraft.command.PlayerNotFoundException;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -49,7 +51,12 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandPath.instance);
         registerSubCommand(CommandMakeItRain.instance);
     }
-    
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+        return true;
+    }
+
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }
@@ -65,12 +72,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
-        return true;
-    }
-
-    @Override
-    public void processCommand(ICommandSender sender, String[] args) {
+    public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (commands.containsKey(k)) {
@@ -82,7 +84,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
             throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List getCommandAliases() {
@@ -104,9 +106,8 @@ public class CommandBase extends net.minecraft.command.CommandBase {
     
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] args) {
-        
         if (args.length == 1) {
-            return getListOfStringsFromIterableMatchingLastWord(args, commands.keySet());
+            return getListOfStringsMatchingLastWord(args, commands.keySet().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
         } else if (commands.containsKey(args[0])) {
             return commands.get(args[0]).addTabCompletionOptions(sender, args);
         }

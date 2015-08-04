@@ -22,22 +22,22 @@ public class NickHandler {
         String rawGroup, formattedString = colouredNick;
         switch(SenderPermLevel){
             case 1:
-                rawGroup = CC + permColours[1] + permNames[1];
+                rawGroup = CC + PERM_COLOURS[1] + PERM_NAMES[1];
                 break;
             case 2:
-                rawGroup = CC + permColours[2] + permNames[2];
+                rawGroup = CC + PERM_COLOURS[2] + PERM_NAMES[2];
                 break;
             case 3:
-                rawGroup = CC + permColours[3] + permNames[3];
+                rawGroup = CC + PERM_COLOURS[3] + PERM_NAMES[3];
                 break;
             case 4:
-                rawGroup = CC + permColours[4] + permNames[4];
+                rawGroup = CC + PERM_COLOURS[4] + PERM_NAMES[4];
                 break;
             case 5:
-                rawGroup = CC + permColours[5] + permNames[5];
+                rawGroup = CC + PERM_COLOURS[5] + PERM_NAMES[5];
                 break;
             default:
-                rawGroup = CC + permColours[0] + permNames[0];
+                rawGroup = CC + PERM_COLOURS[0] + PERM_NAMES[0];
                 break;
         }
 

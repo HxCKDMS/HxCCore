@@ -7,6 +7,7 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -29,14 +31,14 @@ public class CommandAFK implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("AFK"), player);
             if (CanSend) {
                 UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
-                ChatComponentText AFK = new ChatComponentText(player.getCommandSenderName() + " \u00A73has gone AFK.");
-                ChatComponentText Back = new ChatComponentText(player.getCommandSenderName() + " \u00A73is no longer AFK.");
+                ChatComponentText AFK = new ChatComponentText(player.getDisplayName() + " \u00A73has gone AFK.");
+                ChatComponentText Back = new ChatComponentText(player.getDisplayName() + " \u00A73is no longer AFK.");
                 IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
                 AttributeModifier SpeedBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -100, 1);
                 String UUID = player.getUniqueID().toString();
@@ -57,8 +59,8 @@ public class CommandAFK implements ISubCommand {
                 for (EntityPlayerMP p : list) {
                     p.addChatMessage(AFKStatus ? Back : AFK);
                 }
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

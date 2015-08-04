@@ -4,6 +4,7 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -13,6 +14,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import scala.actors.threadpool.Arrays;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class CommandExterminate implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP){
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Broadcast"), player);
             if (CanSend) {
@@ -62,8 +64,8 @@ public class CommandExterminate implements ISubCommand {
                     }
                 }
                 player.addChatMessage(new ChatComponentText("You have exterminated " + tmp + " entities!"));
-            }
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

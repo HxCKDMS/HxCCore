@@ -4,28 +4,32 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
+
+import static HxCKDMS.HxCCore.lib.References.PERM_COLOURS;
+import static HxCKDMS.HxCCore.lib.References.PERM_NAMES;
+import static HxCKDMS.HxCCore.lib.References.CC;
 
 public class CommandSetPerms implements ISubCommand {
     public static CommandSetPerms instance = new CommandSetPerms();
     int permLevel;
     String playerName;
-    String CC = "\u00A7";
 
-    String PL0 = (CC + References.permColours[0] + References.permNames[0]);
-    String PL1 = (CC + References.permColours[1] + References.permNames[1]);
-    String PL2 = (CC + References.permColours[2] + References.permNames[2]);
-    String PL3 = (CC + References.permColours[3] + References.permNames[3]);
-    String PL4 = (CC + References.permColours[4] + References.permNames[4]);
-    String PL5 = (CC + References.permColours[5] + References.permNames[5]);
+    String PL0 = (CC + PERM_COLOURS[0] + PERM_NAMES[0]);
+    String PL1 = (CC + PERM_COLOURS[1] + PERM_NAMES[1]);
+    String PL2 = (CC + PERM_COLOURS[2] + PERM_NAMES[2]);
+    String PL3 = (CC + PERM_COLOURS[3] + PERM_NAMES[3]);
+    String PL4 = (CC + PERM_COLOURS[4] + PERM_NAMES[4]);
+    String PL5 = (CC + PERM_COLOURS[5] + PERM_NAMES[5]);
 
     @Override
     public String getCommandName() {
@@ -33,7 +37,7 @@ public class CommandSetPerms implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
@@ -43,9 +47,8 @@ public class CommandSetPerms implements ISubCommand {
                 if (args.length == 3) {
                     playerName = args[1];
                     permLevel = Integer.parseInt(args[2]);
-                    if (permLevel > 5 || permLevel < 0) {
-                        player.addChatMessage(new ChatComponentText("\u00A74Correct usage is: " + "\u00A72/HxCCore setPerms <Player> <PermLevel(0-5)>"));
-                    }
+                    if (permLevel > 5 || permLevel < 0)
+                        throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
 
                     switch (permLevel) {
                         case 1:
@@ -74,8 +77,8 @@ public class CommandSetPerms implements ISubCommand {
                             break;
                     }
                     NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-                } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-            } else player.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
+                } else throw new WrongUsageException("commands.exception.permission");
+            } else throw new WrongUsageException("commands.exception.permission");
         } else {
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
@@ -113,7 +116,7 @@ public class CommandSetPerms implements ISubCommand {
                         break;
                 }
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            } else sender.addChatMessage(new ChatComponentText("Correct usage is: /HxCCore setPerms <Player> <PermLevel(0-5)>"));
+            } else throw new WrongUsageException("command."+getCommandName()+".usage");
         }
     }
 

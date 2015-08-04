@@ -6,10 +6,13 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class CommandTpa implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             EntityPlayerMP PlayerThatTPs = null;
@@ -43,7 +46,7 @@ public class CommandTpa implements ISubCommand {
                             PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " accepted your tp request."));
 
                             if (PlayerThatTPs.dimension != player.dimension)
-                                Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, (int) player.posX, (int) player.posY, (int) player.posZ);
+                                Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, (int)Math.round(player.posX), (int)Math.round(player.posY), (int)Math.round(player.posZ));
                             else
                                 PlayerThatTPs.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
                         } else {
@@ -72,8 +75,8 @@ public class CommandTpa implements ISubCommand {
                         }
                         break;
                 }
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

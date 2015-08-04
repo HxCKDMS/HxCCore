@@ -6,10 +6,12 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -23,8 +25,8 @@ public class CommandSetWarp implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP){
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("SetWarp"), player);
             if (CanSend) {
@@ -50,8 +52,8 @@ public class CommandSetWarp implements ISubCommand {
                 warp.setTag(wName, warpDir);
 
                 NBTFileIO.setNbtTagCompound(HxCWorldData, "warp", warp);
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("\u00A74This command can only be executed by a player."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

@@ -7,8 +7,10 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -22,8 +24,8 @@ public class CommandNick implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+        if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Nick"), player);
             if (CanSend) {
@@ -46,8 +48,8 @@ public class CommandNick implements ISubCommand {
                     NBTFileIO.setString(CustomPlayerData, "nickname", nick);
                     player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", References.CC)));
                 }
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        } else sender.addChatMessage(new ChatComponentText("Only a player can use this command."));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @Override

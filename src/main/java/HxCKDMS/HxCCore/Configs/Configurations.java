@@ -2,8 +2,10 @@ package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Configurations {
@@ -23,6 +25,9 @@ public class Configurations {
     public static int DMMax = 100;
     @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
     public static Integer TpaTimeout = 100;
+
+    @Config.List
+    public static List<Character> bannedColorCharacters = Arrays.asList(new Character[]{'k', 'm', '4'});
 
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")

@@ -5,10 +5,12 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -21,10 +23,10 @@ public class CommandFly implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
         switch(args.length){
             case 1:
-                if(sender instanceof EntityPlayerMP){
+                if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Fly"), player);
                     if (CanSend) {
@@ -32,8 +34,8 @@ public class CommandFly implements ISubCommand {
                         player.capabilities.isFlying = !player.capabilities.isFlying;
                         player.sendPlayerAbilities();
                         player.addChatComponentMessage(new ChatComponentText((player.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled")+" flight."));
-                    } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-                } else sender.addChatMessage(new ChatComponentText("\u00A74This command without parameters can only be executed by a player."));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
             break;
             case 2:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -44,7 +46,7 @@ public class CommandFly implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel lighter." : "\u00A7bYou feel heavier."));
                 player.addChatComponentMessage(new ChatComponentText((player2.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled") + " flight, for player " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException("Correct usage is: /"+getCommandName()+" [player]");
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
         }
     }
 

@@ -5,8 +5,10 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class CommandDrain implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Drain"), player);
@@ -32,9 +34,10 @@ public class CommandDrain implements ISubCommand {
                 for (int i = x-range; i < x+range; i++)
                     for (int j = y-range; j < y+range; j++)
                         for (int k = z-range; k < z+range; k++)
-                            if (args.length == 3 ? player.worldObj.getBlock(i, j, k) == Block.getBlockFromName(block) : (player.worldObj.getBlock(i, j, k) instanceof IFluidBlock || player.worldObj.getBlock(i , j, k).getMaterial().isLiquid()))
+                            if (args.length == 3 ? player.worldObj.getBlock(i, j, k) == Block.getBlockFromName(block) : (player.worldObj.getBlock(i, j, k) instanceof IFluidBlock || player.worldObj.getBlock(i, j, k).getMaterial().isLiquid()))
                                 player.worldObj.setBlockToAir(i, j, k);
-        }
+            else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")
