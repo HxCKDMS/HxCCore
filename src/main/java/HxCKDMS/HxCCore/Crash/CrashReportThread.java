@@ -4,13 +4,13 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Calendar;
+import java.util.ArrayList;
 
 public class CrashReportThread extends Thread {
     private Gson gson = new Gson();
@@ -26,7 +26,7 @@ public class CrashReportThread extends Thread {
 
     private void checkCrash(final boolean isClient) throws IOException {
         File folder = new File(isClient ? Minecraft.getMinecraft().mcDataDir : new File("."), "crash-reports");
-        File[] logs = folder.listFiles(new filter(isClient));
+        File[] logs = folder.listFiles(new filter());
 
         if (logs == null) return;
 
@@ -40,33 +40,28 @@ public class CrashReportThread extends Thread {
 
         BufferedReader reader = new BufferedReader(new FileReader(mostRecent));
 
-        String title = null;
-        int lineNumber = 0;
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> crash = new ArrayList<>();
         String line;
-        String mod = null;
+        boolean hasMod = false;
         while ((line = reader.readLine()) != null) {
-            if(++lineNumber == 7) title = line;
-            stringBuilder.append(line).append("\n");
-
-            if(mod == null && line.contains("at HxCKDMS.")) {
-                String[] test;
-                if((test = line.split("\\.")).length >= 2) mod = test[1];
-            }
+            crash.add(line);
+            if(line.contains("at HxCKDMS")) hasMod = true;
         }
+        reader.close();
+
         if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
 
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
 
-        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString(), title, mod);
+        if (hasMod) sendToServer(crash);
     }
 
-    private void sendToServer(String crash, String title, String mod) throws IOException {
+    private void sendToServer(ArrayList<String> crash) throws IOException {
         Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-        String json = gson.toJson(new crashSendTemplate(crash, mod, title));
+        String json = gson.toJson(new crashSendTemplate(crash));
 
         writer.write(json);
         writer.flush();
@@ -75,33 +70,17 @@ public class CrashReportThread extends Thread {
     }
 
     class filter implements FileFilter {
-        boolean isClient;
-
-        public filter(boolean isClient){
-            this.isClient = isClient;
-        }
-
         @Override
         public boolean accept(File file) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -7);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTimeInMillis(file.lastModified());
-
-            String name = file.getName();
-            return calendar2.after(calendar) && name.startsWith("crash-");
+            return file.getName().startsWith("crash-");
         }
     }
 
     class crashSendTemplate {
-        String crash;
-        String mod;
-        String title;
+        ArrayList<String> crash;
 
-        public crashSendTemplate(String crash, String mod, String title) {
+        public crashSendTemplate(ArrayList<String> crash) {
             this.crash = crash;
-            this.mod = mod;
-            this.title = title;
         }
     }
 }

@@ -33,6 +33,6 @@ public class EventChat implements EventListener {
         else
             ChatColor = CC + playerColor;
 
-        event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), ChatColor + message));
+        event.setComponent(new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), ChatColor + message)));
     }
 }
