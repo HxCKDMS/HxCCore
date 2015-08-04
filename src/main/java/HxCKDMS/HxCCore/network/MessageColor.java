@@ -1,12 +1,14 @@
 package HxCKDMS.HxCCore.network;
 
 import HxCKDMS.HxCCore.Asm.Hooks.RenderHooks;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Set;
 
@@ -35,13 +37,19 @@ public class MessageColor implements IMessage {
     public static class Handler implements IMessageHandler<MessageColor, IMessage> {
 
         @Override
-        public IMessage onMessage(MessageColor message, MessageContext ctx) {
-            Set<String> UUIDs = (Set<String>) message.tagCompound.getKeySet();
-            for(String UUID : UUIDs) {
-                NBTTagCompound tagCompound2 = (NBTTagCompound) message.tagCompound.getTag(UUID);
-                RenderHooks.nameNicks.put(UUID, tagCompound2.getString("nick"));
-                RenderHooks.isPlayerOp.put(UUID, tagCompound2.getBoolean("isOP"));
-            }
+        public IMessage onMessage(final MessageColor message, final MessageContext ctx) {
+            IThreadListener mainThread = Minecraft.getMinecraft();
+            mainThread.addScheduledTask(new Runnable() {
+                @Override
+                public void run() {
+                    Set<String> UUIDs = (Set<String>) message.tagCompound.getKeySet();
+                    for(String UUID : UUIDs) {
+                        NBTTagCompound tagCompound2 = (NBTTagCompound) message.tagCompound.getTag(UUID);
+                        RenderHooks.nameNicks.put(UUID, tagCompound2.getString("nick"));
+                        RenderHooks.isPlayerOp.put(UUID, tagCompound2.getBoolean("isOP"));
+                    }
+                }
+            });
             return null;
         }
     }
