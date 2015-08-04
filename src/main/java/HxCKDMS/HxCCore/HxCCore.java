@@ -80,8 +80,8 @@ public class HxCCore {
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
         for (int i = 0; i < 6; i++) {
-            References.permNames[i] = (String)Configurations.perms.keySet().toArray()[i];
-            References.permColours[i] = Configurations.perms.get(References.permNames[i]).charAt(0);
+            References.PERM_NAMES[i] = (String)Configurations.perms.keySet().toArray()[i];
+            References.PERM_COLOURS[i] = Configurations.perms.get(References.PERM_NAMES[i]).charAt(0);
         }
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(References.PACKET_CHANNEL_NAME);

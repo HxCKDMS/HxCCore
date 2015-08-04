@@ -10,8 +10,11 @@ public class References {
     public static final String ERROR_REPORT_ADDRESS = "game.kappador.com";
     public static final int ERROR_REPORT_PORT = 7643;
 
-    public static String[] permNames = new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"};
-    public static char[] permColours = new char[]{'f', 'a', 'e', '1', '6', '4'};
+    public static String[] PERM_NAMES = new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"};
+    public static char[] PERM_COLOURS = new char[]{'f', 'a', 'e', '1', '6', '4'};
+
+    public static final String[] COMMANDS = new String[]{"help", "heal", "kill", "god", "fly", "feed", "burn", "extinguish", "smite", "setHome",
+            "home", "setWarp", "warp", "repair", "repairAll", "modlist", "nick", "playerinfo", "serverinfo", "setperms", "spawn", "tpp"};
 
     public static final String CC = "\u00a7";
 }

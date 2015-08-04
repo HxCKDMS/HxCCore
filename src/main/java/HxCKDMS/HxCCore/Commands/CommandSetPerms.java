@@ -4,7 +4,6 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,18 +13,21 @@ import net.minecraft.util.ChatComponentText;
 import java.io.File;
 import java.util.List;
 
+import static HxCKDMS.HxCCore.lib.References.PERM_COLOURS;
+import static HxCKDMS.HxCCore.lib.References.PERM_NAMES;
+import static HxCKDMS.HxCCore.lib.References.CC;
+
 public class CommandSetPerms implements ISubCommand {
     public static CommandSetPerms instance = new CommandSetPerms();
     int permLevel;
     String playerName;
-    String CC = "\u00A7";
 
-    String PL0 = (CC + References.permColours[0] + References.permNames[0]);
-    String PL1 = (CC + References.permColours[1] + References.permNames[1]);
-    String PL2 = (CC + References.permColours[2] + References.permNames[2]);
-    String PL3 = (CC + References.permColours[3] + References.permNames[3]);
-    String PL4 = (CC + References.permColours[4] + References.permNames[4]);
-    String PL5 = (CC + References.permColours[5] + References.permNames[5]);
+    String PL0 = (CC + PERM_COLOURS[0] + PERM_NAMES[0]);
+    String PL1 = (CC + PERM_COLOURS[1] + PERM_NAMES[1]);
+    String PL2 = (CC + PERM_COLOURS[2] + PERM_NAMES[2]);
+    String PL3 = (CC + PERM_COLOURS[3] + PERM_NAMES[3]);
+    String PL4 = (CC + PERM_COLOURS[4] + PERM_NAMES[4]);
+    String PL5 = (CC + PERM_COLOURS[5] + PERM_NAMES[5]);
 
     @Override
     public String getCommandName() {
