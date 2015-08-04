@@ -19,6 +19,5 @@ public class CrashHandler implements ICrashCallable {
         } else {
             return "Auto reporter is disabled.";
         }
-
     }
 }
