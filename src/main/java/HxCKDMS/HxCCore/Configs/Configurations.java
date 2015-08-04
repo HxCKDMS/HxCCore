@@ -1,14 +1,16 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
+import scala.actors.threadpool.Arrays;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class Configurations {
-    @Config.Boolean(description = "Debug Mode Enable? Can cause lag and console spam!")
-    public static boolean DebugMode;
+    @Config.Boolean(description = "Can cause lag and console spam!")
+    public static boolean DebugMode = false;
 
     @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much", category = "Features")
     public static boolean CoolDownDisable = true;
@@ -24,6 +26,9 @@ public class Configurations {
     @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
     public static Integer TpaTimeout = 100;
 
+    @Config.List
+    public static List<Character> bannedColorCharacters = Arrays.asList(new Character[]{'k', 'm', '4'});
+
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
     public static boolean autoCrashReporterEnabled = true;
@@ -35,7 +40,7 @@ public class Configurations {
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
     public static HashMap<String, String> formats = new HashMap<>();
 
-    @Config.Boolean()
+    @Config.Boolean
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
 
     @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT",forceReset = true)
