@@ -154,7 +154,6 @@ public class HxCCore {
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
         } catch(IOException ignored) {}
-        System.out.println("test");
     }
 
     private static void extendEnchantsArray() {
