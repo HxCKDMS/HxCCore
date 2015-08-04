@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class CrashReportThread extends Thread {
     private Gson gson = new Gson();
@@ -39,10 +40,13 @@ public class CrashReportThread extends Thread {
 
         BufferedReader reader = new BufferedReader(new FileReader(mostRecent));
 
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> crash = new ArrayList<>();
         String line;
-        while ((line = reader.readLine()) != null) stringBuilder.append(line).append("\n");
-
+        boolean hasMod = false;
+        while ((line = reader.readLine()) != null) {
+            crash.add(line);
+            if(line.contains("at HxCKDMS")) hasMod = true;
+        }
         reader.close();
 
         if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
@@ -50,10 +54,10 @@ public class CrashReportThread extends Thread {
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
 
-        if (stringBuilder.toString().contains("at HxCKDMS.")) sendToServer(stringBuilder.toString());
+        if (hasMod) sendToServer(crash);
     }
 
-    private void sendToServer(String crash) throws IOException {
+    private void sendToServer(ArrayList<String> crash) throws IOException {
         Socket socket = new Socket(InetAddress.getByName(References.ERROR_REPORT_ADDRESS), References.ERROR_REPORT_PORT);
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
@@ -73,9 +77,9 @@ public class CrashReportThread extends Thread {
     }
 
     class crashSendTemplate {
-        String crash;
+        ArrayList<String> crash;
 
-        public crashSendTemplate(String crash) {
+        public crashSendTemplate(ArrayList<String> crash) {
             this.crash = crash;
         }
     }
