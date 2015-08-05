@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
