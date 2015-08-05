@@ -27,7 +27,7 @@ public class Configurations {
     public static Integer TpaTimeout = 100;
 
     @Config.List
-    public static List<Character> bannedColorCharacters = Arrays.asList(new Character[]{'k', 'm', '4'});
+    public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
 
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
