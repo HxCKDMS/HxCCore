@@ -92,7 +92,6 @@ public class HxCCore {
         proxy.preInit(event);
         extendEnchantsArray();
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
-//        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
         LogHelper.warn("Please guys can you start reporting the bugs as soon as you find them it's not hard and only takes like 2 minutes", References.MOD_NAME);

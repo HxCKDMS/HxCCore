@@ -1,11 +1,11 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
-import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Arrays;
 
 @SuppressWarnings({"unused", "unchecked"})
 public class Configurations {
