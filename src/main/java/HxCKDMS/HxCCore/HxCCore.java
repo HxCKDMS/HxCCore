@@ -186,8 +186,8 @@ public class HxCCore {
     }
 
     @NetworkCheckHandler
-    public boolean checkNetwork(Map<String, String> test, Side side) {
-        return !test.containsKey("HxCCore") || test.get("HxCCore").equals(References.VERSION);
+    public boolean checkNetwork(Map<String, String> mods, Side side) {
+        return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(References.VERSION);
     }
 
     public static void registerCategories(HxCConfig config) {
