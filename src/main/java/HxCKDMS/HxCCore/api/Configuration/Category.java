@@ -70,27 +70,27 @@ public class Category {
 
         switch (type) {
             case "I":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.Integer.class).forceReset() && Integer.parseInt((String) clazz.getField(variableName).get(clazz)) != 0) return;
+                if(clazz.getField(variableName).getAnnotation(Config.Integer.class).forceReset() && Integer.parseInt((String) clazz.getField(variableName).get(clazz)) != 0) return;
                 clazz.getField(variableName).set(clazz, Integer.parseInt(contents));
                 break;
             case "S":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.String.class).forceReset() && !(clazz.getField(variableName).get(clazz)).equals("")) return;
+                if(clazz.getField(variableName).getAnnotation(Config.String.class).forceReset() && !(clazz.getField(variableName).get(clazz)).equals("")) return;
                 clazz.getField(variableName).set(clazz, contents);
                 break;
             case "B":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.Boolean.class).forceReset() && !Boolean.parseBoolean((String) clazz.getField(variableName).get(clazz))) return;
+                if(clazz.getField(variableName).getAnnotation(Config.Boolean.class).forceReset() && !Boolean.parseBoolean((String) clazz.getField(variableName).get(clazz))) return;
                 clazz.getField(variableName).set(clazz, Boolean.parseBoolean(contents));
                 break;
             case "L":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.Long.class).forceReset() && Long.parseLong((String) clazz.getField(variableName).get(clazz)) != 0L) return;
+                if(clazz.getField(variableName).getAnnotation(Config.Long.class).forceReset() && Long.parseLong((String) clazz.getField(variableName).get(clazz)) != 0L) return;
                 clazz.getField(variableName).set(clazz, Long.parseLong(contents));
                 break;
             case "F":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.Float.class).forceReset() && Float.parseFloat((String) clazz.getField(variableName).get(clazz)) != 0F) return;
+                if(clazz.getField(variableName).getAnnotation(Config.Float.class).forceReset() && Float.parseFloat((String) clazz.getField(variableName).get(clazz)) != 0F) return;
                 clazz.getField(variableName).set(clazz, Float.parseFloat(contents));
                 break;
             case "D":
-                if(clazz.getField(variableName).getDeclaredAnnotation(Config.Double.class).forceReset() && Double.parseDouble((String) clazz.getField(variableName).get(clazz)) != 0D) return;
+                if(clazz.getField(variableName).getAnnotation(Config.Double.class).forceReset() && Double.parseDouble((String) clazz.getField(variableName).get(clazz)) != 0D) return;
                 clazz.getField(variableName).set(clazz, Double.parseDouble(contents));
                 break;
         }
@@ -123,7 +123,7 @@ public class Category {
             prevChar = character;
         }
 
-        if(clazz.getField(variableName).getDeclaredAnnotation(Config.Map.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
+        if(clazz.getField(variableName).getAnnotation(Config.Map.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
 
         while ((line = reader.readLine()) != null) {
             if (line.startsWith("\t]")) break;
@@ -373,7 +373,7 @@ public class Category {
             }
         }
 
-        if(clazz.getField(variableName).getDeclaredAnnotation(Config.List.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
+        if(clazz.getField(variableName).getAnnotation(Config.List.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
 
         while ((line = reader.readLine()) != null) {
             if (line.contains("\t>")) break;
