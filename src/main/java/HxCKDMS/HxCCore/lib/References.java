@@ -15,6 +15,7 @@ public class References {
 
     public static String[] PERM_NAMES = new String[]{"Default", "Friend", "Helper", "Moderator", "Admin", "Owner"};
     public static char[] PERM_COLOURS = new char[]{'f', 'a', 'e', '1', '6', '4'};
+    public static int[] HOMES = new int[]{3, 5, 8, 10, 16, -1};
     public static final List<String> COLOR_CHARS_STRING = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "k", "m", "n", "l", "o");
     public static final List<Character> COLOR_CHARS = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'm', 'n', 'l', 'o');
     public static final String[] COMMANDS = new String[]{"help", "heal", "kill", "god", "fly", "feed", "burn", "extinguish", "smite", "setHome",

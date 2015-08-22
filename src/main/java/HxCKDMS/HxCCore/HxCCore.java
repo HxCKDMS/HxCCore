@@ -84,6 +84,7 @@ public class HxCCore {
         for (int i = 0; i < 6; i++) {
             References.PERM_NAMES[i] = (String)Configurations.perms.keySet().toArray()[i];
             References.PERM_COLOURS[i] = Configurations.perms.get(References.PERM_NAMES[i]).charAt(0);
+            References.HOMES[i] = Integer.parseInt(Configurations.perms.get(References.PERM_NAMES[i]).substring(1).trim());
         }
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(References.PACKET_CHANNEL_NAME);

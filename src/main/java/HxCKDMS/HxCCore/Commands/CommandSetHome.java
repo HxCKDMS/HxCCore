@@ -5,11 +5,11 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -30,6 +30,7 @@ public class CommandSetHome implements ISubCommand {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("SetHome"), player);
+            int pl = PermissionsHandler.permLevel(player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -37,7 +38,19 @@ public class CommandSetHome implements ISubCommand {
                 NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 NBTTagCompound homeDir = new NBTTagCompound();
 
+                String oldhomes = home.getString("homesList");
+
                 String hName = args.length == 1 ? "default" : args[1];
+
+
+                if (oldhomes.isEmpty())
+                    oldhomes = hName;
+                if (!oldhomes.contains(hName))
+                    oldhomes = oldhomes + ", " + hName;
+
+                if (References.HOMES[pl] != -1 && oldhomes.split(", ").length > References.HOMES[pl]) {
+                    return;
+                }
 
                 int x = (int)player.posX;
                 int y = (int)player.posY;
@@ -55,13 +68,6 @@ public class CommandSetHome implements ISubCommand {
 
                 home.setTag(hName, homeDir);
 
-                String oldhomes = home.getString("homesList");
-
-                if (oldhomes.isEmpty())
-                    oldhomes = hName;
-                if (!oldhomes.contains(hName))
-                    oldhomes = oldhomes + ", " + hName;
-
                 home.setString("homesList", oldhomes);
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
@@ -71,9 +77,6 @@ public class CommandSetHome implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length == 2){
-            return net.minecraft.command.CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-        }
         return null;
     }
 }

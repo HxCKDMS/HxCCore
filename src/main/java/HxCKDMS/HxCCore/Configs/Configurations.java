@@ -27,7 +27,7 @@ public class Configurations {
     public static Integer TpaTimeout = 100;
 
     @Config.List
-    public static List<Character> bannedColorCharacters = Arrays.asList(new Character[]{'k', 'm', '4'});
+    public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
 
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
@@ -35,12 +35,12 @@ public class Configurations {
     
     @Config.Map(category = "Commands")
     public static LinkedHashMap<String, Integer> commands = new LinkedHashMap<>();
-    @Config.Map(category = "Permissions")
+    @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite)")
     public static LinkedHashMap<String, String> perms = new LinkedHashMap<>();
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
     public static HashMap<String, String> formats = new HashMap<>();
 
-    @Config.Boolean()
+    @Config.Boolean
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
 
     @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT",forceReset = true)
@@ -75,12 +75,12 @@ public class Configurations {
         commands.put("Hat", 1);
         commands.put("Path", 4);
 
-        perms.put("Default", "f");
-        perms.put("Friend", "2");
-        perms.put("Helper", "e");
-        perms.put("Moderator", "9");
-        perms.put("Admin", "6");
-        perms.put("Owner", "4");
+        perms.put("Default", "f 3");
+        perms.put("Friend", "2 5");
+        perms.put("Helper", "e 8");
+        perms.put("Moderator", "9 10");
+        perms.put("Admin", "6 16");
+        perms.put("Owner", "4 -1");
 
         formats.put("ChatFormat", "<%1$s> %2$s");
         formats.put("HxCTag", "&f[%1$s&f]");
