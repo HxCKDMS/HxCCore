@@ -14,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CommandTpa implements ISubCommand {
@@ -31,10 +32,8 @@ public class CommandTpa implements ISubCommand {
             EntityPlayerMP PlayerThatTPs = null;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("TPA"), player);
             if (CanSend) {
-                for (EntityPlayerMP key : HxCCore.tpaRequestList.keySet()) {
-                    if (HxCCore.tpaRequestList.get(key) == player) {
-                        PlayerThatTPs = key;
-                    }
+                for (HashMap.Entry<EntityPlayerMP, EntityPlayerMP> entry : HxCCore.tpaRequestList.entrySet()) {
+                    if(entry.getValue() == player) PlayerThatTPs = entry.getKey();
                 }
 
                 switch (args[1]) {

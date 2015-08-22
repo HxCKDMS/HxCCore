@@ -32,9 +32,7 @@ public class CommandModList implements ISubCommand {
                 break;
 
             ModContainer mod = Loader.instance().getModList().get(i);
-
             EnumChatFormatting color = isWholeNumber(i) ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA;
-
             sender.addChatMessage(new ChatComponentText(color + "MOD_NAME: " + mod.getName() + ", VERSION: " + mod.getVersion() + "."));
         }
     }

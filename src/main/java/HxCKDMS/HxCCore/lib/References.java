@@ -26,7 +26,7 @@ public class References {
     public static final List<String> COLOR_CHARS_STRING = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "k", "m", "n", "l", "o");
     public static final List<Character> COLOR_CHARS = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'm', 'n', 'l', 'o');
     public static final String[] COMMANDS = new String[]{"help", "heal", "kill", "god", "fly", "feed", "burn", "extinguish", "smite", "setHome",
-            "home", "setWarp", "warp", "repair", "repairAll", "modlist", "nick", "playerinfo", "serverinfo", "setperms", "spawn", "tpp"};
+            "home", "setWarp", "warp", "repair", "repairAll", "modlist", "nick", "playerinfo", "serverinfo", "setperms", "spawn", "tpa"};
 
     public static final String CC = "\u00a7";
 }
