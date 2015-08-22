@@ -42,6 +42,13 @@ commands.playerinfo.usage=playerinfo <player>
 commands.serverinfo.usage=serverinfo
 commands.setperms.usage=setperms <player> <permlevel#>
 commands.spawn.usage=spawn [player]
-commands.tpa.usage=tpa <accept|deny|player>
+commands.tpa.usage=tpa <accept, deny, player>
+commands.list.usage=list <homes, warps>
 
 commands.exeption.playeronly=This command can only be executed by players.
+commands.exception.home.outOfHomes=You have run out of homes.
+
+commands.exception.noWarps=This server does not have any warps.
+commands.exception.noHomes=You do not have any homes.
+
+death.attack.command_kill=%1$s was killed by commands

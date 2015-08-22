@@ -53,15 +53,6 @@ public class CommandSetWarp implements ISubCommand {
 
                 warp.setTag(wName, warpDir);
 
-                String oldwarps = warp.getString("warpsList");
-
-                if (oldwarps.isEmpty())
-                    oldwarps = wName;
-                if (!oldwarps.contains(wName))
-                    oldwarps = oldwarps + ", " + wName;
-
-                warp.setString("warpsList", oldwarps);
-
                 NBTFileIO.setNbtTagCompound(HxCWorldData, "warp", warp);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

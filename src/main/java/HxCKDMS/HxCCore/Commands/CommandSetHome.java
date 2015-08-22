@@ -16,6 +16,7 @@ import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 public class CommandSetHome implements ISubCommand {
     public static CommandSetHome instance = new CommandSetHome();
@@ -38,19 +39,14 @@ public class CommandSetHome implements ISubCommand {
                 NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 NBTTagCompound homeDir = new NBTTagCompound();
 
-                String oldhomes = home.getString("homesList");
+                Set<String> oldhomes = home.getKeySet();
 
                 String hName = args.length == 1 ? "default" : args[1];
 
+                if (References.HOMES[pl] != -1 && oldhomes.size() >= References.HOMES[pl])
+                    if (!oldhomes.contains(hName))
+                        throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home.outOfHomes"));
 
-                if (oldhomes.isEmpty())
-                    oldhomes = hName;
-                if (!oldhomes.contains(hName))
-                    oldhomes = oldhomes + ", " + hName;
-
-                if (References.HOMES[pl] != -1 && oldhomes.split(", ").length > References.HOMES[pl]) {
-                    return;
-                }
 
                 int x = (int)player.posX;
                 int y = (int)player.posY;
@@ -68,7 +64,6 @@ public class CommandSetHome implements ISubCommand {
 
                 home.setTag(hName, homeDir);
 
-                home.setString("homesList", oldhomes);
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

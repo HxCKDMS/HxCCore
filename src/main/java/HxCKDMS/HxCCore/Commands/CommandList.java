@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.Arrays;
@@ -25,20 +26,31 @@ public class CommandList implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        if (sender instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) sender;
-            String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            File CustomWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+        if(args.length >= 2) {
+            if (args[1].equalsIgnoreCase("homes")) {
+                if(!(sender instanceof EntityPlayerMP)) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
 
-            NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-            ChatComponentText homes = new ChatComponentText(home.getString("homesList"));
-            NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomWorldData, "warp");
-            ChatComponentText warps = new ChatComponentText(warp.getString("warpsList"));
-            homes.getChatStyle().setColor(EnumChatFormatting.GOLD);
-            warps.getChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE);
-            player.addChatMessage(args[2].equals("warps") ? warps : homes);
-        }
+                EntityPlayerMP player = (EntityPlayerMP) sender;
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+
+                if(home.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noHomes"));
+
+                ChatComponentText homes = new ChatComponentText(home.getKeySet().toString().replace("[", "").replace("]", ""));
+                homes.getChatStyle().setColor(EnumChatFormatting.GOLD);
+                player.addChatMessage(homes);
+            } else if(args[1].equalsIgnoreCase("warps")) {
+                File CustomWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+                NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomWorldData, "warp");
+
+                if(warp.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noWarps"));
+
+                ChatComponentText warps = new ChatComponentText(warp.getKeySet().toString().replace("[", "").replace("]", ""));
+                warps.getChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE);
+                sender.addChatMessage(warps);
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+        }else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
     }
 
     @SuppressWarnings("unchecked")

@@ -4,8 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,8 +14,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public class CommandWarp implements ISubCommand {
@@ -36,6 +37,7 @@ public class CommandWarp implements ISubCommand {
 
                 String wName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
+                if(warpDir.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noWarps"));
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
@@ -54,8 +56,7 @@ public class CommandWarp implements ISubCommand {
         if (args.length == 2) {
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
             NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
-            if (warp.getString("warpsList") != null) return Arrays.asList(warp.getString("warpsList").split(", "));
-            else return null;
+            return new LinkedList<>((Set<String>) warp.getKeySet());
         }
         return null;
     }
