@@ -15,6 +15,7 @@ public class PermissionsHandler {
         boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
         return (isopped || SenderPermLevel >= RequiredLevel);
     }
+
     public static int permLevel (EntityPlayer player) {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");

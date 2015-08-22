@@ -20,26 +20,8 @@ public class NickHandler {
         int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
 
         String rawGroup, formattedString = colouredNick;
-        switch(SenderPermLevel){
-            case 1:
-                rawGroup = CC + PERM_COLOURS[1] + PERM_NAMES[1];
-                break;
-            case 2:
-                rawGroup = CC + PERM_COLOURS[2] + PERM_NAMES[2];
-                break;
-            case 3:
-                rawGroup = CC + PERM_COLOURS[3] + PERM_NAMES[3];
-                break;
-            case 4:
-                rawGroup = CC + PERM_COLOURS[4] + PERM_NAMES[4];
-                break;
-            case 5:
-                rawGroup = CC + PERM_COLOURS[5] + PERM_NAMES[5];
-                break;
-            default:
-                rawGroup = CC + PERM_COLOURS[0] + PERM_NAMES[0];
-                break;
-        }
+
+        rawGroup = CC + PERM_COLOURS[SenderPermLevel] + PERM_NAMES[SenderPermLevel];
 
         if (EnableGroupTagInChat)
             formattedString = String.format(formats.get("GroupTag"), rawGroup) + formattedString;
@@ -60,7 +42,7 @@ public class NickHandler {
         if(EnableHxCTagInChat && !tag.equalsIgnoreCase(""))
             formattedString = tag + formattedString;
 
-        return formattedString.replaceAll("&",CC);
+        return formattedString.replaceAll("&", CC);
     }
 
     public static String getColouredNick(EntityPlayerMP player) {

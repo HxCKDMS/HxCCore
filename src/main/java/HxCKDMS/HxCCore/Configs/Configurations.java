@@ -20,9 +20,9 @@ public class Configurations {
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
     @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")
-    public static int HPMax = 100;
+    public static int HPMax = 40;
     @Config.Integer(description = "The higher the number the more Max Damage!", category = "Features")
-    public static int DMMax = 100;
+    public static int DMMax = 40;
     @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
     public static Integer TpaTimeout = 100;
 
@@ -35,7 +35,7 @@ public class Configurations {
     
     @Config.Map(category = "Commands")
     public static LinkedHashMap<String, Integer> commands = new LinkedHashMap<>();
-    @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite)")
+    @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
     public static LinkedHashMap<String, String> perms = new LinkedHashMap<>();
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
     public static HashMap<String, String> formats = new HashMap<>();
@@ -61,6 +61,7 @@ public class Configurations {
         commands.put("RepairAll", 4);
         commands.put("SetHome", 0);
         commands.put("SetWarp", 4);
+        commands.put("SetPerms", 5);
         commands.put("Smite", 3);
         commands.put("Warp", 0);
         commands.put("ServerInfo", 4);

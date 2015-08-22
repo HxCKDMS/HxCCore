@@ -43,28 +43,24 @@ import java.util.UUID;
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 @Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
-    public static File HxCCoreDir = null;
+    @Instance(References.MOD_ID)
+    public static HxCCore instance;
+
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCConfigDir;
-    public static File HxCConfigFile;
-    public static HxCConfig hxCConfig = new HxCConfig();
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile;
+    public static SimpleNetworkWrapper network;
 
     public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
-    public static volatile ArrayList<UUID> coders = new ArrayList<>();
-    public static volatile ArrayList<UUID> helpers = new ArrayList<>();
-    public static volatile ArrayList<UUID> supporters = new ArrayList<>();
-    public static volatile ArrayList<UUID> artists = new ArrayList<>();
-    public static volatile ArrayList<UUID> mascots = new ArrayList<>();
-    public static SimpleNetworkWrapper network;
+
+    public static volatile ArrayList<UUID> coders = new ArrayList<>(),
+            helpers = new ArrayList<>(), supporters = new ArrayList<>(),
+            artists = new ArrayList<>(), mascots = new ArrayList<>();
 
     @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
     public static IProxy proxy;
-
-    @Instance(References.MOD_ID)
-    public static HxCCore instance;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -74,14 +70,13 @@ public class HxCCore {
 
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
-        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
-        registerCategories(hxCConfig);
-        hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
+
+        registerConfig(new HxCConfig());
 
         if (Configurations.enableCommands)
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < Configurations.perms.size(); i++) {
             References.PERM_NAMES[i] = (String)Configurations.perms.keySet().toArray()[i];
             References.PERM_COLOURS[i] = Configurations.perms.get(References.PERM_NAMES[i]).charAt(0);
             References.HOMES[i] = Integer.parseInt(Configurations.perms.get(References.PERM_NAMES[i]).substring(1).trim());
@@ -94,11 +89,11 @@ public class HxCCore {
         CodersCheckThread.start();
         proxy.preInit(event);
         extendEnchantsArray();
+
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
-        LogHelper.warn("Please guys can you start reporting the bugs as soon as you find them it's not hard and only takes like 2 minutes", References.MOD_NAME);
     }
 
     @EventHandler
@@ -127,6 +122,10 @@ public class HxCCore {
             LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
         if (Loader.isModLoaded("HxCBlocks"))
             LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCFactions"))
+            LogHelper.info("Thank your for using HxCFactions", References.MOD_NAME);
+        if (Loader.isModLoaded("HxCTiC"))
+            LogHelper.info("Thank your for using HxCTiC", References.MOD_NAME);
         if (Loader.isModLoaded("magicenergy"))
             LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
         if (Loader.isModLoaded("hxcbows"))
@@ -191,11 +190,14 @@ public class HxCCore {
         return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(References.VERSION);
     }
 
-    public static void registerCategories(HxCConfig config) {
+    public static void registerConfig(HxCConfig config) {
         config.registerCategory(new Category("General", "General Stuff"));
         config.registerCategory(new Category("Features", "General Features"));
         config.registerCategory(new Category("Commands", "Commands Configurations"));
         config.registerCategory(new Category("Permissions", "Permissions System"));
         config.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
+
+        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
+        config.handleConfig(Configurations.class, HxCConfigFile);
     }
 }
