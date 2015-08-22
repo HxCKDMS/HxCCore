@@ -1,7 +1,9 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import HxCKDMS.HxCCore.api.ISubCommand;
 import net.minecraft.command.ICommandSender;
@@ -12,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
+import java.io.File;
 import java.util.List;
 
 public class CommandSpawn implements ISubCommand {
@@ -29,13 +32,17 @@ public class CommandSpawn implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Spawn"), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
-                if (player.dimension != 0) {
-                    Teleporter.transferPlayerToDimension(player, 0, player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ);
-                    player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
+                int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;
+                if (target.dimension != 0) {
+                    Teleporter.transferPlayerToDimension(target, 0, player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ);
+                    target.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
                 } else {
-                    player.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ, player.rotationYaw, player.rotationPitch);
-                    player.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
+                    target.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ, player.rotationYaw, player.rotationPitch);
+                    target.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
                 }
+                String UUID = target.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }

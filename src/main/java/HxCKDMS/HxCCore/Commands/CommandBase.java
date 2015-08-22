@@ -50,6 +50,7 @@ public class CommandBase extends net.minecraft.command.CommandBase {
         registerSubCommand(CommandHat.instance);
         registerSubCommand(CommandPath.instance);
         registerSubCommand(CommandMakeItRain.instance);
+        registerSubCommand(CommandList.instance);
     }
 
     @Override

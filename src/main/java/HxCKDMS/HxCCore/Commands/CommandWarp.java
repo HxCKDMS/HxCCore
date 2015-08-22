@@ -14,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -50,6 +51,12 @@ public class CommandWarp implements ISubCommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if (args.length == 2) {
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+            NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
+            if (warp.getString("warpsList") != null) return Arrays.asList(warp.getString("warpsList").split(", "));
+            else return null;
+        }
         return null;
     }
 }

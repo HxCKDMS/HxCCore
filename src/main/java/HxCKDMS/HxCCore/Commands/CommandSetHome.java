@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
@@ -31,7 +32,6 @@ public class CommandSetHome implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("SetHome"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
-
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
@@ -44,7 +44,9 @@ public class CommandSetHome implements ISubCommand {
                 int z = (int)player.posZ;
                 int dim = player.dimension;
 
-                player.addChatMessage(new ChatComponentText("\u00A72Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ")."));
+                ChatComponentText msg = new ChatComponentText("Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");
+                msg.getChatStyle().setColor(EnumChatFormatting.DARK_GREEN);
+                player.addChatMessage(msg);
 
                 homeDir.setInteger("x", x);
                 homeDir.setInteger("y", y);
@@ -53,6 +55,14 @@ public class CommandSetHome implements ISubCommand {
 
                 home.setTag(hName, homeDir);
 
+                String oldhomes = home.getString("homesList");
+
+                if (oldhomes.isEmpty())
+                    oldhomes = hName;
+                if (!oldhomes.contains(hName))
+                    oldhomes = oldhomes + ", " + hName;
+
+                home.setString("homesList", oldhomes);
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

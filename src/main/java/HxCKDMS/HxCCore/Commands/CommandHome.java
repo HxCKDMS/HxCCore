@@ -14,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,6 +32,7 @@ public class CommandHome implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Home"), player);
             if (CanSend) {
+                int oldx = (int)player.posX, oldy = (int)player.posY, oldz = (int)player.posZ, olddim = player.dimension;
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
@@ -47,12 +49,21 @@ public class CommandHome implements ISubCommand {
                     player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 }
+                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if (args.length == 2) {
+            EntityPlayerMP player = (EntityPlayerMP) sender;
+            String UUID = player.getUniqueID().toString();
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+            if (home.getString("homesList") != null) return Arrays.asList(home.getString("homesList").split(", "));
+            else return null;
+        }
         return null;
     }
 }

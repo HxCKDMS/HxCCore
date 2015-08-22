@@ -29,12 +29,12 @@ public class CommandBack implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Back"), player);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "BackPos");
+            int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "back");
             if (CanSend && tmp != null && tmp.length == 4) {
-                int[] nb = new int[]{(int)Math.round(player.posX), (int)Math.round(player.posY), (int)Math.round(player.posZ), player.dimension};
+                int[] nb = new int[]{(int)player.posX, (int)player.posY, (int)player.posZ, player.dimension};
                 if (tmp[4] != player.dimension) Teleporter.transferPlayerToDimension(player, tmp[4], tmp[0], tmp[1], tmp[2]);
                 else player.playerNetServerHandler.setPlayerLocation(tmp[0], tmp[1], tmp[2], player.cameraPitch, player.cameraYaw);
-                NBTFileIO.setIntArray(CustomPlayerData, "BackPos", nb);
+                NBTFileIO.setIntArray(CustomPlayerData, "back", nb);
             }
         } else  throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
