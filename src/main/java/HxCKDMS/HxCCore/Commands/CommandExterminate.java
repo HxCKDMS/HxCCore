@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
@@ -20,6 +21,7 @@ import scala.actors.threadpool.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
 public class CommandExterminate implements ISubCommand {
     public static CommandExterminate instance = new CommandExterminate();
 

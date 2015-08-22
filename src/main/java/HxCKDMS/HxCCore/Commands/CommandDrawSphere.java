@@ -2,20 +2,19 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.util.Collections;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
 public class CommandDrawSphere implements ISubCommand {
     //TODO: Draw 3dShape and Draw Shape commands
     //Pyramid, Cube, oval, rectangle :D MAYBE player
@@ -35,9 +34,9 @@ public class CommandDrawSphere implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("DrawSphere"), player);
 
             if (CanSend) {
-                int x = (int) CommandBase.clamp_coord(sender, player.posX, args[1]);
-                int y = (int) CommandBase.clamp_double(sender, player.posY, args[2], 0, 0);
-                int z = (int) CommandBase.clamp_coord(sender, player.posZ, args[3]);
+                int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
+                int y = (int) CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
+                int z = (int) CommandMain.clamp_coord(sender, player.posZ, args[3]);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
@@ -57,8 +56,8 @@ public class CommandDrawSphere implements ISubCommand {
 
         if(args.length == 2 || args.length == 3 || args.length == 4) return Collections.singletonList("~");
         else if(args.length == 5) return Collections.singletonList(Integer.toString(8));
-        else if(args.length == 6) return CommandBase.getListOfStringsMatchingLastWord(args, Block.blockRegistry.getKeys().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
-        else if(args.length == 7) return CommandBase.getListOfStringsMatchingLastWord(args, booleans);
+        else if(args.length == 6) return CommandMain.getListOfStringsMatchingLastWord(args, Block.blockRegistry.getKeys().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
+        else if(args.length == 7) return CommandMain.getListOfStringsMatchingLastWord(args, booleans);
         return null;
     }
 }

@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandList implements ISubCommand {
     public static CommandList instance = new CommandList();
 

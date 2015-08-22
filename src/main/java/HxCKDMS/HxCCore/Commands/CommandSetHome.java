@@ -4,7 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandSetHome implements ISubCommand {
     public static CommandSetHome instance = new CommandSetHome();
 

@@ -4,7 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
 public class CommandMute implements ISubCommand {
     public static CommandMute instance = new CommandMute();
 

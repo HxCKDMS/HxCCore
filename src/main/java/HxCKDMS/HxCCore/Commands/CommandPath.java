@@ -4,7 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -14,6 +15,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
 public class CommandPath implements ISubCommand {
     public static CommandPath instance = new CommandPath();
 

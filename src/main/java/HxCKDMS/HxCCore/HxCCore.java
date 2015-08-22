@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore;
 
-import HxCKDMS.HxCCore.Commands.CommandBase;
+import HxCKDMS.HxCCore.Commands.CommandMain;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
@@ -8,6 +8,8 @@ import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
+import HxCKDMS.HxCCore.Registry.CommandRegistry;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.Category;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
@@ -72,7 +74,6 @@ public class HxCCore {
 
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
-
         registerConfig(hxCConfig);
 
         if (Configurations.enableCommands)
@@ -91,6 +92,9 @@ public class HxCCore {
         CodersCheckThread.start();
         proxy.preInit(event);
         extendEnchantsArray();
+
+        if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandMain(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
+        hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
@@ -139,8 +143,7 @@ public class HxCCore {
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Configurations.enableCommands)
-            CommandBase.initCommands(event);
+        if (Configurations.enableCommands) CommandMain.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists())

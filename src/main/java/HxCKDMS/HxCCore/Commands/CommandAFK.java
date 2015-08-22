@@ -4,7 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
+@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
 

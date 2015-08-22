@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -15,8 +16,8 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public class CommandRepairAll implements ISubCommand
-{
+@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+public class CommandRepairAll implements ISubCommand {
     public static CommandRepairAll instance = new CommandRepairAll();
 
     EntityPlayer target;
@@ -32,7 +33,7 @@ public class CommandRepairAll implements ISubCommand
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
             if (CanSend) {
-                if (args.length == 2) target = CommandBase.getPlayer(sender, args[1]); else target = player;
+                if (args.length == 2) target = CommandMain.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);
                 sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayName() + "'s items have been repaired."));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));

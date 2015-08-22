@@ -3,7 +3,8 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -19,6 +20,7 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
 public class CommandServerInfo implements ISubCommand {
     public static CommandServerInfo instance = new CommandServerInfo();
 
@@ -92,7 +94,7 @@ public class CommandServerInfo implements ISubCommand {
 
     private String getWorldTPSStyled(WorldServer worldServer){
         double WorldTickTime = mean(HxCCore.server.worldTickTimes.get(worldServer.provider.dimensionId)) * 1.0E-6D;
-        double WorldTPS = Math.min(1000.0/WorldTickTime, 20);
+        double WorldTPS = Math.min(1000.0 / WorldTickTime, 20);
 
         EnumChatFormatting TPSColor = WorldTPS >= 18 ? EnumChatFormatting.GREEN : WorldTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 

@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -14,6 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
+@HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
 public class CommandSmite implements ISubCommand {
     public static CommandSmite instance = new CommandSmite();
 
@@ -28,11 +30,11 @@ public class CommandSmite implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Smite"), player);
             if (CanSend) {
-                if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
+                if (args.length == 2) smite(CommandMain.getPlayer(sender, args[1]));
                 else smite(player);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
-            if (args.length == 2) smite(CommandBase.getPlayer(sender, args[1]));
+            if (args.length == 2) smite(CommandMain.getPlayer(sender, args[1]));
             else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }

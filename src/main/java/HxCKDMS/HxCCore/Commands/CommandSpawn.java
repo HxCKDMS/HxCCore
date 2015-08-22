@@ -4,8 +4,9 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -17,6 +18,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandSpawn implements ISubCommand {
     public static CommandSpawn instance = new CommandSpawn();
 
@@ -31,7 +33,7 @@ public class CommandSpawn implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Spawn"), player);
             if (CanSend) {
-                EntityPlayerMP target = args.length == 2 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
+                EntityPlayerMP target = args.length == 2 ? CommandMain.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;
                 if (target.dimension != 0) {
                     Teleporter.transferPlayerToDimension(target, 0, player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ);

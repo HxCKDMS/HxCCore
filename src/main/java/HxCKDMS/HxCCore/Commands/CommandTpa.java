@@ -3,8 +3,10 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -17,6 +19,7 @@ import net.minecraft.util.StatCollector;
 import java.util.HashMap;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandTpa implements ISubCommand {
     public static CommandTpa instance = new CommandTpa();
 
@@ -63,7 +66,7 @@ public class CommandTpa implements ISubCommand {
                         }
                         break;
                     default:
-                        EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
+                        EntityPlayerMP player2 = CommandMain.getPlayer(sender, args[1]);
                         if (PlayerThatTPs == null) {
                             HxCCore.tpaRequestList.put(player, player2);
                             HxCCore.TpaTimeoutList.put(player, Configurations.TpaTimeout);

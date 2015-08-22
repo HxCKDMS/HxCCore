@@ -47,38 +47,6 @@ public class Configurations {
     public static String lastCheckedCrash = "";
     
     static {
-        commands.put("Burn", 3);
-        commands.put("Color", 1);
-        commands.put("Extinguish", 2);
-        commands.put("Feed", 2);
-        commands.put("Fly", 1);
-        commands.put("God", 3);
-        commands.put("Heal", 2);
-        commands.put("Home", 0);
-        commands.put("Kill", 5);
-        commands.put("Nick", 1);
-        commands.put("Repair", 3);
-        commands.put("RepairAll", 4);
-        commands.put("SetHome", 0);
-        commands.put("SetWarp", 4);
-        commands.put("SetPerms", 5);
-        commands.put("Smite", 3);
-        commands.put("Warp", 0);
-        commands.put("ServerInfo", 4);
-        commands.put("Spawn", 0);
-        commands.put("TPA", 0);
-        commands.put("DrawSphere", 5);
-        commands.put("ClientInfo", 4);
-        commands.put("AFK", 0);
-        commands.put("Cannon", 3);
-        commands.put("Drain", 4);
-        commands.put("Broadcast", 4);
-        commands.put("Hat", 1);
-        commands.put("Path", 4);
-        commands.put("Mute", 3);
-        commands.put("Mir", 5);
-        commands.put("Back", 1);
-
         Permissions.put("Default", "f 3");
         Permissions.put("Friend", "2 5");
         Permissions.put("Helper", "e 8");

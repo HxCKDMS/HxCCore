@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -14,6 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
+@HxCCommand(defaultPermission = 2, mainCommand = CommandMain.class)
 public class CommandExtinguish implements ISubCommand {
     public static CommandExtinguish instance = new CommandExtinguish();
 
