@@ -8,10 +8,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -30,17 +31,26 @@ public class CommandSmite implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Smite"), player);
             if (CanSend) {
-                if (args.length == 2) smite(CommandMain.getPlayer(sender, args[1]));
-                else smite(player);
+                if (args.length == 2) {
+                    EntityPlayerMP target = CommandMain.getPlayer(sender, args[1]);
+                    smite(target.worldObj, target.posX, target.posY, target.posZ);
+                } else {
+                    MovingObjectPosition rayTrace = player.rayTrace(100, 1.0F);
+                    if (player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
+                    else if(player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
+                    else smite(player.worldObj, player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ);
+
+                }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
-            if (args.length == 2) smite(CommandMain.getPlayer(sender, args[1]));
+            EntityPlayerMP target = CommandMain.getPlayer(sender, args[1]);
+            if (args.length == 2) smite(target.worldObj, target.posX, target.posY, target.posZ);
             else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }
 
-    public void smite(EntityPlayer target) {
-        target.worldObj.addWeatherEffect(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ));
+    public void smite(World world, double x, double y, double z) {
+        world.addWeatherEffect(new EntityLightningBolt(world, x, y, z));
     }
 
     @SuppressWarnings("unchecked")
