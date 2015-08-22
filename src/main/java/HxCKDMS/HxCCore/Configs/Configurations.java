@@ -76,6 +76,8 @@ public class Configurations {
         commands.put("Hat", 1);
         commands.put("Path", 4);
         commands.put("Mute", 3);
+        commands.put("Mir", 5);
+        commands.put("Back", 1);
 
         Permissions.put("Default", "f 3");
         Permissions.put("Friend", "2 5");
