@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.ServerChatEvent;
 
@@ -23,6 +24,13 @@ public class EventChat implements EventListener {
         UUID UUID = event.player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
         if(!CustomPlayerData.exists()) return;
+
+        File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+        if (!worldData.exists()) worldData.mkdirs();
+        try {
+            NBTTagCompound mutes = NBTFileIO.getNbtTagCompound(worldData, "mutedPlayers");
+            if (mutes.getBoolean(UUID.toString())) event.setCanceled(true);
+        } catch (Exception ignored) {}
 
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
 

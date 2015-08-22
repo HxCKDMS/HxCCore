@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class CommandBurn implements ISubCommand {
     public static CommandBurn instance = new CommandBurn();
 
@@ -24,41 +25,36 @@ public class CommandBurn implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        switch(args.length){
-            case 1: {
-                if(sender instanceof EntityPlayerMP){
-                    EntityPlayerMP player = (EntityPlayerMP)sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Burn"), player);
-                    if (CanSend) {
+        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(Configurations.commands.get("Burn"), (EntityPlayerMP) sender);
+        if (CanSend) {
+            switch(args.length){
+                case 1:
+                    if(sender instanceof EntityPlayerMP){
+                        EntityPlayerMP player = (EntityPlayerMP)sender;
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-                } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                    break;
+                case 2:
+                    EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
+                    player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
+                    player2.setFire(750000000);
+                    sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for 750000000 ticks."));
+                case 3:
+                    player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
+                    player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
+                    player2.setFire(Integer.parseInt(args[2]));
+                    sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
+                    break;
+                default: throw new WrongUsageException(StatCollector.translateToLocal("command."+getCommandName()+".usage"));
             }
-            break;
-            case 2: {
-                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
-                player2.setFire(750000000);
-                sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for 750000000 ticks."));
-            }
-            case 3: {
-                EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
-                player2.setFire(Integer.parseInt(args[2]));
-                sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
-            }
-            break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("command."+getCommandName()+".usage"));
-        }
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length == 2){
+        if(args.length == 2)
             return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-        }
         return null;
     }
 }

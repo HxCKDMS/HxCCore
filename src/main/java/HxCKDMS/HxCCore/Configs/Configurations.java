@@ -36,7 +36,7 @@ public class Configurations {
     @Config.Map(category = "Commands")
     public static LinkedHashMap<String, Integer> commands = new LinkedHashMap<>();
     @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
-    public static LinkedHashMap<String, String> perms = new LinkedHashMap<>();
+    public static LinkedHashMap<String, String> Permissions = new LinkedHashMap<>();
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
     public static HashMap<String, String> formats = new HashMap<>();
 
@@ -75,13 +75,14 @@ public class Configurations {
         commands.put("Broadcast", 4);
         commands.put("Hat", 1);
         commands.put("Path", 4);
+        commands.put("Mute", 3);
 
-        perms.put("Default", "f 3");
-        perms.put("Friend", "2 5");
-        perms.put("Helper", "e 8");
-        perms.put("Moderator", "9 10");
-        perms.put("Admin", "6 16");
-        perms.put("Owner", "4 -1");
+        Permissions.put("Default", "f 3");
+        Permissions.put("Friend", "2 5");
+        Permissions.put("Helper", "e 8");
+        Permissions.put("Moderator", "9 10");
+        Permissions.put("Admin", "6 16");
+        Permissions.put("Owner", "4 -1");
 
         formats.put("ChatFormat", "<%1$s> %2$s");
         formats.put("HxCTag", "&f[%1$s&f]");

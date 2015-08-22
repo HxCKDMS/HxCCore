@@ -36,7 +36,7 @@ public class CommandSetPerms implements ISubCommand {
                 if (args.length == 3) {
                     String playerName = args[1];
                     int permLevel = Integer.parseInt(args[2]);
-                    if (permLevel > Configurations.perms.size() || permLevel < 0)
+                    if (permLevel > Configurations.Permissions.size() || permLevel < 0)
                         throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
 
                     Permissions.setInteger(playerName, permLevel);
@@ -51,7 +51,7 @@ public class CommandSetPerms implements ISubCommand {
             if (args.length == 3) {
                 String playerName = args[1];
                 int permLevel = Integer.parseInt(args[2]);
-                if (permLevel > Configurations.perms.size() || permLevel < 0)
+                if (permLevel > Configurations.Permissions.size() || permLevel < 0)
                     throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
 
                 Permissions.setInteger(playerName, permLevel);
