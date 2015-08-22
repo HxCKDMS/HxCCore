@@ -21,7 +21,7 @@ public class CommandFly implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "fly";
+        return "Fly";
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CommandFly implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel lighter." : "\u00A7bYou feel heavier."));
                 player.addChatComponentMessage(new ChatComponentText((player2.capabilities.allowFlying ? "\u00A76Enabled" : "\u00A76Disabled") + " flight, for player " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

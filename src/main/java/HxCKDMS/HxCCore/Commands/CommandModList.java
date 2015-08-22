@@ -16,7 +16,7 @@ public class CommandModList implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "modList";
+        return "ModList";
     }
 
     @Override

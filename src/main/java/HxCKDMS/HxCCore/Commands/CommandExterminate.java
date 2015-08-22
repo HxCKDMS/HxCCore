@@ -27,14 +27,14 @@ public class CommandExterminate implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "exterminate";
+        return "Exterminate";
     }
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Broadcast"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Exterminate"), player);
             if (CanSend) {
                 int tmp = 0;
                 List<Entity> ents = player.worldObj.getLoadedEntityList();

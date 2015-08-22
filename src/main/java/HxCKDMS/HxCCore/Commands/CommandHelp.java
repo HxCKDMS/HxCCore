@@ -16,7 +16,7 @@ public class CommandHelp implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "help";
+        return "Help";
     }
 
     @Override
@@ -32,8 +32,8 @@ public class CommandHelp implements ISubCommand {
         for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
             if(i >= CommandMain.commands.size()) break;
 
-            String line = ((ISubCommand)CommandMain.commands.values().toArray()[i]).getCommandName().toLowerCase();
-            line = "commands." + line + ".help";
+            String line = ((ISubCommand)CommandMain.commands.values().toArray()[i]).getCommandName();
+            line = "commands." + line.toLowerCase() + ".help";
             line = StatCollector.translateToLocal(line);
             line = "/HxC " + line;
             ChatComponentText message = new ChatComponentText(line);

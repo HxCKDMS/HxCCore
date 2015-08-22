@@ -25,7 +25,7 @@ public class CommandSetHome implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "setHome";
+        return "SetHome";
     }
 
     @Override

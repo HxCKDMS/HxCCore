@@ -25,7 +25,7 @@ public class CommandHome implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "home";
+        return "Home";
     }
 
     @Override

@@ -22,7 +22,7 @@ public class CommandBurn implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "burn";
+        return "Burn";
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CommandBurn implements ISubCommand {
                     player2.setFire(Integer.parseInt(args[2]));
                     sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
                     break;
-                default: throw new WrongUsageException(StatCollector.translateToLocal("command."+getCommandName()+".usage"));
+                default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
             }
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }

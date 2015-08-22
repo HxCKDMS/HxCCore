@@ -21,7 +21,7 @@ public class CommandSmite implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "smite";
+        return "Smite";
     }
 
     @Override

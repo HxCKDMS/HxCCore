@@ -23,7 +23,7 @@ public class CommandHeal implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "heal";
+        return "Heal";
     }
 
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
@@ -44,7 +44,7 @@ public class CommandHeal implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
                 sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

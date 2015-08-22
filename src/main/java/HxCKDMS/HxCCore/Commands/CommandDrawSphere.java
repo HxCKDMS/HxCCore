@@ -24,7 +24,7 @@ public class CommandDrawSphere implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "drawSphere";
+        return "DrawSphere";
     }
 
     @Override

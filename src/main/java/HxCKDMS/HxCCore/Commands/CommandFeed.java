@@ -23,7 +23,7 @@ public class CommandFeed implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "feed";
+        return "Feed";
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CommandFeed implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
                 sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

@@ -29,7 +29,7 @@ public class CommandAFK implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "afk";
+        return "AFK";
     }
 
     @Override

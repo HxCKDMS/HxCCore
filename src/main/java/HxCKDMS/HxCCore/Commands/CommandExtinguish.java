@@ -21,7 +21,7 @@ public class CommandExtinguish implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "extinguish";
+        return "Extinguish";
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CommandExtinguish implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
                 sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player2.getDisplayName()));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

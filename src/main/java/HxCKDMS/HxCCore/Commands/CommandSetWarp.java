@@ -23,7 +23,7 @@ public class CommandSetWarp implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "setWarp";
+        return "SetWarp";
     }
 
     @Override

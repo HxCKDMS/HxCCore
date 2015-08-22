@@ -23,7 +23,7 @@ public class CommandMute implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "mute";
+        return "Mute";
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CommandMute implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("\u00A79You've been muted for " + Integer.parseInt(args[2]) / 60 + " minutes!"));
                     mutes.setBoolean(player.getUniqueID().toString(), true);
                     break;*/ //TODO: Find good way to make timed mute without causing lag with yet another tick counter
-                default: throw new WrongUsageException(StatCollector.translateToLocal("command."+getCommandName()+".usage"));
+                default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
             }
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }

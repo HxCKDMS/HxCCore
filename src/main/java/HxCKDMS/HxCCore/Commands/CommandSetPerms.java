@@ -24,7 +24,7 @@ public class CommandSetPerms implements ISubCommand {
     public static CommandSetPerms instance = new CommandSetPerms();
     @Override
     public String getCommandName() {
-        return "setPerms";
+        return "SetPerms";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CommandSetPerms implements ISubCommand {
                     String playerName = args[1];
                     int permLevel = Integer.parseInt(args[2]);
                     if (permLevel > Configurations.Permissions.size() || permLevel < 0)
-                        throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+                        throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
 
                     Permissions.setInteger(playerName, permLevel);
                     player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + CC + PERM_COLOURS[permLevel] + PERM_NAMES[permLevel] + CC + "6."));
@@ -54,13 +54,13 @@ public class CommandSetPerms implements ISubCommand {
                 String playerName = args[1];
                 int permLevel = Integer.parseInt(args[2]);
                 if (permLevel > Configurations.Permissions.size() || permLevel < 0)
-                    throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+                    throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
 
                 Permissions.setInteger(playerName, permLevel);
                 sender.addChatMessage(new ChatComponentText(playerName + "'s Permissions Level was set to " + PERM_NAMES[permLevel] + "."));
 
                 NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-            } else throw new WrongUsageException("command."+getCommandName()+".usage");
+            } else throw new WrongUsageException("commands." + getCommandName().toLowerCase() + ".usage");
         }
     }
 

@@ -24,7 +24,7 @@ public class CommandRepairAll implements ISubCommand {
     @Override
     public String getCommandName()
     {
-        return "repairAll";
+        return "RepairAll";
     }
 
     @Override

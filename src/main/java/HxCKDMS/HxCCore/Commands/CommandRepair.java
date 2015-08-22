@@ -19,7 +19,7 @@ public class CommandRepair implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "repair";
+        return "Repair";
     }
 
     @Override

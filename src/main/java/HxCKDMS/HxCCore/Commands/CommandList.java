@@ -23,7 +23,7 @@ public class CommandList implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "list";
+        return "List";
     }
 
     @Override
@@ -51,8 +51,8 @@ public class CommandList implements ISubCommand {
                 ChatComponentText warps = new ChatComponentText(warp.getKeySet().toString().replace("[", "").replace("]", ""));
                 warps.getChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE);
                 sender.addChatMessage(warps);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
-        }else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+        }else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
     }
 
     @SuppressWarnings("unchecked")

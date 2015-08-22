@@ -25,7 +25,7 @@ public class CommandWarp implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "warp";
+        return "Warp";
     }
 
     @Override

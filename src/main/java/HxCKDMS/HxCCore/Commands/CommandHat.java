@@ -18,7 +18,7 @@ public class CommandHat implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "hat";
+        return "Hat";
     }
 
     @Override

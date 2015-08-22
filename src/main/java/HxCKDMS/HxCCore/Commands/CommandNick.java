@@ -22,7 +22,7 @@ public class CommandNick implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "nick";
+        return "Nick";
     }
 
     @Override

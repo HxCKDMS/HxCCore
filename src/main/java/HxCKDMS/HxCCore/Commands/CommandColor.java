@@ -21,7 +21,7 @@ public class CommandColor implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "color";
+        return "Color";
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CommandColor implements ISubCommand {
                 char color = 'f';
                 if (args.length >= 2) color = args[1].charAt(0);
                 if (References.COLOR_CHARS.contains(color) && !Configurations.bannedColorCharacters.contains(color)) NBTFileIO.setString(CustomPlayerData, "Color", String.valueOf(color));
-                else throw new WrongUsageException("commands." + getCommandName() + ".usage");
+                else throw new WrongUsageException("commands." + getCommandName().toLowerCase() + ".usage");
             } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }

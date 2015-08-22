@@ -22,7 +22,7 @@ public class CommandKill implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "kill";
+        return "Kill";
     }
 
 
@@ -41,7 +41,7 @@ public class CommandKill implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

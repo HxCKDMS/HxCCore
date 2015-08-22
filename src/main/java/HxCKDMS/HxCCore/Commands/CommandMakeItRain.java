@@ -16,7 +16,7 @@ public class CommandMakeItRain implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "mir";
+        return "Mir";
     }
 
     @Override

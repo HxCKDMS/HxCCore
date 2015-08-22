@@ -24,7 +24,7 @@ public class CommandSpawn implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "spawn";
+        return "Spawn";
     }
 
     @Override

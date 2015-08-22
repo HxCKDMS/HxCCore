@@ -21,7 +21,7 @@ public class CommandPath implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "path";
+        return "Path";
     }
 
     @Override

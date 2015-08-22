@@ -25,7 +25,7 @@ public class CommandTpa implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "tpa";
+        return "TPA";
     }
 
     @Override

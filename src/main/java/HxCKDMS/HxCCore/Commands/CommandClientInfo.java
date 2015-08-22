@@ -27,7 +27,7 @@ public class CommandClientInfo implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "clientInfo";
+        return "ClientInfo";
     }
 
     @Override
@@ -35,11 +35,9 @@ public class CommandClientInfo implements ISubCommand {
         boolean CanUse = true;
         if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
         if (CanUse) {
-            if (args.length <= 3) {
-                if (!(sender instanceof EntityPlayerMP && args.length <= 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
-                EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
-                getClientInfo(sender, player);
-            }
+            if (!(sender instanceof EntityPlayerMP) && args.length >= 2) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
+            EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
+            getClientInfo(sender, player);
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }
 

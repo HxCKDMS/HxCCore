@@ -21,7 +21,7 @@ public class CommandBack implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "back";
+        return "Back";
     }
 
     @Override

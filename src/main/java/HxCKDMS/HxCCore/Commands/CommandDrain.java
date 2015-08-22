@@ -20,7 +20,7 @@ public class CommandDrain implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "drain";
+        return "Drain";
     }
 
     @Override

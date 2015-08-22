@@ -29,7 +29,7 @@ public class CommandServerInfo implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "serverInfo";
+        return "ServerInfo";
     }
 
     @Override

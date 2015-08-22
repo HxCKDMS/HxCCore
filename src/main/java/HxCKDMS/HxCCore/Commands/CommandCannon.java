@@ -21,7 +21,7 @@ public class CommandCannon implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "cannon";
+        return "Cannon";
     }
 
     @Override

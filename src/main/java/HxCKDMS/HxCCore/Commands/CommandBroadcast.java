@@ -22,7 +22,7 @@ public class CommandBroadcast implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "broadcast";
+        return "Broadcast";
     }
 
     @Override
