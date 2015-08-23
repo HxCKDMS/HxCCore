@@ -15,44 +15,42 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.Collections;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
-public class CommandDrawSphere implements ISubCommand {
-    //TODO: Draw 3dShape and Draw Shape commands
-    //Pyramid, Cube, oval, rectangle :D MAYBE player
-    public static CommandDrawSphere instance = new CommandDrawSphere();
-
-    private String color = EnumChatFormatting.GREEN.toString();
-
+@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+public class CommandDraw2DEllipsoid implements ISubCommand {
     @Override
     public String getCommandName() {
-        return "DrawSphere";
+        return "Draw2DEllipsoid";
     }
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("DrawSphere"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Draw2DEllipsoid"), player);
 
             if (CanSend) {
-                int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
-                int y = (int) CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
-                int z = (int) CommandMain.clamp_coord(sender, player.posZ, args[3]);
+                double x = CommandMain.clamp_coord(sender, player.posX, args[1]);
+                double y = CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
+                double z = CommandMain.clamp_coord(sender, player.posZ, args[3]);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
                 Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
-                double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
+                double a = Double.parseDouble(args[7]);
+                double b = Double.parseDouble(args[8]);
+                double updateAmount = args.length >= 10 ? Double.parseDouble(args[9]) : 0.05D;
 
+                System.out.println(updateAmount);
                 long cNano = System.nanoTime();
-                WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
-                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
+                WorldHelper.draw2DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, a, b);
+                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s 2D Ellipsoid at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", (int)x, (int)y, (int)z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);
 
             } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
         }
     }
+
     @Override
     @SuppressWarnings("unchecked")
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {

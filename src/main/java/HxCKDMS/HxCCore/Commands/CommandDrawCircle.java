@@ -16,23 +16,18 @@ import java.util.Collections;
 import java.util.List;
 
 @HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
-public class CommandDrawSphere implements ISubCommand {
-    //TODO: Draw 3dShape and Draw Shape commands
-    //Pyramid, Cube, oval, rectangle :D MAYBE player
-    public static CommandDrawSphere instance = new CommandDrawSphere();
-
-    private String color = EnumChatFormatting.GREEN.toString();
+public class CommandDrawCircle implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "DrawSphere";
+        return "DrawCircle";
     }
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("DrawSphere"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("DrawCircle"), player);
 
             if (CanSend) {
                 int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
@@ -45,8 +40,8 @@ public class CommandDrawSphere implements ISubCommand {
                 double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
 
                 long cNano = System.nanoTime();
-                WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
-                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
+                WorldHelper.drawCircle(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
+                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s circle at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);
 
