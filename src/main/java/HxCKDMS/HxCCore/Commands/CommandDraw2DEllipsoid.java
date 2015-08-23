@@ -29,9 +29,9 @@ public class CommandDraw2DEllipsoid implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Draw2DEllipsoid"), player);
 
             if (CanSend) {
-                double x = CommandMain.clamp_coord(sender, player.posX, args[1]);
-                double y = CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
-                double z = CommandMain.clamp_coord(sender, player.posZ, args[3]);
+                int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
+                int y = (int) CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
+                int z = (int) CommandMain.clamp_coord(sender, player.posZ, args[3]);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
@@ -43,7 +43,7 @@ public class CommandDraw2DEllipsoid implements ISubCommand {
                 System.out.println(updateAmount);
                 long cNano = System.nanoTime();
                 WorldHelper.draw2DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, a, b);
-                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s 2D Ellipsoid at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", (int)x, (int)y, (int)z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
+                ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s 2D Ellipsoid at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);
 
