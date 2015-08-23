@@ -1,12 +1,15 @@
 package HxCKDMS.HxCCore.Registry;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 
 import java.util.Set;
+
 @SuppressWarnings("unchecked")
 public class CommandRegistry {
     public static void registerCommands(AbstractCommandMain commandMain, Set<ASMDataTable.ASMData> allData) {
@@ -27,7 +30,6 @@ public class CommandRegistry {
                 }
             }
         }
-
-
+        HxCCore.commandCFG.handleConfig(Configurations.class, HxCCore.commandsCFG);
     }
 }

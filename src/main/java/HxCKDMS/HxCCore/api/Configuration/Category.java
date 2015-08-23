@@ -56,8 +56,8 @@ public class Category {
         boolean hasEncounteredEquals = false;
         char[] chars = line.toCharArray();
         String type = "";
-        String variableName = "";
-        String contents = "";
+        StringBuilder variableNameBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new StringBuilder();
         for (Character character : chars) {
             if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
                 hasNotEncounteredText = false;
@@ -67,11 +67,14 @@ public class Category {
             } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && character.equals('=')) {
                 hasEncounteredEquals = true;
             } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn && !hasEncounteredEquals) {
-                variableName += character;
+                variableNameBuilder.append(character);
             } else if (hasEncounteredColumn && hasEncounteredEquals) {
-                contents += character;
+                contentBuilder.append(character);
             }
         }
+
+        String variableName = variableNameBuilder.toString();
+        String contents = contentBuilder.toString();
 
         switch (type) {
             case "I":
@@ -98,11 +101,16 @@ public class Category {
                 if(clazz.getField(variableName).getAnnotation(Config.Double.class).forceReset() && Double.parseDouble((String) clazz.getField(variableName).get(clazz)) != 0D) return;
                 clazz.getField(variableName).set(clazz, Double.parseDouble(contents));
                 break;
+            case "C":
+                if(clazz.getField(variableName).getAnnotation(Config.Character.class).forceReset() && !(clazz.getField(variableName).get(clazz)).equals(' ')) return;
+                clazz.getField(variableName).set(clazz, contents);
+                break;
+            default: throw new NullPointerException("No correct type.");
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException, ClassCastException {
+    public <T,U> void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException, ClassCastException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
@@ -110,7 +118,7 @@ public class Category {
         Map<String, String> values = new LinkedHashMap<>();
         String keyType = "";
         String valueType = "";
-        String variableName = "";
+        StringBuilder variableNameBuilder = new StringBuilder();
 
         for (Character character : chars) {
             if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
@@ -121,12 +129,13 @@ public class Category {
             } else if (character.equals(':')) {
                 hasEncounteredColumn = true;
             } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
-                variableName += character.toString();
+                variableNameBuilder.append(character.toString());
             } else if (character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
                 break;
             }
             prevChar = character;
         }
+        String variableName = variableNameBuilder.toString();
 
         if(clazz.getField(variableName).getAnnotation(Config.Map.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
 
@@ -134,236 +143,41 @@ public class Category {
             if (line.startsWith("\t]")) break;
             chars = line.toCharArray();
             boolean hasEncounteredEquals = false;
-            String key = "";
-            String value = "";
+            StringBuilder keyBuilder = new StringBuilder();
+            StringBuilder valueBuilder = new StringBuilder();
 
             for (Character character : chars) {
                 if (character.equals('=') && !hasEncounteredEquals) {
                     hasEncounteredEquals = true;
                 } else if (!character.equals('\t') && !hasEncounteredEquals) {
-                    key += character.toString();
+                    keyBuilder.append(character);
                 } else if (!character.equals('\t') && hasEncounteredEquals) {
-                    value += character.toString();
+                    valueBuilder.append(character);
                 }
             }
+            String key = keyBuilder.toString();
+            String value = valueBuilder.toString();
+
             if (!key.equals("")) values.put(key, value);
         }
 
-            switch (keyType) {
-                case "I":
-                    switch (valueType) {
-                        case "I":
-                            Map<Integer, Integer> map1 = (Map<Integer, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(Integer.parseInt(mapKey), Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<Integer, String> map2 = (Map<Integer, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(Integer.parseInt(mapKey), values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<Integer, Boolean> map3 = (Map<Integer, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(Integer.parseInt(mapKey), Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<Integer, Long> map4 = (Map<Integer, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(Integer.parseInt(mapKey), Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<Integer, Float> map5 = (Map<Integer, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(Integer.parseInt(mapKey), Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<Integer, Double> map6 = (Map<Integer, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(Integer.parseInt(mapKey), Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-                case "S":
-                    switch (valueType) {
-                        case "I":
-                            Map<String, Integer> map1 = (Map<String, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(mapKey, Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<String, String> map2 = (Map<String, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(mapKey, values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<String, Boolean> map3 = (Map<String, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(mapKey, Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<String, Long> map4 = (Map<String, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(mapKey, Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<String, Float> map5 = (Map<String, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(mapKey, Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<String, Double> map6 = (Map<String, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(mapKey, Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-                case "B":
-                    switch (valueType) {
-                        case "I":
-                            Map<Boolean, Integer> map1 = (Map<Boolean, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(Boolean.parseBoolean(mapKey), Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<Boolean, String> map2 = (Map<Boolean, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(Boolean.parseBoolean(mapKey), values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<Boolean, Boolean> map3 = (Map<Boolean, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(Boolean.parseBoolean(mapKey), Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<Boolean, Long> map4 = (Map<Boolean, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(Boolean.parseBoolean(mapKey), Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<Boolean, Float> map5 = (Map<Boolean, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(Boolean.parseBoolean(mapKey), Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<Boolean, Double> map6 = (Map<Boolean, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(Boolean.parseBoolean(mapKey), Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-                case "L":
-                    switch (valueType) {
-                        case "I":
-                            Map<Long, Integer> map1 = (Map<Long, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(Long.parseLong(mapKey), Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<Long, String> map2 = (Map<Long, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(Long.parseLong(mapKey), values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<Long, Boolean> map3 = (Map<Long, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(Long.parseLong(mapKey), Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<Long, Long> map4 = (Map<Long, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(Long.parseLong(mapKey), Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<Long, Float> map5 = (Map<Long, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(Long.parseLong(mapKey), Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<Long, Double> map6 = (Map<Long, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(Long.parseLong(mapKey), Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-                case "F":
-                    switch (valueType) {
-                        case "I":
-                            Map<Float, Integer> map1 = (Map<Float, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(Float.parseFloat(mapKey), Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<Float, String> map2 = (Map<Float, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(Float.parseFloat(mapKey), values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<Float, Boolean> map3 = (Map<Float, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(Float.parseFloat(mapKey), Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<Float, Long> map4 = (Map<Float, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(Float.parseFloat(mapKey), Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<Float, Float> map5 = (Map<Float, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(Float.parseFloat(mapKey), Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<Float, Double> map6 =  (Map<Float, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(Float.parseFloat(mapKey), Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-                case "D":
-                    switch (valueType) {
-                        case "I":
-                            Map<Double, Integer> map1 =  (Map<Double, Integer>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map1.put(Double.parseDouble(mapKey), Integer.parseInt(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map1);
-                            break;
-                        case "S":
-                            Map<Double, String> map2 =  (Map<Double, String>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map2.put(Double.parseDouble(mapKey), values.get(mapKey));
-                            clazz.getField(variableName).set(clazz, map2);
-                            break;
-                        case "B":
-                            Map<Double, Boolean> map3 =  (Map<Double, Boolean>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map3.put(Double.parseDouble(mapKey), Boolean.parseBoolean(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map3);
-                            break;
-                        case "L":
-                            Map<Double, Long> map4 =  (Map<Double, Long>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map4.put(Double.parseDouble(mapKey), Long.parseLong(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map4);
-                            break;
-                        case "F":
-                            Map<Double, Float> map5 =  (Map<Double, Float>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map5.put(Double.parseDouble(mapKey), Float.parseFloat(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map5);
-                            break;
-                        case "D":
-                            Map<Double, Double> map6 = (Map<Double, Double>) clazz.getField(variableName).get(clazz);
-                            for (String mapKey : values.keySet()) map6.put(Double.parseDouble(mapKey), Double.parseDouble(values.get(mapKey)));
-                            clazz.getField(variableName).set(clazz, map6);
-                            break;
-                    }
-                    break;
-            }
+        Class<T> keyType1 = (Class<T>) getTypeFromLetter(keyType);
+        Class<U> valueType1 = (Class<U>) getTypeFromLetter(valueType);
+
+        Map<T, U> map = (Map<T, U>) clazz.getField(variableName).get(clazz);
+
+        for (Map.Entry<String, String> entry : values.entrySet()) map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue()));
+        clazz.getField(variableName).set(clazz, map);
     }
 
-    public void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException {
+    @SuppressWarnings("unchecked")
+    public <T> void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException, ClassCastException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
         List<String> values = new ArrayList<>();
         String type = "";
-        String variableName = "";
+        StringBuilder variableNameBuilder = new StringBuilder();
 
         for (Character character : chars) {
             if (!character.equals(' ') && !character.equals('\t') && hasNotEncounteredText) {
@@ -372,58 +186,33 @@ public class Category {
             } else if (character.equals(':')) {
                 hasEncounteredColumn = true;
             } else if (!character.equals(' ') && !character.equals('\t') && hasEncounteredColumn) {
-                variableName += character.toString();
+                variableNameBuilder.append(character.toString());
             } else if (character.equals(' ') && !hasNotEncounteredText && hasEncounteredColumn) {
                 break;
             }
         }
+        String variableName = variableNameBuilder.toString();
 
         if(clazz.getField(variableName).getAnnotation(Config.List.class).forceReset() && clazz.getField(variableName).get(clazz) != null) return;
 
         while ((line = reader.readLine()) != null) {
             if (line.contains("\t>")) break;
             chars = line.toCharArray();
-            String value = "";
+            StringBuilder valueBuilder = new StringBuilder();
             for (Character character : chars) {
                 if (!character.equals('\t')) {
-                    value += character.toString();
+                    valueBuilder.append(character);
                 }
             }
+            String value = valueBuilder.toString();
+
             if (!value.equals("")) values.add(value);
         }
 
-        switch (type) {
-            case "I":
-                List<Integer> list1 = new ArrayList<>();
-                for (String value : values) list1.add(Integer.parseInt(value));
-                clazz.getField(variableName).set(clazz, list1);
-                break;
-            case "S":
-                List<String> list2 = new ArrayList<>();
-                for (String value : values) list2.add(value);
-                clazz.getField(variableName).set(clazz, list2);
-                break;
-            case "B":
-                List<Boolean> list3 = new ArrayList<>();
-                for (String value : values) list3.add(Boolean.parseBoolean(value));
-                clazz.getField(variableName).set(clazz, list3);
-                break;
-            case "L":
-                List<Long> list4 = new ArrayList<>();
-                for (String value : values) list4.add(Long.parseLong(value));
-                clazz.getField(variableName).set(clazz, list4);
-                break;
-            case "F":
-                List<Float> list5 = new ArrayList<>();
-                for (String value : values) list5.add(Float.parseFloat(value));
-                clazz.getField(variableName).set(clazz, list5);
-                break;
-            case "D":
-                List<Double> list6 = new ArrayList<>();
-                for (String value : values) list6.add(Double.parseDouble(value));
-                clazz.getField(variableName).set(clazz, list6);
-                break;
-        }
+        Class<T> type1 = (Class<T>) getTypeFromLetter(type);
+        List<T> list = new ArrayList<>();
+        for (String value : values) list.add(type1.cast(value));
+        clazz.getField(variableName).set(clazz, list);
     }
 
     @SuppressWarnings("unchecked")
@@ -473,12 +262,28 @@ public class Category {
             } else if(setting.getType() == Setting.Type.DOUBLE) {
                 Setting<Double> aSetting = (Setting<Double>) setting;
                 stringBuilder.append("\tD:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
+            } else if(setting.getType() == Setting.Type.CHARACTER) {
+                Setting<String> aSetting = (Setting<String>) setting;
+                stringBuilder.append("\tC:").append(aSetting.getName()).append("=").append(aSetting.getValue()).append("\n");
             }
             if(iterator.hasNext()) stringBuilder.append("\n");
         }
 
         stringBuilder.append("}\n\n\n");
         return stringBuilder;
+    }
+
+    private Class<?> getTypeFromLetter(String letter) {
+        switch (letter) {
+            case "S": return String.class;
+            case "I": return Integer.class;
+            case "B": return Boolean.class;
+            case "L": return Long.class;
+            case "F": return Float.class;
+            case "D": return Double.class;
+            case "C": return Character.class;
+            default: return Object.class;
+        }
     }
 
     private String getTypeLetterForList(List list) {
@@ -488,6 +293,7 @@ public class Category {
         if (list.get(0) instanceof Long) return "L";
         if (list.get(0) instanceof Float) return "F";
         if (list.get(0) instanceof Double) return "D";
+        if (list.get(0) instanceof Character) return "C";
         return null;
     }
 
@@ -512,6 +318,9 @@ public class Category {
             } else if (object instanceof Double) {
                 stringBuilder.append("D");
                 break;
+            } else if (object instanceof Character) {
+                stringBuilder.append("C");
+                break;
             }
         }
         stringBuilder.append("-");
@@ -533,6 +342,9 @@ public class Category {
                 break;
             } else if (object instanceof Double) {
                 stringBuilder.append("D");
+                break;
+            } else if (object instanceof Character) {
+                stringBuilder.append("C");
                 break;
             }
         }

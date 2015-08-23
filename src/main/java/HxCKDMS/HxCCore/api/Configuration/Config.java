@@ -60,6 +60,14 @@ public @interface Config {
 
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
+    @interface Character {
+        java.lang.String category() default "General";
+        java.lang.String description() default "";
+        boolean forceReset() default false;
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
     @interface Boolean {
         java.lang.String category() default "General";
         java.lang.String description() default "";

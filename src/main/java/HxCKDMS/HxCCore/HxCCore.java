@@ -95,7 +95,6 @@ public class HxCCore {
         extendEnchantsArray();
 
         if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandMain(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
-        commandCFG.handleConfig(Configurations.class, commandsCFG);
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());

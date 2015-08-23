@@ -75,21 +75,6 @@ public class CrashReportThread extends Thread {
         socket.close();
     }
 
-    class filter implements FileFilter {
-        @Override
-        public boolean accept(File file) {
-            return file.getName().startsWith("crash-");
-        }
-    }
-
-    class crashSendTemplate {
-        ArrayList<String> crash;
-
-        public crashSendTemplate(ArrayList<String> crash) {
-            this.crash = crash;
-        }
-    }
-
     private String getServerIP() throws IOException {
         URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCIssueIP.txt");
         InputStream inputStream = url.openStream();
@@ -109,6 +94,21 @@ public class CrashReportThread extends Thread {
             return Integer.parseInt(reader.readLine().split(":")[1]);
         } catch (Exception ignored) {
             return References.ERROR_REPORT_PORT;
+        }
+    }
+
+    static class filter implements FileFilter {
+        @Override
+        public boolean accept(File file) {
+            return file.getName().startsWith("crash-");
+        }
+    }
+
+    static class crashSendTemplate {
+        ArrayList<String> crash;
+
+        public crashSendTemplate(ArrayList<String> crash) {
+            this.crash = crash;
         }
     }
 }
