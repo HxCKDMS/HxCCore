@@ -33,12 +33,11 @@ public class CommandKit implements ISubCommand {
             if (CanSend) {
                 if (args[1].equalsIgnoreCase("spawn") && args.length == 3) {
                     if (Kits.canGetKit(PermissionsHandler.permLevel(player), args[2])) {
-                        ItemStack[] kit = Kits.getItems(args[2]);
-                        for (ItemStack stack : kit) {
+                        for (ItemStack stack : Kits.getItems(args[2])) {
                             player.inventory.addItemStackToInventory(stack);
                         }
-                        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("commands.kit.spawn.success") + args[2]));
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.kit.spawn.failure") + args[2]);
+                        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commands.kit.spawn.success", args[2])));
+                    } else throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.spawn.failure", args[2]));
                 }
             }
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

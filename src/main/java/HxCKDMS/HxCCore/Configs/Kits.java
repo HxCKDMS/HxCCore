@@ -2,9 +2,11 @@ package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -15,31 +17,60 @@ public class Kits {
     public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
 
     static {
-        Kits.put("KitPotato", "{<minecraft:potato:0> = 16, <minecraft:potato:1> = 4, <minecraft:iron_sword:30> = 1}");
-        Kits.put("KitSwords", "{<minecraft:diamond_sword:0> = 1, <minecraft:gold_sword:0> = 1, <minecraft:iron_sword:0> = 1}");
-        Kits.put("KitBasic", "{<minecraft:stone_pickaxe:0> = 1, <minecraft:stone_axe:0> = 1, <minecraft:stone_shovel:0> = 1}");
+        Kits.put("Starter", "{<minecraft:stone_sword:0> = 1; <minecraft:stone_pickaxe:0> = 1; <minecraft:stone_axe:0> = 1; <minecraft:stone_shovel> = 1; <minecraft:coocked_porkchop:0> = 8}");
 
-        KitPerms.put("KitPotato", 1);
-        KitPerms.put("KitSwords", 2);
-        KitPerms.put("KitBasic", 0);
+        KitPerms.put("Starter", 1);
     }
 
     public static boolean canGetKit(int permLevel, String kit) {
         return KitPerms.get(kit) <= permLevel;
     }
 
-    public static ItemStack[] getItems(String Kit) {
-        String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length()-2).split(", ");
+    public static List<ItemStack> getItems(String Kit) {
+        String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length()-1).split("; ");
         List<ItemStack> items = new ArrayList<>();
         for (String tmp : vals) {
-            int num = Integer.parseInt(tmp.substring(tmp.lastIndexOf("=")).replace("=", "").trim());
-            tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
+            int num;
+            String specialData = "";
+            if (!tmp.contains("(")) {
+                num = Integer.parseInt(tmp.substring(tmp.indexOf("=")).replace("=", "").trim());
+                tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
+            } else {
+                num = Integer.parseInt(tmp.substring(tmp.indexOf("="), tmp.indexOf("(")-1).replace("=", "").trim());
+                tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
+                specialData = tmp.substring(tmp.indexOf("("), tmp.lastIndexOf(")"));
+                tmp = tmp.replace(specialData, "").replace("()", "").trim();
+            }
             tmp = tmp.substring(1, tmp.length() - 1);
             String[] tmp2 = tmp.split(":");
             ItemStack tmp3 = new ItemStack(GameRegistry.findItem(tmp2[0], tmp2[1]), num);
             tmp3.setMetadata(Integer.parseInt(tmp2[2]));
+            if (!specialData.isEmpty()) {
+                String[] data = specialData.split("|");
+                for (String v : data) {
+                    String[] args = v.split("=");
+                    switch (args[0]) {
+                        case("name") :
+                            tmp3.setStackDisplayName(args[1]);
+                            break;
+                        case("enchantments") :
+                            List<String> enchs = Arrays.asList(args[1].split(":"));
+                            int id = 0;
+                            for (String str : enchs) {
+                                if (id != 0) {
+                                    tmp3.addEnchantment(Enchantment.enchantmentsList[id], Integer.parseInt(str));
+                                    id = 0;
+                                } else {
+                                    id = Integer.parseInt(str);
+                                }
+                                enchs.remove(str);
+                            }
+                            break;
+                    }
+                }
+            }
             items.add(tmp3);
         }
-        return (ItemStack[])items.toArray();
+        return items;
     }
 }

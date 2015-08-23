@@ -1,1 +1,1 @@
-gradle build dev --stacktrace --debug > buildlog.log
+gradle build dev --stacktrace
