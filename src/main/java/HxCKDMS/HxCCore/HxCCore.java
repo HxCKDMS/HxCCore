@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore;
 import HxCKDMS.HxCCore.Commands.CommandMain;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.Kits;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
@@ -209,5 +210,10 @@ public class HxCCore {
         HxCConfig commandCFG = new HxCConfig();
         config.registerCategory(new Category("General"));
         commandCFG.handleConfig(CommandsConfig.class, commandsCFG);
+
+        File kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
+        HxCConfig kits = new HxCConfig();
+        config.registerCategory(new Category("General"));
+        kits.handleConfig(Kits.class, kitsFile);
     }
 }

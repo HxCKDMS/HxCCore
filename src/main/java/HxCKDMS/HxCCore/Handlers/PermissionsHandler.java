@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Handlers;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +20,7 @@ public class PermissionsHandler {
     public static int permLevel (EntityPlayer player) {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-        return Permissions.getInteger(player.getDisplayName());
+        boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
+        return isopped ? Configurations.Permissions.size() - 1 : Permissions.getInteger(player.getDisplayName());
     }
 }
