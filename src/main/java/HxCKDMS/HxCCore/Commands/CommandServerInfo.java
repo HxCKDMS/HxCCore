@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -35,7 +35,7 @@ public class CommandServerInfo implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         EntityPlayerMP player = (EntityPlayerMP) sender;
-        boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("ServerInfo"), player);
+        boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("ServerInfo"), player);
         if (CanSend) {
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));

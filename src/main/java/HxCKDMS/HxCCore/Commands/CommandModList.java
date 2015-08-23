@@ -10,6 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandModList implements ISubCommand {
     public static CommandModList instance = new CommandModList();

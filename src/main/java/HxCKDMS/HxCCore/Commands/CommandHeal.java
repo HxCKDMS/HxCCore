@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -16,9 +16,9 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 2, mainCommand = CommandMain.class)
 public class CommandHeal implements ISubCommand {
-
     public static CommandHeal instance = new CommandHeal();
 
     @Override
@@ -31,7 +31,7 @@ public class CommandHeal implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Heal"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Heal"), player);
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));

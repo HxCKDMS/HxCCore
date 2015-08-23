@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
@@ -33,7 +34,7 @@ public class CommandSetPerms implements ISubCommand {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            boolean CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("SetPerms"), player);
+            boolean CanUse = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("SetPerms"), player);
             if (CanUse) {
                 if (args.length == 3) {
                     String playerName = args[1];

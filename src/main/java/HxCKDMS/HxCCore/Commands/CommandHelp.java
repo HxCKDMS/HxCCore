@@ -11,9 +11,8 @@ import java.util.List;
 
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandHelp implements ISubCommand {
-
     public static CommandHelp instance = new CommandHelp();
-
+    //TODO: Make the localized messages for help do usage + info instead of having them duplicated...
     @Override
     public String getCommandName() {
         return "Help";

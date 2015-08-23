@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -30,7 +30,7 @@ public class CommandExtinguish implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Extinguish"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Extinguish"), player);
                     if (CanSend) {
                         player.extinguish();
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));

@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -33,7 +34,7 @@ public class CommandTpa implements ISubCommand {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             EntityPlayerMP PlayerThatTPs = null;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("TPA"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("TPA"), player);
             if (CanSend) {
                 for (HashMap.Entry<EntityPlayerMP, EntityPlayerMP> entry : HxCCore.tpaRequestList.entrySet()) {
                     if(entry.getValue() == player) PlayerThatTPs = entry.getKey();

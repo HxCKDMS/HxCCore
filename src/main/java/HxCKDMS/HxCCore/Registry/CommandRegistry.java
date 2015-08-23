@@ -1,13 +1,13 @@
 package HxCKDMS.HxCCore.Registry;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 
 import java.util.Set;
-
+@SuppressWarnings("unchecked")
 public class CommandRegistry {
     public static void registerCommands(AbstractCommandMain commandMain, Set<ASMDataTable.ASMData> allData) {
         if (allData != null && !allData.isEmpty()) {
@@ -20,7 +20,7 @@ public class CommandRegistry {
                     if(mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
                         commandMain.registerSubCommand(instance);
-                        Configurations.commands.putIfAbsent(instance.getCommandName(), permissionLevel);
+                        CommandsConfig.commands.putIfAbsent(instance.getCommandName(), permissionLevel);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -27,7 +27,7 @@ public class CommandBurn implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(Configurations.commands.get("Burn"), (EntityPlayerMP) sender);
+        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Burn"), (EntityPlayerMP) sender);
         if (CanSend) {
             switch(args.length){
                 case 1:

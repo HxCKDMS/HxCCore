@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -31,7 +31,7 @@ public class CommandSpawn implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Spawn"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Spawn"), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandMain.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;

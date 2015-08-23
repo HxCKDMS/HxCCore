@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandHome implements ISubCommand {
     public static CommandHome instance = new CommandHome();
@@ -32,7 +33,7 @@ public class CommandHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Home"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Home"), player);
             if (CanSend) {
                 int oldx = (int)player.posX, oldy = (int)player.posY, oldz = (int)player.posZ, olddim = player.dimension;
                 String UUID = player.getUniqueID().toString();

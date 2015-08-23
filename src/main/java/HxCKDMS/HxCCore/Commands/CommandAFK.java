@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -22,11 +22,11 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
-
+    //TODO: See if there is a better way to code this??? Players who're AFK CAN'T MOVE and Can't DIE... (Make config to make it so only player damage is canceled)
     @Override
     public String getCommandName() {
         return "AFK";
@@ -36,7 +36,7 @@ public class CommandAFK implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("AFK"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("AFK"), player);
             if (CanSend) {
                 UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
                 ChatComponentText AFK = new ChatComponentText(player.getDisplayName() + " \u00A73has gone AFK.");

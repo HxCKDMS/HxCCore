@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -31,7 +31,7 @@ public class CommandRepairAll implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if(sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("RepairAll"), player);
             if (CanSend) {
                 if (args.length == 2) target = CommandMain.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);

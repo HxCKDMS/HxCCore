@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -17,7 +17,7 @@ import java.util.List;
 @HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
 public class CommandDrain implements ISubCommand {
     public static CommandDrain instance = new CommandDrain();
-
+    //TODO: Verify this works?
     @Override
     public String getCommandName() {
         return "Drain";
@@ -27,17 +27,18 @@ public class CommandDrain implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Drain"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Drain"), player);
             int range = 10; String block = "minecraft:water";
             if (args.length >= 2) { range = Integer.parseInt(args[1]);}
             if (args.length == 3) { block = args[2];}
             int x = (int)Math.round(player.posX), y = (int)Math.round(player.posY), z = (int)Math.round(player.posZ);
-            if (CanSend)
-                for (int i = x-range; i < x+range; i++)
-                    for (int j = y-range; j < y+range; j++)
-                        for (int k = z-range; k < z+range; k++)
+            if (CanSend) {
+                for (int i = x - range; i < x + range; i++)
+                    for (int j = y - range; j < y + range; j++)
+                        for (int k = z - range; k < z + range; k++)
                             if (args.length == 3 ? player.worldObj.getBlock(i, j, k) == Block.getBlockFromName(block) : (player.worldObj.getBlock(i, j, k) instanceof IFluidBlock || player.worldObj.getBlock(i, j, k).getMaterial().isLiquid()))
                                 player.worldObj.setBlockToAir(i, j, k);
+            }
             else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }

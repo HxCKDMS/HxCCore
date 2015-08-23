@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandList implements ISubCommand {
     public static CommandList instance = new CommandList();

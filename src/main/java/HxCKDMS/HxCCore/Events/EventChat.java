@@ -21,6 +21,7 @@ public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
+        //TODO: add feedback to muted players saying they're muted...
         UUID UUID = event.player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
         if(!CustomPlayerData.exists()) return;

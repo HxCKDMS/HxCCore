@@ -11,6 +11,11 @@ public class Category {
     private List<Setting> settings = new ArrayList<>();
     private String comment;
 
+    public Category(String name) {
+        this.name = name;
+        this.comment = "";
+    }
+
     public Category(String name, String comment) {
         this.name = name;
         this.comment = comment;

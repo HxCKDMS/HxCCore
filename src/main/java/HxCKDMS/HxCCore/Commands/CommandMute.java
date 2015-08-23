@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -20,7 +20,7 @@ import java.util.List;
 @HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
 public class CommandMute implements ISubCommand {
     public static CommandMute instance = new CommandMute();
-
+    //TODO: Make it unmute muted players without requiring boolean
     @Override
     public String getCommandName() {
         return "Mute";
@@ -28,7 +28,7 @@ public class CommandMute implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(Configurations.commands.get("Mute"), (EntityPlayerMP) sender);
+        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Mute"), (EntityPlayerMP) sender);
         EntityPlayerMP player;
         File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
         NBTTagCompound mutes = NBTFileIO.getNbtTagCompound(worldData, "mutedPlayers");
@@ -55,7 +55,7 @@ public class CommandMute implements ISubCommand {
                     mutes.setBoolean(player.getUniqueID().toString(), Boolean.parseBoolean(args[2]));
                     NBTFileIO.setNbtTagCompound(worldData, "mutedPlayers", mutes);
                     break;
-                /*case 3:
+                /*case 4:
                     player = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                     player.addChatMessage(new ChatComponentText("\u00A79You've been muted for " + Integer.parseInt(args[2]) / 60 + " minutes!"));
                     mutes.setBoolean(player.getUniqueID().toString(), true);

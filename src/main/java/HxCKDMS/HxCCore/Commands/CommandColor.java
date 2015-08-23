@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
@@ -30,7 +31,7 @@ public class CommandColor implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Color"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Color"), player);
             if (CanSend) {
                 char color = 'f';
                 if (args.length >= 2) color = args[1].charAt(0);

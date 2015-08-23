@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -24,7 +24,7 @@ import java.util.List;
 @HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
 public class CommandExterminate implements ISubCommand {
     public static CommandExterminate instance = new CommandExterminate();
-
+    //TODO: Add safety check for tamed, owned, named entities....
     @Override
     public String getCommandName() {
         return "Exterminate";
@@ -34,7 +34,7 @@ public class CommandExterminate implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Exterminate"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Exterminate"), player);
             if (CanSend) {
                 int tmp = 0;
                 List<Entity> ents = player.worldObj.getLoadedEntityList();

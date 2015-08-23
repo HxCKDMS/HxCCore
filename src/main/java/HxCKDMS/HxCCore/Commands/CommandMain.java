@@ -15,7 +15,7 @@ import java.util.List;
 public class CommandMain extends AbstractCommandMain {
     public static HashMap<String, ISubCommand> commands = new HashMap<>();
     public static AbstractCommandMain instance = new CommandMain();
-
+    //TODO: attempt to move ALL strings to localization before 1.9.x....
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;

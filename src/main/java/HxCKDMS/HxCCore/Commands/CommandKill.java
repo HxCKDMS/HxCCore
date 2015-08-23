@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -19,12 +19,12 @@ import java.util.List;
 @HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
 public class CommandKill implements ISubCommand {
     public static CommandKill instance = new CommandKill();
+    //Maybe make it so people who use this command can't use on people of higher ranks????
 
     @Override
     public String getCommandName() {
         return "Kill";
     }
-
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
@@ -32,7 +32,7 @@ public class CommandKill implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Kill"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Kill"), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
                     else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
                 } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

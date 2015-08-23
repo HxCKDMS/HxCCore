@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandMain;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
@@ -196,13 +197,17 @@ public class HxCCore {
     }
 
     public static void registerConfig(HxCConfig config) {
-        config.registerCategory(new Category("General", "General Stuff"));
-        config.registerCategory(new Category("Features", "General Features"));
-        config.registerCategory(new Category("Commands", "Commands Configurations"));
-        config.registerCategory(new Category("Permissions", "Permissions System"));
+        config.registerCategory(new Category("General"));
+        config.registerCategory(new Category("Features"));
+        config.registerCategory(new Category("Permissions", "Do not add a permission level requirement for a command if the permission level doesn't exist!"));
         config.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
 
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         config.handleConfig(Configurations.class, HxCConfigFile);
+
+        File commandsCFG = new File(HxCConfigDir, "HxCCommands.cfg");
+        HxCConfig commandCFG = new HxCConfig();
+        config.registerCategory(new Category("General"));
+        commandCFG.handleConfig(CommandsConfig.class, commandsCFG);
     }
 }

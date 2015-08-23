@@ -3,7 +3,6 @@ package HxCKDMS.HxCCore.Configs;
 import HxCKDMS.HxCCore.api.Configuration.Config;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -32,13 +31,11 @@ public class Configurations {
 //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
     public static boolean autoCrashReporterEnabled = true;
-    
-    @Config.Map(category = "Commands")
-    public static LinkedHashMap<String, Integer> commands = new LinkedHashMap<>();
+
     @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
     public static LinkedHashMap<String, String> Permissions = new LinkedHashMap<>();
     @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
-    public static HashMap<String, String> formats = new HashMap<>();
+    public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
     @Config.Boolean
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
