@@ -36,12 +36,16 @@ public class WorldHelper {
             if(zrSquared < 0) continue;
             int zl = Math.round((float) Math.sqrt(zrSquared));
 
-            world.setBlock(x + Math.round(xr), y, z + zl, block, blockMeta, 0);
-            world.setBlock(x + Math.round(xr), y, z - zl, block, blockMeta, 0);
+            int xPlace = x + Math.round(xr);
+            int zPlace1 = z + zl;
+            int zPlace2 = z - zl;
+
+            if(world.getBlock(xPlace, y, zPlace1) != block && y >= 0) world.setBlock(xPlace, y, zPlace1, block, blockMeta, 0);
+            if(world.getBlock(xPlace, y, zPlace2) != block && y >= 0) world.setBlock(xPlace, y, zPlace2, block, blockMeta, 0);
 
             if(!hollow)
                 for(int zf = y - zl; zf <= y + zl; zf++)
-                    world.setBlock(x + Math.round(xr), y, zf, block, blockMeta, 0);
+                    if(world.getBlock(xPlace, y, zf) != block && y >= 0) world.setBlock(xPlace, y, zf, block, blockMeta, 0);
         }
     }
 
@@ -77,13 +81,21 @@ public class WorldHelper {
                 if (yrSquared < 0) continue;
                 int yl = Math.round((float) Math.sqrt(yrSquared));
 
-                world.setBlock(x + Math.round(xr), y + yl, z + Math.round(zr), block);
-                world.setBlock(x + Math.round(xr), y - yl, z + Math.round(zr), block);
+                int xPlace = x + Math.round(xr);
+                int yPlace1 = y + yl;
+                int yPlace2 = y - yl;
+                int zPlace = z + Math.round(zr);
 
-                if(!hollow)
-                    for(int yf = y - yl; yf <= y + yl; yf++)
-                        world.setBlock(x + Math.round(xr), yf, z + Math.round(zr), block);
+                if(world.getBlock(xPlace, yPlace1, zPlace) != block && yPlace1 >= 0) world.setBlock(xPlace, yPlace1, zPlace, block, blockMeta, 0);
+                if(world.getBlock(xPlace, yPlace2, zPlace) != block && yPlace2 >= 0) world.setBlock(xPlace, yPlace2, zPlace, block, blockMeta, 0);
 
+                if(!hollow) {
+                    for (int yf = y - yl; yf <= y + yl; yf++) {
+                        xPlace = x + Math.round(xr);
+                        zPlace = z + Math.round(zr);
+                        if(world.getBlock(xPlace, yf, zPlace) != block && yPlace2 >= 0) world.setBlock(xPlace, yf, zPlace, block, blockMeta, 0);
+                    }
+                }
             }
         }
     }
