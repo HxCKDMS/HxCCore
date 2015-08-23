@@ -18,6 +18,8 @@ public class References {
 
     public static final UUID HPBuffUUID = UUID.fromString("edff168f-32d7-438b-8d29-189e9405e032");
     public static final UUID DMBuffUUID = UUID.fromString("17cb8d52-6376-11e4-b116-123b93f75cba");
+    public static final UUID DMdeBuffUUID = UUID.fromString("37da5d51-6626-1555-b166-126663f75c3a");
+    public static final UUID SpeedUUID = UUID.fromString("fe15f828-62d7-11e4-b116-123b93f75cba");
 
     public static String[] PERM_NAMES = new String[Configurations.Permissions.size()];
     public static char[] PERM_COLOURS = new char[Configurations.Permissions.size()];

@@ -12,7 +12,7 @@ import java.util.List;
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandHelp implements ISubCommand {
     public static CommandHelp instance = new CommandHelp();
-    //TODO: Make the localized messages for help do usage + info instead of having them duplicated...
+    //TODO: Make a /HxC help [command].... and get the help for specified command..
     @Override
     public String getCommandName() {
         return "Help";
@@ -32,9 +32,11 @@ public class CommandHelp implements ISubCommand {
             if(i >= CommandMain.commands.size()) break;
 
             String line = ((ISubCommand)CommandMain.commands.values().toArray()[i]).getCommandName();
-            line = "commands." + line.toLowerCase() + ".help";
+            line = "commands." + line.toLowerCase() + ".usage";
+            String info = line.replace("usage", "info");
             line = StatCollector.translateToLocal(line);
-            line = "/HxC " + line;
+            info = StatCollector.translateToLocal(info);
+            line = "/HxC " + line + " : used to " + info;
             ChatComponentText message = new ChatComponentText(line);
             message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
             sender.addChatMessage(message);

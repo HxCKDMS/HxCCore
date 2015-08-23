@@ -15,6 +15,8 @@ public class Configurations {
     public static boolean CoolDownDisable = true;
     @Config.Boolean(description = "Do you want to enable XP Buffs?", category = "Features")
     public static boolean XPBuffs = true;
+    @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
+    public static boolean afkExtras = true;
 
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
