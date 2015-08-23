@@ -15,7 +15,7 @@ import net.minecraft.util.StatCollector;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
 public class CommandKit implements ISubCommand {
     public static CommandBroadcast instance = new CommandBroadcast();
@@ -41,7 +41,7 @@ public class CommandKit implements ISubCommand {
                     } else throw new WrongUsageException(StatCollector.translateToLocal("commands.kit.spawn.failure") + args[2]);
                 }
             }
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @Override

@@ -53,10 +53,9 @@ public class HxCCore {
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandsCFG;
     public static SimpleNetworkWrapper network;
-
-    public static HxCConfig hxCConfig = new HxCConfig();
+    public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig();
 
     public static final CrashReportThread crashReportThread = new CrashReportThread();
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
@@ -96,7 +95,7 @@ public class HxCCore {
         extendEnchantsArray();
 
         if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandMain(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
-        hxCConfig.handleConfig(Configurations.class, HxCConfigFile);
+        commandCFG.handleConfig(Configurations.class, commandsCFG);
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
@@ -206,14 +205,13 @@ public class HxCCore {
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         config.handleConfig(Configurations.class, HxCConfigFile);
 
-        File commandsCFG = new File(HxCConfigDir, "HxCCommands.cfg");
-        HxCConfig commandCFG = new HxCConfig();
-        config.registerCategory(new Category("General"));
+        commandsCFG = new File(HxCConfigDir, "HxCCommands.cfg");
+        commandCFG.registerCategory(new Category("General"));
         commandCFG.handleConfig(CommandsConfig.class, commandsCFG);
 
         File kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
         HxCConfig kits = new HxCConfig();
-        config.registerCategory(new Category("General"));
+        kits.registerCategory(new Category("General"));
         kits.handleConfig(Kits.class, kitsFile);
     }
 }

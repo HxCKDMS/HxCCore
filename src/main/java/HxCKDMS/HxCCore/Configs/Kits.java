@@ -25,21 +25,17 @@ public class Kits {
     }
 
     public static boolean canGetKit(int permLevel, String kit) {
-        return KitPerms.get(kit) >= permLevel;
+        return KitPerms.get(kit) <= permLevel;
     }
 
     public static ItemStack[] getItems(String Kit) {
         String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length()-2).split(", ");
         List<ItemStack> items = new ArrayList<>();
         for (String tmp : vals) {
-            System.out.println(tmp);
             int num = Integer.parseInt(tmp.substring(tmp.lastIndexOf("=")).replace("=", "").trim());
             tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
-            System.out.println(String.valueOf(tmp));
-            tmp = tmp.substring(1, tmp.length() - 2);
-            System.out.println(String.valueOf(tmp));
+            tmp = tmp.substring(1, tmp.length() - 1);
             String[] tmp2 = tmp.split(":");
-            System.out.println(String.valueOf(tmp2));
             ItemStack tmp3 = new ItemStack(GameRegistry.findItem(tmp2[0], tmp2[1]), num);
             tmp3.setMetadata(Integer.parseInt(tmp2[2]));
             items.add(tmp3);

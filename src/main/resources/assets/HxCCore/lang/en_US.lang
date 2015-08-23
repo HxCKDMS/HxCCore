@@ -20,6 +20,7 @@ commands.serverinfo.info=get info about the server.
 commands.setperms.info=set permmision levels for players on your server.
 commands.spawn.info=send player to spawn.
 commands.tpa.info=repair all items in your inventory.
+commands.kit.info=spawns/creates specified set of items to your inventory
 
 commands.help.usage=help
 commands.heal.usage=heal [player]
@@ -44,6 +45,7 @@ commands.setperms.usage=setperms <player> <permlevel#>
 commands.spawn.usage=spawn [player]
 commands.tpa.usage=tpa <accept, deny, player>
 commands.list.usage=list <homes, warps>
+commands.kit.usage=kit <spawn, edit, give, create, remove> <kitname> [player]
 
 commands.exeption.playeronly=This command can only be executed by players.
 commands.exception.home.outOfHomes=You have run out of homes.
@@ -52,4 +54,13 @@ commands.exception.noWarps=This server does not have any warps.
 commands.exception.noHomes=You do not have any homes.
 
 commands.exception.permission=You may not excecute this command.
-death.attack.command_kill=%1$s was killed by commands
+death.attack.command_kill=%1$s has received divine punishment!
+
+commands.kit.spawn.failure=You do not have permission to use kit %1$s.
+commands.kit.spawn.success=You have were given kit %1$s.
+commands.kit.add.failure=You have not met the requirements to create a kit!
+commands.kit.add.success=You have successfully created kit %1$s.
+commands.kit.edit.failure=You have failed to edit kit %1$s.
+commands.kit.edit.success=Successfully edited kit %1$s.
+commands.kit.give.failure=Failed to deliver kit %1$s to %2$s.
+commands.kit.give.success=You have successfully given kit %1$s to %2$s.
