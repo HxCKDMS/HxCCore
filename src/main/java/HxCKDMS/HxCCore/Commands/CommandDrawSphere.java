@@ -45,7 +45,7 @@ public class CommandDrawSphere implements ISubCommand {
                 double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
 
                 long cNano = System.nanoTime();
-                WorldHelper.drawSphere(player.worldObj, x, y, z, block, radius, hollow, updateAmount);
+                WorldHelper.draw3DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, 2);
                 ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s sphere at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);

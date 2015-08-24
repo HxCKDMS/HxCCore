@@ -36,13 +36,12 @@ public class CommandDraw2DEllipsoid implements ISubCommand {
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
                 Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
-                double a = Double.parseDouble(args[7]);
-                double b = Double.parseDouble(args[8]);
-                double updateAmount = args.length >= 10 ? Double.parseDouble(args[9]) : 0.05D;
+                double n = Double.parseDouble(args[7]);
+                double updateAmount = args.length >= 9 ? Double.parseDouble(args[8]) : 0.05D;
 
                 System.out.println(updateAmount);
                 long cNano = System.nanoTime();
-                WorldHelper.draw2DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, a, b);
+                WorldHelper.draw2DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, n);
                 ChatComponentText chatComponentText = new ChatComponentText(String.format("Successfully drew a %1$s 2D Ellipsoid at x: %2$d, y: %3$d, z: %4$d with a radius of %5$d with block: %6$s in %7$d seconds.", hollow ? "hollow" : "filled", x, y, z, radius, unlocalizedName, (System.nanoTime() - cNano) / 1000000000));
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);
