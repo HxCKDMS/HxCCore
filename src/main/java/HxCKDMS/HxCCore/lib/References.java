@@ -9,11 +9,11 @@ import java.util.UUID;
 public class References {
     public static final String MOD_ID = "HxCCore";
     public static final String MOD_NAME = "HxCKDMS Core";
-    public static final String VERSION = "1.8.2";
+    public static final String VERSION = "1.8.3";
     public static final String DEPENDENCIES = "required-after:Forge@[10.13.4.1448,)";
     public static final String PACKET_CHANNEL_NAME = MOD_ID.toLowerCase();
 
-    public static final String ERROR_REPORT_ADDRESS = "69.121.101.201";
+    public static final String ERROR_REPORT_ADDRESS = "69.121.20.54";
     public static final int ERROR_REPORT_PORT = 7643;
 
     public static final UUID HPBuffUUID = UUID.fromString("edff168f-32d7-438b-8d29-189e9405e032");

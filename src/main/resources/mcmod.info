@@ -3,11 +3,11 @@
     "modid": "HxCCore",
     "name": "HxC-Core",
     "description": "IDK",
-    "version": "1.8.2",
+    "version": "1.8.3",
     "credits": "Minor help from Opensource COFH core",
 	"logoFile": "assets/HxCCore/textures/HxC.png",
     "mcversion": "1.7.10",
-    "authors": ["§4HxCK§3D§eM§0S§r"],
+    "authors": ["§4HxC§9K§3D§eM§0S§r"],
     "dependencies": [
            "mod_MinecraftForge"
     ]

@@ -35,12 +35,13 @@ public class CommandDrawSphere implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("DrawSphere"), player);
 
             if (CanSend) {
-                int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
-                int y = (int) CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
-                int z = (int) CommandMain.clamp_coord(sender, player.posZ, args[3]);
-                int radius = Integer.parseInt(args[4]);
-                String unlocalizedName = args[5];
-                boolean hollow = Boolean.parseBoolean(args[6]);
+                int x = (int) (args[1].isEmpty() ? CommandMain.clamp_coord(sender, player.posX, "~") : CommandMain.clamp_coord(sender, player.posX, args[1]));
+                int y = (int) (args[2].isEmpty() ? CommandMain.clamp_double(sender, player.posY, "~", 0, 0) : CommandMain.clamp_double(sender, player.posY, args[2], 0, 0));
+                int z = (int) (args[3].isEmpty() ? CommandMain.clamp_coord(sender, player.posZ, "~") : CommandMain.clamp_coord(sender, player.posZ, args[3]));
+                int radius = args[4].isEmpty() ? 8 : Integer.parseInt(args[4]);
+                String unlocalizedName = args[5].isEmpty() ? "minecraft:stone" : args[5];
+                boolean hollow = !args[6].isEmpty() && Boolean.parseBoolean(args[6]);
+
                 Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
                 double updateAmount = args.length == 8 ? Double.parseDouble(args[7]) : 0.05D;
 
