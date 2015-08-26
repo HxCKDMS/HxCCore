@@ -16,7 +16,7 @@ import java.util.UUID;
 import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 import static HxCKDMS.HxCCore.lib.References.CC;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class EventChat implements EventListener {
 
     @SubscribeEvent
@@ -24,7 +24,7 @@ public class EventChat implements EventListener {
         //TODO: add feedback to muted players saying they're muted...
         UUID UUID = event.player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-        if(!CustomPlayerData.exists()) return;
+        if (!CustomPlayerData.exists()) return;
 
         File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
         if (!worldData.exists()) worldData.mkdirs();
@@ -56,8 +56,7 @@ public class EventChat implements EventListener {
                             ChatColor = ChatColor + CC + str2.charAt(0);
                     }
                 }
-            }
-            else tmp2 = tmp2 + " " + ChatColor + str;
+            } else tmp2 = tmp2 + " " + ChatColor + str;
         }
         if (!tmp2.replaceAll(References.CC, "").trim().isEmpty())
             event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%")));

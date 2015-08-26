@@ -11,7 +11,7 @@ import static HxCKDMS.HxCCore.lib.References.*;
 import static HxCKDMS.HxCCore.Configs.Configurations.*;
 
 public class NickHandler {
-    public static String getMessageHeader(EntityPlayerMP player){
+    public static String getMessageHeader(EntityPlayerMP player) {
         UUID UUID = player.getUniqueID();
         String colouredNick = getColouredNick(player);
 
@@ -27,19 +27,19 @@ public class NickHandler {
             formattedString = String.format(formats.get("GroupTag"), rawGroup) + formattedString;
 
         String tag = formats.get("HxCTag");
-        if(HxCCore.coders.contains(UUID))
+        if (HxCCore.coders.contains(UUID))
             tag = String.format(tag, CC + "bHxC");
-        else if(HxCCore.supporters.contains(UUID))
+        else if (HxCCore.supporters.contains(UUID))
             tag = String.format(tag, CC + "4HxC Supporter");
-        else if(HxCCore.helpers.contains(UUID))
+        else if (HxCCore.helpers.contains(UUID))
             tag = String.format(tag, CC + "aHxC Helper");
-        else if(HxCCore.artists.contains(UUID))
+        else if (HxCCore.artists.contains(UUID))
             tag = String.format(tag, CC + "cHxC Artist");
         else
             tag = "";
 
 
-        if(EnableHxCTagInChat && !tag.equalsIgnoreCase(""))
+        if (EnableHxCTagInChat && !tag.equalsIgnoreCase(""))
             formattedString = tag + formattedString;
 
         return formattedString.replaceAll("&", CC);

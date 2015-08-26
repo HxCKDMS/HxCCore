@@ -27,7 +27,7 @@ public class Kits {
     }
 
     public static List<ItemStack> getItems(String Kit) {
-        String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length()-1).split("; ");
+        String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length() - 1).split("; ");
         List<ItemStack> items = new ArrayList<>();
         for (String tmp : vals) {
             int num;
@@ -36,7 +36,7 @@ public class Kits {
                 num = Integer.parseInt(tmp.substring(tmp.indexOf("=")).replace("=", "").trim());
                 tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
             } else {
-                num = Integer.parseInt(tmp.substring(tmp.indexOf("="), tmp.indexOf("(")-1).replace("=", "").trim());
+                num = Integer.parseInt(tmp.substring(tmp.indexOf("="), tmp.indexOf("(") - 1).replace("=", "").trim());
                 tmp = tmp.replace("=", "").replace(String.valueOf(num), "").trim();
                 specialData = tmp.substring(tmp.indexOf("("), tmp.lastIndexOf(")"));
                 tmp = tmp.replace(specialData, "").replace("()", "").trim();
@@ -50,10 +50,10 @@ public class Kits {
                 for (String v : data) {
                     String[] args = v.split("=");
                     switch (args[0]) {
-                        case("name") :
+                        case ("name"):
                             tmp3.setStackDisplayName(args[1]);
                             break;
-                        case("enchantments") :
+                        case ("enchantments"):
                             List<String> enchs = Arrays.asList(args[1].split(":"));
                             int id = 0;
                             for (String str : enchs) {

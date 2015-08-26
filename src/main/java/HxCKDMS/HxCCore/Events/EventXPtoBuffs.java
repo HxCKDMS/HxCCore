@@ -13,9 +13,9 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 @SuppressWarnings("unused")
 public class EventXPtoBuffs {
     @SubscribeEvent
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         boolean xpbuff = (Configurations.XPBuffs && !Loader.isModLoaded("HxCSkills"));
-        if (event.entity instanceof EntityPlayerMP){
+        if (event.entity instanceof EntityPlayerMP) {
             EntityPlayerMP PMP = (EntityPlayerMP) event.entity;
             if (PMP.xpCooldown > 0)
                 PMP.xpCooldown = 0;

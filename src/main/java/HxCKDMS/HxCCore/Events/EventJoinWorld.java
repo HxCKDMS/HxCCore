@@ -18,7 +18,7 @@ import java.util.EventListener;
 public class EventJoinWorld implements EventListener {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onEntityJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
-        
+
         // Player data file
         try {
             String UUID = event.player.getUniqueID().toString();
@@ -36,16 +36,14 @@ public class EventJoinWorld implements EventListener {
         } catch (IOException exceptions) {
             exceptions.printStackTrace();
         }
-        
+
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
         int pl = Permissions.getInteger(event.player.getDisplayName());
-        
-        if (pl == 0) {
-            Permissions.setInteger(event.player.getDisplayName(), 0);
-        }
-        
+
+        if (pl == 0) Permissions.setInteger(event.player.getDisplayName(), 0);
+
         NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
     }
 }

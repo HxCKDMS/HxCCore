@@ -20,10 +20,10 @@ public class CommandRegistry {
                     Class<ISubCommand> clazz = (Class<ISubCommand>) Class.forName(className);
                     int permissionLevel = clazz.getAnnotation(HxCCommand.class).defaultPermission();
                     Class<? extends AbstractCommandMain> mainClazz = clazz.getAnnotation(HxCCommand.class).mainCommand();
-                    if(mainClazz == commandMain.getClass()) {
+                    if (mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
                         commandMain.registerSubCommand(instance);
-                        CommandsConfig.commands.putIfAbsent(instance.getCommandName(), permissionLevel);
+                        if(!CommandsConfig.commands.containsKey(instance.getCommandName())) CommandsConfig.commands.put(instance.getCommandName(), permissionLevel);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

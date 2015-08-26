@@ -13,7 +13,7 @@ public class CrashHandler implements ICrashCallable {
 
     @Override
     public String call() throws Exception {
-        if(Configurations.autoCrashReporterEnabled) {
+        if (Configurations.autoCrashReporterEnabled) {
             hasCrashed = true;
             return "Will analyze crash log and send the error to github if HxCKDMS Core is possibly involved.";
         } else {

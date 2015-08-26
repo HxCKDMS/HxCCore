@@ -13,7 +13,7 @@ import javax.crypto.SecretKey;
 import java.net.SocketAddress;
 
 public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
-    
+
     public static class FakeNetworkManager extends NetworkManager {
 
         public FakeNetworkManager() {
@@ -21,39 +21,25 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         }
 
         @Override
-        public void channelActive(ChannelHandlerContext handlerContext) throws Exception {
-            
-        }
+        public void channelActive(ChannelHandlerContext handlerContext) throws Exception {}
 
         @Override
-        public void setConnectionState(EnumConnectionState connectionState) {
-            
-        }
+        public void setConnectionState(EnumConnectionState connectionState) {}
 
         @Override
-        public void channelInactive(ChannelHandlerContext handlerContext) {
-            
-        }
+        public void channelInactive(ChannelHandlerContext handlerContext) {}
 
         @Override
-        public void exceptionCaught(ChannelHandlerContext handlerContext, Throwable throwable) {
-            
-        }
+        public void exceptionCaught(ChannelHandlerContext handlerContext, Throwable throwable) {}
 
         @Override
-        public void setNetHandler(INetHandler netHandler) {
-            
-        }
+        public void setNetHandler(INetHandler netHandler) {}
 
         @Override
-        public void scheduleOutboundPacket(Packet packet, GenericFutureListener... genericFutureListeners) {
-            
-        }
+        public void scheduleOutboundPacket(Packet packet, GenericFutureListener... genericFutureListeners) {}
 
         @Override
-        public void processReceivedPackets() {
-            
-        }
+        public void processReceivedPackets() {}
 
         @Override
         public SocketAddress getRemoteAddress() {
@@ -62,7 +48,7 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
 
         @Override
         public void closeChannel(IChatComponent chatComponent) {
-            
+
         }
 
         @Override
@@ -71,9 +57,7 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         }
 
         @Override
-        public void enableEncryption(SecretKey secretKey) {
-            
-        }
+        public void enableEncryption(SecretKey secretKey) {}
 
         @Override
         public boolean isChannelOpen() {
@@ -91,152 +75,96 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         }
 
         @Override
-        public void disableAutoRead() {
-
-        }
+        public void disableAutoRead() {}
 
         @Override
         public IChatComponent getExitMessage() {
             return null;
         }
     }
-    
+
     public NetHandlerFakePlayServer(MinecraftServer minecraftServer, EntityPlayerMP player) {
         super(minecraftServer, new FakeNetworkManager(), player);
     }
 
     @Override
-    public void onNetworkTick() {
-        
-    }
+    public void onNetworkTick() {}
 
     @Override
-    public void kickPlayerFromServer(String kickMessage) {
-        
-    }
+    public void kickPlayerFromServer(String kickMessage) {}
 
     @Override
-    public void processInput(C0CPacketInput packetInput) {
-        
-    }
+    public void processInput(C0CPacketInput packetInput) {}
 
     @Override
-    public void processPlayer(C03PacketPlayer packetPlayer) {
-        
-    }
+    public void processPlayer(C03PacketPlayer packetPlayer) {}
 
     @Override
-    public void setPlayerLocation(double x, double y, double z, float yaw, float pitch) {
-        
-    }
+    public void setPlayerLocation(double x, double y, double z, float yaw, float pitch) {}
 
     @Override
-    public void processPlayerDigging(C07PacketPlayerDigging packetPlayerDigging) {
-        
-    }
+    public void processPlayerDigging(C07PacketPlayerDigging packetPlayerDigging) {}
 
     @Override
-    public void processPlayerBlockPlacement(C08PacketPlayerBlockPlacement packetPlayerBlockPlacement) {
-        
-    }
+    public void processPlayerBlockPlacement(C08PacketPlayerBlockPlacement packetPlayerBlockPlacement) {}
 
     @Override
-    public void onDisconnect(IChatComponent chatComponent) {
-        
-    }
+    public void onDisconnect(IChatComponent chatComponent) {}
 
     @Override
-    public void sendPacket(Packet packet) {
-        
-    }
+    public void sendPacket(Packet packet) {}
 
     @Override
-    public void processHeldItemChange(C09PacketHeldItemChange packetHeldItemChange) {
-        
-    }
+    public void processHeldItemChange(C09PacketHeldItemChange packetHeldItemChange) {}
 
     @Override
-    public void processChatMessage(C01PacketChatMessage packetChatMessage) {
-        
-    }
+    public void processChatMessage(C01PacketChatMessage packetChatMessage) {}
 
     @Override
-    public void processAnimation(C0APacketAnimation packetAnimation) {
-        
-    }
+    public void processAnimation(C0APacketAnimation packetAnimation) {}
 
     @Override
-    public void processEntityAction(C0BPacketEntityAction packetEntityAction) {
-        
-    }
+    public void processEntityAction(C0BPacketEntityAction packetEntityAction) {}
 
     @Override
-    public void processUseEntity(C02PacketUseEntity packetUseEntity) {
-        
-    }
+    public void processUseEntity(C02PacketUseEntity packetUseEntity) {}
 
     @Override
-    public void processClientStatus(C16PacketClientStatus packetClientStatus) {
-        
-    }
+    public void processClientStatus(C16PacketClientStatus packetClientStatus) {}
 
     @Override
-    public void processCloseWindow(C0DPacketCloseWindow packetCloseWindow) {
-        
-    }
+    public void processCloseWindow(C0DPacketCloseWindow packetCloseWindow) {}
 
     @Override
-    public void processClickWindow(C0EPacketClickWindow packetClickWindow) {
-        
-    }
+    public void processClickWindow(C0EPacketClickWindow packetClickWindow) {}
 
     @Override
-    public void processEnchantItem(C11PacketEnchantItem packetEnchantItem) {
-        
-    }
+    public void processEnchantItem(C11PacketEnchantItem packetEnchantItem) {}
 
     @Override
-    public void processCreativeInventoryAction(C10PacketCreativeInventoryAction packetCreativeInventoryAction) {
-        
-    }
+    public void processCreativeInventoryAction(C10PacketCreativeInventoryAction packetCreativeInventoryAction) {}
 
     @Override
-    public void processConfirmTransaction(C0FPacketConfirmTransaction packetConfirmTransaction) {
-        
-    }
+    public void processConfirmTransaction(C0FPacketConfirmTransaction packetConfirmTransaction) {}
 
     @Override
-    public void processUpdateSign(C12PacketUpdateSign packetUpdateSign) {
-        
-    }
+    public void processUpdateSign(C12PacketUpdateSign packetUpdateSign) {}
 
     @Override
-    public void processKeepAlive(C00PacketKeepAlive packetKeepAlive) {
-        
-    }
+    public void processKeepAlive(C00PacketKeepAlive packetKeepAlive) {}
 
     @Override
-    public void processPlayerAbilities(C13PacketPlayerAbilities packetPlayerAbilities) {
-        
-    }
+    public void processPlayerAbilities(C13PacketPlayerAbilities packetPlayerAbilities) {}
 
     @Override
-    public void processTabComplete(C14PacketTabComplete packetTabComplete) {
-        
-    }
+    public void processTabComplete(C14PacketTabComplete packetTabComplete) {}
 
     @Override
-    public void processClientSettings(C15PacketClientSettings packetClientSettings) {
-        
-    }
+    public void processClientSettings(C15PacketClientSettings packetClientSettings) {}
 
     @Override
-    public void processVanilla250Packet(C17PacketCustomPayload packetCustomPayload) {
-        
-    }
+    public void processVanilla250Packet(C17PacketCustomPayload packetCustomPayload) {}
 
     @Override
-    public void onConnectionStateTransition(EnumConnectionState enumConnectionState, EnumConnectionState enumConnectionState2) {
-        
-    }
+    public void onConnectionStateTransition(EnumConnectionState enumConnectionState, EnumConnectionState enumConnectionState2) {}
 }

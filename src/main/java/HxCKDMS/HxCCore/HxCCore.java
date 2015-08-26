@@ -57,7 +57,7 @@ public class HxCCore {
     public static SimpleNetworkWrapper network;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig();
 
-    public static final CrashReportThread crashReportThread = new CrashReportThread();
+    public static final Thread crashReportThread = new Thread(new CrashReportThread());
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
 
     public static volatile ArrayList<UUID> coders = new ArrayList<>(),
@@ -74,14 +74,14 @@ public class HxCCore {
         Runtime.getRuntime().addShutdownHook(crashReportThread);
 
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
-        if(!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
+        if (!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
         registerConfig(hxCConfig);
 
         if (Configurations.enableCommands)
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
         for (int i = 0; i < Configurations.Permissions.size(); i++) {
-            References.PERM_NAMES[i] = (String)Configurations.Permissions.keySet().toArray()[i];
+            References.PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
             References.PERM_COLOURS[i] = Configurations.Permissions.get(References.PERM_NAMES[i]).charAt(0);
             References.HOMES[i] = Integer.parseInt(Configurations.Permissions.get(References.PERM_NAMES[i]).substring(1).trim());
         }
@@ -116,7 +116,7 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        if (Configurations.DebugMode)event.getModState();
+        if (Configurations.DebugMode) event.getModState();
 
         if (Loader.isModLoaded("HxCSkills"))
             LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
@@ -158,7 +158,7 @@ public class HxCCore {
                 CustomWorldFile.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
-        } catch(IOException ignored) {}
+        } catch (IOException ignored) {}
     }
 
     private static void extendEnchantsArray() {

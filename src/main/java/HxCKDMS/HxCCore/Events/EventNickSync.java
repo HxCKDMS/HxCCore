@@ -18,20 +18,22 @@ public class EventNickSync implements EventListener {
     private int counter = 0;
 
     @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event){
-        if(event.phase == TickEvent.Phase.START){
-            if((counter++) == 200){
+    public void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            if ((counter++) == 200) {
                 List<EntityPlayerMP> players = (List<EntityPlayerMP>) HxCCore.server.getConfigurationManager().playerEntityList;
-                for(EntityPlayerMP player : players) if(EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID())) HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
+                for (EntityPlayerMP player : players) if (EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID())) HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
             }
-            if(counter > 200) counter = 0;
+            if (counter > 200) counter = 0;
         }
     }
 
     @SubscribeEvent
-    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event){
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         List<EntityPlayerMP> players = (List<EntityPlayerMP>) HxCCore.server.getConfigurationManager().playerEntityList;
-        for(EntityPlayerMP player : players) if(EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID())) HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
+        for (EntityPlayerMP player : players)
+            if (EventPlayerNetworkCheck.hasPlayerMod.contains(player.getUniqueID()))
+                HxCCore.network.sendTo(new MessageColor(getNickTagCompound(players)), player);
     }
 
     private NBTTagCompound getNickTagCompound(List<EntityPlayerMP> players) {
@@ -44,9 +46,9 @@ public class EventNickSync implements EventListener {
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
             String nick = "";
-            try{
+            try {
                 nick = NBTFileIO.getString(CustomPlayerData, "nickname");
-            }catch(NullPointerException ignored){}
+            } catch (NullPointerException ignored) {}
 
             tagCompound2.setString("nick", nick);
             tagCompound2.setBoolean("isOP", player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile()));

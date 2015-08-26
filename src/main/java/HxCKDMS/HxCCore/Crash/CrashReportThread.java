@@ -13,15 +13,15 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class CrashReportThread extends Thread {
+public class CrashReportThread implements Runnable {
     private Gson gson = new Gson();
 
     @Override
     public void run() {
-        if(CrashHandler.hasCrashed){
-            try{
+        if (CrashHandler.hasCrashed) {
+            try {
                 checkCrash(FMLCommonHandler.instance().getSide().isClient());
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {}
         }
     }
 
@@ -46,11 +46,11 @@ public class CrashReportThread extends Thread {
         boolean hasMod = false;
         while ((line = reader.readLine()) != null) {
             crash.add(line);
-            if(line.contains("at HxCKDMS")) hasMod = true;
+            if (line.contains("at HxCKDMS")) hasMod = true;
         }
         reader.close();
 
-        if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
+        if (Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
 
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
@@ -65,7 +65,7 @@ public class CrashReportThread extends Thread {
         String json = gson.toJson(new crashSendTemplate(crash));
 
         try {
-            sleep(100L);
+            Thread.sleep(100L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class CrashReportThread extends Thread {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         String ip = reader.readLine().split(":")[0];
-        if(ip.equals("")) return References.ERROR_REPORT_ADDRESS;
+        if (ip.equals("")) return References.ERROR_REPORT_ADDRESS;
         return ip;
     }
 

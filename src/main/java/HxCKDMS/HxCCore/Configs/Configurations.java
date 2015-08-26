@@ -30,7 +30,7 @@ public class Configurations {
     @Config.List
     public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
 
-//"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
+    //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
     public static boolean autoCrashReporterEnabled = true;
 
@@ -42,9 +42,9 @@ public class Configurations {
     @Config.Boolean
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
 
-    @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT",forceReset = true)
+    @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT", forceReset = true)
     public static String lastCheckedCrash = "";
-    
+
     static {
         Permissions.put("Default", "f 3");
         Permissions.put("Friend", "2 5");

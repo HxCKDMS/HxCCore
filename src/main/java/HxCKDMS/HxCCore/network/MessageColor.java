@@ -15,7 +15,8 @@ public class MessageColor implements IMessage {
     public NBTTagCompound tagCompound;
 
     //Empty constructor needed for FML initializing the packet.
-    public MessageColor() {}
+    public MessageColor() {
+    }
 
     public MessageColor(NBTTagCompound tagCompound) {
         this.tagCompound = tagCompound;
@@ -37,7 +38,7 @@ public class MessageColor implements IMessage {
         @Override
         public IMessage onMessage(MessageColor message, MessageContext ctx) {
             Set<String> UUIDs = (Set<String>) message.tagCompound.getKeySet();
-            for(String UUID : UUIDs) {
+            for (String UUID : UUIDs) {
                 NBTTagCompound tagCompound2 = (NBTTagCompound) message.tagCompound.getTag(UUID);
                 RenderHooks.nameNicks.put(UUID, tagCompound2.getString("nick"));
                 RenderHooks.isPlayerOp.put(UUID, tagCompound2.getBoolean("isOP"));
