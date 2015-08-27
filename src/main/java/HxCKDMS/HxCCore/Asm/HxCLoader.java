@@ -30,6 +30,11 @@ public class HxCLoader implements IFMLLoadingPlugin {
     @Override
     public void injectData(Map<String, Object> data) {
         RuntimeDeobf = (Boolean) data.get("runtimeDeobfuscationEnabled");
+
+        try {
+            double version = Double.parseDouble(Runtime.class.getPackage().getSpecificationVersion());
+            if (version < 1.8) throw new RuntimeException("Old JAVA version mod HxCCore requires JAVA 8!");
+        } catch (NumberFormatException ignored) {}
     }
 
     @Override

@@ -23,7 +23,7 @@ public class CommandRegistry {
                     if (mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
                         commandMain.registerSubCommand(instance);
-                        if(!CommandsConfig.commands.containsKey(instance.getCommandName())) CommandsConfig.commands.put(instance.getCommandName(), permissionLevel);
+                        CommandsConfig.commands.putIfAbsent(instance.getCommandName(), permissionLevel);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

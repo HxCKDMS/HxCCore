@@ -37,26 +37,24 @@ public class HxCConfig {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))) {
             String line;
-            while((line = reader.readLine()) != null) {
-                if(line.contains("{")) {
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("{")) {
                     char[] chars = line.toCharArray();
                     boolean hasNotEncounteredText = true;
                     StringBuilder stringBuilder = new StringBuilder();
                     for(Character character : chars) {
-                        if(!character.equals(' ') && !character.equals('\t') || hasNotEncounteredText) {
+                        if((!character.equals(' ') && !character.equals('\t')) || hasNotEncounteredText) {
                             hasNotEncounteredText = false;
                             stringBuilder.append(character);
                         } else if(character.equals(' ')) break;
                     }
-                    categories.get(stringBuilder.toString()).read(clazz, reader);
+                    categories.getOrDefault(stringBuilder.toString(), categories.get("General")).read(clazz, reader);
                 }
             }
         } catch (IOException ignored) {}
 
         StringBuilder stringBuilder = new StringBuilder();
-        for(Category category : categories.values()) {
-            category.write(stringBuilder);
-        }
+        categories.values().forEach(category -> category.write(stringBuilder));
         String fileString = stringBuilder.toString();
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))) {

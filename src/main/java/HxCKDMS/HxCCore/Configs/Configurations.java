@@ -25,7 +25,7 @@ public class Configurations {
     @Config.Integer(description = "The higher the number the more Max Damage!", category = "Features")
     public static int DMMax = 40;
     @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
-    public static Integer TpaTimeout = 100;
+    public static Integer TpaTimeout = 600;
 
     @Config.List
     public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');

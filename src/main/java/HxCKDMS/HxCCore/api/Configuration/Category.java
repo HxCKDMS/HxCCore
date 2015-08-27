@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Category {
     private String name;
@@ -110,7 +111,7 @@ public class Category {
     }
 
     @SuppressWarnings("unchecked")
-    public <T,U> void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException, ClassCastException {
+    public <K,V> void readMap(String line, Class<?> clazz, BufferedReader reader) throws NoSuchFieldException, IllegalAccessException, IOException, NumberFormatException, NullPointerException, ClassCastException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
@@ -161,17 +162,17 @@ public class Category {
             if (!key.equals("")) values.put(key, value);
         }
 
-        Class<T> keyType1 = (Class<T>) getTypeFromLetter(keyType);
-        Class<U> valueType1 = (Class<U>) getTypeFromLetter(valueType);
+        Class<K> keyType1 = (Class<K>) getTypeFromLetter(keyType);
+        Class<V> valueType1 = (Class<V>) getTypeFromLetter(valueType);
 
-        Map<T, U> map = (Map<T, U>) clazz.getField(variableName).get(clazz);
+        Map<K, V> map = (Map<K, V>) clazz.getField(variableName).get(clazz);
 
-        for (Map.Entry<String, String> entry : values.entrySet()) map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue()));
+        map.entrySet().forEach(entry -> map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue())));
         clazz.getField(variableName).set(clazz, map);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException, ClassCastException {
+    public <V> void readList(String line, Class<?> clazz, BufferedReader reader) throws IOException, NoSuchFieldException, IllegalAccessException, NumberFormatException, NullPointerException, ClassCastException {
         boolean hasNotEncounteredText = true;
         boolean hasEncounteredColumn = false;
         char[] chars = line.toCharArray();
@@ -209,9 +210,8 @@ public class Category {
             if (!value.equals("")) values.add(value);
         }
 
-        Class<T> type1 = (Class<T>) getTypeFromLetter(type);
-        List<T> list = new ArrayList<>();
-        for (String value : values) list.add(type1.cast(value));
+        Class<V> type1 = (Class<V>) getTypeFromLetter(type);
+        List<V> list = values.stream().map(type1::cast).collect(Collectors.toList());
         clazz.getField(variableName).set(clazz, list);
     }
 
