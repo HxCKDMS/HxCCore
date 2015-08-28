@@ -167,7 +167,7 @@ public class Category {
 
         Map<K, V> map = (Map<K, V>) clazz.getField(variableName).get(clazz);
 
-        map.entrySet().forEach(entry -> map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue())));
+        values.entrySet().forEach(entry -> map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue())));
         clazz.getField(variableName).set(clazz, map);
     }
 

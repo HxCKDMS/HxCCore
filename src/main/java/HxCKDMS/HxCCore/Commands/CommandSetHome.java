@@ -29,6 +29,7 @@ public class CommandSetHome implements ISubCommand {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
