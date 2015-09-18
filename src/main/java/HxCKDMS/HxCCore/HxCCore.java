@@ -1,9 +1,7 @@
 package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Commands.CommandMain;
-import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Configs.Kits;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
@@ -12,7 +10,6 @@ import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
-import HxCKDMS.HxCCore.api.Configuration.Category;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
@@ -53,9 +50,10 @@ public class HxCCore {
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandsCFG;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile;
     public static SimpleNetworkWrapper network;
-    public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig();
+    public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
+    kits = new HxCConfig();
 
     public static final Thread crashReportThread = new Thread(new CrashReportThread());
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
@@ -75,7 +73,12 @@ public class HxCCore {
 
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if (!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
-        registerConfig(hxCConfig);
+
+        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
+        commandCFGFile = new File(HxCConfigDir, "HxCCommands.cfg");
+        kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
+
+        Configurations.preInitConfigs();
 
         if (Configurations.enableCommands)
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
@@ -97,6 +100,7 @@ public class HxCCore {
         if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandMain(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
+        //NEED TO IMPLEMENT Reika's Packet changes...
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
         LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
@@ -193,24 +197,5 @@ public class HxCCore {
     @NetworkCheckHandler
     public boolean checkNetwork(Map<String, String> mods, Side side) {
         return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(References.VERSION);
-    }
-
-    public static void registerConfig(HxCConfig config) {
-        config.registerCategory(new Category("General"));
-        config.registerCategory(new Category("Features"));
-        config.registerCategory(new Category("Permissions", "Do not add a permission level requirement for a command if the permission level doesn't exist!"));
-        config.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
-
-        HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
-        config.handleConfig(Configurations.class, HxCConfigFile);
-
-        commandsCFG = new File(HxCConfigDir, "HxCCommands.cfg");
-        commandCFG.registerCategory(new Category("General"));
-        commandCFG.handleConfig(CommandsConfig.class, commandsCFG);
-
-        File kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
-        HxCConfig kits = new HxCConfig();
-        kits.registerCategory(new Category("General"));
-        kits.handleConfig(Kits.class, kitsFile);
     }
 }

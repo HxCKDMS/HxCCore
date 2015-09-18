@@ -1,5 +1,7 @@
 package HxCKDMS.HxCCore.Configs;
 
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Configuration.Category;
 import HxCKDMS.HxCCore.api.Configuration.Config;
 
 import java.util.Arrays;
@@ -46,16 +48,38 @@ public class Configurations {
     public static String lastCheckedCrash = "";
 
     static {
-        Permissions.put("Default", "f 3");
-        Permissions.put("Friend", "2 5");
-        Permissions.put("Helper", "e 8");
-        Permissions.put("Moderator", "9 10");
-        Permissions.put("Admin", "6 16");
-        Permissions.put("Owner", "4 -1");
-
         formats.put("ChatFormat", "<%1$s> %2$s");
         formats.put("HxCTag", "&f[%1$s&f]");
         formats.put("GroupTag", "&f[%1$s&f]");
         formats.put("BroadcastVariable", "[&6SERVER&f] <SENDER> &4MESSAGE");
+    }
+
+    public static void updatePerms() {
+        if (Permissions.isEmpty()) {
+            Permissions.put("Default", "f 3");
+            Permissions.put("Friend", "2 5");
+            Permissions.put("Helper", "e 8");
+            Permissions.put("Moderator", "9 10");
+            Permissions.put("Admin", "6 16");
+            Permissions.put("Owner", "4 -1");
+        }
+    }
+
+    public static void preInitConfigs() {
+        HxCCore.hxCConfig.registerCategory(new Category("General"));
+        HxCCore.hxCConfig.registerCategory(new Category("Features"));
+        HxCCore.hxCConfig.registerCategory(new Category("Permissions", "Do not add a permission level requirement for a command if the permission level doesn't exist!"));
+        HxCCore.hxCConfig.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
+
+        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
+
+        HxCCore.commandCFG.registerCategory(new Category("General"));
+        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
+
+        HxCCore.kits.registerCategory(new Category("General"));
+        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+
+        updatePerms();
+        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
     }
 }

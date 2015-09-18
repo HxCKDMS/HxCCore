@@ -30,6 +30,6 @@ public class CommandRegistry {
                 }
             }
         }
-        HxCCore.commandCFG.handleConfig(Configurations.class, HxCCore.commandsCFG);
+        HxCCore.commandCFG.handleConfig(Configurations.class, HxCCore.commandCFGFile);
     }
 }

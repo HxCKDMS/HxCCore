@@ -2,7 +2,7 @@
   {
     "modid": "HxCCore",
     "name": "HxC-Core",
-    "description": "IDK",
+    "description": "Core for all HxC mods. Contains Important Libraries such as config system.",
     "version": "1.8.3",
     "credits": "Minor help from Opensource COFH core",
 	"logoFile": "assets/HxCCore/textures/HxC.png",

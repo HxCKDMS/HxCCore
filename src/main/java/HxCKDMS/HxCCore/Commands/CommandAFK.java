@@ -50,7 +50,7 @@ public class CommandAFK implements ISubCommand {
                 ChatComponentText Back = new ChatComponentText(tmp + " is no longer AFK.");
                 IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
                 AttributeModifier SpeedDeBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -1000, 1);
-                IAttributeInstance pd = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
+                IAttributeInstance pd = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
                 AttributeModifier DMGDeBuff = new AttributeModifier(DMdeBuffUUID, "AFKDeBuff", -1000000000, 1);
                 boolean AFKStatus;
                 try {
