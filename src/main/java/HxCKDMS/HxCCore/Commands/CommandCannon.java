@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -15,7 +16,7 @@ import net.minecraft.util.Vec3;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
 public class CommandCannon implements ISubCommand {
     public static CommandCannon instance = new CommandCannon();
 

@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -19,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
 public class CommandClientInfo implements ISubCommand {
     private EnumChatFormatting defaultColor = EnumChatFormatting.BLUE;
 

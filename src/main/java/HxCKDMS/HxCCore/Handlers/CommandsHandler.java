@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Commands;
+package HxCKDMS.HxCCore.Handlers;
 
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CommandMain extends AbstractCommandMain {
+public class CommandsHandler extends AbstractCommandMain {
     public static HashMap<String, ISubCommand> commands = new HashMap<>();
-    public static AbstractCommandMain instance = new CommandMain();
+    public static AbstractCommandMain instance = new CommandsHandler();
     //TODO: attempt to move ALL strings to localization before 1.9.x....
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -39,8 +39,15 @@ public class CommandMain extends AbstractCommandMain {
     public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
+            // 0 is client / 1 is server / 2 is command block
             if (commands.containsKey(k)) {
-                commands.get(k).handleCommand(sender, args);
+                if (args.length >= commands.get(k).getCommandRequiredParams()[0]) {
+                    commands.get(k).handleCommandFromClient(sender, args);
+                } else if (args.length >= commands.get(k).getCommandRequiredParams()[1]) {
+                    commands.get(k).handleCommandFromServer(sender, args);
+                } else {
+                    commands.get(k).handleCommandFromServer(sender, args);
+                }
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }
@@ -49,8 +56,8 @@ public class CommandMain extends AbstractCommandMain {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public List getCommandAliases() {
         List aliases = new ArrayList();
         aliases.add("HxCCore");

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ISubCommand {
     String getCommandName();
-    void handleCommand(ICommandSender sender, String[] args);
+    int[] getCommandRequiredParams();
+    void handleCommandFromClient(ICommandSender sender, String[] args);
+    void handleCommandFromServer(ICommandSender sender, String[] args);
     List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }

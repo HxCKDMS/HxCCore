@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -17,7 +18,7 @@ import java.io.File;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-@HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
 public class CommandMute implements ISubCommand {
     public static CommandMute instance = new CommandMute();
     //TODO: Make it unmute muted players without requiring boolean

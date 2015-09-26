@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
 public class CommandHome implements ISubCommand {
     public static CommandHome instance = new CommandHome();
 

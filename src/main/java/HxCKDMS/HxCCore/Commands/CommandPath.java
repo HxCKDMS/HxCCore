@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -15,7 +16,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
 public class CommandPath implements ISubCommand {
     public static CommandPath instance = new CommandPath();
 

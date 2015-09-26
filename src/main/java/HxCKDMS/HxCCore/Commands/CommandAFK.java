@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -27,7 +28,7 @@ import java.util.List;
 import static HxCKDMS.HxCCore.lib.References.*;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
 public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
     //TODO: See if there is a better way to code this??? Players who're AFK CAN'T MOVE and Can't DIE... (Make config to make it so only player damage is canceled)

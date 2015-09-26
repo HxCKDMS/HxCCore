@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import cpw.mods.fml.common.Loader;
@@ -11,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
 public class CommandModList implements ISubCommand {
     public static CommandModList instance = new CommandModList();
 

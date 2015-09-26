@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -16,7 +17,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class)
 public class CommandKill implements ISubCommand {
     public static CommandKill instance = new CommandKill();
     //Maybe make it so people who use this command can't use on people of higher ranks????

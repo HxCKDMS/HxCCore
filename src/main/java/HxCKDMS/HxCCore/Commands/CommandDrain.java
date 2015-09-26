@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -14,7 +15,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
 public class CommandDrain implements ISubCommand {
     public static CommandDrain instance = new CommandDrain();
     //TODO: Verify this works?

@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -17,7 +18,7 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
 public class CommandBroadcast implements ISubCommand {
     public static CommandBroadcast instance = new CommandBroadcast();
 

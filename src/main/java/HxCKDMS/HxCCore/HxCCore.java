@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore;
 
-import HxCKDMS.HxCCore.Commands.CommandMain;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
-import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
@@ -19,7 +18,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -62,9 +60,6 @@ public class HxCCore {
             helpers = new ArrayList<>(), supporters = new ArrayList<>(),
             artists = new ArrayList<>(), mascots = new ArrayList<>();
 
-    @SidedProxy(serverSide = "HxCKDMS.HxCCore.Proxy.ServerProxy", clientSide = "HxCKDMS.HxCCore.Proxy.ClientProxy")
-    public static IProxy proxy;
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
@@ -94,10 +89,9 @@ public class HxCCore {
 
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
-        proxy.preInit(event);
         extendEnchantsArray();
 
-        if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandMain(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
+        if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandsHandler(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
@@ -147,7 +141,7 @@ public class HxCCore {
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
-        if (Configurations.enableCommands) CommandMain.initCommands(event);
+        if (Configurations.enableCommands) CommandsHandler.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
         if (!WorldDir.exists())

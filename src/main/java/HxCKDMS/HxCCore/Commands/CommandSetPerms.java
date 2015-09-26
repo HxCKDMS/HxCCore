@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static HxCKDMS.HxCCore.lib.References.*;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class)
 public class CommandSetPerms implements ISubCommand {
     public static CommandSetPerms instance = new CommandSetPerms();
     @Override

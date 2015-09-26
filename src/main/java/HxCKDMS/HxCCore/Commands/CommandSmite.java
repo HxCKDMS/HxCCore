@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
 public class CommandSmite implements ISubCommand {
     public static CommandSmite instance = new CommandSmite();
 
@@ -26,13 +27,18 @@ public class CommandSmite implements ISubCommand {
     }
 
     @Override
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1};
+    }
+
+    @Override
     public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
         if(sender instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Smite"), player);
             if (CanSend) {
                 if (args.length == 2) {
-                    EntityPlayerMP target = CommandMain.getPlayer(sender, args[1]);
+                    EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
                     smite(target.worldObj, target.posX, target.posY, target.posZ);
                 } else {
                     MovingObjectPosition rayTrace = player.rayTrace(100, 1.0F);
@@ -43,7 +49,7 @@ public class CommandSmite implements ISubCommand {
                 }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
-            EntityPlayerMP target = CommandMain.getPlayer(sender, args[1]);
+            EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
             if (args.length == 2) smite(target.worldObj, target.posX, target.posY, target.posZ);
             else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }

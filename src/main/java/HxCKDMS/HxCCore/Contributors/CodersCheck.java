@@ -17,7 +17,7 @@ public class CodersCheck implements Runnable {
         loadFile();
     }
 
-    public void loadFile() {
+    private void loadFile() {
         try {
             URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCLib.txt");
             InputStream inputStream = url.openStream();
@@ -31,7 +31,7 @@ public class CodersCheck implements Runnable {
         }
     }
 
-    public void loadAll(BufferedReader reader) {
+    private void loadAll(BufferedReader reader) {
         if (reader != null) {
             try {
                 String inputLine;

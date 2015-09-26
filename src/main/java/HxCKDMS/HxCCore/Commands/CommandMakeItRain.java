@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-//@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
+//@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
 public class CommandMakeItRain implements ISubCommand {
     public static CommandMakeItRain instance = new CommandMakeItRain();
 

@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
 public class CommandList implements ISubCommand {
     public static CommandList instance = new CommandList();
 

@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -15,7 +16,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.Collections;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandMain.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
 public class CommandDraw2DSquircle implements ISubCommand {
     @Override
     public String getCommandName() {
@@ -29,9 +30,9 @@ public class CommandDraw2DSquircle implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Draw2DSquircle"), player);
 
             if (CanSend) {
-                int x = (int) CommandMain.clamp_coord(sender, player.posX, args[1]);
-                int y = (int) CommandMain.clamp_double(sender, player.posY, args[2], 0, 0);
-                int z = (int) CommandMain.clamp_coord(sender, player.posZ, args[3]);
+                int x = (int) CommandsHandler.clamp_coord(sender, player.posX, args[1]);
+                int y = (int) CommandsHandler.clamp_double(sender, player.posY, args[2], 0, 0);
+                int z = (int) CommandsHandler.clamp_coord(sender, player.posZ, args[3]);
                 int radius = Integer.parseInt(args[4]);
                 String unlocalizedName = args[5];
                 boolean hollow = Boolean.parseBoolean(args[6]);
@@ -55,8 +56,8 @@ public class CommandDraw2DSquircle implements ISubCommand {
 
         if(args.length == 2 || args.length == 3 || args.length == 4) return Collections.singletonList("~");
         else if(args.length == 5) return Collections.singletonList(Integer.toString(8));
-        else if(args.length == 6) return CommandMain.getListOfStringsMatchingLastWord(args, Block.blockRegistry.getKeys().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
-        else if(args.length == 7) return CommandMain.getListOfStringsMatchingLastWord(args, booleans);
+        else if(args.length == 6) return CommandsHandler.getListOfStringsMatchingLastWord(args, Block.blockRegistry.getKeys().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
+        else if(args.length == 7) return CommandsHandler.getListOfStringsMatchingLastWord(args, booleans);
         return null;
     }
 }
