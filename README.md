@@ -1,4 +1,4 @@
-==HXCCORE==
+=HXCCORE=
 Basic code for our mods to work will be put in here as well as various commands and tweaks to the game should we feel necessary.
 <p align="center">
   <a href="https://github.com/HxCKDMS/HxCCore/">
