@@ -9,3 +9,7 @@
 ------------------------
 <div align="center"> Basic code for our mods to work will be put in here as well as various commands,</div> 
 <div align="center">and tweaks to the game should we feel necessary. </div>
+
+* Testing
+* Remember this is a test
+* Don't forget this is a test
