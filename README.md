@@ -1,8 +1,9 @@
-HxCCore
-=======
-
-HxCCore is our Core Mod
-
-Basic code for our mods to work will be put in here as well as our commands and misc tweaks to the game as we feel necessary.
-
-The Core is Currently : Functional.
+<p align="center">
+  <a href="">
+      <img src="https://travis-ci.org/ModName/Modname.svg" alt="Build Status">
+  </a>
+  <a href="https://github.com/HxCKDMS/HxCCore/issues">
+      <img src="https://img.shields.io/github/issues-raw/HxCCore/HxCCore.svg" alt="Issues">
+  </a>
+  <img src="https://img.shields.io/badge/minecraft-1.7.10-blue.svg" alt="Minecraft Version">
+</p>
