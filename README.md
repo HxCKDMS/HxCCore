@@ -7,7 +7,7 @@
   <a href="https://github.com/HxCKDMS/HxCCore/issues">
       <img src="https://img.shields.io/github/issues-raw/HxCKDMS/HxCCore.svg" alt="Issues">
   </a>
-  <img src="https://img.shields.io/badge/minecraft-1.7.10-blue.svg" alt="Minecraft Version">
-    </a>
-  <img src="https://img.shields.io/badge/minecraft-1.8-blue.svg" alt="Minecraft Version">
+  <a>
+    <img src="https://img.shields.io/badge/minecraft-1.7.10-blue.svg" alt="Minecraft Version">
+  </a>
 </p>
