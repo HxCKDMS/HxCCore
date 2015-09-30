@@ -1,4 +1,4 @@
-<p align="center"><img src="http://media-elerium.cursecdn.com/avatars/14/170/635587497278461565.png"></p>
+<p align="center"><img src="http://media-elerium.cursecdn.com/avatars/14/170/635587497278461565.png" width="320" height="320"></p>
 <p align="center">
   <a href="https://github.com/HxCKDMS/HxCCore/tree/1.8">
       <img src="http://67.187.15.252:8080/buildStatus/icon?job=HxCCore-1.8" alt="Build Status"></a>
