@@ -10,5 +10,6 @@
     <img src="https://img.shields.io/badge/minecraft-1.7.10-blue.svg" alt="Minecraft Version">
   </a>
 </p>
+------------------------
 <div align="center"> Basic code for our mods to work will be put in here as well as various commands,</div> 
 <div align="center">and tweaks to the game should we feel necessary. </div>
