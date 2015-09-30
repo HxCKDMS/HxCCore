@@ -1,7 +1,0 @@
-language: java
-
-install:
-  - TERM=dumb gradle build
-
-script:
-  - TERM=dumb gradle check
