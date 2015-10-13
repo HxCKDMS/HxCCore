@@ -3,25 +3,28 @@ package HxCKDMS.HxCCore.Events;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.EventListener;
 import java.util.UUID;
 
 import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 import static HxCKDMS.HxCCore.lib.References.CC;
 
-@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "SuspiciousMethodCalls"})
 public class EventChat implements EventListener {
 
     @SubscribeEvent
@@ -72,9 +75,38 @@ public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void commandEvent(CommandEvent event) {
-        String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length()-1);
-        if (CommandsConfig.BannedCommands.containsKey(cmd))
-            event.setCanceled(true);
-        LogHelper.info(event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]", References.MOD_NAME);
+        if (event.sender instanceof EntityPlayerMP) {
+            String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
+
+            CommandsConfig.BannedCommands.keySet().forEach(c -> {
+                if (CommandsConfig.BannedCommands.get(c) == 0 && c.contains(cmd)) {
+                    event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
+                    event.setCanceled(true);
+                } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
+                    event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
+                    event.setCanceled(true);
+                } else if (CommandsConfig.BannedCommands.get(c) == 2) {
+                    String[] tmp0 = c.split("##"), tmp2 = tmp0[1].split(" ");
+                    int tmp1 = tmp0[0].length() - 1, tmp3 = tmp2[0].length() - 1;
+                    if (Integer.getInteger(cmd.substring(tmp1, tmp3)) != null) {
+                        event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
+                        event.setCanceled(true);
+                    }
+                }//SPECIAL CIRCUMSTANCE TESTING MAY NOT GO ANY FURTHER
+            });
+
+            if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
+                String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
+                HxCCore.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
+            }
+
+            CommandsConfig.ReportedCommands.forEach(c -> {
+                if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
+                    ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
+                    t.getChatStyle().setColor(EnumChatFormatting.GOLD);
+                    PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+                }
+            });
+        }
     }
 }

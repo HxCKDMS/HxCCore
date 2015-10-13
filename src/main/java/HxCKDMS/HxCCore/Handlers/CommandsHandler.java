@@ -34,7 +34,8 @@ public class CommandsHandler extends AbstractCommandMain {
     
     @Override
     public String getCommandName() {
-        return "HxCCore";
+        //Changed since more commonly used and since not only the core uses this now...
+        return "HxC";
     }
     
     @Override

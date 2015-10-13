@@ -20,8 +20,11 @@ public class Configurations {
     @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
     public static boolean afkExtras = true;
 
-    @Config.Boolean(description = "Enable logging of all attempted execution of HxC commands?", category = "Features")
+    @Config.Boolean(description = "Enable logging of all attempted execution of commands?", category = "Features")
     public static boolean LogAttemptedCommands = true;
+
+    @Config.Boolean(description = "Enable reporting of commands to highest perm level for HxCCommands in Reported Commands list?", category = "Features")
+    public static boolean ReportCommandsExecuted = true;
 
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
@@ -57,7 +60,7 @@ public class Configurations {
         formats.put("BroadcastVariable", "[&6SERVER&f] <SENDER> &4MESSAGE");
     }
 
-    public static void updatePerms() {
+    public static void updateCFGS() {
         if (Permissions.isEmpty()) {
             Permissions.put("Default", "f 3");
             Permissions.put("Friend", "2 5");
@@ -65,6 +68,9 @@ public class Configurations {
             Permissions.put("Moderator", "9 10");
             Permissions.put("Admin", "6 16");
             Permissions.put("Owner", "4 -1");
+        }
+        if (CommandsConfig.BannedCommands.isEmpty()) {
+            CommandsConfig.BannedCommands.put("example command", 0);
         }
     }
 
@@ -82,7 +88,8 @@ public class Configurations {
         HxCCore.kits.registerCategory(new Category("General"));
         HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
 
-        updatePerms();
+        updateCFGS();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
+        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
     }
 }

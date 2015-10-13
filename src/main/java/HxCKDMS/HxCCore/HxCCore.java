@@ -17,10 +17,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -33,6 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import static HxCKDMS.HxCCore.lib.References.*;
@@ -46,10 +44,12 @@ public class HxCCore {
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir;
     public static SimpleNetworkWrapper network;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
     kits = new HxCConfig();
+
+    private static PrintWriter commandLog;
 
     public static final Thread crashReportThread = new Thread(new CrashReportThread());
     public static final Thread CodersCheckThread = new Thread(new CodersCheck());
@@ -126,20 +126,38 @@ public class HxCCore {
         server = event.getServer();
         if (Configurations.enableCommands) CommandsHandler.initCommands(event);
 
-        File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCCore");
+        File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCData");
         if (!WorldDir.exists())
             WorldDir.mkdirs();
         HxCCoreDir = WorldDir;
+        File LogDir = new File(HxCCoreDir, "HxCLogs");
+        if (!LogDir.exists())
+            LogDir.mkdirs();
+        HxCLogDir = LogDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
+        File OLDLOG = new File(HxCLogDir, "HxC-CommandLog-0.log");
 
         try {
             if (!CustomWorldFile.exists())
                 CustomWorldFile.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
+            if (OLDLOG.exists()) {
+                OLDLOG.renameTo(new File(HxCLogDir, "HxC-CommandLog-" + String.valueOf(HxCLogDir.listFiles().length) + ".log"));
+            }
+            commandLog = new PrintWriter(new File(HxCLogDir, "HxC-CommandLog-0.log"), "UTF-8");
         } catch (IOException ignored) {}
+    }
+
+    public static void logCommand(String str) {
+        commandLog.println(str);
+    }
+
+    @EventHandler
+    public void serverStop(FMLServerStoppingEvent event) {
+        commandLog.close();
     }
 
     private static void extendEnchantsArray() {
