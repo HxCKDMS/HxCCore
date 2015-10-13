@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface HxCCommand {
     int defaultPermission();
     Class<? extends AbstractCommandMain> mainCommand();
+    boolean isEnabled();
 }

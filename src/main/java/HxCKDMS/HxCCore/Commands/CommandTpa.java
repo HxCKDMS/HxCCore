@@ -21,7 +21,7 @@ import net.minecraft.util.StatCollector;
 import java.util.HashMap;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandTpa implements ISubCommand {
     public static CommandTpa instance = new CommandTpa();
 
@@ -31,11 +31,16 @@ public class CommandTpa implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{1, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             EntityPlayerMP PlayerThatTPs = null;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("TPA"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("TPA"), player);
             if (CanSend) {
                 for (HashMap.Entry<EntityPlayerMP, EntityPlayerMP> entry : HxCCore.tpaRequestList.entrySet()) {
                     if(entry.getValue() == player) PlayerThatTPs = entry.getKey();

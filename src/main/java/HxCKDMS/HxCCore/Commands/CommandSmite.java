@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandSmite implements ISubCommand {
     public static CommandSmite instance = new CommandSmite();
 
@@ -28,14 +28,14 @@ public class CommandSmite implements ISubCommand {
 
     @Override
     public int[] getCommandRequiredParams() {
-        return new int[]{0, 1};
+        return new int[]{0, 1, -1};
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Smite"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Smite"), player);
             if (CanSend) {
                 if (args.length == 2) {
                     EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);

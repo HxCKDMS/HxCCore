@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandSetHome implements ISubCommand {
     public static CommandSetHome instance = new CommandSetHome();
 
@@ -30,11 +30,16 @@ public class CommandSetHome implements ISubCommand {
     }
 
     @Override
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("SetHome"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetHome"), player);
             int pl = PermissionsHandler.permLevel(player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();

@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = false)
 public class CommandKit implements ISubCommand {
     public static CommandBroadcast instance = new CommandBroadcast();
 
@@ -27,10 +27,15 @@ public class CommandKit implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{1, 1, 1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Kit"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kit"), player);
             if (CanSend) {
                 if (args[1].equalsIgnoreCase("spawn") && args.length == 3) {
                     if (Kits.canGetKit(PermissionsHandler.permLevel(player), args[2])) {

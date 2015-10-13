@@ -12,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandModList implements ISubCommand {
     public static CommandModList instance = new CommandModList();
 
@@ -22,7 +22,12 @@ public class CommandModList implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 0, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         int listSize = Loader.instance().getModList().size();
         int modsPerPage = 7;
         int pages = (int)Math.ceil(listSize / (float)modsPerPage);

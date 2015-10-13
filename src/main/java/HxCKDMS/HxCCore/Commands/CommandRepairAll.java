@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandRepairAll implements ISubCommand {
     public static CommandRepairAll instance = new CommandRepairAll();
 
@@ -29,10 +29,15 @@ public class CommandRepairAll implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        if(sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, 1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("RepairAll"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("RepairAll"), player);
             if (CanSend) {
                 if (args.length == 2) target = CommandsHandler.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);

@@ -16,7 +16,7 @@ import net.minecraft.util.Vec3;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = false)
 public class CommandCannon implements ISubCommand {
     public static CommandCannon instance = new CommandCannon();
 
@@ -26,10 +26,15 @@ public class CommandCannon implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{1, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Cannon"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Cannon"), player);
             int speed = 2;
             boolean isKitty = false;
             if (args.length >= 2) { speed = Integer.parseInt(args[1]);}

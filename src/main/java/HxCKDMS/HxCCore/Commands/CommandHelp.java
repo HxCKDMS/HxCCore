@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandHelp implements ISubCommand {
     public static CommandHelp instance = new CommandHelp();
     //TODO: Make a /HxC help [command].... and get the help for specified command..
@@ -20,27 +20,36 @@ public class CommandHelp implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        int commandsPerPage = 7;
-        int pages = (int)Math.ceil(CommandsHandler.commands.size() / (float)commandsPerPage);
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 0, -1};
+    }
 
-        int page = args.length == 1 ? 0 : Integer.parseInt(args[1])-1;
-        int min = Math.min(page * commandsPerPage, CommandsHandler.commands.size());
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+        if (args.length == 2 && Integer.valueOf(args[1]) == null) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + StatCollector.translateToLocal("commands." + CommandsHandler.commands.get(args[1].toLowerCase()).getCommandName() + ".usage")));
+        } else {
+            int commandsPerPage = 7;
+            int pages = (int) Math.ceil(CommandsHandler.commands.size() / (float) commandsPerPage);
 
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + String.format("Help page: %1$d/%2$d.", page + 1, pages)));
-        boolean b = false;
-        for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
-            if(i >= CommandsHandler.commands.size()) break;
+            int page = args.length == 1 ? 0 : Integer.parseInt(args[1]) - 1;
+            int min = Math.min(page * commandsPerPage, CommandsHandler.commands.size());
 
-            String line = ((ISubCommand) CommandsHandler.commands.values().toArray()[i]).getCommandName();
-            line = "commands." + line.toLowerCase() + ".usage";
-            String info = line.replace("usage", "info");
-            line = StatCollector.translateToLocal(line);
-            info = StatCollector.translateToLocal(info);
-            line = "/HxC " + line + " : used to " + info;
-            ChatComponentText message = new ChatComponentText(line);
-            message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
-            sender.addChatMessage(message);
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + String.format("Help page: %1$d/%2$d.", page + 1, pages)));
+            boolean b = false;
+            for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
+                if (i >= CommandsHandler.commands.size()) break;
+
+                String line = ((ISubCommand) CommandsHandler.commands.values().toArray()[i]).getCommandName();
+                line = "commands." + line.toLowerCase() + ".usage";
+                String info = line.replace("usage", "info");
+                line = StatCollector.translateToLocal(line);
+                info = StatCollector.translateToLocal(info);
+                line = "/HxC " + line + " : used to " + info;
+                ChatComponentText message = new ChatComponentText(line);
+                message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);
+                sender.addChatMessage(message);
+            }
         }
     }
 

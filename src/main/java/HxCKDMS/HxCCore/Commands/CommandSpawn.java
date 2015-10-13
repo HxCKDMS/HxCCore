@@ -19,7 +19,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandSpawn implements ISubCommand {
     public static CommandSpawn instance = new CommandSpawn();
 
@@ -29,10 +29,15 @@ public class CommandSpawn implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Spawn"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Spawn"), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandsHandler.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;

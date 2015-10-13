@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandWarp implements ISubCommand {
     private static CommandWarp instance = new CommandWarp();
 
@@ -31,12 +31,20 @@ public class CommandWarp implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Warp"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Warp"), player);
             if (CanSend) {
+                int oldx = (int)player.posX, oldy = (int)player.posY, oldz = (int)player.posZ, olddim = player.dimension;
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 String wName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
@@ -50,6 +58,7 @@ public class CommandWarp implements ISubCommand {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 }
+                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }

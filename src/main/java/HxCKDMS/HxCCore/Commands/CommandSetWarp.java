@@ -18,7 +18,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandSetWarp implements ISubCommand {
     public static CommandSetWarp instance = new CommandSetWarp();
 
@@ -28,10 +28,15 @@ public class CommandSetWarp implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("SetWarp"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetWarp"), player);
             if (CanSend) {
                 File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
 

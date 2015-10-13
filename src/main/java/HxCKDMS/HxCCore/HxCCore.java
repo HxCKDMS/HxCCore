@@ -1,17 +1,16 @@
 package HxCKDMS.HxCCore;
 
-import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -34,15 +33,14 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
+import static HxCKDMS.HxCCore.lib.References.*;
 
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
-@Mod(modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION, dependencies = References.DEPENDENCIES, acceptableRemoteVersions = "*")
+@Mod(modid = MOD_ID, name = MOD_NAME, version = VERSION, dependencies = DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
-    @Instance(References.MOD_ID)
+    @Instance(MOD_ID)
     public static HxCCore instance;
 
     public static MinecraftServer server;
@@ -79,25 +77,27 @@ public class HxCCore {
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
         for (int i = 0; i < Configurations.Permissions.size(); i++) {
-            References.PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
-            References.PERM_COLOURS[i] = Configurations.Permissions.get(References.PERM_NAMES[i]).charAt(0);
-            References.HOMES[i] = Integer.parseInt(Configurations.Permissions.get(References.PERM_NAMES[i]).substring(1).trim());
+            PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
+            PERM_COLOURS[i] = Configurations.Permissions.get(PERM_NAMES[i]).charAt(0);
+            HOMES[i] = Integer.parseInt(Configurations.Permissions.get(PERM_NAMES[i]).substring(1).trim());
         }
 
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(References.PACKET_CHANNEL_NAME);
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageColor.Handler.class, MessageColor.class, 0, Side.CLIENT);
 
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
         extendEnchantsArray();
 
-        if (Configurations.enableCommands) CommandRegistry.registerCommands(new CommandsHandler(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
+        if (Configurations.enableCommands)
+            CommandRegistry.registerCommands(new CommandsHandler(),
+                    event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
 //        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
-        LogHelper.info("Thank your for using HxCCore", References.MOD_NAME);
-        LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", References.MOD_NAME);
+        LogHelper.info("Thank your for using HxCCore", MOD_NAME);
+        LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
 
     @EventHandler
@@ -109,33 +109,16 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
         FMLCommonHandler.instance().bus().register(new EventJoinWorld());
+//        FMLCommonHandler.instance().bus().register(new EventPlayerDeath());
+        MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
         FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        if (Configurations.DebugMode) event.getModState();
-
-        if (Loader.isModLoaded("HxCSkills"))
-            LogHelper.info("Thank your for using HxCSkills", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCEnchants"))
-            LogHelper.info("Thank your for using HxCEnchants", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCWorldGen"))
-            LogHelper.info("Thank your for using HxCWorldGen", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCLinkPads"))
-            LogHelper.info("Thank your for using HxCLinkPads", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCBlocks"))
-            LogHelper.info("Thank your for using HxCBlocks", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCFactions"))
-            LogHelper.info("Thank your for using HxCFactions", References.MOD_NAME);
-        if (Loader.isModLoaded("HxCTiC"))
-            LogHelper.info("Thank your for using HxCTiC", References.MOD_NAME);
-        if (Loader.isModLoaded("magicenergy"))
-            LogHelper.info("Thank your for using MagicEnergy", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcbows"))
-            LogHelper.info("Thank your for using HxCBows", References.MOD_NAME);
-        if (Loader.isModLoaded("hxcdiseases"))
-            LogHelper.info("Thank your for using HxCDiseases", References.MOD_NAME);
+        List<String> knownMods = Arrays.asList("HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
+                "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
+        knownMods.forEach(mod -> LogHelper.info("Thank you for using " + mod, MOD_NAME));
     }
 
     @EventHandler
@@ -165,12 +148,12 @@ public class HxCCore {
          * Biomes O'Plenty
          **/
         int enchantsOffset;
-        LogHelper.info("Extending Enchants Array", References.MOD_NAME);
+        LogHelper.info("Extending Enchants Array", MOD_NAME);
         enchantsOffset = Enchantment.enchantmentsList.length;
         Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
         HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
-        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, References.MOD_NAME);
+        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
     }
 
     private static void extendPotionsArray() {
@@ -180,8 +163,9 @@ public class HxCCore {
          * The License for BOP is CC
          * I Thank BOP Team for this
          **/
+        //TODO: Reika's Packet hack
         int potionOffset;
-        LogHelper.info("Extending Potions Array.", References.MOD_NAME);
+        LogHelper.info("Extending Potions Array.", MOD_NAME);
         potionOffset = Potion.potionTypes.length;
         Potion[] potionTypes = new Potion[potionOffset + 256];
         System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
@@ -190,6 +174,6 @@ public class HxCCore {
 
     @NetworkCheckHandler
     public boolean checkNetwork(Map<String, String> mods, Side side) {
-        return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(References.VERSION);
+        return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(VERSION);
     }
 }

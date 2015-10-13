@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandList implements ISubCommand {
     public static CommandList instance = new CommandList();
 
@@ -29,9 +29,14 @@ public class CommandList implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException {
         if(args.length >= 2) {
-            if (args[1].equalsIgnoreCase("homes")) {
+            if (args[1].toLowerCase().contains("h")) {
                 if(!(sender instanceof EntityPlayerMP)) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
 
                 EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -44,7 +49,7 @@ public class CommandList implements ISubCommand {
                 ChatComponentText homes = new ChatComponentText(home.getKeySet().toString().replace("[", "").replace("]", ""));
                 homes.getChatStyle().setColor(EnumChatFormatting.GOLD);
                 player.addChatMessage(homes);
-            } else if(args[1].equalsIgnoreCase("warps")) {
+            } else if (args[1].toLowerCase().contains("w")) {
                 File CustomWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
                 NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomWorldData, "warp");
 
@@ -60,9 +65,8 @@ public class CommandList implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length == 2){
+        if (args.length == 2)
             return Arrays.asList("warps", "homes");
-        }
         return null;
     }
 }

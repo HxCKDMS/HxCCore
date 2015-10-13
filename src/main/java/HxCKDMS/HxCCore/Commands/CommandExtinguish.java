@@ -7,7 +7,6 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -16,7 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 2, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 2, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandExtinguish implements ISubCommand {
     public static CommandExtinguish instance = new CommandExtinguish();
 
@@ -26,12 +25,17 @@ public class CommandExtinguish implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         switch(args.length) {
             case 1:
-                if(sender instanceof EntityPlayerMP) {
+                if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Extinguish"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Extinguish"), player);
                     if (CanSend) {
                         player.extinguish();
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));

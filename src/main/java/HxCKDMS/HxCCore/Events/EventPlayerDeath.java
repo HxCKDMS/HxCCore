@@ -10,7 +10,7 @@ import java.io.File;
 
 public class EventPlayerDeath {
     @SubscribeEvent
-    public static void playerDeath(LivingDeathEvent event) {
+    public void playerDeath(LivingDeathEvent event) {
         if (event.entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             String UUID = player.getUniqueID().toString();

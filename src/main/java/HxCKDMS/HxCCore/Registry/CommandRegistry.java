@@ -19,11 +19,15 @@ public class CommandRegistry {
                     String className = data.getClassName();
                     Class<ISubCommand> clazz = (Class<ISubCommand>) Class.forName(className);
                     int permissionLevel = clazz.getAnnotation(HxCCommand.class).defaultPermission();
+                    boolean isEnabled = clazz.getAnnotation(HxCCommand.class).isEnabled();
                     Class<? extends AbstractCommandMain> mainClazz = clazz.getAnnotation(HxCCommand.class).mainCommand();
                     if (mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
-                        commandMain.registerSubCommand(instance);
-                        CommandsConfig.commands.putIfAbsent(instance.getCommandName(), permissionLevel);
+                        CommandsConfig.CommandPermissions.putIfAbsent(instance.getCommandName(), permissionLevel);
+                        CommandsConfig.EnabledCommands.putIfAbsent(instance.getCommandName(), isEnabled);
+
+                        if (CommandsConfig.EnabledCommands.get(instance.getCommandName()))
+                            commandMain.registerSubCommand(instance);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

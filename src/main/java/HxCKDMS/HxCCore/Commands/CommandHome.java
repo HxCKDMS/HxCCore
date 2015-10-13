@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandHome implements ISubCommand {
     public static CommandHome instance = new CommandHome();
 
@@ -31,10 +31,15 @@ public class CommandHome implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Home"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Home"), player);
             if (CanSend) {
                 int oldx = (int)player.posX, oldy = (int)player.posY, oldz = (int)player.posZ, olddim = player.dimension;
                 String UUID = player.getUniqueID().toString();

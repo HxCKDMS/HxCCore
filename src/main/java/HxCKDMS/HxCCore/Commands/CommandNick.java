@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandNick implements ISubCommand {
     public static CommandNick instance = new CommandNick();
 
@@ -27,10 +27,15 @@ public class CommandNick implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Nick"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Nick"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

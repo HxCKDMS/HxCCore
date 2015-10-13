@@ -18,7 +18,7 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 2, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 2, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandHeal implements ISubCommand {
     public static CommandHeal instance = new CommandHeal();
 
@@ -27,12 +27,17 @@ public class CommandHeal implements ISubCommand {
         return "Heal";
     }
 
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    @Override
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         switch(args.length){
             case 1:
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Heal"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Heal"), player);
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));

@@ -8,15 +8,17 @@ import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.Collections;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandDrawCircle implements ISubCommand {
 
     @Override
@@ -25,10 +27,15 @@ public class CommandDrawCircle implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{8, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("DrawCircle"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("DrawCircle"), player);
 
             if (CanSend) {
                 int x = (int) CommandsHandler.clamp_coord(sender, player.posX, args[1]);
@@ -46,8 +53,8 @@ public class CommandDrawCircle implements ISubCommand {
                 chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
                 sender.addChatMessage(chatComponentText);
 
-            } else sender.addChatMessage(new ChatComponentText("\u00A74You do not have permission to use this command."));
-        }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
     }
     @Override
     @SuppressWarnings("unchecked")

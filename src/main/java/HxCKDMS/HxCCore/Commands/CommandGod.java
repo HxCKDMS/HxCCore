@@ -9,7 +9,6 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,7 +19,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandGod implements ISubCommand {
     public static CommandGod instance = new CommandGod();
 
@@ -30,12 +29,17 @@ public class CommandGod implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         switch(args.length) {
             case 1:
                 if (sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("God"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("God"), player);
                     if (CanSend) {
                         String UUID = player.getUniqueID().toString();
                         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

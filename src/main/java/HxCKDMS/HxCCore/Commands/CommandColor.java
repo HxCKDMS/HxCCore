@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandColor implements ISubCommand {
     public static CommandColor instance = new CommandColor();
 
@@ -27,12 +27,17 @@ public class CommandColor implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{1, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Color"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Color"), player);
             if (CanSend) {
                 char color = 'f';
                 if (args.length >= 2) color = args[1].charAt(0);

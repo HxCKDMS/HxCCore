@@ -28,7 +28,7 @@ import java.util.List;
 import static HxCKDMS.HxCCore.lib.References.*;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
     //TODO: See if there is a better way to code this??? Players who're AFK CAN'T MOVE and Can't DIE... (Make config to make it so only player damage is canceled)
@@ -39,10 +39,15 @@ public class CommandAFK implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayer) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("AFK"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("AFK"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -67,7 +72,7 @@ public class CommandAFK implements ISubCommand {
                     if (!AFKStatus) {
                         ps.applyModifier(SpeedDeBuff);
                         pd.applyModifier(DMGDeBuff);
-                        player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), 100000, 100000, true));
+                        player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), 100000, 254, true));
                     } else {
                         ps.removeModifier(SpeedDeBuff);
                         pd.removeModifier(DMGDeBuff);
@@ -75,18 +80,16 @@ public class CommandAFK implements ISubCommand {
                     }
                 }
                 List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
-                for (EntityPlayerMP p : list) {
+                for (EntityPlayerMP p : list)
                     p.addChatMessage(AFKStatus ? Back : AFK);
-                }
             } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if (args.length == 2) {
+        if (args.length == 2)
             return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-        }
         return null;
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 import static HxCKDMS.HxCCore.lib.References.*;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandSetPerms implements ISubCommand {
     public static CommandSetPerms instance = new CommandSetPerms();
     @Override
@@ -30,12 +30,17 @@ public class CommandSetPerms implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{2, 2, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            boolean CanUse = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("SetPerms"), player);
+            boolean CanUse = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetPerms"), player);
             if (CanUse) {
                 if (args.length == 3) {
                     String playerName = args[1];

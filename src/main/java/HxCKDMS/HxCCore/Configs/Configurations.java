@@ -20,6 +20,9 @@ public class Configurations {
     @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
     public static boolean afkExtras = true;
 
+    @Config.Boolean(description = "Enable logging of all attempted execution of HxC commands?", category = "Features")
+    public static boolean LogAttemptedCommands = true;
+
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
     @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")

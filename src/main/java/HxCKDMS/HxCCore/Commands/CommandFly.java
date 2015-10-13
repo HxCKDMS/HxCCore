@@ -7,7 +7,6 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -16,7 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandFly implements ISubCommand {
     public static CommandFly instance = new CommandFly();
 
@@ -26,12 +25,17 @@ public class CommandFly implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         switch(args.length){
             case 1:
-                if (sender instanceof EntityPlayerMP) {
+                if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Fly"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Fly"), player);
                     if (CanSend) {
                         player.capabilities.allowFlying = !player.capabilities.allowFlying;
                         player.capabilities.isFlying = !player.capabilities.isFlying;
@@ -56,9 +60,8 @@ public class CommandFly implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length == 2){
+        if (args.length == 2)
             return CommandBase.getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-        }
         return null;
     }
 }

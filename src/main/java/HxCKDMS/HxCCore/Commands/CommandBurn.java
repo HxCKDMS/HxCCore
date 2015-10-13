@@ -7,7 +7,6 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -17,7 +16,7 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandBurn implements ISubCommand {
     public static CommandBurn instance = new CommandBurn();
 
@@ -27,12 +26,17 @@ public class CommandBurn implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Burn"), (EntityPlayerMP) sender);
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, 1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+        boolean CanSend = !isPlayer || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Burn"), (EntityPlayerMP) sender);
         if (CanSend) {
-            switch(args.length){
+            switch(args.length) {
                 case 1:
-                    if(sender instanceof EntityPlayerMP){
+                    if (isPlayer) {
                         EntityPlayerMP player = (EntityPlayerMP)sender;
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);

@@ -7,7 +7,6 @@ import java.util.List;
 public interface ISubCommand {
     String getCommandName();
     int[] getCommandRequiredParams();
-    void handleCommandFromClient(ICommandSender sender, String[] args);
-    void handleCommandFromServer(ICommandSender sender, String[] args);
+    void handleCommand(ICommandSender sender, String[] args, boolean isPlayer);
     List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }

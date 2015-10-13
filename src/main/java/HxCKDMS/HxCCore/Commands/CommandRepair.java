@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandRepair implements ISubCommand {
     public static CommandRepair instance = new CommandRepair();
 
@@ -24,10 +24,15 @@ public class CommandRepair implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.commands.get("Repair"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Repair"), player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setMetadata(0);
