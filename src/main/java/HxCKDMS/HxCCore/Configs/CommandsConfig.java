@@ -21,4 +21,10 @@ public class CommandsConfig {
 
     @Config.List
     public static List<String> ReportedCommands = Arrays.asList("HxC god", "HxC fly");
+
+    static {
+        EnabledCommands.put("help", true);
+        CommandPermissions.put("help", 0);
+        BannedCommands.put("initializer leave alone", 0);
+    }
 }

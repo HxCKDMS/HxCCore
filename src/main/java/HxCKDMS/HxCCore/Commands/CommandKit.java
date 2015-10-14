@@ -50,11 +50,10 @@ public class CommandKit implements ISubCommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if (args.length == 2) {
+        if (args.length == 2)
             return Arrays.asList("spawn", "create", "remove", "edit", "give");
-        } else if (args.length == 3) {
+        else if (args.length == 3)
             return Arrays.asList((String[])Kits.Kits.keySet().toArray());
-        }
         return null;
     }
 }

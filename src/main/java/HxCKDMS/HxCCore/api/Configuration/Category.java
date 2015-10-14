@@ -47,7 +47,7 @@ public class Category {
                         readNormalVariable(line, clazz);
                     }
                 }
-            }catch (NumberFormatException | NoSuchFieldException | IllegalAccessException | NullPointerException | ClassCastException ignored) {}
+            } catch (NumberFormatException | NoSuchFieldException | IllegalAccessException | NullPointerException | ClassCastException ignored) {}
         }
     }
 

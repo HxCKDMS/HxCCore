@@ -145,6 +145,7 @@ public class HxCCore {
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
             if (OLDLOG.exists()) {
+                System.out.println(OLDLOG.getTotalSpace());
                 OLDLOG.renameTo(new File(HxCLogDir, "HxC-CommandLog-" + String.valueOf(HxCLogDir.listFiles().length) + ".log"));
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-CommandLog-0.log"), "UTF-8");
