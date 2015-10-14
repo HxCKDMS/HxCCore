@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = false)
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandKit implements ISubCommand {
     public static CommandBroadcast instance = new CommandBroadcast();
 
@@ -37,13 +37,12 @@ public class CommandKit implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kit"), player);
             if (CanSend) {
-                if (args[1].equalsIgnoreCase("spawn") && args.length == 3) {
-                    if (Kits.canGetKit(PermissionsHandler.permLevel(player), args[2])) {
-                        for (ItemStack stack : Kits.getItems(args[2])) {
-                            player.inventory.addItemStackToInventory(stack);
-                        }
+                if (args[1].equalsIgnoreCase("spawn") && args.length == 3 && Kits.Kits.keySet().contains(args[2])) {
+                    List<ItemStack> items = Kits.getItems(args[2]);
+                    if (Kits.canGetKit(PermissionsHandler.permLevel(player), args[2]) && items != null) {
+                        items.forEach(player.inventory::addItemStackToInventory);
                         player.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commands.kit.spawn.success", args[2])));
-                    } else throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.spawn.failure", args[2]));
+                    } else { throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.spawn.failure", args[2]));}
                 }
             }
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

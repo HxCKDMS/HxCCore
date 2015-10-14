@@ -56,7 +56,7 @@ commands.exception.noHomes=You do not have any homes.
 commands.exception.permission=You may not excecute this command.
 death.attack.command_kill=%1$s has received divine punishment!
 
-commands.kit.spawn.failure=You do not have permission to use kit %1$s.
+commands.kit.spawn.failure=You do not have permission to use kit %1$s, or it doesn't exist.
 commands.kit.spawn.success=You have were given kit %1$s.
 commands.kit.add.failure=You have not met the requirements to create a kit!
 commands.kit.add.success=You have successfully created kit %1$s.

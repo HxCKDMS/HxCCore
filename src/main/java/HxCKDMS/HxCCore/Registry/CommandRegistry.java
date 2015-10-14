@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Registry;
 
-import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
@@ -9,6 +8,9 @@ import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 
 import java.util.Set;
+
+import static HxCKDMS.HxCCore.Configs.CommandsConfig.CommandPermissions;
+import static HxCKDMS.HxCCore.Configs.CommandsConfig.EnabledCommands;
 
 @SuppressWarnings("unchecked")
 public class CommandRegistry {
@@ -23,10 +25,11 @@ public class CommandRegistry {
                     Class<? extends AbstractCommandMain> mainClazz = clazz.getAnnotation(HxCCommand.class).mainCommand();
                     if (mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
-                        CommandsConfig.CommandPermissions.putIfAbsent(instance.getCommandName(), permissionLevel);
-                        CommandsConfig.EnabledCommands.putIfAbsent(instance.getCommandName(), isEnabled);
-
-                        if (CommandsConfig.EnabledCommands.get(instance.getCommandName()))
+                        if (!(CommandPermissions.keySet().contains(instance.getCommandName()) && EnabledCommands.keySet().contains(instance.getCommandName()))) {
+                            CommandPermissions.putIfAbsent(instance.getCommandName(), permissionLevel);
+                            EnabledCommands.putIfAbsent(instance.getCommandName(), isEnabled);
+                        }
+                        if (EnabledCommands.get(instance.getCommandName()))
                             commandMain.registerSubCommand(instance);
                     }
                 } catch (Exception e) {
