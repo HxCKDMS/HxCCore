@@ -20,12 +20,13 @@ public class Kits {
 
     static {
         //http://puu.sh/kLnuM.jpg
+        //These are mainly for testing and showing all the features that can be done...
 //        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=BOB Cutter~unbreakable~enchantments=21:5:20:1~lore=Bob cutter hurts bob...=Therefore bob is sad.~attributes=generic.attackDamage:Damage:mainhand:0:50.0); <minecraft:stone_pickaxe> = 1; <minecraft:stone_axe> = 1; <minecraft:stone_shovel> = 1; <minecraft:cooked_porkchop> = 8}");
-        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!)}");
-        Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:16000:10:2:10000:3:3:16000:10:4:10000:3:9:120:1)}");
+        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!); <minecraft:leather_helmet> = 1 (name=Starter Helmet~unbreakable~color=0~lore=A Divine Gift from DrZed)~attributes=generic.maxHealth:HealthBoost:head:0:2.0); <minecraft:leather_chestplate> = 1 (name=Starter Chestplate~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:torso:0:3.0); <minecraft:leather_leggings> = 1 (name=Starter Leggings~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:legs:0:3.0); <minecraft:leather_boots> = 1 (name=Starter Shoes~color=0~unbreakable~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:feet:0:2.0)}");
+        Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:16000:15:2:10000:4:3:16000:15:5:10000:3:9:120:1)}");
 
         KitPerms.put("Starter", 1);
-        KitPerms.put("Drugs", 1);
+        KitPerms.put("Drugs", 4);
     }
 
     public static boolean canGetKit(int permLevel, String kit) {
@@ -35,6 +36,7 @@ public class Kits {
     public static List<ItemStack> getItems(String Kit) {
         String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length() - 1).split("; ");
         List<ItemStack> items = new ArrayList<>();
+        int color = -1;
         for (String tmp : vals) {
             NBTTagCompound tags = new NBTTagCompound();
             List<PotionEffect> pots = new ArrayList<>();
@@ -72,6 +74,9 @@ public class Kits {
                         case ("unbreakable"):
                             tags.setBoolean("Unbreakable", true);
                             break;//lol...
+                        case ("color"):
+                            color = Integer.parseInt(args[1]);
+                            break;
                         case ("lore"):
                             lore = Arrays.asList(args);
                             break;
@@ -133,6 +138,9 @@ public class Kits {
                     NBTTagList attributes = tmp3.getTagCompound().getTagList("AttributeModifiers", 10);
                     attribs.forEach(attributes::appendTag);
                     tags.setTag("AttributeModifiers", attributes);
+                }
+                if (color > -1) {
+                    display.setInteger("color", color);
                 }
                 tags.setTag("ench", enchs);
                 tags.setTag("display", display);
