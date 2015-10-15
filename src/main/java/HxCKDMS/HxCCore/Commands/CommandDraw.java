@@ -149,9 +149,9 @@ public class CommandDraw implements ISubCommand {
 
 
     public void drawSphere(EntityPlayerMP player, String[] args) {
-        int x = (int) (args[1].isEmpty() ? CommandsHandler.clamp_coord(player, player.posX, "~") : CommandsHandler.clamp_coord(player, player.posX, args[1]));
-        int y = (int) (args[2].isEmpty() ? CommandsHandler.clamp_double(player, player.posY, "~", 0, 0) : CommandsHandler.clamp_double(player, player.posY, args[2], 0, 0));
-        int z = (int) (args[3].isEmpty() ? CommandsHandler.clamp_coord(player, player.posZ, "~") : CommandsHandler.clamp_coord(player, player.posZ, args[3]));
+        int x = (int)CommandsHandler.clamp_coord(player, player.posX, args[1]);
+        int y = (int)CommandsHandler.clamp_double(player, player.posY, args[2], 0, 0);
+        int z = (int)CommandsHandler.clamp_coord(player, player.posZ, args[3]);
         int radius = args[4].isEmpty() ? 8 : Integer.parseInt(args[4]);
         String unlocalizedName = args[5].isEmpty() ? "minecraft:stone" : args[5];
         boolean hollow = !args[6].isEmpty() && Boolean.parseBoolean(args[6]);
