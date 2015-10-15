@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.PotionEffect;
 
 import java.util.*;
 
@@ -18,20 +19,26 @@ public class Kits {
     public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
 
     static {
-        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=BOB Cutter~unbreakable~enchantments=21:5:20:1~lore=Bob cutter hurts bob...=Therefore bob is sad.); <minecraft:stone_pickaxe> = 1; <minecraft:stone_axe> = 1; <minecraft:stone_shovel> = 1; <minecraft:coocked_porkchop> = 8}");
+        //http://puu.sh/kLnuM.jpg
+//        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=BOB Cutter~unbreakable~enchantments=21:5:20:1~lore=Bob cutter hurts bob...=Therefore bob is sad.~attributes=generic.attackDamage:Damage:mainhand:0:50.0); <minecraft:stone_pickaxe> = 1; <minecraft:stone_axe> = 1; <minecraft:stone_shovel> = 1; <minecraft:cooked_porkchop> = 8}");
+        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!)}");
+        Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:16000:10:2:10000:3:3:16000:10:4:10000:3:9:120:1)}");
 
         KitPerms.put("Starter", 1);
+        KitPerms.put("Drugs", 1);
     }
 
     public static boolean canGetKit(int permLevel, String kit) {
-        return KitPerms.get(kit) <= permLevel;
+        return !KitPerms.containsKey(kit) || KitPerms.get(kit) <= permLevel;
     }
 
     public static List<ItemStack> getItems(String Kit) {
         String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length() - 1).split("; ");
         List<ItemStack> items = new ArrayList<>();
         for (String tmp : vals) {
-            NBTTagCompound tags = new NBTTagCompound(), tmpo = new NBTTagCompound();
+            NBTTagCompound tags = new NBTTagCompound();
+            List<PotionEffect> pots = new ArrayList<>();
+            List<NBTTagCompound> attribs = new ArrayList<>();
             int num;
             String specialData = "";
             if (!tmp.contains("(")) {
@@ -68,6 +75,11 @@ public class Kits {
                         case ("lore"):
                             lore = Arrays.asList(args);
                             break;
+                        case ("effects"):
+                            List<String> effects = Arrays.asList(args[1].split(":"));
+                            for (int i = 0; i < effects.size(); i+=3)
+                                pots.add(new PotionEffect(Integer.parseInt(effects.get(i)), Integer.parseInt(effects.get(i+1)), Integer.parseInt(effects.get(i+2))));
+                            break;
                         case ("enchantments"):
                             List<String> enchs = Arrays.asList(args[1].split(":"));
                             int id = 0;
@@ -76,6 +88,20 @@ public class Kits {
                                     tmp3.addEnchantment(Enchantment.enchantmentsList[id], Integer.parseInt(str));
                                     id = 0;
                                 } else id = Integer.parseInt(str);
+                            }
+                            break;
+                        case ("attributes"):
+                            List<String> attrs = Arrays.asList(args[1].split(":"));
+                            for (int i = 0; i < attrs.size(); i+=5) {
+                                NBTTagCompound attr = new NBTTagCompound();
+                                attr.setString("AttributeName", attrs.get(i));
+                                attr.setString("Name", attrs.get(i + 1));
+                                attr.setString("Slot", attrs.get(i + 2));
+                                attr.setInteger("Operation", Integer.valueOf(attrs.get(i + 3)));
+                                attr.setDouble("Amount", Double.valueOf(attrs.get(i + 4)));
+                                attr.setLong("UUIDMost", UUID.randomUUID().getMostSignificantBits());
+                                attr.setLong("UUIDLeast", UUID.randomUUID().getLeastSignificantBits());
+                                attribs.add(attr);
                             }
                             break;
                     }
@@ -90,6 +116,24 @@ public class Kits {
                     });
                     display.setTag("Lore", lore2);
                 }
+                if (!pots.isEmpty()) {
+                    NBTTagList potions = tmp3.getTagCompound().getTagList("CustomPotionEffects", 10);
+                    pots.forEach(z -> {
+                        NBTTagCompound tg = new NBTTagCompound();
+                        tg.setByte("Id", (byte) z.getPotionID());
+                        tg.setByte("Amplifier", (byte) z.getAmplifier());
+                        tg.setInteger("Duration", z.getDuration());
+                        tg.setByte("Ambient", (byte) 0);
+                        tg.setByte("ShowParticles", (byte) 0);//yes IK 1.8 only but doesn't hurt to have it
+                        potions.appendTag(tg);
+                    });
+                    tags.setTag("CustomPotionEffects", potions);
+                }
+                if (!attribs.isEmpty()) {
+                    NBTTagList attributes = tmp3.getTagCompound().getTagList("AttributeModifiers", 10);
+                    attribs.forEach(attributes::appendTag);
+                    tags.setTag("AttributeModifiers", attributes);
+                }
                 tags.setTag("ench", enchs);
                 tags.setTag("display", display);
                 tmp3.setTagCompound(tags);
@@ -99,3 +143,13 @@ public class Kits {
         return items;
     }
 }
+
+//AttributeModifiers: Contains Attribute Modifiers on this item which modify Attributes of the wearer or holder (if the item is not in the hand or armor slots, it will have no effect).
+//        : ATTR
+//        AttributeName: The name of the Attribute this Modifier is to act upon.
+//        Name: Name of the Modifier
+//        Slot: Slot the item must be in for the modifier to take effect. "mainhand", "offhand", "feet", "legs", "torso", or "head".
+//        Operation: Modifier Operation. See Attribute Modifiers for info.
+//        Amount: Amount of change from the modifier.
+//        UUIDMost: Uppermost bits of the modifier's UUID.
+//        UUIDLeast: Lowermost bits of the modifier's UUID.
