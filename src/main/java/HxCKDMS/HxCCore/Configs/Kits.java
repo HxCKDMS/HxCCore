@@ -13,6 +13,7 @@ import java.util.*;
 public class Kits {
     @Config.Map
     public static LinkedHashMap<String, String> Kits = new LinkedHashMap<>();
+
     @Config.Map
     public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
 
