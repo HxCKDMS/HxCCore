@@ -30,7 +30,7 @@ public class CommandMakeItRain implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Mir"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Mir")), player);
             int speed = 2;
             boolean isKitty = false;
             if (args.length >= 2) { speed = Integer.parseInt(args[1]);}

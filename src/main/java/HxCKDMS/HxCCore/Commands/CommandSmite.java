@@ -35,7 +35,7 @@ public class CommandSmite implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Smite"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Smite")), player);
             if (CanSend) {
                 if (args.length == 2) {
                     EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);

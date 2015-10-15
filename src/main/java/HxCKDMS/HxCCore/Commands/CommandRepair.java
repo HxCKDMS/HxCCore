@@ -32,7 +32,7 @@ public class CommandRepair implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Repair"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Repair")), player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
                 HeldItem.setMetadata(0);

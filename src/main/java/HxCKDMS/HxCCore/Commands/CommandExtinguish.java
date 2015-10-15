@@ -35,7 +35,7 @@ public class CommandExtinguish implements ISubCommand {
             case 1:
                 if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Extinguish"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Extinguish")), player);
                     if (CanSend) {
                         player.extinguish();
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));

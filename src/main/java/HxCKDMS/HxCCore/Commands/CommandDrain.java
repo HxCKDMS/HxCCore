@@ -34,7 +34,7 @@ public class CommandDrain implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Drain"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Drain")), player);
             int range = 10; Block block = Blocks.water;
             if (args.length >= 2) { range = Integer.parseInt(args[1]);}
             if (args.length == 3 && FluidRegistry.getRegisteredFluids().keySet().contains(args[2]))

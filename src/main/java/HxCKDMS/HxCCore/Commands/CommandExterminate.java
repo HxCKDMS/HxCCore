@@ -41,7 +41,7 @@ public class CommandExterminate implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Exterminate")), player);
             if (CanSend) {
                 int tmp = 0;
                 List<Entity> ents = player.worldObj.getLoadedEntityList();

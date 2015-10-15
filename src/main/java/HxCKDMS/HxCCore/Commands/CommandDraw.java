@@ -35,7 +35,7 @@ public class CommandDraw implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Draw"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Draw")), player);
             String[] args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]};
             if (CanSend) {
                 switch (args[1].toLowerCase()) {

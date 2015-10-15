@@ -79,13 +79,13 @@ public class EventChat implements EventListener {
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
-                if (CommandsConfig.BannedCommands.get(c) == 0 && c.contains(cmd)) {
+                if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 0 && c.contains(cmd)) {
                     event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
                     event.setCanceled(true);
-                } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
+                } else if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 1 && cmd.startsWith(c)) {
                     event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
                     event.setCanceled(true);
-                } else if (CommandsConfig.BannedCommands.get(c) == 2) {
+                } else if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 2) {
                     String[] tmp0 = c.split("##"), tmp2 = tmp0[1].split(" ");
                     int tmp1 = tmp0[0].length() - 1, tmp3 = tmp2[0].length() - 1;
                     if (Integer.getInteger(cmd.substring(tmp1, tmp3)) != null) {

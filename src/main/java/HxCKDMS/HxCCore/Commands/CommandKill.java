@@ -38,7 +38,7 @@ public class CommandKill implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kill"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Kill")), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill").setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
                     else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
                 } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

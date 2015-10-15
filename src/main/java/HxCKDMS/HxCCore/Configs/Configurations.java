@@ -69,9 +69,9 @@ public class Configurations {
             Permissions.put("Admin", "6 16");
             Permissions.put("Owner", "4 -1");
         }
-//        if (CommandsConfig.BannedCommands.isEmpty()) {
-//            CommandsConfig.BannedCommands.put("example command", 0);
-//        }
+        if (CommandsConfig.BannedCommands.isEmpty()) {
+            CommandsConfig.BannedCommands.put("example command", "0");
+        }
     }
 
     public static void preInitConfigs() {
@@ -90,6 +90,6 @@ public class Configurations {
 
         updateCFGS();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
-//        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
+        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
     }
 }

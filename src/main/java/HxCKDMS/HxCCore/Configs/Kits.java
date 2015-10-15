@@ -16,21 +16,21 @@ public class Kits {
     public static LinkedHashMap<String, String> Kits = new LinkedHashMap<>();
 
     @Config.Map
-    public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
+    public static LinkedHashMap<String, String> KitPerms = new LinkedHashMap<>();
 
     static {
         //http://puu.sh/kLnuM.jpg
         //These are mainly for testing and showing all the features that can be done...
 //        Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=BOB Cutter~unbreakable~enchantments=21:5:20:1~lore=Bob cutter hurts bob...=Therefore bob is sad.~attributes=generic.attackDamage:Damage:mainhand:0:50.0); <minecraft:stone_pickaxe> = 1; <minecraft:stone_axe> = 1; <minecraft:stone_shovel> = 1; <minecraft:cooked_porkchop> = 8}");
         Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!); <minecraft:leather_helmet> = 1 (name=Starter Helmet~unbreakable~color=0~lore=A Divine Gift from DrZed)~attributes=generic.maxHealth:HealthBoost:head:0:2.0); <minecraft:leather_chestplate> = 1 (name=Starter Chestplate~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:torso:0:3.0); <minecraft:leather_leggings> = 1 (name=Starter Leggings~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:legs:0:3.0); <minecraft:leather_boots> = 1 (name=Starter Shoes~color=0~unbreakable~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:feet:0:2.0)}");
-        Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:16000:15:2:10000:4:3:16000:15:5:10000:3:9:120:1)}");
+        Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:10000:15:2:16000:4:3:10000:15:4:16000:3:9:120:1)}");
 
-        KitPerms.put("Starter", 1);
-        KitPerms.put("Drugs", 4);
+        KitPerms.put("Starter", "1");
+        KitPerms.put("Drugs", "4");
     }
 
     public static boolean canGetKit(int permLevel, String kit) {
-        return !KitPerms.containsKey(kit) || KitPerms.get(kit) <= permLevel;
+        return Integer.parseInt(KitPerms.get(kit)) <= permLevel;
     }
 
     public static List<ItemStack> getItems(String Kit) {
@@ -141,6 +141,7 @@ public class Kits {
                 }
                 if (color > -1) {
                     display.setInteger("color", color);
+                    color = -1;
                 }
                 tags.setTag("ench", enchs);
                 tags.setTag("display", display);

@@ -39,7 +39,7 @@ public class CommandGod implements ISubCommand {
             case 1:
                 if (sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("God"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("God")), player);
                     if (CanSend) {
                         String UUID = player.getUniqueID().toString();
                         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
