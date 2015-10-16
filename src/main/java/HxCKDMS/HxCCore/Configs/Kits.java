@@ -18,10 +18,10 @@ public class Kits {
     public static LinkedHashMap<String, String> Kits = new LinkedHashMap<>();
 
     @Config.Map
-    public static LinkedHashMap<String, String> KitPerms = new LinkedHashMap<>();
+    public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
 
     public static boolean canGetKit(int permLevel, String kit) {
-        return Integer.parseInt(KitPerms.get(kit)) <= permLevel;
+        return KitPerms.get(kit) <= permLevel;
     }
 
     public static List<ItemStack> getItems(String Kit) {
@@ -163,7 +163,7 @@ public class Kits {
         String str = setItems(stacks);
         str = str.substring(0, str.length()-1).replace("(~", "(").replaceAll(":0>", ">").replaceAll(";<", "; <");
         Kits.put(name, "{" + str + "}");
-        KitPerms.put(name, String.valueOf(permLevel));
+        KitPerms.put(name, permLevel);
         HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
     }
 
@@ -174,7 +174,7 @@ public class Kits {
     }
 
     public static void chngKitPerms(String name, int lvl) {
-        KitPerms.replace(name, String.valueOf(lvl));
+        KitPerms.replace(name, lvl);
         HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
     }
 

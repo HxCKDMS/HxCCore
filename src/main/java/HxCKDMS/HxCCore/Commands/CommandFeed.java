@@ -37,7 +37,7 @@ public class CommandFeed implements ISubCommand {
             case 1:
                 if (sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Feed")), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Feed"), player);
                     if (CanSend) {
                         player.getFoodStats().addStats(20, 20F);
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));

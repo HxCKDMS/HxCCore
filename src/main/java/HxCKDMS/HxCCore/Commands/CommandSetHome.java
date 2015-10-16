@@ -39,7 +39,7 @@ public class CommandSetHome implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("SetHome")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetHome"), player);
             int pl = PermissionsHandler.permLevel(player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();

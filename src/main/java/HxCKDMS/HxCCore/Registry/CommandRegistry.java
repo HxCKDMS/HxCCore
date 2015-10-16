@@ -26,10 +26,10 @@ public class CommandRegistry {
                     if (mainClazz == commandMain.getClass()) {
                         ISubCommand instance = clazz.newInstance();
                         if (!(CommandPermissions.keySet().contains(instance.getCommandName()) && EnabledCommands.keySet().contains(instance.getCommandName()))) {
-                            CommandPermissions.putIfAbsent(instance.getCommandName(), String.valueOf(permissionLevel));
-                            EnabledCommands.putIfAbsent(instance.getCommandName(), String.valueOf(isEnabled));
+                            CommandPermissions.putIfAbsent(instance.getCommandName(), permissionLevel);
+                            EnabledCommands.putIfAbsent(instance.getCommandName(), isEnabled);
                         }
-                        if (Boolean.parseBoolean(EnabledCommands.get(instance.getCommandName())))
+                        if (EnabledCommands.get(instance.getCommandName()))
                             commandMain.registerSubCommand(instance);
                     }
                 } catch (Exception e) {

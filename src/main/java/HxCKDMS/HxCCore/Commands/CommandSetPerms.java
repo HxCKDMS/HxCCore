@@ -40,7 +40,7 @@ public class CommandSetPerms implements ISubCommand {
             EntityPlayer player = (EntityPlayer) sender;
             File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
             NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-            boolean CanUse = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("SetPerms")), player);
+            boolean CanUse = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetPerms"), player);
             if (CanUse) {
                 if (args.length == 3) {
                     String playerName = args[1];

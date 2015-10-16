@@ -32,7 +32,7 @@ public class CommandJump implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Jump")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Jump"), player);
             if (CanSend) {
                 //TODO
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));

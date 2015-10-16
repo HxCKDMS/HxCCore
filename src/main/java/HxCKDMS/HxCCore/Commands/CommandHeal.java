@@ -37,7 +37,7 @@ public class CommandHeal implements ISubCommand {
             case 1:
                 if(sender instanceof EntityPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Heal")), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Heal"), player);
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));

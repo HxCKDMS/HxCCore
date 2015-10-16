@@ -35,7 +35,7 @@ public class CommandBroadcast implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if(isPlayer){
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Broadcast")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Broadcast"), player);
             String tmp = "";
             for (int i = 1; i < args.length; i++)
                 tmp = tmp + " " + args[i];

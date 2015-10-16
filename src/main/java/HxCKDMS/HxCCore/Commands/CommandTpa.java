@@ -40,7 +40,7 @@ public class CommandTpa implements ISubCommand {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             EntityPlayerMP PlayerThatTPs = null;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("TPA")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("TPA"), player);
             if (CanSend) {
                 for (HashMap.Entry<EntityPlayerMP, EntityPlayerMP> entry : HxCCore.tpaRequestList.entrySet()) {
                     if(entry.getValue() == player) PlayerThatTPs = entry.getKey();

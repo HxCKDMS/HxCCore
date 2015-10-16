@@ -37,7 +37,7 @@ public class CommandSpawn implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Spawn")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Spawn"), player);
             if (CanSend) {
                 EntityPlayerMP target = args.length == 2 ? CommandsHandler.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;

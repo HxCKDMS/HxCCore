@@ -47,7 +47,7 @@ public class CommandAFK implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("AFK")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("AFK"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");

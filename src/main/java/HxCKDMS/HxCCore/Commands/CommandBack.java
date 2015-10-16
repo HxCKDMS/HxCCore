@@ -35,7 +35,7 @@ public class CommandBack implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Integer.valueOf(CommandsConfig.CommandPermissions.get("Back")), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Back"), player);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "back");

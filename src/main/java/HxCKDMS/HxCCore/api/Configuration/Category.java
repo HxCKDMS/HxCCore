@@ -166,8 +166,8 @@ public class Category {
         Class<V> valueType1 = (Class<V>) getTypeFromLetter(valueType);
 
         Map<K, V> map = (Map<K, V>) clazz.getField(variableName).get(clazz);
-
-        values.entrySet().forEach(entry -> map.put(keyType1.cast(entry.getKey()), valueType1.cast(entry.getValue())));
+        final char a = keyType.charAt(0), b = valueType.charAt(0);
+        values.entrySet().forEach(entry -> map.put(keyType1.cast(getVal(a, entry.getKey())), valueType1.cast(getVal(b, entry.getValue()))));
         clazz.getField(variableName).set(clazz, map);
     }
 
@@ -282,6 +282,19 @@ public class Category {
             case "F": return Float.class;
             case "D": return Double.class;
             case "C": return Character.class;
+            default: return Object.class;
+        }
+    }
+
+    private Object getVal(char type, String val) {
+        switch (type) {
+            case 'S': return String.valueOf(val);
+            case 'I': return Integer.parseInt(val);
+            case 'B': return Boolean.parseBoolean(val);
+            case 'L': return Long.parseLong(val);
+            case 'F': return Float.parseFloat(val);
+            case 'D': return Double.parseDouble(val);
+            case 'C': return val.charAt(0);
             default: return Object.class;
         }
     }

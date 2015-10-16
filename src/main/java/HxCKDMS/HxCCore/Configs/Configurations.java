@@ -70,7 +70,7 @@ public class Configurations {
             Permissions.put("Owner", "4 -1");
         }
         if (CommandsConfig.BannedCommands.isEmpty()) {
-            CommandsConfig.BannedCommands.put("example command", "0");
+            CommandsConfig.BannedCommands.put("example command", 0);
         }
 
         if (Kits.Kits.isEmpty() && Kits.KitPerms.isEmpty()) {
@@ -80,8 +80,8 @@ public class Configurations {
             Kits.Kits.put("Starter", "{<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!); <minecraft:leather_helmet> = 1 (name=Starter Helmet~unbreakable~color=0~lore=A Divine Gift from DrZed)~attributes=generic.maxHealth:HealthBoost:head:0:2.0); <minecraft:leather_chestplate> = 1 (name=Starter Chestplate~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:torso:0:3.0); <minecraft:leather_leggings> = 1 (name=Starter Leggings~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:legs:0:3.0); <minecraft:leather_boots> = 1 (name=Starter Shoes~color=0~unbreakable~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:feet:0:2.0)}");
             Kits.Kits.put("Drugs", "{<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:10000:15:2:16000:4:3:10000:15:4:16000:3:9:120:1)}");
 
-            Kits.KitPerms.put("Starter", "1");
-            Kits.KitPerms.put("Drugs", "4");
+            Kits.KitPerms.put("Starter", 1);
+            Kits.KitPerms.put("Drugs", 4);
         }
     }
 
