@@ -7,11 +7,13 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 
@@ -79,18 +81,18 @@ public class EventChat implements EventListener {
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
-                if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 0 && c.contains(cmd)) {
-                    event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
+                if (CommandsConfig.BannedCommands.get(c) == 0 && c.contains(cmd)) {
                     event.setCanceled(true);
-                } else if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 1 && cmd.startsWith(c)) {
-                    event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
+                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
                     event.setCanceled(true);
-                } else if (Integer.valueOf(CommandsConfig.BannedCommands.get(c)) == 2) {
+                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                } else if (CommandsConfig.BannedCommands.get(c) == 2) {
                     String[] tmp0 = c.split("##"), tmp2 = tmp0[1].split(" ");
                     int tmp1 = tmp0[0].length() - 1, tmp3 = tmp2[0].length() - 1;
                     if (Integer.getInteger(cmd.substring(tmp1, tmp3)) != null) {
-                        event.sender.addChatMessage(new ChatComponentText("\u00a7This command was banned by HxCCore command configs!"));
                         event.setCanceled(true);
+                        throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
                     }
                 }//SPECIAL CIRCUMSTANCE TESTING MAY NOT GO ANY FURTHER
             });
