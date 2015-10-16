@@ -58,9 +58,12 @@ death.attack.command_kill=%1$s has received divine punishment!
 
 commands.kit.spawn.failure=You do not have permission to use kit %1$s, or it doesn't exist.
 commands.kit.spawn.success=You have were given kit %1$s.
-commands.kit.add.failure=You have not met the requirements to create a kit!
-commands.kit.add.success=You have successfully created kit %1$s.
+commands.kit.create.failure=You have not met the requirements to create a kit!
+commands.kit.create.success=You have successfully created kit %1$s.
+commands.kit.remove.failure=A kit by the name of %1$s doesn't exist.
+commands.kit.remove.success=You have successfully removed kit %1$s.
 commands.kit.edit.failure=You have failed to edit kit %1$s.
 commands.kit.edit.success=Successfully edited kit %1$s.
 commands.kit.give.failure=Failed to deliver kit %1$s to %2$s.
 commands.kit.give.success=You have successfully given kit %1$s to %2$s.
+commands.kit.recieve.success=You were successfully given kit %1$s.
