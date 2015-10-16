@@ -75,6 +75,7 @@ public class EventChat implements EventListener {
             event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%")));
     }
 
+
     @SubscribeEvent
     public void commandEvent(CommandEvent event) {
         if (event.sender instanceof EntityPlayerMP) {
