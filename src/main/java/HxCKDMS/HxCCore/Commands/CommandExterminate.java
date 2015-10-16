@@ -1,9 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -11,6 +14,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
@@ -20,19 +24,25 @@ import scala.actors.threadpool.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandExterminate implements ISubCommand {
     public static CommandExterminate instance = new CommandExterminate();
-
+    //TODO: Add safety check for owned and named entities....
     @Override
     public String getCommandName() {
-        return "exterminate";
+        return "Exterminate";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if (sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{1, 1, 1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Broadcast"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
             if (CanSend) {
                 int tmp = 0;
                 List<Entity> ents = player.worldObj.getLoadedEntityList();
@@ -50,26 +60,37 @@ public class CommandExterminate implements ISubCommand {
                             ent.setDead();
                             tmp += 1;
                         }
-                        else if (args[1].contains("passive") && ent instanceof EntityAnimal) {
+                        else if (args[1].contains("passive") && ent instanceof EntityAnimal && !(ent instanceof EntityTameable)) {
+                            ent.setDead();
+                            tmp += 1;
+                        }
+                        else if (args[1].contains("tame") && ent instanceof EntityTameable) {
+                            ent.setDead();
+                            tmp += 1;
+                        }
+                        else if (args[1].contains("protected") && ent.getEntityData().getString("name").equals("protected")) {
+                            ent.setDead();
+                            tmp += 1;
+                        }
+                        else if (ent.getCommandSenderName().toLowerCase().contains(args[1].toLowerCase()) && !(ent instanceof EntityTameable)) {
                             ent.setDead();
                             tmp += 1;
                         }
                     }
                 }
                 else
-                for (Entity ent : ents) {
-                    if (!(ent instanceof EntityPlayer)) {
-                        ent.setDead();
-                        tmp += 1;
-                    }
-                }
+                    for (Entity ent : ents)
+                        if (!(ent instanceof EntityPlayer) && !(ent instanceof EntityTameable)) {
+                            ent.setDead();
+                            tmp += 1;
+                        }
                 player.addChatMessage(new ChatComponentText("You have exterminated " + tmp + " entities!"));
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        return Arrays.asList(new String[]{"hostiles", "items", "passives", "exp"});
+        return Arrays.asList(new String[]{"hostiles", "items", "passives", "exp", "tamed"});
     }
 }

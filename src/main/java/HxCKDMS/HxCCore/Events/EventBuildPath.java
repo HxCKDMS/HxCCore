@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,7 +17,7 @@ public class EventBuildPath {
             EntityPlayerMP player = (EntityPlayerMP)event.entityLiving;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            int range = 15;
+            int range = 2;
             if (NBTFileIO.getBoolean(CustomPlayerData, "Pathing") && !player.worldObj.isRemote) {
                 String block = NBTFileIO.getString(CustomPlayerData, "PathMat");
                 for (int x = (int)Math.round(player.posX-range); x < (int)Math.round(player.posX +range); x++)

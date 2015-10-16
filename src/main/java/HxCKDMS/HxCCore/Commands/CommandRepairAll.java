@@ -1,8 +1,10 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -15,30 +17,35 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public class CommandRepairAll implements ISubCommand
-{
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
+public class CommandRepairAll implements ISubCommand {
     public static CommandRepairAll instance = new CommandRepairAll();
 
     EntityPlayer target;
     @Override
     public String getCommandName()
     {
-        return "repairAll";
+        return "RepairAll";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        if(sender instanceof EntityPlayerMP) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, 1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("RepairAll"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("RepairAll"), player);
             if (CanSend) {
-                if (args.length == 2) target = CommandBase.getPlayer(sender, args[1]); else target = player;
+                if (args.length == 2) target = CommandsHandler.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);
                 sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayName() + "'s items have been repaired."));
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             if (args.length == 2) repairItems(target);
-            else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+             else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }
 

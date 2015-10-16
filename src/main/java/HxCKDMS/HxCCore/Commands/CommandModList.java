@@ -1,24 +1,35 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.api.ISubCommand;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 import java.util.List;
 
+@SuppressWarnings({"unchecked", "unused"})
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandModList implements ISubCommand {
     public static CommandModList instance = new CommandModList();
 
     @Override
     public String getCommandName() {
-        return "modList";
+        return "ModList";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 0, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         int listSize = Loader.instance().getModList().size();
         int modsPerPage = 7;
         int pages = (int)Math.ceil(listSize / (float)modsPerPage);
@@ -32,9 +43,7 @@ public class CommandModList implements ISubCommand {
                 break;
 
             ModContainer mod = Loader.instance().getModList().get(i);
-
             EnumChatFormatting color = isWholeNumber(i) ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA;
-
             sender.addChatMessage(new ChatComponentText(color + "MOD_NAME: " + mod.getName() + ", VERSION: " + mod.getVersion() + "."));
         }
     }

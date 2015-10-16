@@ -1,47 +1,55 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandBack implements ISubCommand {
     public static CommandBack instance = new CommandBack();
 
     @Override
     public String getCommandName() {
-        return "back";
+        return "Back";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Back"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Back"), player);
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "BackPos");
+            int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "back");
             if (CanSend && tmp != null && tmp.length == 4) {
-                int[] nb = new int[]{(int)Math.round(player.posX), (int)Math.round(player.posY), (int)Math.round(player.posZ), player.dimension};
-                if (tmp[4] != player.dimension) Teleporter.transferPlayerToDimension(player, tmp[4], new BlockPos(tmp[0], tmp[1], tmp[2]));
+                if (tmp[3] != player.dimension) Teleporter.transferPlayerToDimension(player, tmp[3], new BlockPos(tmp[0], tmp[1], tmp[2]));
                 else player.playerNetServerHandler.setPlayerLocation(tmp[0], tmp[1], tmp[2], player.cameraPitch, player.cameraYaw);
-                NBTFileIO.setIntArray(CustomPlayerData, "BackPos", nb);
-            }
-        } else  throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else player.addChatMessage(new ChatComponentText("You don't have a back stored or do not have permission to run this command."));
+        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         return null;
     }

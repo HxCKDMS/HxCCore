@@ -1,9 +1,11 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -18,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandClientInfo implements ISubCommand {
     private EnumChatFormatting defaultColor = EnumChatFormatting.BLUE;
 
@@ -25,20 +28,24 @@ public class CommandClientInfo implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "clientInfo";
+        return "ClientInfo";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws PlayerNotFoundException, WrongUsageException {
-        boolean CanUse = true;
-        if (sender instanceof EntityPlayerMP) CanUse = PermissionsHandler.canUseCommand(Configurations.commands.get("ClientInfo"), (EntityPlayerMP)sender);
-        if (CanUse) {
-            if (args.length <= 3) {
-                if (!(sender instanceof EntityPlayerMP && args.length <= 1)) {sender.addChatMessage(new ChatComponentText("You must specify a player!")); return;}
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
+            if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ClientInfo"), (EntityPlayerMP) sender)) {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
-            }
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else {
+            getClientInfo(sender, CommandBase.getPlayer(sender, args[1]));
+        }
     }
 
     private void getClientInfo(ICommandSender sender, EntityPlayerMP player) {

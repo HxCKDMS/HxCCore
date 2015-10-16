@@ -16,7 +16,8 @@ public class CodersCheck implements Runnable {
     public void run() {
         loadFile();
     }
-    public void loadFile(){
+
+    private void loadFile() {
         try {
             URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCLib.txt");
             InputStream inputStream = url.openStream();
@@ -30,21 +31,21 @@ public class CodersCheck implements Runnable {
         }
     }
 
-    public void loadAll(BufferedReader reader){
+    private void loadAll(BufferedReader reader) {
         if (reader != null) {
             try {
-            String inputLine;
-                while((inputLine = reader.readLine()) != null){
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null) {
                     if (inputLine.startsWith("Coder:")) {
-                        HxCCore.coders.add(UUID.fromString(inputLine.replace("Coder:","").trim()));
+                        HxCCore.coders.add(UUID.fromString(inputLine.replace("Coder:", "").trim()));
                     } else if (inputLine.startsWith("Helper:")) {
-                        HxCCore.supporters.add(UUID.fromString(inputLine.replace("Helper:","").trim()));
+                        HxCCore.supporters.add(UUID.fromString(inputLine.replace("Helper:", "").trim()));
                     } else if (inputLine.startsWith("Supporter:")) {
-                        HxCCore.helpers.add(UUID.fromString(inputLine.replace("Supporter:","").trim()));
+                        HxCCore.helpers.add(UUID.fromString(inputLine.replace("Supporter:", "").trim()));
                     } else if (inputLine.startsWith("Artist:")) {
-                        HxCCore.artists.add(UUID.fromString(inputLine.replace("Artist:","").trim()));
+                        HxCCore.artists.add(UUID.fromString(inputLine.replace("Artist:", "").trim()));
                     } else if (inputLine.startsWith("Mascot:")) {
-                        HxCCore.mascots.add(UUID.fromString(inputLine.replace("Mascot:","").trim()));
+                        HxCCore.mascots.add(UUID.fromString(inputLine.replace("Mascot:", "").trim()));
                     }
                 }
             } catch (Exception e) {

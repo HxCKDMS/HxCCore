@@ -1,28 +1,37 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
+@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = false)
 public class CommandMakeItRain implements ISubCommand {
     public static CommandMakeItRain instance = new CommandMakeItRain();
 
     @Override
     public String getCommandName() {
-        return "mir";
+        return "Mir";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
-        if(sender instanceof EntityPlayerMP){
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, -1, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+        if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("Mir"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Mir"), player);
             int speed = 2;
             boolean isKitty = false;
             if (args.length >= 2) { speed = Integer.parseInt(args[1]);}
@@ -36,8 +45,8 @@ public class CommandMakeItRain implements ISubCommand {
 //                kitty.setVelocity(x * speed, y * speed, z * speed);
 //                tnt.setVelocity(x * speed, y * speed, z * speed);
 //                player.worldObj.spawnEntityInWorld(isKitty ? kitty : tnt);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

@@ -79,6 +79,6 @@ class Setting<T> {
     }
 
     enum Type {
-        STRING, INTEGER, MAP, LIST, LONG, FLOAT, DOUBLE, BOOLEAN
+        STRING, INTEGER, MAP, LIST, LONG, FLOAT, DOUBLE, BOOLEAN, CHARACTER
     }
 }

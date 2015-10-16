@@ -1,11 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.ISubCommand;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
@@ -19,6 +22,7 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandServerInfo implements ISubCommand {
     public static CommandServerInfo instance = new CommandServerInfo();
 
@@ -27,13 +31,18 @@ public class CommandServerInfo implements ISubCommand {
 
     @Override
     public String getCommandName() {
-        return "serverInfo";
+        return "ServerInfo";
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args) throws WrongUsageException {
+    public int[] getCommandRequiredParams() {
+        return new int[]{0, 0, -1};
+    }
+
+    @Override
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         EntityPlayerMP player = (EntityPlayerMP) sender;
-        boolean CanSend = PermissionsHandler.canUseCommand(Configurations.commands.get("ServerInfo"), player);
+        boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ServerInfo"), player);
         if (CanSend) {
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
             sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));
@@ -41,7 +50,7 @@ public class CommandServerInfo implements ISubCommand {
 
             for (WorldServer worldServer : DimensionManager.getWorlds())
                 sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
     }
 
     @Override
@@ -92,7 +101,7 @@ public class CommandServerInfo implements ISubCommand {
 
     private String getWorldTPSStyled(WorldServer worldServer){
         double WorldTickTime = mean(HxCCore.server.worldTickTimes.get(worldServer.provider.getDimensionId())) * 1.0E-6D;
-        double WorldTPS = Math.min(1000.0/WorldTickTime, 20);
+        double WorldTPS = Math.min(1000.0 / WorldTickTime, 20);
 
         EnumChatFormatting TPSColor = WorldTPS >= 18 ? EnumChatFormatting.GREEN : WorldTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;
 

@@ -4,8 +4,8 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import com.google.gson.Gson;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.client.Minecraft;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -13,15 +13,15 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class CrashReportThread extends Thread {
+public class CrashReportThread implements Runnable {
     private Gson gson = new Gson();
 
     @Override
     public void run() {
-        if(CrashHandler.hasCrashed){
-            try{
+        if (CrashHandler.hasCrashed) {
+            try {
                 checkCrash(FMLCommonHandler.instance().getSide().isClient());
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {}
         }
     }
 
@@ -46,11 +46,11 @@ public class CrashReportThread extends Thread {
         boolean hasMod = false;
         while ((line = reader.readLine()) != null) {
             crash.add(line);
-            if(line.contains("at HxCKDMS")) hasMod = true;
+            if (line.contains("at HxCKDMS")) hasMod = true;
         }
         reader.close();
 
-        if(Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
+        if (Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
 
         Configurations.lastCheckedCrash = mostRecent.getName();
         HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
@@ -65,7 +65,7 @@ public class CrashReportThread extends Thread {
         String json = gson.toJson(new crashSendTemplate(crash));
 
         try {
-            sleep(100L);
+            Thread.sleep(100L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,28 +75,13 @@ public class CrashReportThread extends Thread {
         socket.close();
     }
 
-    class filter implements FileFilter {
-        @Override
-        public boolean accept(File file) {
-            return file.getName().startsWith("crash-");
-        }
-    }
-
-    class crashSendTemplate {
-        ArrayList<String> crash;
-
-        public crashSendTemplate(ArrayList<String> crash) {
-            this.crash = crash;
-        }
-    }
-
     private String getServerIP() throws IOException {
         URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCIssueIP.txt");
         InputStream inputStream = url.openStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         String ip = reader.readLine().split(":")[0];
-        if(ip.equals("")) return References.ERROR_REPORT_ADDRESS;
+        if (ip.equals("")) return References.ERROR_REPORT_ADDRESS;
         return ip;
     }
 
@@ -109,6 +94,21 @@ public class CrashReportThread extends Thread {
             return Integer.parseInt(reader.readLine().split(":")[1]);
         } catch (Exception ignored) {
             return References.ERROR_REPORT_PORT;
+        }
+    }
+
+    static class filter implements FileFilter {
+        @Override
+        public boolean accept(File file) {
+            return file.getName().startsWith("crash-");
+        }
+    }
+
+    static class crashSendTemplate {
+        ArrayList<String> crash;
+
+        public crashSendTemplate(ArrayList<String> crash) {
+            this.crash = crash;
         }
     }
 }

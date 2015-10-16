@@ -5,31 +5,38 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.EventListener;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public class EventTpRequest implements EventListener {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event){
-        if(event.phase == TickEvent.Phase.START){
-            for (EntityPlayerMP key : HxCCore.TpaTimeoutList.keySet()) {
-                if (HxCCore.TpaTimeoutList.get(key) > 0) {
-                    HxCCore.TpaTimeoutList.put(key, HxCCore.TpaTimeoutList.get(key) - 1);
+    public void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            for (Map.Entry<EntityPlayerMP, Integer> entry : HxCCore.TpaTimeoutList.entrySet()) {
+                if (entry.getValue() > 0) {
+                    entry.setValue(entry.getValue() - 1);
 
-                    if((HxCCore.TpaTimeoutList.get(key) % 20) == 0){
-                        int timeLeft = HxCCore.TpaTimeoutList.get(key) / 20;
-                        if(timeLeft <= 10){
-                            HxCCore.tpaRequestList.get(key).addChatComponentMessage(new ChatComponentText("Teleport request will expire within: " + timeLeft + "."));
-                        }
+                    if ((entry.getValue() % 20) == 0) {
+                        int timeLeft = entry.getValue() / 20;
+                        ChatComponentText willExpire = new ChatComponentText("The teleportation request will expire within: " + timeLeft + ".");
+                        willExpire.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
+                        ChatComponentText hasExpired = new ChatComponentText("The teleportation request has expired.");
+                        hasExpired.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED).setBold(true));
+
+                        if (timeLeft <= 10 && timeLeft != 0) HxCCore.tpaRequestList.get(entry.getKey()).addChatComponentMessage(willExpire);
+                        else if(timeLeft == 0) HxCCore.tpaRequestList.get(entry.getKey()).addChatComponentMessage(hasExpired);
                     }
                 }
 
-                if(HxCCore.TpaTimeoutList.get(key) <= 0){
-                    HxCCore.TpaTimeoutList.remove(key);
-                    HxCCore.tpaRequestList.remove(key);
+                if (entry.getValue() <= 0) {
+                    HxCCore.TpaTimeoutList.remove(entry.getKey());
+                    HxCCore.tpaRequestList.remove(entry.getKey());
                 }
             }
         }

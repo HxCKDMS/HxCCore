@@ -60,11 +60,11 @@ public class HxCTransformer implements IClassTransformer {
                     LabelNode newLabelNode = new LabelNode();
 
                     InsnList toInsert = new InsnList();
-                    toInsert.add(new VarInsnNode(ALOAD, 11));
+                    toInsert.add(new VarInsnNode(ALOAD, 13));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
 
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(RenderHooks.class), "getName", "(Ljava/lang/String;Lnet/minecraft/entity/Entity;)Ljava/lang/String;", false));
-                    toInsert.add(new VarInsnNode(ASTORE, 11));
+                    toInsert.add(new VarInsnNode(ASTORE, 13));
 
                     methodNode.instructions.insert(targetNode, toInsert);
                     methodNode.instructions.insert(targetNode, newLabelNode);

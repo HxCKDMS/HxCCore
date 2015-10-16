@@ -1,88 +1,68 @@
 package HxCKDMS.HxCCore.api.Utils;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class WorldHelper {
-    /**
-     * @param world {@link World} where the circle is going to be made.
-     * @param pos the position of the block.
-     * @param block the {@link Block} which makes up the circle.
-     * @param radius the radius of the circle.
-     * @param hollow true if the circle is hollow, false if it's filled.
-     * @param checkCounter the amount it adds each time it is calculated.
-     */
-    public static void drawCircle(World world, BlockPos pos, Block block, int radius, boolean hollow, double checkCounter){
-        drawCircle(world, pos, block, radius, hollow, checkCounter, 0);
+    private static double nthrt(double d, double n) {
+        if(n == 2) return Math.sqrt(d);
+        else if(n == 3) return Math.cbrt(d);
+        else return Math.pow(d, 1.0D / n);
     }
 
-    /**
-     * @param world {@link World} where the circle is going to be made.
-     * @param pos the position of the block.
-     * @param block the {@link Block} which makes up the circle.
-     * @param radius the radius of the circle.
-     * @param hollow true if the circle is hollow, false if it's filled.
-     * @param checkCounter the amount it adds each time it is calculated.
-     * @param blockMeta the MetaData that's assigned to the block.
-     */
-    public static void drawCircle(World world, BlockPos pos, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
-        for(float xr = -radius; xr <= radius; xr += checkCounter){
-            float zrSquared =  (float)square(radius) - (float)square(xr);
-            if(zrSquared < 0) continue;
-            int zl = Math.round((float) Math.sqrt(zrSquared));
+    public static void draw2DEllipsoid(World world, BlockState blockState, BlockPos blockPos, int radius, boolean hollow, double checkCounter, double n) {
+        Thread thread = new Thread(() -> {
+            for (float xr = -radius; xr <= radius; xr += checkCounter){
+                float zrPowered = (float)Math.pow(radius, n) - (float)Math.pow(xr, n);
+                if(zrPowered < 0) continue;
+                int zl = Math.round((float) nthrt(zrPowered, n));
 
-            world.setBlockState(pos.add(Math.round(xr), 0, zl), block.getStateFromMeta(blockMeta));
-            world.setBlockState(pos.add(Math.round(xr), 0, -zl), block.getStateFromMeta(blockMeta));
+                BlockPos pos = blockPos.add(Math.round(xr), 0, zl);
+                BlockPos pos2 = blockPos.add(Math.round(xr), 0, -zl);
 
-            if(!hollow)
-                for(int zf = pos.getY() - zl; zf <= pos.getY() + zl; zf++)
-                    world.setBlockState(pos.add(Math.round(xr), 0, zf), block.getStateFromMeta(blockMeta));
-        }
-    }
 
-    /**
-     * @param world {@link World} where the sphere is going to be made.
-     * @param pos the position of the block.
-     * @param block the {@link Block} which makes up the sphere.
-     * @param radius the radius of the sphere.
-     * @param hollow true if the sphere is hollow, false if it's filled.
-     * @param checkCounter the amount it adds each time it is calculated.
-     */
-    public static void drawSphere(World world, BlockPos pos, Block block, int radius, boolean hollow, double checkCounter){
-        drawSphere(world, pos, block, radius, hollow, checkCounter, 0);
-    }
-
-    //TODO: Math helper takes math problem and draws in world :D Based on graphing equations
-    //if possible
-    /**
-     * @param world {@link World} where the sphere is going to be made.
-     * @param pos the position of the block.
-     * @param block the {@link Block} which makes up the sphere.
-     * @param radius the radius of the sphere.
-     * @param hollow true if the sphere is hollow, false if it's filled.
-     * @param checkCounter the amount it adds each time it is calculated.
-     * @param blockMeta the MetaData that's assigned to the block.
-     */
-    public static void drawSphere(World world, BlockPos pos, Block block, int radius, boolean hollow, double checkCounter, int blockMeta){
-        for(float xr = -radius; xr <= radius; xr += checkCounter){
-            for(float zr = -radius; zr <= radius; zr += checkCounter) {
-                float yrSquared = (float) square(radius) - ((float) square(xr) + (float) square(zr));
-                if (yrSquared < 0) continue;
-                int yl = Math.round((float) Math.sqrt(yrSquared));
-
-                world.setBlockState(pos.add(Math.round(xr), yl, Math.round(zr)), block.getStateFromMeta(blockMeta));
-                world.setBlockState(pos.add(Math.round(xr), -yl, Math.round(zr)), block.getStateFromMeta(blockMeta));
+                checkAndPlaceBlock(world, blockState, pos);
+                checkAndPlaceBlock(world, blockState, pos2);
 
                 if(!hollow)
-                    for(int yf = -yl; yf <= +yl; yf++)
-                        world.setBlockState(pos.add(Math.round(xr), yf, Math.round(zr)), block.getStateFromMeta(blockMeta));
+                    for(int zf = pos.getZ() - zl; zf <= pos.getZ() + zl; zf++)
+                        checkAndPlaceBlock(world, blockState, new BlockPos(pos.getX(), pos.getY(), zf));
             }
-        }
+        });
+        thread.setName("2DEllipsoidCalculationThread");
+        thread.setDaemon(true);
+        thread.start();
     }
 
-    private static double square(double d){
-        return d * d;
+    public static void draw3DEllipsoid(World world, BlockState blockState, BlockPos blockPos, int radius, boolean hollow, double checkCounter, double n) {
+        Thread thread = new Thread(() -> {
+            for(float xr = -radius; xr <= radius; xr += checkCounter){
+                for(float zr = -radius; zr <= radius; zr += checkCounter){
+                    float yrPowered = (float) Math.pow(radius, n) - ((float) Math.pow(xr, n) + (float) Math.pow(zr, n));
+                    if (yrPowered < 0) continue;
+                    int yl = Math.round((float) nthrt(yrPowered, n));
+
+                    BlockPos pos = blockPos.add(Math.round(xr), yl, Math.round(zr));
+                    BlockPos pos2 = blockPos.add(Math.round(xr), -yl, Math.round(zr));
+
+                    checkAndPlaceBlock(world, blockState, pos);
+                    checkAndPlaceBlock(world, blockState, pos2);
+
+                    if(!hollow)
+                        for (int yf = blockPos.getY() - yl; yf <= blockPos.getY() + yl; yf++)
+                            checkAndPlaceBlock(world,  blockState, new BlockPos(pos.getX(), yf, pos.getZ()));
+                }
+            }
+        });
+
+        thread.setName("3DEllipsoidCalculationThread");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private synchronized static void checkAndPlaceBlock(World world, BlockState state, BlockPos pos) {
+        if(world.getBlockState(pos) != state && pos.getY() >= 0) world.setBlockState(pos, state.getBaseState());
     }
 }
