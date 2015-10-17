@@ -171,7 +171,7 @@ public class HxCCore {
         enchantsOffset = Enchantment.enchantmentsList.length;
         Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
-        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
+        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_180311_a");
         LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
     }
 

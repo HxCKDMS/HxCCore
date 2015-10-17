@@ -22,7 +22,12 @@ public class RenderHooks {
                 name = References.CC + "4" + name;
         } catch (NullPointerException ignored) {}
 
-        String nick = nameNicks.getOrDefault(UUID.toString(), "");
+        String nick;
+        try {
+            nick = nameNicks.get(UUID.toString());
+        } catch (NullPointerException unhandled) {
+            nick = "";
+        }
 
         if (nick != null && !nick.equals("")) {
             name = nick;
