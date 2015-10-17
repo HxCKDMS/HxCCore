@@ -26,12 +26,12 @@ public class EventXPtoBuffs {
                 double MD = PlayerD.getAttributeValue();
                 int XP = PMP.experienceLevel / 5;
                 if (MH != XP * 5 && MH <= Configurations.HPMax) {
-                    AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", XP * 0.1, 1);
+                    AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", XP * 0.1, 0);
                     PlayerH.removeModifier(exHP);
                     PlayerH.applyModifier(exHP);
                 }
                 if (MD != XP * 5 && MD <= Configurations.DMMax) {
-                    AttributeModifier exDM = new AttributeModifier(References.DMBuffUUID, "DrZedDamageBuff", XP * 0.1, 1);
+                    AttributeModifier exDM = new AttributeModifier(References.DMBuffUUID, "DrZedDamageBuff", XP * 0.1, 0);
                     PlayerD.removeModifier(exDM);
                     PlayerD.applyModifier(exDM);
                 }
