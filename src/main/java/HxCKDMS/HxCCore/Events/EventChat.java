@@ -52,18 +52,17 @@ public class EventChat implements EventListener {
             ChatColor = CC + "f";
         else
             ChatColor = CC + playerColor;
-
+//Going to soon make this a better system, but for now it's functional
         String[] tmp = event.message.split(" ");
         String tmp2 = "";
         for (String str : tmp) {
-            str = " " + str;
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
                     if (str2.length() >= 2) {
                         ChatColor = ChatColor + CC + str2.charAt(0);
                         str2 = str2.substring(1);
-                        tmp2 = tmp2 + ChatColor + str2;
+                        tmp2 = tmp2 + " " + ChatColor + str2;
                     } else {
                         if (!str2.trim().isEmpty())
                             ChatColor = ChatColor + CC + str2.charAt(0);
@@ -88,14 +87,7 @@ public class EventChat implements EventListener {
                 } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
                     event.setCanceled(true);
                     throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
-                } else if (CommandsConfig.BannedCommands.get(c) == 2) {
-                    String[] tmp0 = c.split("##"), tmp2 = tmp0[1].split(" ");
-                    int tmp1 = tmp0[0].length() - 1, tmp3 = tmp2[0].length() - 1;
-                    if (Integer.getInteger(cmd.substring(tmp1, tmp3)) != null) {
-                        event.setCanceled(true);
-                        throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
-                    }
-                }//SPECIAL CIRCUMSTANCE TESTING MAY NOT GO ANY FURTHER
+                }
             });
 
             if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
