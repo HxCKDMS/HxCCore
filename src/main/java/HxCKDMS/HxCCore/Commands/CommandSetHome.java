@@ -56,9 +56,9 @@ public class CommandSetHome implements ISubCommand {
                     if (!oldhomes.contains(hName))
                         throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home.outOfHomes"));
 
-                int x = player.serverPosX;
-                int y = player.serverPosY;
-                int z = player.serverPosZ;
+                int x = (int)Math.round(player.posX);
+                int y = (int)Math.round(player.posY);
+                int z = (int)Math.round(player.posZ);
                 int dim = player.dimension;
 
                 ChatComponentText msg = new ChatComponentText("Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");

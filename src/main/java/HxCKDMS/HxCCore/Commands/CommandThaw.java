@@ -34,9 +34,9 @@ public class CommandThaw implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 int range = Integer.parseInt(args[1]);
-                for (int x = player.serverPosX - range; x < player.serverPosX + range; x++) {
-                    for (int y = player.serverPosX - 5; y < player.serverPosX + 5; y++) {
-                        for (int z = player.serverPosX - range; z < player.serverPosX + range; z++) {
+                for (int x = (int)Math.round(player.posX) - range; x < (int)Math.round(player.posX) + range; x++) {
+                    for (int y = (int)Math.round(player.posY) - 5; y < (int)Math.round(player.posY) + 5; y++) {
+                        for (int z = (int)Math.round(player.posZ) - range; z < (int)Math.round(player.posZ) + range; z++) {
                             if (player.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
                                 player.worldObj.setBlockToAir(x, y, z);
                             else if (player.worldObj.getBlock(x, y, z) == Blocks.ice)
