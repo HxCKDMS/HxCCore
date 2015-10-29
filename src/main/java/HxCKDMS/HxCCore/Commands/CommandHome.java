@@ -45,7 +45,7 @@ public class CommandHome implements ISubCommand {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
-                String hName = args.length == 1 ? "default" : args[1];
+                String hName = args.length == 1 ? "home" : args[1];
                 NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 if(homeDir.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noHomes"));
                 if(!homeDir.hasKey(hName)){

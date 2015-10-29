@@ -41,6 +41,8 @@ public class CommandPath implements ISubCommand {
                 if ((args.length >= 2 && Block.getBlockFromName(args[1]) != null) || args.length == 1) {
                     NBTFileIO.setBoolean(CustomPlayerData, "Pathing", !NBTFileIO.getBoolean(CustomPlayerData, "Pathing"));
                     NBTFileIO.setString(CustomPlayerData, "PathMat", args.length >= 2 ? args[1] : "minecraft:cobblestone");
+                    NBTFileIO.setInteger(CustomPlayerData, "PathMeta", args.length >= 3 ? Integer.valueOf(args[2]) : 0);
+                    NBTFileIO.setInteger(CustomPlayerData, "PathSize", args.length >= 4 ? Integer.valueOf(args[3]) : 2);
                 }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

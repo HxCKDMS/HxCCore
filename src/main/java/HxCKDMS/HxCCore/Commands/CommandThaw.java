@@ -5,22 +5,21 @@ import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import cpw.mods.fml.common.Loader;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
 @HxCCommand(defaultPermission = 1, mainCommand = CommandsHandler.class, isEnabled = true)
-public class CommandHat implements ISubCommand {
-    public static CommandHat instance = new CommandHat();
+public class CommandThaw implements ISubCommand {
+    public static CommandThaw instance = new CommandThaw();
 
     @Override
     public String getCommandName() {
-        return "Hat";
+        return "Thaw";
     }
 
     @Override
@@ -32,15 +31,19 @@ public class CommandHat implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Hat"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
-                ItemStack helm = player.inventory.armorItemInSlot(3);
-                ItemStack hat = player.getHeldItem();
-                if (Loader.isModLoaded("terrafirmacraft"))
-                    player.inventory.setInventorySlotContents(40, hat);
-                else
-                    player.inventory.setInventorySlotContents(39, hat);
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, helm);
+                int range = Integer.parseInt(args[1]);
+                for (int x = player.serverPosX - range; x < player.serverPosX + range; x++) {
+                    for (int y = player.serverPosX - 5; y < player.serverPosX + 5; y++) {
+                        for (int z = player.serverPosX - range; z < player.serverPosX + range; z++) {
+                            if (player.worldObj.getBlock(x, y, z) == Blocks.snow_layer)
+                                player.worldObj.setBlockToAir(x, y, z);
+                            else if (player.worldObj.getBlock(x, y, z) == Blocks.ice)
+                                player.worldObj.setBlock(x, y, z, Blocks.water, 0, 3);
+                        }
+                    }
+                }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }

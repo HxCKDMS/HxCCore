@@ -56,13 +56,14 @@ public class EventChat implements EventListener {
         String[] tmp = event.message.split(" ");
         String tmp2 = "";
         for (String str : tmp) {
+            tmp2 = tmp2 + " ";
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
                     if (str2.length() >= 2) {
                         ChatColor = ChatColor + CC + str2.charAt(0);
                         str2 = str2.substring(1);
-                        tmp2 = tmp2 + " " + ChatColor + str2;
+                        tmp2 = tmp2 + ChatColor + str2;
                     } else {
                         if (!str2.trim().isEmpty())
                             ChatColor = ChatColor + CC + str2.charAt(0);
@@ -81,10 +82,13 @@ public class EventChat implements EventListener {
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
-                if (CommandsConfig.BannedCommands.get(c) == 0 && c.contains(cmd)) {
+                if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
                     event.setCanceled(true);
                     throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
+                    event.setCanceled(true);
+                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                } else if (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)) {
                     event.setCanceled(true);
                     throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
                 }

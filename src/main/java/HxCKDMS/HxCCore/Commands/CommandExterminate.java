@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
@@ -44,7 +45,7 @@ public class CommandExterminate implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
             if (CanSend) {
                 int tmp = 0;
-                List<Entity> ents = player.worldObj.getLoadedEntityList();
+                List<Entity> ents = HxCCore.server.worldServerForDimension(0).loadedEntityList;
                 if (args.length >= 2) {
                     for (Entity ent : ents) {
                         if (args[1].contains("hostile") && (ent instanceof EntityMob || ent instanceof EntitySlime)) {

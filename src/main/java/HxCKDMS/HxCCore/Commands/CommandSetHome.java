@@ -50,16 +50,15 @@ public class CommandSetHome implements ISubCommand {
 
                 Set<String> oldhomes = home.getKeySet();
 
-                String hName = args.length == 1 ? "default" : args[1];
+                String hName = args.length == 1 ? "home" : args[1];
 
                 if (References.HOMES[pl] != -1 && oldhomes.size() >= References.HOMES[pl])
                     if (!oldhomes.contains(hName))
                         throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home.outOfHomes"));
 
-
-                int x = (int)player.posX;
-                int y = (int)player.posY;
-                int z = (int)player.posZ;
+                int x = player.serverPosX;
+                int y = player.serverPosY;
+                int z = player.serverPosZ;
                 int dim = player.dimension;
 
                 ChatComponentText msg = new ChatComponentText("Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");

@@ -2,8 +2,10 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.NickHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
@@ -17,6 +19,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.List;
 
 @HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
@@ -53,6 +56,9 @@ public class CommandClientInfo implements ISubCommand {
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Location: X: %1$s, Y: %2$s, Z: %3$s.", getCoordStyled(player.posX), getCoordStyled(player.posY), getCoordStyled(player.posZ))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Dimension: %1$s.", getDimensionStyled(player.dimension))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("GameMode: %1$s.", getGameModeStyled(player))));
+        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Opped: %1$s.", getOPStyled(player))));
+        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("God mode: %1$s.", getGodModeStyled(player))));
+        sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Flying: %1$s.", getFlyingStyled(player))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("IP address: %1$s.", getIPAddressStyled(player.getPlayerIP()))));
         sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Ping: %1$s.", getPingStyled(player.ping))));
     }
@@ -80,11 +86,25 @@ public class CommandClientInfo implements ISubCommand {
     }
 
     private String getCoordStyled(double coord){
-        return EnumChatFormatting.AQUA.toString() +(int) coord + defaultColor;
+        return EnumChatFormatting.AQUA.toString() + (int)coord + defaultColor;
     }
 
+    private String getFlyingStyled(EntityPlayerMP player) {
+        return player.capabilities.isFlying ? EnumChatFormatting.BLUE + "true" : EnumChatFormatting.GRAY + "false";
+    }
+
+    private String getGodModeStyled(EntityPlayerMP player) {
+        String UUID = player.getUniqueID().toString();
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+        boolean god = NBTFileIO.getBoolean(CustomPlayerData, "god");
+        return god ? EnumChatFormatting.GOLD + "true" : EnumChatFormatting.GRAY + "false";
+    }
     private String getPlayerNameStyled(EntityPlayerMP player){
         return EnumChatFormatting.AQUA + player.getDisplayName() + defaultColor;
+    }
+
+    private String getOPStyled(EntityPlayerMP player){
+        return EnumChatFormatting.GREEN + String.valueOf(HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile())) + defaultColor;
     }
 
     private String getGameModeStyled(EntityPlayerMP player) {

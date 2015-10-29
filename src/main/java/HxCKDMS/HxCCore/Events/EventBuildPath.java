@@ -16,13 +16,14 @@ public class EventBuildPath {
             EntityPlayerMP player = (EntityPlayerMP)event.entityLiving;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            int range = 2;
             if (NBTFileIO.getBoolean(CustomPlayerData, "Pathing") && !player.worldObj.isRemote) {
-                String block = NBTFileIO.getString(CustomPlayerData, "PathMat");
-                for (int x = (int)Math.round(player.posX-range); x < (int)Math.round(player.posX +range); x++)
-                    for (int z = (int)Math.round(player.posZ-range); z < (int)Math.round(player.posZ +range); z++)
-                        if (player.worldObj.getBlock(x, (int)Math.round(player.posY)-1, z) != Block.getBlockFromName(block))
-                            player.worldObj.setBlock(x, (int)Math.round(player.posY)-1, z, Block.getBlockFromName(block));
+                Block block = Block.getBlockFromName(NBTFileIO.getString(CustomPlayerData, "PathMat"));
+                int range = NBTFileIO.getInteger(CustomPlayerData, "PathSize");
+                int meta = NBTFileIO.getInteger(CustomPlayerData, "PathMeta");
+                for (int x = (int)player.posX-range; x < (int)player.posX +range; x++)
+                    for (int z = (int)player.posZ-range; z < (int)player.posZ +range; z++)
+                        if (player.worldObj.getBlock(x, (int)player.posY-1, z) != block || player.worldObj.getBlockMetadata(x, (int)player.posY-1, z) != meta)
+                            player.worldObj.setBlock(x, (int)player.posY-1, z, block, meta, 3);
             }
         }
     }
