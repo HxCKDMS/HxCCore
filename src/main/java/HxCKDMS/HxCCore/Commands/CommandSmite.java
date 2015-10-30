@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -41,11 +42,13 @@ public class CommandSmite implements ISubCommand {
                     EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
                     smite(target.worldObj, target.posX, target.posY, target.posZ);
                 } else {
-                    MovingObjectPosition rayTrace = player.rayTrace(100, 1.0F);
-                    if (player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
-                    else if(player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
+                    Vec3 vec3 = player.getPosition(1.0f);
+                    Vec3 vec31 = player.getLook(1.0f);
+                    Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
+                    MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);
+                    if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
+                    else if(rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
                     else smite(player.worldObj, player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ);
-
                 }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {

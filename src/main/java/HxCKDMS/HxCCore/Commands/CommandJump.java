@@ -9,7 +9,9 @@ import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 
 import java.util.List;
 
@@ -34,7 +36,12 @@ public class CommandJump implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Jump"), player);
             if (CanSend) {
-                //TODO
+                Vec3 vec3 = player.getPosition(1.0f);
+                Vec3 vec31 = player.getLook(1.0f);
+                Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
+                MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);
+                if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+                    player.playerNetServerHandler.setPlayerLocation(rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ, player.rotationYawHead, player.rotationPitch);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }

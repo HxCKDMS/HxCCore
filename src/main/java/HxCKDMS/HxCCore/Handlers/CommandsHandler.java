@@ -75,6 +75,12 @@ public class CommandsHandler extends AbstractCommandMain {
         List aliases = new ArrayList();
         aliases.add("HxCCore");
         aliases.add("HxC");
+        aliases.add("hxccore");
+        aliases.add("hxC");
+        aliases.add("hxc");
+        aliases.add("Hxc");
+        aliases.add("hxc");
+        aliases.add("HXC");
         return aliases;
     }
     

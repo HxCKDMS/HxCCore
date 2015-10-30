@@ -73,6 +73,7 @@ public class HxCCore {
 
         Configurations.preInitConfigs();
 
+        MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         if (Configurations.enableCommands)
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
@@ -118,7 +119,10 @@ public class HxCCore {
     public void postInit(FMLPostInitializationEvent event) {
         List<String> knownMods = Arrays.asList("HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
                 "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
-        knownMods.forEach(mod -> LogHelper.info("Thank you for using " + mod, MOD_NAME));
+        knownMods.forEach(mod -> {
+            if (Loader.isModLoaded(mod))
+                LogHelper.info("Thank you for using " + mod, MOD_NAME);
+        });
     }
 
     @EventHandler

@@ -28,7 +28,7 @@ public class CommandDraw implements ISubCommand {
 
     @Override
     public int[] getCommandRequiredParams() {
-        return new int[]{8, -1, -1};
+        return new int[]{2, -1, -1};
     }
 
     @Override
@@ -36,7 +36,28 @@ public class CommandDraw implements ISubCommand {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Draw"), player);
-            String[] args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]};
+            String[] args2;
+            switch (args.length) {
+                case 3 : args2 = new String[]{args[2], "~", "~", "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 4 : args2 = new String[]{args[2], args[3], "~", "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 5 : args2 = new String[]{args[2], args[3], args[4], "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 6 : args2 = new String[]{args[2], args[3], args[4], args[5], "minecraft:glass", "true", "0.1"};
+                    break;
+                case 7 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], "true", "0.1"};
+                    break;
+                case 8 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], "0.1"};
+                    break;
+                case 9 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8]};
+                    break;
+                case 10 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]};
+                    break;
+                default : args2 = new String[]{"~", "~", "~", "8", "minecraft:glass", "true", "0.01"};
+                    break;
+            }
+
             if (CanSend) {
                 switch (args[1].toLowerCase()) {
                     case ("2dellipsoid"):
