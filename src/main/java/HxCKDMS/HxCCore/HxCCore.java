@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore;
 
+import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
@@ -26,6 +27,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -44,19 +46,19 @@ public class HxCCore {
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir;
     public static SimpleNetworkWrapper network;
+
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
     kits = new HxCConfig();
 
+    public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
+
     private static PrintWriter commandLog;
 
-    public static final Thread crashReportThread = new Thread(new CrashReportThread());
-    public static final Thread CodersCheckThread = new Thread(new CodersCheck());
+    public static final Thread crashReportThread = new Thread(new CrashReportThread()),
+            CodersCheckThread = new Thread(new CodersCheck());
 
-    public static volatile ArrayList<UUID> coders = new ArrayList<>(),
-            helpers = new ArrayList<>(), supporters = new ArrayList<>(),
-            artists = new ArrayList<>(), mascots = new ArrayList<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -72,10 +74,6 @@ public class HxCCore {
         kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
 
         Configurations.preInitConfigs();
-
-        MinecraftForge.EVENT_BUS.register(new EventPowerTool());
-        if (Configurations.enableCommands)
-            MinecraftForge.EVENT_BUS.register(new EventBuildPath());
 
         for (int i = 0; i < Configurations.Permissions.size(); i++) {
             PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
@@ -96,23 +94,25 @@ public class HxCCore {
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
-//        FMLCommonHandler.instance().bus().register(new KeyInputHandler());
+
         LogHelper.info("Thank your for using HxCCore", MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new EventGod());
-        if (!Loader.isModLoaded("HxCSkills")) MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
-        MinecraftForge.EVENT_BUS.register(new EventChat());
-
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
         FMLCommonHandler.instance().bus().register(new EventJoinWorld());
-//        FMLCommonHandler.instance().bus().register(new EventPlayerDeath());
-        MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
         FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
+
+        MinecraftForge.EVENT_BUS.register(new EventGod());
+        MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
+        MinecraftForge.EVENT_BUS.register(new EventChat());
+        MinecraftForge.EVENT_BUS.register(new EventPowerTool());
+        MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
+        if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
+            MinecraftForge.EVENT_BUS.register(new EventBuildPath());
     }
 
     @EventHandler
@@ -134,14 +134,14 @@ public class HxCCore {
         if (!WorldDir.exists())
             WorldDir.mkdirs();
         HxCCoreDir = WorldDir;
-        File LogDir = new File(HxCCoreDir, "HxCLogs");
+        File LogDir = new File(ForgeModContainer.getConfig().getConfigFile().getPath().replace("config\\forge.cfg", "logs\\"), "HxCLogs");
         if (!LogDir.exists())
             LogDir.mkdirs();
         HxCLogDir = LogDir;
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
-        File OLDLOG = new File(HxCLogDir, "HxC-CommandLog-0.log");
+        File OLDLOG = new File(HxCLogDir, "HxC-CommandLog.log");
 
         try {
             if (!CustomWorldFile.exists())
@@ -149,20 +149,24 @@ public class HxCCore {
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
             if (OLDLOG.exists()) {
-                if (OLDLOG.getUsableSpace() == OLDLOG.getFreeSpace()) OLDLOG.delete();
-                else OLDLOG.renameTo(new File(HxCLogDir, "HxC-CommandLog-" + String.valueOf(HxCLogDir.listFiles().length) + ".log"));
+                OLDLOG.renameTo(new File(HxCLogDir, "HxC-Command.log"));
             }
-            commandLog = new PrintWriter(new File(HxCLogDir, "HxC-CommandLog-0.log"), "UTF-8");
+            commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
     }
-
+    private static boolean loggedCommand;
     public static void logCommand(String str) {
         commandLog.println(str);
+        loggedCommand = true;
     }
 
     @EventHandler
     public void serverStop(FMLServerStoppingEvent event) {
         commandLog.close();
+        if (!loggedCommand)
+            (new File(HxCLogDir, "HxC-Command.log")).delete();
+        else
+            (new File(HxCLogDir, "HxC-Command.log")).renameTo(new File(HxCLogDir, "HxC-CommandLog-" + Calendar.getInstance().getTime().toString().replace(":", "." + ".log")));
     }
 
     private static void extendEnchantsArray() {

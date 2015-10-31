@@ -9,6 +9,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
@@ -40,6 +42,13 @@ public class CommandPowertool implements ISubCommand {
                 if (player.getHeldItem().hasTagCompound()) {
                     NBTTagCompound tag = player.getHeldItem().getTagCompound();
                     tag.setString("powertool", c);
+                    if (tag.hasKey("display")) {
+                        NBTTagList l = tag.getCompoundTag("display").getTagList("Lore", 8);
+                        l.appendTag(new NBTTagString(c));
+                    } else {
+                        NBTTagList l = new NBTTagList();
+                        l.appendTag(new NBTTagString(c));
+                    }
                     player.getHeldItem().setTagCompound(tag);
                 } else {
                     NBTTagCompound tag = new NBTTagCompound();

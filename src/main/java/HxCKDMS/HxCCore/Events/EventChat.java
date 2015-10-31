@@ -5,7 +5,6 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,16 +17,14 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.EventListener;
-import java.util.UUID;
+import java.util.*;
 
 import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 import static HxCKDMS.HxCCore.lib.References.CC;
 
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "SuspiciousMethodCalls"})
 public class EventChat implements EventListener {
+    List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
@@ -47,32 +44,45 @@ public class EventChat implements EventListener {
 
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
 
-        String ChatColor;
-        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
-            ChatColor = CC + "f";
-        else
-            ChatColor = CC + playerColor;
-//Going to soon make this a better system, but for now it's functional
+        char CurrentColor = 'f';
+
+        String ChatFormatting = "";
+        if (!playerColor.equalsIgnoreCase("") &! playerColor.equalsIgnoreCase("f"))
+            CurrentColor = playerColor.charAt(0);
+
         String[] tmp = event.message.split(" ");
         String tmp2 = "";
         for (String str : tmp) {
             tmp2 = tmp2 + " ";
+            if (str.contains("//www.youtube.com/")) {
+                str = str.replace("https", "http");
+                //Replaces long youtube link with shortened version
+                str = str.replace("//www.youtube.com/watch?v=", "//youtu.be/");
+                //Tested and works.... http://puu.sh/l3L5U.png
+                //http://youtu.be/X1a71UcM1wQ
+            }
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
-                    if (str2.length() >= 2) {
-                        ChatColor = ChatColor + CC + str2.charAt(0);
-                        str2 = str2.substring(1);
-                        tmp2 = tmp2 + ChatColor + str2;
+                    if (colours.contains(str2.charAt(0))) {
+                        CurrentColor = str2.charAt(0);
+                        str2 = str2.substring(1).trim();
+                    } else if (str2.charAt(0) == 'r') {
+                        ChatFormatting = CC + "r";
+                        str2 = str2.substring(1).trim();
                     } else {
-                        if (!str2.trim().isEmpty())
-                            ChatColor = ChatColor + CC + str2.charAt(0);
+                        if (!ChatFormatting.contains(CC + str2.charAt(0)))
+                            ChatFormatting = ChatFormatting + CC + str2.charAt(0);
+                        else
+                            ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
+                        str2 = str2.substring(1).trim();
                     }
+                    tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str2;
                 }
-            } else tmp2 = tmp2 + " " + ChatColor + str;
+            } else tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str;
         }
-        if (!tmp2.replaceAll(References.CC, "").trim().isEmpty())
-            event.component = new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%")));
+        if (!tmp2.replaceAll(CC, "").trim().isEmpty())
+            event.component = new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", tmp2.trim().replaceAll("%", "%%")));
     }
 
 

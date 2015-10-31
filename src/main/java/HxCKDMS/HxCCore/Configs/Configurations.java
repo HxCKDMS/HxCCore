@@ -44,7 +44,7 @@ public class Configurations {
 
     @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
     public static LinkedHashMap<String, String> Permissions = new LinkedHashMap<>();
-    @Config.Map(description = "%1$s: username %2$s: message. %g Group Tag")
+    @Config.Map(description = "HxC is labels given to special people. Group is the Server rank Name is nickname", forceReset = true)
     public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
     @Config.Boolean
@@ -54,17 +54,18 @@ public class Configurations {
     public static String lastCheckedCrash = "";
 
     static {
-        formats.put("ChatFormat", "<%1$s> %2$s");
-        formats.put("HxCTag", "&f[%1$s&f]");
-        formats.put("GroupTag", "&f[%1$s&f]");
-        formats.put("BroadcastVariable", "[&6SERVER&f] <SENDER> &4MESSAGE");
+        formats.put("ChatFormat", "HEADER MESSAGE");
+        formats.put("PlayerNametagFormat", "HXC GROUP NAME");
+        formats.put("GroupFormat", "&r[%1$s&r]");
+        formats.put("HxCFormat", "&r[%1$s&r]");
+        formats.put("BroadcastFormat", "&f[&6SERVER&f] &f<SENDER&f> &4MESSAGE");
     }
 
     public static void updateCFGS() {
         if (Permissions.isEmpty()) {
             Permissions.put("Default", "f 3");
-            Permissions.put("Friend", "2 5");
-            Permissions.put("Helper", "e 8");
+            Permissions.put("Helper", "e 5");
+            Permissions.put("Spy", "0 8");
             Permissions.put("Moderator", "9 10");
             Permissions.put("Admin", "6 16");
             Permissions.put("Owner", "4 -1");
