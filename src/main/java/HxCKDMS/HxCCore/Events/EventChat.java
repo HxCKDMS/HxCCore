@@ -88,7 +88,7 @@ public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void commandEvent(CommandEvent event) {
-        if (event.sender instanceof EntityPlayerMP) {
+        if (event.sender instanceof EntityPlayerMP && event.sender.getCommandSenderName() != null) {
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
