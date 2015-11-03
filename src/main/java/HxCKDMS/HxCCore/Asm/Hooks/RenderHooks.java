@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -32,7 +33,10 @@ public class RenderHooks {
 
         name = name.replace("&", CC) + CC + "f";
 
-        return Configurations.formats.get("PlayerNametagFormat").replace("HXC", getHxCTag(UUID)).replace("GROUP", getGroupTag(UUID, entity.getCommandSenderName())).replace("NAME", name);
+        if (entity instanceof EntityPlayer)
+            return Configurations.formats.get("PlayerNametagFormat").replace("HXC", getHxCTag(UUID)).replace("GROUP", getGroupTag(UUID, entity.getCommandSenderName())).replace("NAME", name);
+
+        return name;
     }
 
     private static String getHxCTag(UUID UUID) {
