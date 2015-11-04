@@ -162,11 +162,13 @@ public class HxCCore {
 
     @EventHandler
     public void serverStop(FMLServerStoppingEvent event) {
-        commandLog.close();
-        if (!loggedCommand)
-            (new File(HxCLogDir, "HxC-Command.log")).delete();
-        else
-            (new File(HxCLogDir, "HxC-Command.log")).renameTo(new File(HxCLogDir, "HxC-CommandLog-" + Calendar.getInstance().getTime().toString().replace(":", "." + ".log")));
+        try {
+            commandLog.close();
+            if (!loggedCommand)
+                (new File(HxCLogDir, "HxC-Command.log")).delete();
+            else
+                (new File(HxCLogDir, "HxC-Command.log")).renameTo(new File(HxCLogDir, "HxC-CommandLog-" + Calendar.getInstance().getTime().toString().replace(":", "." + ".log")));
+        } catch (Exception ignored) {}
     }
 
     private static void extendEnchantsArray() {
