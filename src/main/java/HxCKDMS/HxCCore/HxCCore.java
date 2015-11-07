@@ -12,6 +12,7 @@ import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
+import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -30,9 +31,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 import static HxCKDMS.HxCCore.lib.References.*;
@@ -43,6 +43,9 @@ public class HxCCore {
     @Instance(MOD_ID)
     public static HxCCore instance;
 
+    private static LinkedHashMap<String, String> vers = new LinkedHashMap<>();
+    public static final List<String> knownMods = Arrays.asList("HxCCore", "HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
+            "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
     public static MinecraftServer server;
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
@@ -95,7 +98,6 @@ public class HxCCore {
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
 
-        LogHelper.info("Thank your for using HxCCore", MOD_NAME);
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
 
@@ -117,8 +119,7 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        List<String> knownMods = Arrays.asList("HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
-                "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
+        versionCheck();
         knownMods.forEach(mod -> {
             if (Loader.isModLoaded(mod))
                 LogHelper.info("Thank you for using " + mod, MOD_NAME);
@@ -128,6 +129,15 @@ public class HxCCore {
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
+
+        Loader.instance().getModList().forEach(m -> {
+            if (knownMods.contains(m.getModId())) {
+                String s = getNewVer(m.getModId(), m.getVersion());
+                if (!s.isEmpty())
+                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP New Version Found = " + s);
+            }
+        });
+
         if (Configurations.enableCommands) CommandsHandler.initCommands(event);
 
         File WorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCData");
@@ -205,4 +215,32 @@ public class HxCCore {
     public boolean checkNetwork(Map<String, String> mods, Side side) {
         return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(VERSION);
     }
+
+    public static String getNewVer(String mod, String Version) {
+        if (!vers.get(mod+":1.7.10").equalsIgnoreCase(Version))
+            return vers.get(mod+":1.7.10");
+        return "";
+    }
+
+    public static void versionCheck() {
+        vers = new LinkedHashMap<>();
+        try {
+            URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCVersions.txt");
+            InputStream inputStream = url.openStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String inputLine;
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                if (!inputLine.startsWith("//")) {
+                    String[] str = inputLine.split("-");
+                    vers.put(str[0], str[1]);
+                }
+            }
+        } catch (Exception e) {
+            LogHelper.error("Can not resolve HxCVersions.txt", References.MOD_NAME);
+            if (Configurations.DebugMode) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
