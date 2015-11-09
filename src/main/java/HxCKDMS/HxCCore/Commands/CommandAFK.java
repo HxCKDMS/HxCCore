@@ -3,14 +3,13 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -45,14 +44,14 @@ public class CommandAFK implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("AFK"), player);
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-                String tmp = player.getDisplayNameString() + CC + NBTFileIO.getString(CustomPlayerData, "Color");
+                String tmp = player.getDisplayName() + CC + NBTFileIO.getString(CustomPlayerData, "Color");
                 ChatComponentText AFK = new ChatComponentText(tmp + " has gone AFK.");
                 ChatComponentText Back = new ChatComponentText(tmp + " is no longer AFK.");
                 IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
@@ -84,7 +83,7 @@ public class CommandAFK implements ISubCommand {
                 for (EntityPlayerMP p : list)
                     p.addChatMessage(AFKStatus ? Back : AFK);
             } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

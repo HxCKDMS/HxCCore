@@ -2,14 +2,13 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,7 +36,7 @@ public class CommandSetHome implements ISubCommand {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetHome"), player);
@@ -51,16 +50,15 @@ public class CommandSetHome implements ISubCommand {
 
                 Set<String> oldhomes = home.getKeySet();
 
-                String hName = args.length == 1 ? "default" : args[1];
+                String hName = args.length == 1 ? "home" : args[1];
 
                 if (References.HOMES[pl] != -1 && oldhomes.size() >= References.HOMES[pl])
                     if (!oldhomes.contains(hName))
                         throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home.outOfHomes"));
 
-
-                int x = (int)player.posX;
-                int y = (int)player.posY;
-                int z = (int)player.posZ;
+                int x = (int)Math.round(player.posX);
+                int y = (int)Math.round(player.posY);
+                int z = (int)Math.round(player.posZ);
                 int dim = player.dimension;
 
                 ChatComponentText msg = new ChatComponentText("Home (" + hName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");
@@ -75,8 +73,8 @@ public class CommandSetHome implements ISubCommand {
                 home.setTag(hName, homeDir);
 
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
@@ -18,7 +18,6 @@ import java.util.EventListener;
 public class EventJoinWorld implements EventListener {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onEntityJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
-
         // Player data file
         try {
             String UUID = event.player.getUniqueID().toString();
@@ -28,9 +27,10 @@ public class EventJoinWorld implements EventListener {
                 success = CustomPlayerData.createNewFile();
                 NBTFileIO.setFloat(CustomPlayerData, "Soul", 1f);
                 NBTFileIO.setInteger(CustomPlayerData, "SoulTimer", 12000);
-                if (Configurations.DebugMode) {
-                    LogHelper.debug("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
-                }
+                NBTFileIO.setBoolean(CustomPlayerData, "fly", false);
+                NBTFileIO.setBoolean(CustomPlayerData, "god", false);
+                if (Configurations.DebugMode)
+                    LogHelper.warn("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
             }
             NBTFileIO.setString(CustomPlayerData, "username", event.player.getDisplayNameString());
         } catch (IOException exceptions) {

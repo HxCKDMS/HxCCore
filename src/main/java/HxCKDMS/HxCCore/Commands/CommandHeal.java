@@ -2,7 +2,7 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
@@ -41,8 +41,8 @@ public class CommandHeal implements ISubCommand {
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
-                    }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-                }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
                 break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);

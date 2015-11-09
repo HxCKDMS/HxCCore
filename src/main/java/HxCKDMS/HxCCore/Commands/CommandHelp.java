@@ -27,7 +27,7 @@ public class CommandHelp implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (args.length == 2 && Integer.valueOf(args[1]) == null) {
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + StatCollector.translateToLocal("commands." + CommandsHandler.commands.get(args[1].toLowerCase()).getCommandName() + ".usage")));
         } else {

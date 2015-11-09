@@ -3,11 +3,11 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -33,7 +33,7 @@ public class CommandColor implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             String UUID = player.getUniqueID().toString();
@@ -43,9 +43,9 @@ public class CommandColor implements ISubCommand {
                 char color = 'f';
                 if (args.length >= 2) color = args[1].charAt(0);
                 if (References.COLOR_CHARS.contains(color) && !Configurations.bannedColorCharacters.contains(color)) NBTFileIO.setString(CustomPlayerData, "Color", String.valueOf(color));
-                 else throw new WrongUsageException("commands." + getCommandName().toLowerCase() + ".usage");
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                else throw new WrongUsageException("commands." + getCommandName().toLowerCase() + ".usage");
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

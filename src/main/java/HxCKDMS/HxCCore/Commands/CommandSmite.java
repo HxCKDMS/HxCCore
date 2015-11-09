@@ -2,18 +2,18 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -40,24 +40,26 @@ public class CommandSmite implements ISubCommand {
             if (CanSend) {
                 if (args.length == 2) {
                     EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
-                    smite(target.worldObj, target.getPosition());
+                    smite(target.worldObj, target.posX, target.posY, target.posZ);
                 } else {
-                    MovingObjectPosition rayTrace = player.rayTrace(100, 1.0F);
-                    if (player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.getPosition());
-                    else if(player.rayTrace(100, 1.0F).typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.getBlockPos());
-                    else smite(player.worldObj, new BlockPos(player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ));
-
+                    Vec3 vec3 = player.getPositionEyes(1.0f);
+                    Vec3 vec31 = player.getLook(1.0f);
+                    Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
+                    MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);
+                    if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
+                    else if(rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.getBlockPos().getX(), rayTrace.getBlockPos().getY(), rayTrace.getBlockPos().getZ());
+                    else smite(player.worldObj, player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ);
                 }
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
-            if (args.length == 2) smite(target.worldObj, target.getPosition());
-             else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            if (args.length == 2) smite(target.worldObj, target.posX, target.posY, target.posZ);
+            else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
         }
     }
 
-    public void smite(World world, BlockPos pos) {
-        world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ()));
+    public void smite(World world, double x, double y, double z) {
+        world.addWeatherEffect(new EntityLightningBolt(world, x, y, z));
     }
 
     @SuppressWarnings("unchecked")

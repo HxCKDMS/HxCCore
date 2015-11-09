@@ -2,11 +2,9 @@ package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.lib.References;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -17,16 +15,14 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.EventListener;
-import java.util.UUID;
+import java.util.*;
 
 import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
 import static HxCKDMS.HxCCore.lib.References.CC;
 
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "SuspiciousMethodCalls"})
 public class EventChat implements EventListener {
+    List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
@@ -46,55 +42,61 @@ public class EventChat implements EventListener {
 
         String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
 
-        String ChatColor;
-        if (playerColor.equalsIgnoreCase("") || playerColor.equalsIgnoreCase("f"))
-            ChatColor = CC + "f";
-        else
-            ChatColor = CC + playerColor;
+        char CurrentColor = 'f';
+
+        String ChatFormatting = "";
+        if (!playerColor.equalsIgnoreCase("") &! playerColor.equalsIgnoreCase("f"))
+            CurrentColor = playerColor.charAt(0);
 
         String[] tmp = event.message.split(" ");
         String tmp2 = "";
         for (String str : tmp) {
-            str = " " + str;
+            tmp2 = tmp2 + " ";
+            if (str.contains("//www.youtube.com/")) {
+                str = str.replace("https", "http");
+                //Replaces long youtube link with shortened version
+                str = str.replace("//www.youtube.com/watch?v=", "//youtu.be/");
+                //Tested and works.... http://puu.sh/l3L5U.png
+                //http://youtu.be/X1a71UcM1wQ
+            }
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
-                    if (str2.length() >= 2) {
-                        ChatColor = ChatColor + CC + str2.charAt(0);
-                        str2 = str2.substring(1);
-                        tmp2 = tmp2 + ChatColor + str2;
+                    if (colours.contains(str2.charAt(0))) {
+                        CurrentColor = str2.charAt(0);
+                        str2 = str2.substring(1).trim();
+                    } else if (str2.charAt(0) == 'r') {
+                        ChatFormatting = CC + "r";
+                        str2 = str2.substring(1).trim();
                     } else {
-                        if (!str2.trim().isEmpty())
-                            ChatColor = ChatColor + CC + str2.charAt(0);
+                        if (!ChatFormatting.contains(CC + str2.charAt(0)))
+                            ChatFormatting = ChatFormatting + CC + str2.charAt(0);
+                        else
+                            ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
+                        str2 = str2.substring(1).trim();
                     }
+                    tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str2;
                 }
-            } else tmp2 = tmp2 + " " + ChatColor + str;
+            } else tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str;
         }
-        if (!tmp2.replaceAll(References.CC, "").trim().isEmpty())
-            event.setComponent(new ChatComponentTranslation(String.format(Configurations.formats.get("ChatFormat"), getMessageHeader(event.player), tmp2.trim().replaceAll("%", "%%"))));
+        if (!tmp2.replaceAll(CC, "").trim().isEmpty())
+            event.setComponent(new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", tmp2.trim().replaceAll("%", "%%"))));
     }
 
 
     @SubscribeEvent
-    public void commandEvent(CommandEvent event) throws WrongUsageException{
-        if (event.sender instanceof EntityPlayerMP) {
+    public void commandEvent(CommandEvent event) {
+        if (event.sender instanceof EntityPlayerMP && event.sender.getCommandSenderName() != null) {
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
-                if (CommandsConfig.BannedCommands.get(c) == 0 && c.contains(cmd)) {
+                if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
                     event.setCanceled(true);
-//                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
                     event.setCanceled(true);
-//                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
-                } else if (CommandsConfig.BannedCommands.get(c) == 2) {
-                    String[] tmp0 = c.split("##"), tmp2 = tmp0[1].split(" ");
-                    int tmp1 = tmp0[0].length() - 1, tmp3 = tmp2[0].length() - 1;
-                    if (Integer.getInteger(cmd.substring(tmp1, tmp3)) != null) {
-                        event.setCanceled(true);
-//                        throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
-                    }
-                }//SPECIAL CIRCUMSTANCE TESTING MAY NOT GO ANY FURTHER
+                } else if (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)) {
+                    event.setCanceled(true);
+                }
             });
 
             if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {

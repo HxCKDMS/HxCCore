@@ -2,9 +2,9 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -32,7 +32,7 @@ public class CommandBurn implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         boolean CanSend = !isPlayer || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Burn"), (EntityPlayerMP) sender);
         if (CanSend) {
             switch(args.length) {
@@ -41,7 +41,7 @@ public class CommandBurn implements ISubCommand {
                         EntityPlayerMP player = (EntityPlayerMP)sender;
                         player.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                         player.setFire(750000000);
-                    }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                    } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
                     break;
                 case 2:
                     EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
@@ -56,7 +56,7 @@ public class CommandBurn implements ISubCommand {
                     break;
                 default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
             }
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
     }
 
     @Override

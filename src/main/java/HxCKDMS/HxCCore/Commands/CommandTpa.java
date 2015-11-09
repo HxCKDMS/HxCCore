@@ -3,7 +3,7 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -52,7 +52,7 @@ public class CommandTpa implements ISubCommand {
                             HxCCore.tpaRequestList.remove(PlayerThatTPs);
                             HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
                             player.addChatComponentMessage(new ChatComponentText("You accepted: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
-                            PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayNameString() + " accepted your tp request."));
+                            PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " accepted your tp request."));
 
                             if (PlayerThatTPs.dimension != player.dimension)
                                 Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, player.getPosition());
@@ -67,7 +67,7 @@ public class CommandTpa implements ISubCommand {
                             HxCCore.tpaRequestList.remove(PlayerThatTPs);
                             HxCCore.TpaTimeoutList.remove(PlayerThatTPs);
                             player.addChatComponentMessage(new ChatComponentText("You denied: " + PlayerThatTPs.getDisplayName() + "'s tp request."));
-                            PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayNameString() + " denied your tp request."));
+                            PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " denied your tp request."));
                         } else {
                             player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "There is no tpa request to deny."));
                         }
@@ -77,15 +77,15 @@ public class CommandTpa implements ISubCommand {
                         if (PlayerThatTPs == null) {
                             HxCCore.tpaRequestList.put(player, player2);
                             HxCCore.TpaTimeoutList.put(player, Configurations.TpaTimeout);
-                            player2.addChatComponentMessage(new ChatComponentText("Player: " + player.getDisplayNameString() + " wants to teleport to you."));
+                            player2.addChatComponentMessage(new ChatComponentText("Player: " + player.getDisplayName() + " wants to teleport to you."));
                             player.addChatComponentMessage(new ChatComponentText("Teleport request successfully sent to player: " + player2.getDisplayName() + "."));
                         } else {
                             player.addChatComponentMessage(new ChatComponentText("Player is already being tpa'd to."));
                         }
                         break;
                 }
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

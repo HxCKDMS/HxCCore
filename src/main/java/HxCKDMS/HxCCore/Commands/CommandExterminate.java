@@ -2,9 +2,10 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -39,13 +40,13 @@ public class CommandExterminate implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
             if (CanSend) {
                 int tmp = 0;
-                List<Entity> ents = player.worldObj.getLoadedEntityList();
+                List<Entity> ents = HxCCore.server.worldServerForDimension(0).loadedEntityList;
                 if (args.length >= 2) {
                     for (Entity ent : ents) {
                         if (args[1].contains("hostile") && (ent instanceof EntityMob || ent instanceof EntitySlime)) {
@@ -85,8 +86,8 @@ public class CommandExterminate implements ISubCommand {
                             tmp += 1;
                         }
                 player.addChatMessage(new ChatComponentText("You have exterminated " + tmp + " entities!"));
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

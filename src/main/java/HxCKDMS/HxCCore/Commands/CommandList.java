@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
@@ -58,8 +58,8 @@ public class CommandList implements ISubCommand {
                 ChatComponentText warps = new ChatComponentText(warp.getKeySet().toString().replace("[", "").replace("]", ""));
                 warps.getChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE);
                 sender.addChatMessage(warps);
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+        }else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
     }
 
     @SuppressWarnings("unchecked")

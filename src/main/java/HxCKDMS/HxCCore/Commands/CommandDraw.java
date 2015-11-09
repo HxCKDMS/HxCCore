@@ -2,12 +2,15 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
 import net.minecraft.block.Block;
-import net.minecraft.command.*;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.*;
 
@@ -24,24 +27,45 @@ public class CommandDraw implements ISubCommand {
 
     @Override
     public int[] getCommandRequiredParams() {
-        return new int[]{8, -1, -1};
+        return new int[]{2, -1, -1};
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Draw"), player);
-            String[] args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]};
+            String[] args2;
+            switch (args.length) {
+                case 3 : args2 = new String[]{args[2], "~", "~", "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 4 : args2 = new String[]{args[2], args[3], "~", "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 5 : args2 = new String[]{args[2], args[3], args[4], "8", "minecraft:glass", "true", "0.1"};
+                    break;
+                case 6 : args2 = new String[]{args[2], args[3], args[4], args[5], "minecraft:glass", "true", "0.1"};
+                    break;
+                case 7 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], "true", "0.1"};
+                    break;
+                case 8 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], "0.1"};
+                    break;
+                case 9 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8]};
+                    break;
+                case 10 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]};
+                    break;
+                default : args2 = new String[]{"~", "~", "~", "8", "minecraft:glass", "true", "0.01"};
+                    break;
+            }
+
             if (CanSend) {
                 try {
                     switch (args[1].toLowerCase()) {
                         case ("2dellipsoid"):
                             draw2DEllipsoid(player, args2);
                             break;
-                        //                    case ("3dellipsoid"):
-                        //                    draw3DElllipsoid(player, args2);
-                        //                        break;
+    //                    case ("3dellipsoid"):
+    //                    draw3DElllipsoid(player, args2);
+    //                        break;
                         case ("2dsquircle"):
                             draw2DSquircle(player, args2);
                             break;
@@ -57,9 +81,11 @@ public class CommandDraw implements ISubCommand {
                         default:
                             break;
                     }
-                } catch (Exception ignored) {}
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+                } catch (NumberInvalidException e) {
+                    e.printStackTrace();
+                }
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
     }
 
     @Override

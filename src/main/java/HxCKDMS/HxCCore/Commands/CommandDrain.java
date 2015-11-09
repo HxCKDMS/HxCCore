@@ -2,9 +2,9 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -33,7 +33,7 @@ public class CommandDrain implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Drain"), player);
@@ -48,8 +48,8 @@ public class CommandDrain implements ISubCommand {
                         for (int k = z - range; k < z + range; k++)
                             if (args.length == 3 ? player.worldObj.getBlockState(new BlockPos(i, j, k)) == block : (player.worldObj.getBlockState(new BlockPos(i, j, k)) instanceof IFluidBlock || player.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock().getMaterial().isLiquid()))
                                 player.worldObj.setBlockToAir(new BlockPos(i, j, k));
-            }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        }  else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }
 
     @Override

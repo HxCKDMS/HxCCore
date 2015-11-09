@@ -1,6 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,8 +45,8 @@ public class EventGod implements EventListener {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
-        if(event.entity instanceof EntityPlayer && HealTimer >= 20 && !event.entity.worldObj.isRemote){
-            EntityPlayer player = ((EntityPlayer) event.entity);
+        if(event.entityLiving instanceof EntityPlayer && HealTimer >= 20 && !event.entityLiving.worldObj.isRemote){
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             if(!CustomPlayerData.exists()) return;
@@ -56,7 +56,7 @@ public class EventGod implements EventListener {
             }
         }
         HealTimer++;
-        if(HealTimer >= 21){
+        if(HealTimer > 20){
             HealTimer = 0;
         }
     }

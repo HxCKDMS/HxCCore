@@ -36,16 +36,9 @@ public class CodersCheck implements Runnable {
             try {
                 String inputLine;
                 while ((inputLine = reader.readLine()) != null) {
-                    if (inputLine.startsWith("Coder:")) {
-                        HxCCore.coders.add(UUID.fromString(inputLine.replace("Coder:", "").trim()));
-                    } else if (inputLine.startsWith("Helper:")) {
-                        HxCCore.supporters.add(UUID.fromString(inputLine.replace("Helper:", "").trim()));
-                    } else if (inputLine.startsWith("Supporter:")) {
-                        HxCCore.helpers.add(UUID.fromString(inputLine.replace("Supporter:", "").trim()));
-                    } else if (inputLine.startsWith("Artist:")) {
-                        HxCCore.artists.add(UUID.fromString(inputLine.replace("Artist:", "").trim()));
-                    } else if (inputLine.startsWith("Mascot:")) {
-                        HxCCore.mascots.add(UUID.fromString(inputLine.replace("Mascot:", "").trim()));
+                    if (!inputLine.startsWith("//")) {
+                        String[] str = inputLine.split(":");
+                        HxCCore.HxCLabels.put(UUID.fromString(str[1]), str[0]);
                     }
                 }
             } catch (Exception e) {
