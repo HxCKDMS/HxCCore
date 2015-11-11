@@ -19,28 +19,15 @@ public class NickHandler {
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
 
-        String rawGroup, formattedString = colouredNick;
+        String rawGroup, formattedString = "<" + colouredNick + ">";
 
         rawGroup = CC + PERM_COLOURS[SenderPermLevel] + PERM_NAMES[SenderPermLevel];
 
         if (EnableGroupTagInChat)
-            formattedString = String.format(formats.get("GroupTag"), rawGroup) + formattedString;
+            formattedString = String.format(formats.get("GroupFormat"), rawGroup) + formattedString;
 
-        String tag = formats.get("HxCTag");
-        if (HxCCore.coders.contains(UUID))
-            tag = String.format(tag, CC + "bHxC");
-        else if (HxCCore.supporters.contains(UUID))
-            tag = String.format(tag, CC + "4HxC Supporter");
-        else if (HxCCore.helpers.contains(UUID))
-            tag = String.format(tag, CC + "aHxC Helper");
-        else if (HxCCore.artists.contains(UUID))
-            tag = String.format(tag, CC + "cHxC Artist");
-        else
-            tag = "";
-
-
-        if (EnableHxCTagInChat && !tag.equalsIgnoreCase(""))
-            formattedString = tag + formattedString;
+        if (EnableHxCTagInChat && HxCCore.HxCLabels.containsKey(UUID))
+            formattedString = String.format(formats.get("HxCFormat"), CC + HxCCore.HxCLabels.get(UUID)) + formattedString;
 
         return formattedString.replaceAll("&", CC);
     }

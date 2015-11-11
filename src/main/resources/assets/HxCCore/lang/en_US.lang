@@ -84,7 +84,6 @@ commands.exception.noHomes=You do not have any homes.
 commands.alert.attemptedUse=Player %1$s has tried to execute command /%2$s
 
 commands.exception.permission=You may not excecute this command.
-death.attack.command_kill=%1$s has received divine punishment!
 
 commands.kit.spawn.failure=You do not have permission to use kit %1$s, or it doesn't exist.
 commands.kit.spawn.success=You have were given kit %1$s.
@@ -97,3 +96,23 @@ commands.kit.edit.success=Successfully edited kit %1$s.
 commands.kit.give.failure=Failed to deliver kit %1$s to %2$s.
 commands.kit.give.success=You have successfully given kit %1$s to %2$s.
 commands.kit.recieve.success=You were successfully given kit %1$s.
+
+death.attack.command_kill.0=%1$s forgot how to breathe.
+death.attack.command_kill.1=%1$s has received divine punishment!
+death.attack.command_kill.2=%1$s died of ebola.
+death.attack.command_kill.3=%1$s stepped on a lego.
+death.attack.command_kill.4=%1$s has tripped on a cactus.
+death.attack.command_kill.5=%1$s fell ill with instant death syndrome.
+death.attack.command_kill.6=%1$s has tripped over air.
+death.attack.command_kill.7=%1$s has broke his neck.
+death.attack.command_kill.8=%1$s has spontaneously combusted.
+death.attack.command_kill.9=%1$s has spontaneously exploded.
+death.attack.command_kill.10=%1$s has been atomicly dismantled.
+death.attack.command_kill.11=%1$s has been removed from existence.
+death.attack.command_kill.12=%1$s has blew out their sphincter..
+death.attack.command_kill.13=%1$s has fell into a micro-blackhole.
+death.attack.command_kill.14=%1$s was annihilated by DrZed.
+death.attack.command_kill.15=%1$s's luck ran out.
+death.attack.command_kill.16=%1$s has been slapped into the next universe.
+death.attack.command_kill.17=%1$s died of butt cancer.
+death.attack.command_kill.18=%1$s choked on a potato.
