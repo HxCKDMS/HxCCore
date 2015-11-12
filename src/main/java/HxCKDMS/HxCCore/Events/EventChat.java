@@ -101,7 +101,7 @@ public class EventChat implements EventListener {
 
             if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
                 String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
-                HxCCore.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
+                HxCCore.instance.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
             }
 
             CommandsConfig.ReportedCommands.forEach(c -> {

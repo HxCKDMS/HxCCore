@@ -164,8 +164,9 @@ public class HxCCore {
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
     }
-    private static boolean loggedCommand;
-    public static void logCommand(String str) {
+
+    private boolean loggedCommand;
+    public void logCommand(String str) {
         commandLog.println(str);
         loggedCommand = true;
     }
