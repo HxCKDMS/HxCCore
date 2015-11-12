@@ -164,9 +164,13 @@ public class HxCCore {
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
     }
+
     private boolean loggedCommand;
     public void logCommand(String str) {
-        commandLog.println(str);
+        if (commandLog != null)
+            commandLog.println(str);
+        else
+            LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
         loggedCommand = true;
     }
 
