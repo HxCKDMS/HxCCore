@@ -151,15 +151,15 @@ public class HxCCore {
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
-        File OLDLOG = new File(HxCLogDir, "HxC-CommandLog.log");
+        File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
 
         try {
             if (!CustomWorldFile.exists())
                 CustomWorldFile.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
-            if (OLDLOG.exists()) {
-                OLDLOG.renameTo(new File(HxCLogDir, "HxC-Command.log"));
+            if (!OLDLOG.exists()) {
+                OLDLOG.createNewFile();
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
@@ -167,7 +167,10 @@ public class HxCCore {
 
     private boolean loggedCommand;
     public void logCommand(String str) {
-        commandLog.println(str);
+        if (commandLog != null)
+            commandLog.println(str);
+        else
+            LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
         loggedCommand = true;
     }
 
