@@ -151,15 +151,15 @@ public class HxCCore {
 
         File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
         File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
-        File OLDLOG = new File(HxCLogDir, "HxC-CommandLog.log");
+        File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
 
         try {
             if (!CustomWorldFile.exists())
                 CustomWorldFile.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
-            if (OLDLOG.exists()) {
-                OLDLOG.renameTo(new File(HxCLogDir, "HxC-Command.log"));
+            if (!OLDLOG.exists()) {
+                OLDLOG.createNewFile();
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
