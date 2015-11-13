@@ -64,18 +64,22 @@ public class EventChat implements EventListener {
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
-                    if (colours.contains(str2.charAt(0))) {
-                        CurrentColor = str2.charAt(0);
-                        str2 = str2.substring(1).trim();
-                    } else if (str2.charAt(0) == 'r') {
-                        ChatFormatting = CC + "r";
-                        str2 = str2.substring(1).trim();
+                    if (!str2.isEmpty()) {
+                        if (colours.contains(str2.charAt(0))) {
+                            CurrentColor = str2.charAt(0);
+                            str2 = str2.substring(1).trim();
+                        } else if (str2.charAt(0) == 'r') {
+                            ChatFormatting = CC + "r";
+                            str2 = str2.substring(1).trim();
+                        } else {
+                            if (!ChatFormatting.contains(CC + str2.charAt(0)))
+                                ChatFormatting = ChatFormatting + CC + str2.charAt(0);
+                            else
+                                ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
+                            str2 = str2.substring(1).trim();
+                        }
                     } else {
-                        if (!ChatFormatting.contains(CC + str2.charAt(0)))
-                            ChatFormatting = ChatFormatting + CC + str2.charAt(0);
-                        else
-                            ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
-                        str2 = str2.substring(1).trim();
+                        str2 = "&";
                     }
                     tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str2;
                 }
