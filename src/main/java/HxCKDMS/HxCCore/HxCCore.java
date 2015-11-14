@@ -109,6 +109,7 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
+        MinecraftForge.EVENT_BUS.register(new EventFly());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
