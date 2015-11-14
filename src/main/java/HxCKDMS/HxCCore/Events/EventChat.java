@@ -85,6 +85,8 @@ public class EventChat implements EventListener {
         }
         if (!tmp2.replaceAll(CC, "").trim().isEmpty())
             event.component = new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", tmp2.trim().replaceAll("%", "%%")));
+        else
+            event.component = new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", event.message.replaceAll("%", "%%")));
     }
 
 

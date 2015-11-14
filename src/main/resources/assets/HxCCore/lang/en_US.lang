@@ -84,6 +84,8 @@ commands.exception.noHomes=You do not have any homes.
 commands.alert.attemptedUse=Player %1$s has tried to execute command /%2$s
 
 commands.exception.permission=You may not excecute this command.
+commands.exception.warp=A warp with this name doesn't exist!
+commands.exception.home=A home with this name doesn't exist!
 
 commands.kit.spawn.failure=You do not have permission to use kit %1$s, or it doesn't exist.
 commands.kit.spawn.success=You have were given kit %1$s.

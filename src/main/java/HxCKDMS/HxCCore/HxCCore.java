@@ -51,7 +51,7 @@ public class HxCCore {
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
     public static SimpleNetworkWrapper network;
 
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
     kits = new HxCConfig();
 
@@ -109,6 +109,7 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
+        MinecraftForge.EVENT_BUS.register(new EventProtection());
         MinecraftForge.EVENT_BUS.register(new EventFly());
         MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
@@ -150,13 +151,13 @@ public class HxCCore {
             LogDir.mkdirs();
         HxCLogDir = LogDir;
 
-        File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
-        File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
+        CustomWorldData = new File(HxCCoreDir, "HxCWorld.dat");
+        PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
         File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
 
         try {
-            if (!CustomWorldFile.exists())
-                CustomWorldFile.createNewFile();
+            if (!CustomWorldData.exists())
+                CustomWorldData.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
             if (!OLDLOG.exists()) {
@@ -164,6 +165,9 @@ public class HxCCore {
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
+        try {
+            EventProtection.load();
+        } catch (Exception ignored) {}
     }
 
     private boolean loggedCommand;
