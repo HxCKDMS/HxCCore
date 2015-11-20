@@ -38,8 +38,7 @@ public class CommandSetPerms implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
-            File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
-            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
+            NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(HxCCore.PermissionsData, "Permissions");
             boolean CanUse = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetPerms"), player);
             if (CanUse) {
                 if (args.length == 3) {
@@ -51,7 +50,7 @@ public class CommandSetPerms implements ISubCommand {
                     Permissions.setInteger(playerName, permLevel);
                     player.addChatMessage(new ChatComponentText(CC + "6" + playerName + "'s" + CC + "6 Permissions Level was set to " + CC + PERM_COLOURS[permLevel] + PERM_NAMES[permLevel] + CC + "6."));
 
-                    NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
+                    NBTFileIO.setNbtTagCompound(HxCCore.PermissionsData, "Permissions", Permissions);
                 } else throw new WrongUsageException("commands.exception.permission");
             } else throw new WrongUsageException("commands.exception.permission");
         } else {

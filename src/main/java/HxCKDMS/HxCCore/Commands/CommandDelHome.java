@@ -15,15 +15,18 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
-public class CommandSetWarp implements ISubCommand {
-    public static CommandSetWarp instance = new CommandSetWarp();
+public class CommandDelHome implements ISubCommand {
+    public static CommandDelHome instance = new CommandDelHome();
 
     @Override
     public String getCommandName() {
-        return "SetWarp";
+        return "DelHome";
     }
 
     @Override
@@ -35,30 +38,20 @@ public class CommandSetWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetWarp"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("DelHome"), player);
             if (CanSend) {
-                NBTTagCompound warp = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
-                NBTTagCompound warpDir = new NBTTagCompound();
+                NBTTagCompound home = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "home");
 
-                String wName = args.length == 1 ? "default" : args[1];
+                String hName = args.length == 1 ? "home" : args[1];
+                if (home.hasKey(hName)) {
+                    home.removeTag(hName);
 
-                int x = (int)Math.round(player.posX);
-                int y = (int)Math.round(player.posY);
-                int z = (int)Math.round(player.posZ);
-                int dim = player.dimension;
+                    ChatComponentText msg = new ChatComponentText("Home (" + hName + ") has been deleted.");
+                    msg.getChatStyle().setColor(EnumChatFormatting.DARK_RED);
+                    player.addChatMessage(msg);
 
-                ChatComponentText msg = new ChatComponentText("Warp (" + wName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");
-                msg.getChatStyle().setColor(EnumChatFormatting.DARK_PURPLE);
-                player.addChatMessage(msg);
-
-                warpDir.setInteger("x", x);
-                warpDir.setInteger("y", y);
-                warpDir.setInteger("z", z);
-                warpDir.setInteger("dim", dim);
-
-                warp.setTag(wName, warpDir);
-
-                NBTFileIO.setNbtTagCompound(HxCCore.CustomWorldData, "warp", warp);
+                    NBTFileIO.setNbtTagCompound(HxCCore.CustomWorldData, "home", home);
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home"));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
@@ -66,6 +59,13 @@ public class CommandSetWarp implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if (args.length == 2) {
+            EntityPlayerMP player = (EntityPlayerMP) sender;
+            String UUID = player.getUniqueID().toString();
+            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+            NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
+            return new LinkedList<>((Set<String>) home.getKeySet());
+        }
         return null;
     }
 }
