@@ -136,7 +136,7 @@ public class HxCCore {
             if (knownMods.contains(m.getModId())) {
                 String s = getNewVer(m.getModId(), m.getVersion());
                 if (!s.isEmpty())
-                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP New Version Found = " + s);
+                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
             }
         });
 
@@ -250,6 +250,5 @@ public class HxCCore {
                 e.printStackTrace();
             }
         }
-    }
-
+}
 }
