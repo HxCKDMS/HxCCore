@@ -78,7 +78,7 @@ commands.exception.home.outOfHomes=You have run out of homes.
 
 commands.exception.noWarps=This server does not have any warps.
 commands.exception.noHomes=You do not have any homes.
-commands.exception.bannedCommand=This command was banned by HxCCore Command config...
+commands.exception.bannedCommand=This command was banned in the HxCCore Config!
 commands.exception.noHomes=You do not have any homes.
 
 commands.alert.attemptedUse=Player %1$s has tried to execute command /%2$s
@@ -118,7 +118,7 @@ death.attack.command_kill.15=%1$s's luck ran out.
 death.attack.command_kill.16=%1$s has been slapped into the next universe.
 death.attack.command_kill.17=%1$s died of butt cancer.
 death.attack.command_kill.18=%1$s choked on a potato.
-death.attack.command_kill.19=%1$s broke physics.
+death.attack.command_kill.19=%1$s done borked physics!
 death.attack.command_kill.20=%1$s angered a walrus.
 death.attack.command_kill.21=%1$s fell ontop of a porcupine.
 death.attack.command_kill.22=%1$s was attacked by a swan.
