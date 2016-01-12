@@ -172,11 +172,13 @@ public class HxCCore {
 
     private boolean loggedCommand;
     public void logCommand(String str) {
-        if (commandLog != null)
-            commandLog.println(str);
-        else
-            LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
-        loggedCommand = true;
+        try {
+            if (commandLog != null)
+                commandLog.println(str);
+            else
+                LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
+            loggedCommand = true;
+        } catch (Exception ignored) {}
     }
 
     @EventHandler
