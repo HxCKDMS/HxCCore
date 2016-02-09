@@ -43,6 +43,22 @@ public class RenderHooks {
         return name;
     }
 
+    public static String colorSign(String text) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        char[] chars = text.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (i + 1 < chars.length && chars[i] == '&' && chars[i + 1] != ' ') {
+                stringBuilder.append('\u00a7');
+            } else {
+                stringBuilder.append(chars[i]);
+            }
+        }
+        stringBuilder.append("\u00a70");
+
+        return stringBuilder.toString();
+    }
+
     private static String getHxCTag(UUID UUID) {
         if(HxCCore.HxCLabels.containsKey(UUID))
             return CC + "r" + "[" + CC + HxCCore.HxCLabels.get(UUID) + CC + "r]";

@@ -54,7 +54,7 @@ public class HxCCore {
 
     public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
-    kits = new HxCConfig();
+            kits = new HxCConfig();
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
@@ -67,6 +67,7 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+
         FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
         crashReportThread.setName("HxCKDMS Crash check thread");
         Runtime.getRuntime().addShutdownHook(crashReportThread);
@@ -132,6 +133,7 @@ public class HxCCore {
     }
 
     private GameRules rules;
+
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
@@ -174,10 +176,12 @@ public class HxCCore {
                 OLDLOG.createNewFile();
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         try {
             EventProtection.load();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void registerGamerule(String rule, String value) {
@@ -188,6 +192,7 @@ public class HxCCore {
     }
 
     private boolean loggedCommand;
+
     public void logCommand(String str) {
         try {
             if (commandLog != null)
@@ -195,7 +200,8 @@ public class HxCCore {
             else
                 LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
             loggedCommand = true;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @EventHandler
@@ -206,7 +212,8 @@ public class HxCCore {
                 (new File(HxCLogDir, "HxC-Command.log")).delete();
             else
                 (new File(HxCLogDir, "HxC-Command.log")).renameTo(new File(HxCLogDir, "HxC-CommandLog-" + Calendar.getInstance().getTime().toString().replace(":", "." + ".log")));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     private static void extendEnchantsArray() {
@@ -245,8 +252,8 @@ public class HxCCore {
     }
 
     public static String getNewVer(String mod, String Version) {
-        if (!vers.get(mod+":1.7.10").equalsIgnoreCase(Version))
-            return vers.get(mod+":1.7.10");
+        if (!vers.get(mod + ":1.7.10").equalsIgnoreCase(Version))
+            return vers.get(mod + ":1.7.10");
         return "";
     }
 
@@ -269,5 +276,5 @@ public class HxCCore {
                 e.printStackTrace();
             }
         }
-}
+    }
 }

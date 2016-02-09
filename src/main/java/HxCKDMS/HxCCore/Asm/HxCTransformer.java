@@ -15,7 +15,8 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class HxCTransformer implements IClassTransformer {
     private static final String[] classesBeingTransformed = {
-            "net.minecraft.client.renderer.entity.RendererLivingEntity"
+            "net.minecraft.client.renderer.entity.RendererLivingEntity",
+            "net.minecraft.client.renderer.tileentity.TileEntitySignRenderer"
     };
 
     @Override
@@ -33,6 +34,9 @@ public class HxCTransformer implements IClassTransformer {
             switch (index){
                 case 0:
                     TransformRendererLivingEntity(classNode);
+                    break;
+                case 1:
+                    TransformRendererSign(classNode);
                     break;
             }
 
@@ -74,5 +78,34 @@ public class HxCTransformer implements IClassTransformer {
             }
         }
         if(!hasTransformed) LogHelper.error("Failed to transform: RendererLivingEntity.", References.MOD_NAME + " ASM");
+    }
+
+    private static void TransformRendererSign(ClassNode classNode) {
+        final String RENDERER_SIGN = HxCLoader.RuntimeDeobf ? "func_147500_a" : "renderTileEntityAt";
+        final String RENDERER_SIGN_DESC = "(Lnet/minecraft/tileentity/TileEntitySign;DDDF)V";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if(methodNode.name.equals(RENDERER_SIGN) && methodNode.desc.equals(RENDERER_SIGN_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == ILOAD && instruction.getNext().getOpcode() == AALOAD && instruction.getNext().getNext().getOpcode() == ASTORE)
+                        targetNode = instruction.getNext().getNext().getNext();
+
+                if(targetNode != null) {
+                    LabelNode newLabelNode = new LabelNode();
+
+                    InsnList toInsert = new InsnList();
+                    toInsert.add(new VarInsnNode(ALOAD, 15));
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(RenderHooks.class), "colorSign", "(Ljava/lang/String;)Ljava/lang/String;", false));
+                    toInsert.add(new VarInsnNode(ASTORE, 15));
+
+                    methodNode.instructions.insert(targetNode, toInsert);
+                    methodNode.instructions.insert(targetNode, newLabelNode);
+                }
+                hasTransformed = true;
+                LogHelper.info("Successfully transformed: RendererSign.", References.MOD_NAME + " ASM");
+            }
+        }
+        if(!hasTransformed) LogHelper.error("Failed to transform: RendererSign.", References.MOD_NAME + " ASM");
     }
 }
