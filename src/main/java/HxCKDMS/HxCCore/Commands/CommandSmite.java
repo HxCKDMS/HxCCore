@@ -42,7 +42,7 @@ public class CommandSmite implements ISubCommand {
                     EntityPlayerMP target = CommandsHandler.getPlayer(sender, args[1]);
                     smite(target.worldObj, target.posX, target.posY, target.posZ);
                 } else {
-                    Vec3 vec3 = player.getPosition(1.0f);
+                    Vec3 vec3 = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
                     Vec3 vec31 = player.getLook(1.0f);
                     Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
                     MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);

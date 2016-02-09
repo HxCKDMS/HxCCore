@@ -14,26 +14,29 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 public class EventXPtoBuffs {
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        boolean xpbuff = (Configurations.XPBuffs && !Loader.isModLoaded("HxCSkills"));
+        boolean xpbuff = (!Loader.isModLoaded("HxCSkills"));
         if (event.entity instanceof EntityPlayerMP) {
-            EntityPlayerMP PMP = (EntityPlayerMP) event.entity;
-            if (PMP.xpCooldown > 0)
-                PMP.xpCooldown = 0;
+            EntityPlayerMP player = (EntityPlayerMP) event.entity;
+            if (player.xpCooldown != 0)
+                player.xpCooldown = 0;
             if (xpbuff) {
-                IAttributeInstance PlayerH = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
-                IAttributeInstance PlayerD = PMP.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
-                double MH = PMP.getMaxHealth() - 10;
-                double MD = PlayerD.getAttributeValue();
-                int XP = PMP.experienceLevel / 5;
-                if (MH != XP * 5 && MH <= Configurations.HPMax) {
-                    AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", XP * 0.1, 0);
+                IAttributeInstance PlayerH = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
+                IAttributeInstance PlayerD = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+                double CurrentHealth = player.getMaxHealth() - 20;
+                double CurrentDamage = PlayerD.getAttributeValue()-1;
+                int BuffPoints = player.experienceLevel / Configurations.XPBuffPerLevels;
+                if (CurrentHealth != BuffPoints && CurrentHealth <= Configurations.MaxHealth) {
+                    AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", BuffPoints, 0);
                     PlayerH.removeModifier(exHP);
                     PlayerH.applyModifier(exHP);
+                    player.sendPlayerAbilities();
+                    player.setPlayerHealthUpdated();
                 }
-                if (MD != XP * 5 && MD <= Configurations.DMMax) {
-                    AttributeModifier exDM = new AttributeModifier(References.DMBuffUUID, "DrZedDamageBuff", XP * 0.1, 0);
+                if (CurrentDamage != BuffPoints && CurrentDamage <= Configurations.MaxDamage) {
+                    AttributeModifier exDM = new AttributeModifier(References.DMBuffUUID, "DrZedDamageBuff", BuffPoints, 0);
                     PlayerD.removeModifier(exDM);
                     PlayerD.applyModifier(exDM);
+                    player.sendPlayerAbilities();
                 }
             }
         }

@@ -40,7 +40,10 @@ public class CommandDelHome implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("DelHome"), player);
             if (CanSend) {
-                NBTTagCompound home = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "home");
+                String UUID = player.getUniqueID().toString();
+                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+
+                NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
 
                 String hName = args.length == 1 ? "home" : args[1];
                 if (home.hasKey(hName)) {
