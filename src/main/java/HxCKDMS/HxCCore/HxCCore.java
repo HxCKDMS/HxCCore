@@ -28,6 +28,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -62,6 +63,7 @@ public class HxCCore {
     public static final Thread crashReportThread = new Thread(new CrashReportThread()),
             CodersCheckThread = new Thread(new CodersCheck());
 
+    public HashMap<String, String> HxCRules = new HashMap<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -98,6 +100,8 @@ public class HxCCore {
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
 
+        HxCRules.putIfAbsent("XPBuffs", "false");
+
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
 
@@ -111,7 +115,6 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventGod());
         MinecraftForge.EVENT_BUS.register(new EventProtection());
         MinecraftForge.EVENT_BUS.register(new EventFly());
-        MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
@@ -128,9 +131,16 @@ public class HxCCore {
         });
     }
 
+    private GameRules rules;
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
+
+        rules = server.worldServerForDimension(0).getGameRules();
+        HxCRules.forEach(this::registerGamerule);
+
+        if (HxCRules.get("XPBuffs").equals("true"))
+            MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
 
         Loader.instance().getModList().forEach(m -> {
             if (knownMods.contains(m.getModId())) {
@@ -168,6 +178,13 @@ public class HxCCore {
         try {
             EventProtection.load();
         } catch (Exception ignored) {}
+    }
+
+    public void registerGamerule(String rule, String value) {
+        if (!rules.hasRule(rule))
+            rules.addGameRule(rule, value);
+        else
+            HxCRules.replace(rule, rules.getGameRuleStringValue(rule));
     }
 
     private boolean loggedCommand;

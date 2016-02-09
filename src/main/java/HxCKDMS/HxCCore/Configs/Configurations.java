@@ -15,8 +15,6 @@ public class Configurations {
 
     @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much", category = "Features")
     public static boolean CoolDownDisable = true;
-    @Config.Boolean(description = "Do you want to enable XP Buffs?", category = "Features")
-    public static boolean XPBuffs = true;
     @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
     public static boolean afkExtras = true;
 
@@ -29,11 +27,13 @@ public class Configurations {
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
     @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")
-    public static int HPMax = 40;
+    public static int MaxHealth = 20;
     @Config.Integer(description = "The higher the number the more Max Damage!", category = "Features")
-    public static int DMMax = 40;
+    public static int MaxDamage = 11;
     @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
     public static Integer TpaTimeout = 600;
+    @Config.Integer(description = "How many levels are required per increment of buffs.", category = "Features")
+    public static Integer XPBuffPerLevels = 5;
 
     @Config.List
     public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
