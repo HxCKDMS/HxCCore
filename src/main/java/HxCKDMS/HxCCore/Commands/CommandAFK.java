@@ -1,7 +1,6 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
@@ -66,7 +65,7 @@ public class CommandAFK implements ISubCommand {
                     AFKStatus = false;
                     NBTFileIO.setBoolean(CustomPlayerData, "AFK", true);
                 }
-                if (Configurations.afkExtras) {
+                if (HxCCore.instance.HxCRules.get("AFKDebuffs").equals("true")) {
                     NBTFileIO.setBoolean(CustomPlayerData, "god", !AFKStatus);
                     player.setInvisible(!AFKStatus);
                     if (!AFKStatus) {

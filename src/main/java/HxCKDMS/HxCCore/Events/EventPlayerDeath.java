@@ -17,7 +17,10 @@ public class EventPlayerDeath {
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             if (!CustomPlayerData.exists()) return;
 
-            NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{(int) player.posX, (int) player.posY, (int) player.posZ, player.dimension});
+            if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable())
+                event.setCanceled(true);
+            else
+                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{(int) player.posX, (int) player.posY, (int) player.posZ, player.dimension});
         }
     }
 }

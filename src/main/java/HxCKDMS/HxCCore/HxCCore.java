@@ -102,6 +102,10 @@ public class HxCCore {
         //NEED TO IMPLEMENT Reika's Packet changes...
 
         HxCRules.putIfAbsent("XPBuffs", "false");
+        HxCRules.putIfAbsent("LogCommands", "false");
+        HxCRules.putIfAbsent("ReportCommands", "false");
+        HxCRules.putIfAbsent("AFKDebuffs", "true");
+        HxCRules.putIfAbsent("XPCooldownInterrupt", "true");
 
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
@@ -140,9 +144,6 @@ public class HxCCore {
 
         rules = server.worldServerForDimension(0).getGameRules();
         HxCRules.forEach(this::registerGamerule);
-
-        if (HxCRules.get("XPBuffs").equals("true"))
-            MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
 
         Loader.instance().getModList().forEach(m -> {
             if (knownMods.contains(m.getModId())) {
@@ -189,6 +190,15 @@ public class HxCCore {
             rules.addGameRule(rule, value);
         else
             HxCRules.replace(rule, rules.getGameRuleStringValue(rule));
+    }
+
+    public static void updateGamerules() {
+        instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getGameRuleStringValue(rule)));
+
+        if (instance.HxCRules.get("XPBuffs").equals("true"))
+            MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
+        if (instance.HxCRules.get("XPCooldownInterrupt").equals("true"))
+            MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
     }
 
     private boolean loggedCommand;
