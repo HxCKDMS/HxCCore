@@ -118,6 +118,8 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
+        if (Configurations.XPCoolDownDisable)
+            MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
     }
@@ -185,6 +187,10 @@ public class HxCCore {
             rules.addGameRule(rule, value);
         else
             HxCRules.replace(rule, rules.getGameRuleStringValue(rule));
+    }
+
+    public static void updateGamerules() {
+        instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getGameRuleStringValue(rule)));
     }
 
     private boolean loggedCommand;

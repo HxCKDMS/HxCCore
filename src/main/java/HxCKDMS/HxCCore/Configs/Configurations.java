@@ -14,7 +14,7 @@ public class Configurations {
     public static boolean DebugMode;
 
     @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much", category = "Features")
-    public static boolean CoolDownDisable = true;
+    public static boolean XPCoolDownDisable = true;
     @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
     public static boolean afkExtras = true;
 
