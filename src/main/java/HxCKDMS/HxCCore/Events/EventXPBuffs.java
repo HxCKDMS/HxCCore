@@ -11,15 +11,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 @SuppressWarnings("unused")
-public class EventXPtoBuffs {
+public class EventXPBuffs {
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (event.entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) event.entity;
-            IAttributeInstance PlayerH = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
-            IAttributeInstance PlayerD = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
-            double CurrentHealth = player.getMaxHealth() - 20;
-            double CurrentDamage = PlayerD.getAttributeValue()-1;
+            IAttributeInstance PlayerH = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth),
+                    PlayerD = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+            double CurrentHealth = player.getMaxHealth() - 20, CurrentDamage = PlayerD.getAttributeValue()-1;
             int BuffPoints = player.experienceLevel / Configurations.XPBuffPerLevels;
             if (CurrentHealth != BuffPoints && CurrentHealth <= Configurations.MaxHealth) {
                 AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", BuffPoints, 0);

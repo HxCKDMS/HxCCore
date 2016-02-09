@@ -13,17 +13,6 @@ public class Configurations {
     @Config.Boolean(description = "Debug Mode Enable? Can cause lag and console spam!")
     public static boolean DebugMode;
 
-    @Config.Boolean(description = "True means you can absorb more XP per second, Aprox. 2x as much", category = "Features")
-    public static boolean XPCoolDownDisable = true;
-    @Config.Boolean(description = "Enable invisibility, god, slowness, weakness for afk players?", category = "Features")
-    public static boolean afkExtras = true;
-
-    @Config.Boolean(description = "Enable logging of all attempted execution of commands?", category = "Features")
-    public static boolean LogAttemptedCommands = true;
-
-    @Config.Boolean(description = "Enable reporting of commands to highest perm level for HxCCommands in Reported Commands list?", category = "Features")
-    public static boolean ReportCommandsExecuted = true;
-
     @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
     public static boolean enableCommands = true;
     @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")
@@ -38,7 +27,6 @@ public class Configurations {
     @Config.List
     public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
 
-    //"Burn", "Color", "Extinguish", "Feed", "Fly", "God", "Heal", "Home", "Kill", "Nick", "Repair", "RepairAll", "SetHome", "SetWarp", "Smite", "Warp", "ServerInfo", "Spawn", "TPA", "DrawSphere", "ClientInfo"
     @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
     public static boolean autoCrashReporterEnabled = true;
 

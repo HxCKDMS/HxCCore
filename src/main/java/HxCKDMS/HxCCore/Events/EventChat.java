@@ -111,18 +111,20 @@ public class EventChat implements EventListener {
                 }
             });
 
-            if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
-                String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
-                HxCCore.instance.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
-            }
-
-            CommandsConfig.ReportedCommands.forEach(c -> {
-                if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
-                    ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
-                    t.getChatStyle().setColor(EnumChatFormatting.GOLD);
-                    PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+            if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))
+                if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
+                    String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
+                    HxCCore.instance.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
                 }
-            });
+
+            if (HxCCore.instance.HxCRules.get("ReportCommands").equals("true"))
+                CommandsConfig.ReportedCommands.forEach(c -> {
+                    if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
+                        ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
+                        t.getChatStyle().setColor(EnumChatFormatting.GOLD);
+                        PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+                    }
+                });
         }
     }
 }
