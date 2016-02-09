@@ -65,7 +65,6 @@ public class Configurations {
         if (Permissions.isEmpty()) {
             Permissions.put("Default", "f 3");
             Permissions.put("Helper", "e 5");
-            Permissions.put("Spy", "0 8");
             Permissions.put("Moderator", "9 10");
             Permissions.put("Admin", "6 16");
             Permissions.put("Owner", "4 -1");
