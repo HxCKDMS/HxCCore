@@ -5,6 +5,7 @@
 *.ipr
 *.db
 *.log
+*.launch
 eclipse
 out
 build
