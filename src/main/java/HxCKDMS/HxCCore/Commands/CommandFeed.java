@@ -7,6 +7,9 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,7 +35,7 @@ public class CommandFeed implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         switch(args.length) {
             case 1:
                 if (sender instanceof EntityPlayer) {
@@ -52,7 +55,7 @@ public class CommandFeed implements ISubCommand {
                 float nf = 40 - plf;
                 player2.getFoodStats().addStats(20, 20F);
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayNameString() + "'s\u00A7e throat."));
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

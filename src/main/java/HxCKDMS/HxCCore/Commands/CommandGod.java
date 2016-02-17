@@ -9,6 +9,9 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -34,7 +37,7 @@ public class CommandGod implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         switch(args.length) {
             case 1:
                 if (sender instanceof EntityPlayer) {
@@ -57,7 +60,7 @@ public class CommandGod implements ISubCommand {
 
                 NBTFileIO.setBoolean(CustomPlayerData, "god", !NBTFileIO.getBoolean(CustomPlayerData, "god"));
                 player2.addChatMessage(new ChatComponentText(NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76You suddenly feel immortal." : "\u00A76You suddenly feel mortal."));
-                player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getDisplayName()));
+                player.addChatComponentMessage(new ChatComponentText((NBTFileIO.getBoolean(CustomPlayerData, "god") ? "\u00A76Enabled" : "\u00A76Disabled") + " god mode for " + player2.getDisplayNameString()));
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

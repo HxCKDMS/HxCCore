@@ -2,7 +2,8 @@ package HxCKDMS.HxCCore.Entity;
 
 import HxCKDMS.HxCCore.network.NetHandlerFakePlayServer;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -29,11 +30,11 @@ public class HxCFakePlayer extends FakePlayer {
     }
 
     public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, int x, int y, int z) {
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         if (fakePlayer == null) {
-            return block.getBlockHardness(world, x, y, z) >= 0;
+            return block.getBlockHardness(world, new BlockPos(x, y, z)) >= 0;
         } else {
-            return block.getPlayerRelativeBlockHardness(fakePlayer, world, x, y, z) >= 0;
+            return block.getPlayerRelativeBlockHardness(fakePlayer, world, new BlockPos(x, y, z)) >= 0;
         }
     }
 
@@ -59,11 +60,6 @@ public class HxCFakePlayer extends FakePlayer {
     @Override
     public boolean isSneaking() {
         return sneaking;
-    }
-
-    @Override
-    public boolean isEntityInvulnerable() {
-        return true;
     }
 
     @Override
@@ -112,16 +108,16 @@ public class HxCFakePlayer extends FakePlayer {
 
     @Override
     protected void updateItemUse(ItemStack itemStack, int integer) {
-        if (itemStack.getItemUseAction().equals(EnumAction.drink))
+        if (itemStack.getItemUseAction().equals(EnumAction.DRINK))
             this.playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 
-        if (itemStack.getItemUseAction().equals(EnumAction.eat))
+        if (itemStack.getItemUseAction().equals(EnumAction.EAT))
             this.playSound("random.eat", 0.5F + 0.5F * this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
     }
 
     @Override
-    public String getDisplayName() {
-        return getCommandSenderName();
+    public String getDisplayNameString() {
+        return getName();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Crash;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
-import cpw.mods.fml.common.ICrashCallable;
+import net.minecraftforge.fml.common.ICrashCallable;
 
 public class CrashHandler implements ICrashCallable {
     static boolean hasCrashed = false;

@@ -5,7 +5,7 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import cpw.mods.fml.common.discovery.ASMDataTable;
+import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 import java.util.Set;
 

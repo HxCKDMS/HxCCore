@@ -9,6 +9,9 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,7 +72,7 @@ public class CommandProtect implements ISubCommand {
                     case("create") :
                         land = protectedLandList.getTagList(args[2], 8);
                         lands.appendTag(new NBTTagString(args[2] + "=" + player.dimension + ", " + args[3] + ", " + args[4] + ", " + args[5] + ", " + args[6] + ", " + args[7] + ", " + args[8]));
-                        land.appendTag(new NBTTagString(player.getCommandSenderName()));
+                        land.appendTag(new NBTTagString(player.getName()));
                         protectedLandList.setTag(args[2], land);
                         protectedLands.setTag("lands", lands);
                         NBTFileIO.setNbtTagCompound(HxCCore.CustomWorldData, "protectedLand", protectedLandList);

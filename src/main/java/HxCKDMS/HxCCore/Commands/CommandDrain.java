@@ -7,9 +7,11 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -31,7 +33,7 @@ public class CommandDrain implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Drain"), player);
@@ -44,8 +46,8 @@ public class CommandDrain implements ISubCommand {
                 for (int i = x - range; i < x + range; i++)
                     for (int j = y - range; j < y + range; j++)
                         for (int k = z - range; k < z + range; k++)
-                            if (args.length == 3 ? player.worldObj.getBlock(i, j, k) == block : (player.worldObj.getBlock(i, j, k) instanceof IFluidBlock || player.worldObj.getBlock(i, j, k).getMaterial().isLiquid()))
-                                player.worldObj.setBlockToAir(i, j, k);
+                            if (args.length == 3 ? player.worldObj.getBlockState(new BlockPos(i, j, k)) == block : (player.worldObj.getBlockState(new BlockPos(i, j, k)) instanceof IFluidBlock || player.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock().getMaterial().isLiquid()))
+                                player.worldObj.setBlockToAir(new BlockPos(i, j, k));
             } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
     }

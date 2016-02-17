@@ -108,7 +108,7 @@ public class CommandServerInfo implements ISubCommand {
     }
 
     private String getWorldTPSStyled(WorldServer worldServer){
-        double WorldTickTime = mean(HxCCore.server.worldTickTimes.get(worldServer.provider.dimensionId)) * 1.0E-6D;
+        double WorldTickTime = mean(HxCCore.server.worldTickTimes.get(worldServer.provider.getDimensionId())) * 1.0E-6D;
         double WorldTPS = Math.min(1000.0 / WorldTickTime, 20);
 
         EnumChatFormatting TPSColor = WorldTPS >= 18 ? EnumChatFormatting.GREEN : WorldTPS < 16 ? EnumChatFormatting.RED : EnumChatFormatting.GOLD;

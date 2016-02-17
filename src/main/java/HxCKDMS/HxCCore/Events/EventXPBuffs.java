@@ -3,7 +3,7 @@ package HxCKDMS.HxCCore.Events;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.lib.References;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;

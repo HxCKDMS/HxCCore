@@ -2,7 +2,7 @@ package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -21,9 +21,9 @@ public class EventProtection {
             NBTTagCompound protectedLandList = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "protectedLand");
             protectedZones.forEach((x, z) -> {
                 if (z[0] == event.getPlayer().dimension) {
-                    if (event.x > z[1] && event.x < z[4] && event.y > z[2] && event.y < z[5] && event.z > z[3] && event.z < z[6]) {
+                    if (event.pos.getX() > z[1] && event.pos.getX() < z[4] && event.pos.getY() > z[2] && event.pos.getY() < z[5] && event.pos.getZ() > z[3] && event.pos.getZ() < z[6]) {
                         for (int i = 0; i < protectedLandList.getTagList(x, 8).tagCount(); i++) {
-                            if (protectedLandList.getTagList(x, 8).getStringTagAt(i).equals(event.getPlayer().getCommandSenderName())) {
+                            if (protectedLandList.getTagList(x, 8).getStringTagAt(i).equals(event.getPlayer().getName())) {
                                 return;
                             }
                         }
@@ -40,9 +40,9 @@ public class EventProtection {
             NBTTagCompound protectedLandList = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "protectedLand");
             protectedZones.forEach((x, z) -> {
                 if (z[0] == event.player.dimension) {
-                    if (event.x > z[1] && event.x < z[4] && event.y > z[2] && event.y < z[5] && event.z > z[3] && event.z < z[6]) {
+                    if (event.pos.getX() > z[1] && event.pos.getX() < z[4] && event.pos.getY() > z[2] && event.pos.getY() < z[5] && event.pos.getZ() > z[3] && event.pos.getZ() < z[6]) {
                         for (int i = 0; i < protectedLandList.getTagList(x, 8).tagCount(); i++) {
-                            if (protectedLandList.getTagList(x, 8).getStringTagAt(i).equalsIgnoreCase(event.player.getCommandSenderName())) {
+                            if (protectedLandList.getTagList(x, 8).getStringTagAt(i).equalsIgnoreCase(event.player.getName())) {
                                 return;
                             }
                         }

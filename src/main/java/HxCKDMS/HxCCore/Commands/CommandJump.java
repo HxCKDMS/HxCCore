@@ -36,12 +36,12 @@ public class CommandJump implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Jump"), player);
             if (CanSend) {
-                Vec3 vec3 = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
+                Vec3 vec3 = player.getPositionEyes(1.0f);
                 Vec3 vec31 = player.getLook(1.0f);
                 Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
                 MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);
                 if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-                    player.playerNetServerHandler.setPlayerLocation(rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ, player.rotationYawHead, player.rotationPitch);
+                    player.playerNetServerHandler.setPlayerLocation(rayTrace.getBlockPos().getX(), rayTrace.getBlockPos().getY(), rayTrace.getBlockPos().getZ(), player.rotationYawHead, player.rotationPitch);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }

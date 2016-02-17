@@ -14,16 +14,16 @@ import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkCheckHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkCheckHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
@@ -183,13 +183,13 @@ public class HxCCore {
 
     public void registerGamerule(String rule, String value) {
         if (!rules.hasRule(rule))
-            rules.addGameRule(rule, value);
+            rules.addGameRule(rule, value, GameRules.ValueType.ANY_VALUE);
         else
-            HxCRules.replace(rule, rules.getGameRuleStringValue(rule));
+            HxCRules.replace(rule, rules.getString(rule));
     }
 
     public static void updateGamerules() {
-        instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getGameRuleStringValue(rule)));
+        instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getString(rule)));
 
         if (instance.HxCRules.get("XPBuffs").equals("true"))
             MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
@@ -255,8 +255,8 @@ public class HxCCore {
     }
 
     public static String getNewVer(String mod, String Version) {
-        if (!vers.get(mod+":1.7.10").equalsIgnoreCase(Version))
-            return vers.get(mod+":1.7.10");
+        if (!vers.get(mod+":1.8.9").equalsIgnoreCase(Version))
+            return vers.get(mod+":1.8.9");
         return "";
     }
 

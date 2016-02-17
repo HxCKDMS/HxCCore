@@ -9,6 +9,9 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -50,7 +53,7 @@ public class CommandAFK implements ISubCommand {
             if (CanSend) {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-                String tmp = player.getDisplayName() + CC + NBTFileIO.getString(CustomPlayerData, "Color");
+                String tmp = player.getDisplayNameString() + CC + NBTFileIO.getString(CustomPlayerData, "Color");
                 ChatComponentText AFK = new ChatComponentText(tmp + " has gone AFK.");
                 ChatComponentText Back = new ChatComponentText(tmp + " is no longer AFK.");
                 IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
@@ -71,7 +74,7 @@ public class CommandAFK implements ISubCommand {
                     if (!AFKStatus) {
                         ps.applyModifier(SpeedDeBuff);
                         pd.applyModifier(DMGDeBuff);
-                        player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), 100000, 254, true));
+                        player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), 100000, 254, true, true));
                     } else {
                         ps.removeModifier(SpeedDeBuff);
                         pd.removeModifier(DMGDeBuff);

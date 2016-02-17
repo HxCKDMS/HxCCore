@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.api.Utils;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 //@SuppressWarnings("unused")
@@ -11,23 +12,23 @@ public class WorldHelper {
         else return Math.pow(d, 1.0D / n);
     }
 
-    public static void draw2DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta, double n) {
+    public static void draw2DEllipsoid(World world, BlockState blockState, BlockPos blockPos, int radius, boolean hollow, double checkCounter, double n) {
         Thread thread = new Thread(() -> {
             for (float xr = -radius; xr <= radius; xr += checkCounter){
                 float zrPowered = (float)Math.pow(radius, n) - (float)Math.pow(xr, n);
                 if(zrPowered < 0) continue;
                 int zl = Math.round((float) nthrt(zrPowered, n));
 
-                int xPlace = x + Math.round(xr);
-                int zPlace1 = z + zl;
-                int zPlace2 = z - zl;
+                BlockPos pos = blockPos.add(Math.round(xr), 0, zl);
+                BlockPos pos2 = blockPos.add(Math.round(xr), 0, -zl);
 
-                checkAndPlaceBlock(world, block, xPlace, y, zPlace1, blockMeta);
-                checkAndPlaceBlock(world, block, xPlace, y, zPlace2, blockMeta);
+
+                checkAndPlaceBlock(world, blockState, pos);
+                checkAndPlaceBlock(world, blockState, pos2);
 
                 if(!hollow)
-                    for(int zf = z - zl; zf <= z + zl; zf++)
-                        checkAndPlaceBlock(world, block, xPlace, y, zf, blockMeta);
+                    for(int zf = pos.getZ() - zl; zf <= pos.getZ() + zl; zf++)
+                        checkAndPlaceBlock(world, blockState, new BlockPos(pos.getX(), pos.getY(), zf));
             }
         });
         thread.setName("2DEllipsoidCalculationThread");
@@ -35,7 +36,7 @@ public class WorldHelper {
         thread.start();
     }
 
-    public static void draw3DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta, double n) {
+    public static void draw3DEllipsoid(World world, BlockState blockState, BlockPos blockPos, int radius, boolean hollow, double checkCounter, double n) {
         Thread thread = new Thread(() -> {
             for(float xr = -radius; xr <= radius; xr += checkCounter){
                 for(float zr = -radius; zr <= radius; zr += checkCounter){
@@ -43,17 +44,15 @@ public class WorldHelper {
                     if (yrPowered < 0) continue;
                     int yl = Math.round((float) nthrt(yrPowered, n));
 
-                    int xPlace = x + Math.round(xr);
-                    int yPlace1 = y + yl;
-                    int yPlace2 = y - yl;
-                    int zPlace = z + Math.round(zr);
+                    BlockPos pos = blockPos.add(Math.round(xr), yl, Math.round(zr));
+                    BlockPos pos2 = blockPos.add(Math.round(xr), -yl, Math.round(zr));
 
-                    checkAndPlaceBlock(world, block, xPlace, yPlace1, zPlace, blockMeta);
-                    checkAndPlaceBlock(world, block, xPlace, yPlace2, zPlace, blockMeta);
+                    checkAndPlaceBlock(world, blockState, pos);
+                    checkAndPlaceBlock(world, blockState, pos2);
 
                     if(!hollow)
-                        for (int yf = y - yl; yf <= y + yl; yf++)
-                            checkAndPlaceBlock(world, block, xPlace, yf, zPlace, blockMeta);
+                        for (int yf = blockPos.getY() - yl; yf <= blockPos.getY() + yl; yf++)
+                            checkAndPlaceBlock(world,  blockState, new BlockPos(pos.getX(), yf, pos.getZ()));
                 }
             }
         });
@@ -63,7 +62,7 @@ public class WorldHelper {
         thread.start();
     }
 
-    private synchronized static void checkAndPlaceBlock(World world, Block block, int x, int y, int z, int blockMeta) {
-        if(world.getBlock(x, y, z) != block && y >= 0) world.setBlock(x, y, z, block, blockMeta, 3);
+    private synchronized static void checkAndPlaceBlock(World world, BlockState state, BlockPos pos) {
+        if(world.getBlockState(pos) != state && pos.getY() >= 0) world.setBlockState(pos, state.getBaseState());
     }
 }

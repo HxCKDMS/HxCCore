@@ -5,13 +5,14 @@ import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,16 +48,16 @@ public class CommandsHandler extends AbstractCommandMain {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))
-                LogHelper.info(sender.getCommandSenderName() + " Tried to send command /HxC " +
+                LogHelper.info(sender.getName() + " Tried to send command /HxC " +
                         Arrays.asList(args).toString().replace(",", "").substring(1,
                                 Arrays.asList(args).toString().replace(",", "").length()-1), References.MOD_NAME);
             // 0 is client / 1 is server / 2 is command block
             if (commands.containsKey(k)) {
                 if ((commands.get(k).getCommandRequiredParams()[0] != -1) && (sender instanceof EntityPlayer) && args.length >= commands.get(k).getCommandRequiredParams()[0])
                     commands.get(k).handleCommand(sender, args, true);
-                else if ((commands.get(k).getCommandRequiredParams()[1] != -1) && !(sender instanceof EntityPlayer) && sender.getCommandSenderName().equals(HxCCore.server.getCommandSenderName()) && args.length >= commands.get(k).getCommandRequiredParams()[1])
+                else if ((commands.get(k).getCommandRequiredParams()[1] != -1) && !(sender instanceof EntityPlayer) && sender.getName().equals(HxCCore.server.getName()) && args.length >= commands.get(k).getCommandRequiredParams()[1])
                     commands.get(k).handleCommand(sender, args, false);
-                else if ((commands.get(k).getCommandRequiredParams()[2] != -1) && !sender.getCommandSenderName().equals(HxCCore.server.getCommandSenderName()) && args.length >= commands.get(k).getCommandRequiredParams()[2])
+                else if ((commands.get(k).getCommandRequiredParams()[2] != -1) && !sender.getName().equals(HxCCore.server.getName()) && args.length >= commands.get(k).getCommandRequiredParams()[2])
                     commands.get(k).handleCommand(sender, args, false);
                 else
                     throw new WrongUsageException(StatCollector.translateToLocal("commands." + commands.get(k).getCommandName() + ".usage"));
@@ -82,9 +83,9 @@ public class CommandsHandler extends AbstractCommandMain {
         aliases.add("HXC");
         return aliases;
     }
-    
+
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args) {
+    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         if (args.length == 1) {
             return getListOfStringsMatchingLastWord(args, commands.keySet().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
         } else if (commands.containsKey(args[0])) {

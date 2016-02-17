@@ -6,8 +6,8 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
-import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Utils.Teleporter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -42,10 +42,10 @@ public class CommandSpawn implements ISubCommand {
                 EntityPlayerMP target = args.length == 2 ? CommandsHandler.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 int oldx = (int)target.posX, oldy = (int)target.posY, oldz = (int)target.posZ, olddim = target.dimension;
                 if (target.dimension != 0) {
-                    Teleporter.transferPlayerToDimension(target, 0, player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ);
+                    Teleporter.transferPlayerToDimension(target, 0, player.worldObj.getSpawnPoint());
                     target.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
                 } else {
-                    target.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().posX, player.worldObj.getSpawnPoint().posY, player.worldObj.getSpawnPoint().posZ, player.rotationYaw, player.rotationPitch);
+                    target.playerNetServerHandler.setPlayerLocation(player.worldObj.getSpawnPoint().getX(), player.worldObj.getSpawnPoint().getY(), player.worldObj.getSpawnPoint().getZ(), player.rotationYaw, player.rotationPitch);
                     target.addChatMessage(new ChatComponentText("\u00A76You have been transported to spawn."));
                 }
                 String UUID = target.getUniqueID().toString();

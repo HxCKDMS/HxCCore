@@ -17,7 +17,7 @@ public class NickHandler {
 
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
-        int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+        int SenderPermLevel = Permissions.getInteger(player.getDisplayNameString());
 
         String rawGroup, formattedString = "<" + colouredNick + ">";
 
@@ -38,7 +38,7 @@ public class NickHandler {
         String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
         boolean isOpped = player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
 
-        String tmp = nick.isEmpty() ? player.getDisplayName() : nick;
+        String tmp = nick.isEmpty() ? player.getDisplayNameString() : nick;
 
         if (nick.isEmpty() && isOpped) tmp = CC + '4' + tmp;
         else if (nick.isEmpty()) tmp = CC + 'f' + tmp;

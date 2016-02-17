@@ -55,7 +55,7 @@ public class CommandTpa implements ISubCommand {
                             PlayerThatTPs.addChatComponentMessage(new ChatComponentText(player.getDisplayName() + " accepted your tp request."));
 
                             if (PlayerThatTPs.dimension != player.dimension)
-                                Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, (int)Math.round(player.posX), (int)Math.round(player.posY), (int)Math.round(player.posZ));
+                                Teleporter.transferPlayerToDimension(PlayerThatTPs, player.dimension, player.getPosition());
                             else
                                 PlayerThatTPs.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
                         } else {

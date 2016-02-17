@@ -8,6 +8,9 @@ import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -41,7 +44,7 @@ public class CommandRepairAll implements ISubCommand {
             if (CanSend) {
                 if (args.length == 2) target = CommandsHandler.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);
-                sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayName() + "'s items have been repaired."));
+                sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayNameString() + "'s items have been repaired."));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             if (args.length == 2) repairItems(target);
@@ -52,11 +55,11 @@ public class CommandRepairAll implements ISubCommand {
     public void repairItems (EntityPlayer target) {
         for(int j = 0; j < 36; j++) {
             ItemStack Inv = target.inventory.getStackInSlot(j);
-            if (Inv != null && Inv.isItemStackDamageable()) Inv.setMetadata(0);
+            if (Inv != null && Inv.isItemStackDamageable()) Inv.setItemDamage(0);
         }
         for(int j = 0; j < 4; j++) {
             ItemStack Armor = target.getCurrentArmor(j);
-            if (Armor != null && Armor.isItemStackDamageable()) Armor.setMetadata(0);
+            if (Armor != null && Armor.isItemStackDamageable()) Armor.setItemDamage(0);
         }
     }
 

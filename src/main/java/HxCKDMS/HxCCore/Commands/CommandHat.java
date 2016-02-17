@@ -5,8 +5,11 @@ import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -29,7 +32,7 @@ public class CommandHat implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Hat"), player);

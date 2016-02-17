@@ -35,7 +35,7 @@ public class RenderHooks {
 
         try {
             if (entity instanceof EntityPlayer)
-                return Configurations.formats.get("PlayerNametagFormat").replace("HXC", getHxCTag(UUID)).replace("GROUP", getGroupTag(UUID, entity.getCommandSenderName())).replace("NAME", name);
+                return Configurations.formats.get("PlayerNametagFormat").replace("HXC", getHxCTag(UUID)).replace("GROUP", getGroupTag(UUID, entity.getName())).replace("NAME", name);
         } catch (Exception ignored) {
             return name;
         }

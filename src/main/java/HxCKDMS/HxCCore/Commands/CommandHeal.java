@@ -9,6 +9,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -48,7 +51,7 @@ public class CommandHeal implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.setHealth(player2.getMaxHealth());
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
-                sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
+                sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayNameString() + "."));
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

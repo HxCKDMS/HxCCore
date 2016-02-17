@@ -12,13 +12,13 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
@@ -53,7 +53,7 @@ public class CommandHome implements ISubCommand {
                 }
                 NBTTagCompound home = homeDir.getCompoundTag(hName);
                 if(player.dimension != home.getInteger("dim")) {
-                    Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), home.getInteger("x"), home.getInteger("y"), home.getInteger("z"));
+                    Teleporter.transferPlayerToDimension(player, home.getInteger("dim"), new BlockPos(home.getInteger("x"), home.getInteger("y"), home.getInteger("z")));
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 } else {
                     player.playerNetServerHandler.setPlayerLocation(home.getInteger("x"), home.getInteger("y"), home.getInteger("z"), player.rotationYaw, player.rotationPitch);
@@ -71,7 +71,7 @@ public class CommandHome implements ISubCommand {
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-            return new LinkedList<>((Set<String>) home.getKeySet());
+            return new LinkedList<>(home.getKeySet());
         }
         return null;
     }

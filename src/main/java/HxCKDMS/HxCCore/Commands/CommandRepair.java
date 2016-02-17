@@ -35,7 +35,7 @@ public class CommandRepair implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Repair"), player);
             if (CanSend) {
                 ItemStack HeldItem = player.getHeldItem();
-                HeldItem.setMetadata(0);
+                HeldItem.setItemDamage(0);
                 sender.addChatMessage(new ChatComponentText("\u00A7b" + HeldItem.getDisplayName() + " has been repaired."));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));

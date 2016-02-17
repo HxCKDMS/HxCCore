@@ -12,6 +12,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
@@ -51,7 +52,7 @@ public class CommandWarp implements ISubCommand {
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
-                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"));
+                    Teleporter.transferPlayerToDimension(player, warp.getInteger("dim"), new BlockPos(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z")));
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 } else {
                     player.playerNetServerHandler.setPlayerLocation(warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), player.rotationYaw, player.rotationPitch);

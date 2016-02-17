@@ -7,6 +7,9 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -39,7 +42,7 @@ public class CommandExterminate implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
@@ -72,7 +75,7 @@ public class CommandExterminate implements ISubCommand {
                             ent.setDead();
                             tmp += 1;
                         }
-                        else if (ent.getCommandSenderName().toLowerCase().contains(args[1].toLowerCase()) && !(ent instanceof EntityTameable)) {
+                        else if (ent.getName().toLowerCase().contains(args[1].toLowerCase()) && !(ent instanceof EntityTameable)) {
                             ent.setDead();
                             tmp += 1;
                         }

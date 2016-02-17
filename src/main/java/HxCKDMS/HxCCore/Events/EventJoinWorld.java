@@ -5,9 +5,9 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class EventJoinWorld implements EventListener {
                 if (Configurations.DebugMode)
                     LogHelper.warn("File HxC-" + UUID + ".dat" + (success ? " was created." : " could not be created."), References.MOD_NAME);
             }
-            NBTFileIO.setString(CustomPlayerData, "username", event.player.getDisplayName());
+            NBTFileIO.setString(CustomPlayerData, "username", event.player.getDisplayNameString());
         } catch (IOException exceptions) {
             exceptions.printStackTrace();
         }
@@ -40,9 +40,9 @@ public class EventJoinWorld implements EventListener {
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
-        int pl = Permissions.getInteger(event.player.getDisplayName());
+        int pl = Permissions.getInteger(event.player.getDisplayNameString());
 
-        if (pl == 0) Permissions.setInteger(event.player.getDisplayName(), 0);
+        if (pl == 0) Permissions.setInteger(event.player.getDisplayNameString(), 0);
 
         NBTFileIO.setNbtTagCompound(PermissionsData, "Permissions", Permissions);
     }

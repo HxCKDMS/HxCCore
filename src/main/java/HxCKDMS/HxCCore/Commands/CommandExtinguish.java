@@ -7,6 +7,9 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -30,7 +33,7 @@ public class CommandExtinguish implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         switch(args.length) {
             case 1:
                 if (isPlayer) {
@@ -46,7 +49,7 @@ public class CommandExtinguish implements ISubCommand {
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.extinguish();
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
-                sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player2.getDisplayName()));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player2.getDisplayNameString()));
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

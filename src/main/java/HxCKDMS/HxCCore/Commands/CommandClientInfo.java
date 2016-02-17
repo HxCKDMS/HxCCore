@@ -10,6 +10,9 @@ import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
+
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -39,7 +42,7 @@ public class CommandClientInfo implements ISubCommand {
     }
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
+    public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException{
         if (isPlayer) {
             if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ClientInfo"), (EntityPlayerMP) sender)) {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
@@ -100,7 +103,7 @@ public class CommandClientInfo implements ISubCommand {
         return god ? EnumChatFormatting.GOLD + "true" : EnumChatFormatting.GRAY + "false";
     }
     private String getPlayerNameStyled(EntityPlayerMP player){
-        return EnumChatFormatting.AQUA + player.getDisplayName() + defaultColor;
+        return EnumChatFormatting.AQUA + player.getDisplayNameString() + defaultColor;
     }
 
     private String getOPStyled(EntityPlayerMP player){

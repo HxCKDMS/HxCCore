@@ -2,7 +2,7 @@ package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Configuration.Config;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -188,7 +188,7 @@ public class Kits {
     }
 
     public static String setItem(ItemStack item) {
-        String str = Item.itemRegistry.getNameForObject(item.getItem());
+        String str = Item.itemRegistry.getNameForObject(item.getItem()).toString();
         str = "<" + str + ":" + item.getMetadata() + "> = " + item.stackSize;
         if (item.hasTagCompound()) {
             NBTTagCompound tags = item.getTagCompound();
