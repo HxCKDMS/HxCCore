@@ -25,15 +25,15 @@ minecraft {
 }
 
 def root = project.projectDir.parentFile
-sourceSets{
-    main {
-        java {
-            srcDir new File(root, "src")
-        }
-        resources {
-            srcDir new File(root, "resources")
-        }
-    }
+sourceSets {
+	main {
+		java {
+			srcDir new File(root, "src")
+		}
+		resources {
+			srcDir new File(root, "resources")
+		}
+	}
 }
 
 processResources {
@@ -46,11 +46,11 @@ processResources {
 jar {
 	classifier = 'universal'
 
-    manifest {
-        attributes 'FMLAT': 'accessTransformer.cfg'
+	manifest {
+		attributes 'FMLAT': 'accessTransformer.cfg'
         attributes "FMLCorePluginContainsFMLMod": "true"
         attributes "FMLCorePlugin": 'HxCKDMS.HxCCore.Asm.HxCLoader'
-    }
+	}
 }
 
 task devJar(type: Jar) {
@@ -58,10 +58,10 @@ task devJar(type: Jar) {
 	classifier = 'dev'
 
 	manifest {
-        attributes 'FMLAT': 'accessTransformer.cfg'
+		attributes 'FMLAT': 'accessTransformer.cfg'
         attributes "FMLCorePluginContainsFMLMod": "true"
         attributes "FMLCorePlugin": 'HxCKDMS.HxCCore.Asm.HxCLoader'
-    }
+	}
 }
 
 artifacts {
