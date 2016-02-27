@@ -28,6 +28,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -51,9 +52,9 @@ public class HxCCore {
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
     public static SimpleNetworkWrapper network;
 
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData;
     public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
-            kits = new HxCConfig();
+    kits = new HxCConfig();
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
@@ -62,6 +63,7 @@ public class HxCCore {
     public static final Thread crashReportThread = new Thread(new CrashReportThread()),
             CodersCheckThread = new Thread(new CodersCheck());
 
+    public HashMap<String, String> HxCRules = new HashMap<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -98,18 +100,25 @@ public class HxCCore {
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
         //NEED TO IMPLEMENT Reika's Packet changes...
 
+        HxCRules.putIfAbsent("XPBuffs", "false");
+        HxCRules.putIfAbsent("LogCommands", "false");
+        HxCRules.putIfAbsent("ReportCommands", "false");
+        HxCRules.putIfAbsent("AFKDebuffs", "true");
+        HxCRules.putIfAbsent("XPCooldownInterrupt", "true");
+
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        FMLCommonHandler.instance().bus().register(new EventNickSync());
-        FMLCommonHandler.instance().bus().register(new EventTpRequest());
-        FMLCommonHandler.instance().bus().register(new EventJoinWorld());
-        FMLCommonHandler.instance().bus().register(new EventPlayerNetworkCheck());
+        MinecraftForge.EVENT_BUS.register(new EventNickSync());
+        MinecraftForge.EVENT_BUS.register(new EventTpRequest());
+        MinecraftForge.EVENT_BUS.register(new EventJoinWorld());
+        MinecraftForge.EVENT_BUS.register(new EventPlayerNetworkCheck());
 
         MinecraftForge.EVENT_BUS.register(new EventGod());
-        MinecraftForge.EVENT_BUS.register(new EventXPtoBuffs());
+        MinecraftForge.EVENT_BUS.register(new EventProtection());
+        MinecraftForge.EVENT_BUS.register(new EventFly());
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
@@ -126,15 +135,19 @@ public class HxCCore {
         });
     }
 
+    private GameRules rules;
     @EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         server = event.getServer();
+
+        rules = server.worldServerForDimension(0).getGameRules();
+        HxCRules.forEach(this::registerGamerule);
 
         Loader.instance().getModList().forEach(m -> {
             if (knownMods.contains(m.getModId())) {
                 String s = getNewVer(m.getModId(), m.getVersion());
                 if (!s.isEmpty())
-                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP New Version Found = " + s);
+                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
             }
         });
 
@@ -149,13 +162,13 @@ public class HxCCore {
             LogDir.mkdirs();
         HxCLogDir = LogDir;
 
-        File CustomWorldFile = new File(HxCCoreDir, "HxCWorld.dat");
-        File PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
+        CustomWorldData = new File(HxCCoreDir, "HxCWorld.dat");
+        PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
         File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
 
         try {
-            if (!CustomWorldFile.exists())
-                CustomWorldFile.createNewFile();
+            if (!CustomWorldData.exists())
+                CustomWorldData.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
             if (!OLDLOG.exists()) {
@@ -163,15 +176,36 @@ public class HxCCore {
             }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
         } catch (IOException ignored) {}
+        try {
+            EventProtection.load();
+        } catch (Exception ignored) {}
+    }
+
+    public void registerGamerule(String rule, String value) {
+        if (!rules.hasRule(rule))
+            rules.addGameRule(rule, value, GameRules.ValueType.ANY_VALUE);
+        else
+            HxCRules.replace(rule, rules.getGameRuleStringValue(rule));
+    }
+
+    public static void updateGamerules() {
+        instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getGameRuleStringValue(rule)));
+
+        if (instance.HxCRules.get("XPBuffs").equals("true"))
+            MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
+        if (instance.HxCRules.get("XPCooldownInterrupt").equals("true"))
+            MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
     }
 
     private boolean loggedCommand;
     public void logCommand(String str) {
-        if (commandLog != null)
-            commandLog.println(str);
-        else
-            LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
-        loggedCommand = true;
+        try {
+            if (commandLog != null)
+                commandLog.println(str);
+            else
+                LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
+            loggedCommand = true;
+        } catch (Exception ignored) {}
     }
 
     @EventHandler
@@ -195,7 +229,7 @@ public class HxCCore {
         enchantsOffset = Enchantment.enchantmentsList.length;
         Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
         System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
-        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
+        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_180311_a");
         LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
     }
 
@@ -221,8 +255,8 @@ public class HxCCore {
     }
 
     public static String getNewVer(String mod, String Version) {
-        if (!vers.get(mod+":1.7.10").equalsIgnoreCase(Version))
-            return vers.get(mod+":1.7.10");
+        if (!vers.get(mod+":1.8").equalsIgnoreCase(Version))
+            return vers.get(mod+":1.8");
         return "";
     }
 

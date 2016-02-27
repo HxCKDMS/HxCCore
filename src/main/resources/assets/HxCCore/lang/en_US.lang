@@ -78,13 +78,14 @@ commands.exception.home.outOfHomes=You have run out of homes.
 
 commands.exception.noWarps=This server does not have any warps.
 commands.exception.noHomes=You do not have any homes.
-commands.exception.bannedCommand=This command was banned by HxCCore Command config...
+commands.exception.bannedCommand=This command was banned in the HxCCore Config!
 commands.exception.noHomes=You do not have any homes.
 
 commands.alert.attemptedUse=Player %1$s has tried to execute command /%2$s
 
 commands.exception.permission=You may not excecute this command.
-death.attack.command_kill=%1$s has received divine punishment!
+commands.exception.warp=A warp with this name doesn't exist!
+commands.exception.home=A home with this name doesn't exist!
 
 commands.kit.spawn.failure=You do not have permission to use kit %1$s, or it doesn't exist.
 commands.kit.spawn.success=You have were given kit %1$s.
@@ -97,3 +98,39 @@ commands.kit.edit.success=Successfully edited kit %1$s.
 commands.kit.give.failure=Failed to deliver kit %1$s to %2$s.
 commands.kit.give.success=You have successfully given kit %1$s to %2$s.
 commands.kit.recieve.success=You were successfully given kit %1$s.
+
+death.attack.command_kill.0=%1$s forgot how to breathe.
+death.attack.command_kill.1=%1$s has received divine punishment!
+death.attack.command_kill.2=%1$s died of ebola.
+death.attack.command_kill.3=%1$s stepped on a lego.
+death.attack.command_kill.4=%1$s has tripped on a cactus.
+death.attack.command_kill.5=%1$s fell ill with instant death syndrome.
+death.attack.command_kill.6=%1$s has tripped over air.
+death.attack.command_kill.7=%1$s has broke his neck.
+death.attack.command_kill.8=%1$s has spontaneously combusted.
+death.attack.command_kill.9=%1$s has spontaneously exploded.
+death.attack.command_kill.10=%1$s has been atomicly dismantled.
+death.attack.command_kill.11=%1$s has been removed from existence.
+death.attack.command_kill.12=%1$s has blew out their sphincter!
+death.attack.command_kill.13=%1$s has fell into a micro-blackhole.
+death.attack.command_kill.14=%1$s was annihilated by DrZed.
+death.attack.command_kill.15=%1$s's luck ran out.
+death.attack.command_kill.16=%1$s has been slapped into the next universe.
+death.attack.command_kill.17=%1$s died of butt cancer.
+death.attack.command_kill.18=%1$s choked on a potato.
+death.attack.command_kill.19=%1$s done borked physics!
+death.attack.command_kill.20=%1$s angered a walrus.
+death.attack.command_kill.21=%1$s fell ontop of a porcupine.
+death.attack.command_kill.22=%1$s was attacked by a swan.
+death.attack.command_kill.23=%1$s was killed by a squid.
+death.attack.command_kill.24=%1$s hit the cactus too hard then blew up swimming in lava.....
+death.attack.command_kill.25=%1$s slipped on a banana peel.
+death.attack.command_kill.26=%1$s sat on a cactus.
+death.attack.command_kill.27=%1$s done did.
+death.attack.command_kill.28=%1$s had one job...
+death.attack.command_kill.29=You had one job %1$s and you failed...
+death.attack.command_kill.30=Rest in potatoes %1$s...
+death.attack.command_kill.31=Rest in pasta %1$s...
+death.attack.command_kill.32=RIP %1$s...
+death.attack.command_kill.33=%1$s...
+death.attack.command_kill.34=%1$s failed...

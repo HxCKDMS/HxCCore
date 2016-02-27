@@ -19,7 +19,6 @@ import net.minecraft.util.StatCollector;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
@@ -72,7 +71,7 @@ public class CommandHome implements ISubCommand {
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-            return new LinkedList<>((Set<String>) home.getKeySet());
+            return new LinkedList<>(home.getKeySet());
         }
         return null;
     }

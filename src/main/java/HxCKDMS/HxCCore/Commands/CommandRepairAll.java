@@ -8,6 +8,9 @@ import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -41,7 +44,7 @@ public class CommandRepairAll implements ISubCommand {
             if (CanSend) {
                 if (args.length == 2) target = CommandsHandler.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);
-                sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayName() + "'s items have been repaired."));
+                sender.addChatMessage(new ChatComponentText("\u00A7bAll of " + target.getDisplayNameString() + "'s items have been repaired."));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else {
             if (args.length == 2) repairItems(target);

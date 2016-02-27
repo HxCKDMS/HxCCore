@@ -35,7 +35,7 @@ public class CommandThaw implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
-                int range = Integer.parseInt(args[1]);
+                int range = Integer.parseInt(args[1]), height = args.length >= 3 ? Integer.parseInt(args[2]) : 10;
                 for (int x = (int)Math.round(player.posX) - range; x < (int)Math.round(player.posX) + range; x++) {
                     for (int y = (int)Math.round(player.posY) - 5; y < (int)Math.round(player.posY) + 5; y++) {
                         for (int z = (int)Math.round(player.posZ) - range; z < (int)Math.round(player.posZ) + range; z++) {

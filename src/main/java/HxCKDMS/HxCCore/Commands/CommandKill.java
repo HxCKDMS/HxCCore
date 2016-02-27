@@ -9,6 +9,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
@@ -38,13 +41,13 @@ public class CommandKill implements ISubCommand {
                 if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kill"), player);
-                    if (CanSend) player.attackEntityFrom(new DamageSource("command_kill." + player.worldObj.rand.nextInt(18)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+                    if (CanSend) player.attackEntityFrom(new DamageSource("command_kill." + player.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
                     else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
                 } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
             break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                player2.attackEntityFrom(new DamageSource("command_kill." + player2.worldObj.rand.nextInt(18)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+                player2.attackEntityFrom(new DamageSource("command_kill." + player2.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

@@ -1,19 +1,18 @@
 package HxCKDMS.HxCCore.Handlers;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +47,7 @@ public class CommandsHandler extends AbstractCommandMain {
     public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
         if (args.length > 0) {
             String k = args[0].toLowerCase();
-            if (Configurations.LogAttemptedCommands)
+            if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))
                 LogHelper.info(sender.getCommandSenderName() + " Tried to send command /HxC " +
                         Arrays.asList(args).toString().replace(",", "").substring(1,
                                 Arrays.asList(args).toString().replace(",", "").length()-1), References.MOD_NAME);

@@ -9,6 +9,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -47,12 +49,12 @@ public class CommandBurn implements ISubCommand {
                     EntityPlayerMP player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                     player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                     player2.setFire(750000000);
-                    sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for 750000000 ticks."));
+                    sender.addChatMessage(new ChatComponentText(player2.getDisplayNameString() + " \u00A74has been set on fire for 750000000 ticks."));
                 case 3:
                     player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                     player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                     player2.setFire(Integer.parseInt(args[2]));
-                    sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
+                    sender.addChatMessage(new ChatComponentText(player2.getDisplayNameString() + " \u00A74has been set on fire for " + Integer.parseInt(args[2]) + " ticks."));
                     break;
                 default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
             }

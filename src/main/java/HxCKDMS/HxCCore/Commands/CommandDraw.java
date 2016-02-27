@@ -63,9 +63,9 @@ public class CommandDraw implements ISubCommand {
                         case ("2dellipsoid"):
                             draw2DEllipsoid(player, args2);
                             break;
-    //                    case ("3dellipsoid"):
-    //                    draw3DElllipsoid(player, args2);
-    //                        break;
+                        //                    case ("3dellipsoid"):
+                        //                    draw3DElllipsoid(player, args2);
+                        //                        break;
                         case ("2dsquircle"):
                             draw2DSquircle(player, args2);
                             break;

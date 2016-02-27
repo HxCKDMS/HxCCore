@@ -11,6 +11,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -51,12 +53,12 @@ public class CommandFly implements ISubCommand {
                     boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Fly"), player);
                     if (CanSend) {
                         EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                        player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayName() + "."));
+                        player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayNameString() + "."));
                         player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel like the wind can carry you." : "\u00A7bYou feel like an unmovable boulder."));
                     } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
                 } else {
                     EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                    sender.addChatMessage(new ChatComponentText((toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayName() + ".")));
+                    sender.addChatMessage(new ChatComponentText((toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayNameString() + ".")));
                     player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel like the wind can carry you." : "\u00A7bYou feel like an unmovable boulder."));
                 }
                 break;

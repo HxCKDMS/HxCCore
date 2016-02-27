@@ -62,18 +62,20 @@ public class EventChat implements EventListener {
             if (str.startsWith("&")) {
                 String[] mg = str.split("&");
                 for (String str2 : mg) {
-                    if (colours.contains(str2.charAt(0))) {
-                        CurrentColor = str2.charAt(0);
-                        str2 = str2.substring(1).trim();
-                    } else if (str2.charAt(0) == 'r') {
-                        ChatFormatting = CC + "r";
-                        str2 = str2.substring(1).trim();
-                    } else {
-                        if (!ChatFormatting.contains(CC + str2.charAt(0)))
-                            ChatFormatting = ChatFormatting + CC + str2.charAt(0);
-                        else
-                            ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
-                        str2 = str2.substring(1).trim();
+                    if (!str2.isEmpty()) {
+                        if (colours.contains(str2.charAt(0))) {
+                            CurrentColor = str2.charAt(0);
+                            str2 = str2.substring(1).trim();
+                        } else if (str2.charAt(0) == 'r') {
+                            ChatFormatting = CC + "r";
+                            str2 = str2.substring(1).trim();
+                        } else {
+                            if (!ChatFormatting.contains(CC + str2.charAt(0)))
+                                ChatFormatting = ChatFormatting + CC + str2.charAt(0);
+                            else
+                                ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
+                            str2 = str2.substring(1).trim();
+                        }
                     }
                     tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str2;
                 }
@@ -81,36 +83,38 @@ public class EventChat implements EventListener {
         }
         if (!tmp2.replaceAll(CC, "").trim().isEmpty())
             event.setComponent(new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", tmp2.trim().replaceAll("%", "%%"))));
+        else
+            event.setComponent(new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", event.message.replaceAll("%", "%%"))));
     }
 
 
     @SubscribeEvent
     public void commandEvent(CommandEvent event) {
         if (event.sender instanceof EntityPlayerMP && event.sender.getCommandSenderName() != null) {
+            if (event.command.getCommandName().equals("gamerule")) {
+                HxCCore.updateGamerules();
+            }
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
-                if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
+                if ((CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) || (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) || (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)))
                     event.setCanceled(true);
-                } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
-                    event.setCanceled(true);
-                } else if (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)) {
-                    event.setCanceled(true);
-                }
             });
 
-            if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
-                String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
-                HxCCore.instance.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
-            }
-
-            CommandsConfig.ReportedCommands.forEach(c -> {
-                if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
-                    ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
-                    t.getChatStyle().setColor(EnumChatFormatting.GOLD);
-                    PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+            if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))
+                if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {
+                    String time = "[" + String.valueOf(Calendar.getInstance().getTime()) + "] : ";
+                    HxCCore.instance.logCommand(time + event.sender.getCommandSenderName() + " tried to execute command [/" + cmd + "]");
                 }
-            });
+
+            if (HxCCore.instance.HxCRules.get("ReportCommands").equals("true"))
+                CommandsConfig.ReportedCommands.forEach(c -> {
+                    if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
+                        ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
+                        t.getChatStyle().setColor(EnumChatFormatting.GOLD);
+                        PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+                    }
+                });
         }
     }
 }

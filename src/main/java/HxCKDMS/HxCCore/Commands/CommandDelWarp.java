@@ -18,15 +18,17 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
-public class CommandSetWarp implements ISubCommand {
-    public static CommandSetWarp instance = new CommandSetWarp();
+public class CommandDelWarp implements ISubCommand {
+    public static CommandDelWarp instance = new CommandDelWarp();
 
     @Override
     public String getCommandName() {
-        return "SetWarp";
+        return "DelWarp";
     }
 
     @Override
@@ -38,30 +40,20 @@ public class CommandSetWarp implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("SetWarp"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("DelWarp"), player);
             if (CanSend) {
                 NBTTagCompound warp = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
-                NBTTagCompound warpDir = new NBTTagCompound();
 
                 String wName = args.length == 1 ? "default" : args[1];
+                if (warp.hasKey(wName)) {
+                    warp.removeTag(wName);
 
-                int x = (int)Math.round(player.posX);
-                int y = (int)Math.round(player.posY);
-                int z = (int)Math.round(player.posZ);
-                int dim = player.dimension;
+                    ChatComponentText msg = new ChatComponentText("Warp (" + wName + ") has been deleted.");
+                    msg.getChatStyle().setColor(EnumChatFormatting.DARK_RED);
+                    player.addChatMessage(msg);
 
-                ChatComponentText msg = new ChatComponentText("Warp (" + wName + ") has been set to coordinates: X(" + x + ") Y(" + y + ") Z(" + z + ") Dimension(" + dim + ").");
-                msg.getChatStyle().setColor(EnumChatFormatting.DARK_PURPLE);
-                player.addChatMessage(msg);
-
-                warpDir.setInteger("x", x);
-                warpDir.setInteger("y", y);
-                warpDir.setInteger("z", z);
-                warpDir.setInteger("dim", dim);
-
-                warp.setTag(wName, warpDir);
-
-                NBTFileIO.setNbtTagCompound(HxCCore.CustomWorldData, "warp", warp);
+                    NBTFileIO.setNbtTagCompound(HxCCore.CustomWorldData, "warp", warp);
+                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.warp"));
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
@@ -69,6 +61,10 @@ public class CommandSetWarp implements ISubCommand {
     @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        if (args.length == 2) {
+            NBTTagCompound warp = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
+            return new LinkedList<>((Set<String>) warp.getKeySet());
+        }
         return null;
     }
 }

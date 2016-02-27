@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public class HxCAccessTransformer extends AccessTransformer {
     public HxCAccessTransformer() throws IOException {
-        super("HxC_at.cfg");
+        super("HxCCore_at.cfg");
     }
 }

@@ -188,7 +188,7 @@ public class Kits {
     }
 
     public static String setItem(ItemStack item) {
-        String str = (String)Item.itemRegistry.getNameForObject(item.getItem());
+        String str = Item.itemRegistry.getNameForObject(item.getItem()).toString();
         str = "<" + str + ":" + item.getMetadata() + "> = " + item.stackSize;
         if (item.hasTagCompound()) {
             NBTTagCompound tags = item.getTagCompound();

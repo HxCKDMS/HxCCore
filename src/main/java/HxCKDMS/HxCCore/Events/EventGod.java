@@ -4,7 +4,6 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
@@ -17,20 +16,6 @@ public class EventGod implements EventListener {
 
     @SubscribeEvent
     public void playerHurt(LivingHurtEvent event){
-        if(event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote){
-            EntityPlayer player = ((EntityPlayer) event.entity);
-            String UUID = player.getUniqueID().toString();
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
-            if(!CustomPlayerData.exists()) return;
-
-            if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void playerDeath(LivingDeathEvent event){
         if(event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote){
             EntityPlayer player = ((EntityPlayer) event.entity);
             String UUID = player.getUniqueID().toString();

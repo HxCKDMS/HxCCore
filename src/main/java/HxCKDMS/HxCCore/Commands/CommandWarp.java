@@ -43,12 +43,11 @@ public class CommandWarp implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Warp"), player);
             if (CanSend) {
                 int oldx = (int)player.posX, oldy = (int)player.posY, oldz = (int)player.posZ, olddim = player.dimension;
-                File HxCWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 String wName = args.length == 1 ? "default" : args[1];
-                NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCWorldData, "warp");
+                NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
                 if(warpDir.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noWarps"));
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
@@ -67,8 +66,7 @@ public class CommandWarp implements ISubCommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
-            NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomPlayerData, "warp");
+            NBTTagCompound warp = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
             return new LinkedList<>((Set<String>) warp.getKeySet());
         }
         return null;

@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.Events.EventProtection;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -15,13 +16,14 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = false)
-public class CommandMakeItRain implements ISubCommand {
-    public static CommandMakeItRain instance = new CommandMakeItRain();
+@SuppressWarnings({"unchecked", "unused"})
+@HxCCommand(defaultPermission = 5, mainCommand = CommandsHandler.class, isEnabled = true)
+public class CommandOverride implements ISubCommand {
+    private static CommandOverride instance = new CommandOverride();
 
     @Override
     public String getCommandName() {
-        return "Mir";
+        return "Override";
     }
 
     @Override
@@ -33,25 +35,14 @@ public class CommandMakeItRain implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Mir"), player);
-            int speed = 2;
-            boolean isKitty = false;
-            if (args.length >= 2) { speed = Integer.parseInt(args[1]);}
-            if (args.length == 3 && args[2].equalsIgnoreCase("kitty")) {isKitty = true;}
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Override"), player);
             if (CanSend) {
-//                Vec3 vec = player.getLookVec();
-//                double x = vec.xCoord, y = vec.yCoord, z = vec.zCoord;
-//                EntityTNTPrimed tnt = new EntityTNTPrimed(player.worldObj, player.posX, player.posY+player.height, player.posZ, player);
-//                EntityOcelot kitty = new EntityOcelot(player.worldObj);
-//                kitty.setPosition(player.posX, player.posY+player.height, player.posZ);
-//                kitty.setVelocity(x * speed, y * speed, z * speed);
-//                tnt.setVelocity(x * speed, y * speed, z * speed);
-//                player.worldObj.spawnEntityInWorld(isKitty ? kitty : tnt);
+                if (!EventProtection.override.contains(player))EventProtection.override.add(player);
+                else EventProtection.override.remove(player);
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
         } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         return null;

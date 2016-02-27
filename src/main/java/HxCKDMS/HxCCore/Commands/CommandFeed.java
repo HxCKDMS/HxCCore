@@ -9,6 +9,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -53,7 +55,7 @@ public class CommandFeed implements ISubCommand {
                 float nf = 40 - plf;
                 player2.getFoodStats().addStats(20, 20F);
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel well fed."));
-                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayName() + "'s\u00A7e throat."));
+                sender.addChatMessage(new ChatComponentText("\u00A7eYou have shoved " + nf + " grams. of food down " + player2.getDisplayNameString() + "'s\u00A7e throat."));
             break;
             default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
         }

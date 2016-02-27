@@ -29,12 +29,12 @@ public class HxCFakePlayer extends FakePlayer {
         this.addedToChunk = false;
     }
 
-    public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, BlockPos pos) {
-        Block block = world.getBlockState(pos).getBlock();
+    public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, int x, int y, int z) {
+        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         if (fakePlayer == null) {
-            return block.getBlockHardness(world, pos) >= 0;
+            return block.getBlockHardness(world, new BlockPos(x, y, z)) >= 0;
         } else {
-            return block.getPlayerRelativeBlockHardness(fakePlayer, world, pos) >= 0;
+            return block.getPlayerRelativeBlockHardness(fakePlayer, world, new BlockPos(x, y, z)) >= 0;
         }
     }
 
