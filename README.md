@@ -15,6 +15,9 @@
 * All commands have configurable permission levels.
 * Permissions system is configurable, Names of ranks, rank levels, etc..
 * Has colourable nicks in chat, in world above player head.
+* Colourable Nametags on animals! Use & for declaring color.
+* Colourable signs now!
+* Ability to Teleport to named mobs! -WIP
 * Provides colourable chat by using & character.
 * Has gamerule for logging used commands.
 * Has gamerule for telling admins of used commands.
@@ -23,3 +26,4 @@
 * Has kits that you can config in configs. -WIP
 * Has Automatic Crash Reporting if our mods are involved in the crash.
 * Nearly everything is configurable.
+
