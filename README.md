@@ -16,8 +16,8 @@
 * Permissions system is configurable, Names of ranks, rank levels, etc..
 * Has colourable nicks in chat, in world above player head.
 * Provides colourable chat by using & character.
-* Has gamerule for logging used commands. -WIP
-* Has gamerule for telling admins of used commands. -WIP
+* Has gamerule for logging used commands.
+* Has gamerule for telling admins of used commands.
 * Allows protecting terrain against griefing. -WIP
 * Serverside only. Does not require to be on client, unless another mod of ours is installed.
 * Has kits that you can config in configs. -WIP
