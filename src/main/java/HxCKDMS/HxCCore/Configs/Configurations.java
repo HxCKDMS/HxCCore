@@ -36,7 +36,7 @@ public class Configurations {
     public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
     @Config.Boolean
-    public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true;
+    public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
 
     @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT", forceReset = true)
     public static String lastCheckedCrash = "";
@@ -51,11 +51,11 @@ public class Configurations {
 
     public static void updateCFGS() {
         if (Permissions.isEmpty()) {
-            Permissions.put("Default", "f 3");
-            Permissions.put("Helper", "e 5");
-            Permissions.put("Moderator", "9 10");
-            Permissions.put("Admin", "6 16");
-            Permissions.put("Owner", "4 -1");
+            Permissions.put("Default", "f, 3, 0");
+            Permissions.put("Helper", "e, 5, 512");
+            Permissions.put("Moderator", "9, 10, 4096");
+            Permissions.put("Admin", "6, 16, 32768");
+            Permissions.put("Owner", "4, -1, -1");
         }
         if (CommandsConfig.BannedCommands.isEmpty()) {
             CommandsConfig.BannedCommands.put("example command", 0);

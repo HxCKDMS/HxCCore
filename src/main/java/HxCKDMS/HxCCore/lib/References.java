@@ -24,6 +24,7 @@ public class References {
     public static String[] PERM_NAMES = new String[Configurations.Permissions.size()];
     public static char[] PERM_COLOURS = new char[Configurations.Permissions.size()];
     public static int[] HOMES = new int[Configurations.Permissions.size()];
+    public static long[] PROTECT_SIZE = new long[Configurations.Permissions.size()];
 
     public static final List<String> COLOR_CHARS_STRING = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "k", "m", "n", "l", "o");
     public static final List<Character> COLOR_CHARS = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'm', 'n', 'l', 'o');

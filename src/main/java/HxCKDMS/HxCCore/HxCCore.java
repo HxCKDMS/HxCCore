@@ -83,8 +83,10 @@ public class HxCCore {
 
         for (int i = 0; i < Configurations.Permissions.size(); i++) {
             PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
-            PERM_COLOURS[i] = Configurations.Permissions.get(PERM_NAMES[i]).charAt(0);
-            HOMES[i] = Integer.parseInt(Configurations.Permissions.get(PERM_NAMES[i]).substring(1).trim());
+            String[] temp = Configurations.Permissions.get(PERM_NAMES[i]).replaceAll(" ", "").split(",");
+            PERM_COLOURS[i] = temp[0].charAt(0);
+            HOMES[i] = Integer.parseInt(temp[1]);
+            PROTECT_SIZE[i] = Long.parseLong(temp[2]);
         }
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
@@ -129,7 +131,8 @@ public class HxCCore {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        versionCheck();
+        if(Configurations.versionCheck)
+            versionCheck();
         knownMods.forEach(mod -> {
             if (Loader.isModLoaded(mod))
                 LogHelper.info("Thank you for using " + mod, MOD_NAME);
@@ -144,14 +147,14 @@ public class HxCCore {
 
         rules = server.worldServerForDimension(0).getGameRules();
         HxCRules.forEach(this::registerGamerule);
-
-        Loader.instance().getModList().forEach(m -> {
-            if (knownMods.contains(m.getModId())) {
-                String s = getNewVer(m.getModId(), m.getVersion());
-                if (!s.isEmpty())
-                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
-            }
-        });
+        if(Configurations.versionCheck)
+            Loader.instance().getModList().forEach(m -> {
+                if (knownMods.contains(m.getModId())) {
+                    String s = getNewVer(m.getModId(), m.getVersion());
+                    if (!s.isEmpty())
+                        server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
+                }
+            });
 
         if (Configurations.enableCommands) CommandsHandler.initCommands(event);
 
@@ -210,8 +213,7 @@ public class HxCCore {
             else
                 LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
             loggedCommand = true;
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @EventHandler
@@ -222,8 +224,7 @@ public class HxCCore {
                 (new File(HxCLogDir, "HxC-Command.log")).delete();
             else
                 (new File(HxCLogDir, "HxC-Command.log")).renameTo(new File(HxCLogDir, "HxC-CommandLog-" + Calendar.getInstance().getTime().toString().replace(":", "." + ".log")));
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     private static void extendEnchantsArray() {
@@ -262,8 +263,10 @@ public class HxCCore {
     }
 
     public static String getNewVer(String mod, String Version) {
-        if (!vers.get(mod + ":1.7.10").equalsIgnoreCase(Version))
-            return vers.get(mod + ":1.7.10");
+        try {
+            if (!vers.get(mod + ":1.7.10").equalsIgnoreCase(Version))
+                return vers.get(mod + ":1.7.10");
+        } catch(Exception ignored) {}
         return "";
     }
 
@@ -282,9 +285,7 @@ public class HxCCore {
             }
         } catch (Exception e) {
             LogHelper.error("Can not resolve HxCVersions.txt", References.MOD_NAME);
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-            }
+            if (Configurations.DebugMode) e.printStackTrace();
         }
     }
 }

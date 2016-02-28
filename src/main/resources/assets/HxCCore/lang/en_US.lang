@@ -34,6 +34,7 @@ commands.sethome.info=set a home to your current location
 commands.afk.info=go to/return from afk mode
 commands.mute.info=prevent specified player from communicating
 commands.repairall.info=repair all items in specified player's inventory
+commands.protect.info=protects specified region from player interaction
 
 commands.help.usage=help
 commands.heal.usage=heal [player]
@@ -72,6 +73,7 @@ commands.sethome.usage=sethome [homename] [visibletofriends/true/false]
 commands.afk.usage=afk
 commands.mute.usage=mute [player]
 commands.repairall.usage=repairall [player]
+commands.protect.usage=protect <regionName> <add/transfer/create/delete>
 
 commands.exception.playeronly=This command can only be executed by players.
 commands.exception.home.outOfHomes=You have run out of homes.
