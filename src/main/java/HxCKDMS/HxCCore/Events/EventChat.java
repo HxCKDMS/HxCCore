@@ -5,12 +5,12 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Utils.ColorHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.CommandEvent;
@@ -19,74 +19,28 @@ import net.minecraftforge.event.ServerChatEvent;
 import java.io.File;
 import java.util.*;
 
-import static HxCKDMS.HxCCore.Handlers.NickHandler.getMessageHeader;
-import static HxCKDMS.HxCCore.lib.References.CC;
-
-@SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "SuspiciousMethodCalls"})
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class EventChat implements EventListener {
     List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
-        UUID UUID = event.player.getUniqueID();
-        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-        if (!CustomPlayerData.exists()) return;
+        try {
+            event.component = ColorHelper.handleChat(event.message, event.player);
+        } catch (Exception unhandled) {
+            event.setCanceled(true);
+        }
 
+        UUID UUID = event.player.getUniqueID();
         File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
         if (!worldData.exists()) worldData.mkdirs();
         try {
             NBTTagCompound mutes = NBTFileIO.getNbtTagCompound(worldData, "mutedPlayers");
             if (mutes.getBoolean(UUID.toString())) {
-                event.player.addChatMessage(new ChatComponentText("\u00a76You're muted, atempting to speak is futile."));
+                event.player.addChatMessage(new ChatComponentText("\u00a76You're muted, attempting to speak is futile."));
                 event.setCanceled(true);
             }
         } catch (Exception ignored) {}
-
-        String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
-
-        char CurrentColor = 'f';
-
-        String ChatFormatting = "";
-        if (!playerColor.equalsIgnoreCase("") &! playerColor.equalsIgnoreCase("f"))
-            CurrentColor = playerColor.charAt(0);
-
-        String[] tmp = event.message.split(" ");
-        String tmp2 = "";
-        for (String str : tmp) {
-            tmp2 = tmp2 + " ";
-            if (str.contains("//www.youtube.com/")) {
-                str = str.replace("https", "http");
-                //Replaces long youtube link with shortened version
-                str = str.replace("//www.youtube.com/watch?v=", "//youtu.be/");
-                //Tested and works.... http://puu.sh/l3L5U.png
-                //http://youtu.be/X1a71UcM1wQ
-            }
-            if (str.startsWith("&")) {
-                String[] mg = str.split("&");
-                for (String str2 : mg) {
-                    if (!str2.isEmpty()) {
-                        if (colours.contains(str2.charAt(0))) {
-                            CurrentColor = str2.charAt(0);
-                            str2 = str2.substring(1).trim();
-                        } else if (str2.charAt(0) == 'r') {
-                            ChatFormatting = CC + "r";
-                            str2 = str2.substring(1).trim();
-                        } else {
-                            if (!ChatFormatting.contains(CC + str2.charAt(0)))
-                                ChatFormatting = ChatFormatting + CC + str2.charAt(0);
-                            else
-                                ChatFormatting = ChatFormatting.replace(CC + str2.charAt(0), "") + CC + str2;
-                            str2 = str2.substring(1).trim();
-                        }
-                    }
-                    tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str2;
-                }
-            } else tmp2 = tmp2 + ChatFormatting + CC + CurrentColor + str;
-        }
-        if (!tmp2.replaceAll(CC, "").trim().isEmpty())
-            event.component = new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", tmp2.trim().replaceAll("%", "%%")));
-        else
-            event.component = new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", getMessageHeader(event.player)).replace("MESSAGE", event.message.replaceAll("%", "%%")));
     }
 
 

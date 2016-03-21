@@ -3,6 +3,7 @@ package HxCKDMS.HxCCore.Asm.Hooks;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Utils.ColorHelper;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,19 +45,11 @@ public class RenderHooks {
     }
 
     public static String colorSign(String text) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        char[] chars = text.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (i + 1 < chars.length && chars[i] == '&' && chars[i + 1] != ' ') {
-                stringBuilder.append('\u00a7');
-            } else {
-                stringBuilder.append(chars[i]);
-            }
+        try{
+            return ColorHelper.handleSign(text);
+        } catch (NullPointerException unhandled) {
+            return "";
         }
-        stringBuilder.append("\u00a70");
-
-        return stringBuilder.toString();
     }
 
     private static String getHxCTag(UUID UUID) {

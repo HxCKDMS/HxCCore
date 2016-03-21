@@ -97,17 +97,17 @@ public class CrashReportThread implements Runnable {
         }
     }
 
-    static class filter implements FileFilter {
+    private static class filter implements FileFilter {
         @Override
         public boolean accept(File file) {
             return file.getName().startsWith("crash-");
         }
     }
 
-    static class crashSendTemplate {
+    private static class crashSendTemplate {
         ArrayList<String> crash;
 
-        public crashSendTemplate(ArrayList<String> crash) {
+        crashSendTemplate(ArrayList<String> crash) {
             this.crash = crash;
         }
     }
