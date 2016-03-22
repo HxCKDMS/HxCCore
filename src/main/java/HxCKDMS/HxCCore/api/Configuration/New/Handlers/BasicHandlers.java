@@ -124,7 +124,6 @@ public class BasicHandlers {
             Field field = configClass.getField(variable);
 
             try {
-                System.out.println(value);
                 if (!value.isEmpty()) field.set(configClass, Boolean.valueOf(value));
             } catch (NumberFormatException ignored) {}
         }

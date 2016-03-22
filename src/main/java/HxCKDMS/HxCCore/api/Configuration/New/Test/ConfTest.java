@@ -3,7 +3,9 @@ package HxCKDMS.HxCCore.api.Configuration.New.Test;
 import HxCKDMS.HxCCore.api.Configuration.New.Config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Config
 public class ConfTest {
@@ -32,5 +34,10 @@ public class ConfTest {
         add(1);
         add(2);
         add(3);
+    }};
+
+    public static Map<String, Integer> lololol = new HashMap(){{
+        put("test",5);
+        put("lol",45);
     }};
 }

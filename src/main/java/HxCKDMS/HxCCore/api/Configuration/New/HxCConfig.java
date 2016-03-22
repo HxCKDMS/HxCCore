@@ -30,6 +30,7 @@ public class HxCConfig {
     private HashMap<String, HashMap<String, String>> valueComments = new HashMap<>();
 
     static {
+        //Basic types
         registerTypeHandler(new BasicHandlers.StringHandler());
         registerTypeHandler(new BasicHandlers.IntegerHandler());
         registerTypeHandler(new BasicHandlers.DoubleHandler());
@@ -40,9 +41,15 @@ public class HxCConfig {
         registerTypeHandler(new BasicHandlers.ByteHandler());
         registerTypeHandler(new BasicHandlers.BooleanHandler());
 
+        //Lists
         registerTypeHandler(new AdvancedHandlers.ListHandler());
         registerTypeHandler(new AdvancedHandlers.ArrayListHandler());
         registerTypeHandler(new AdvancedHandlers.LinkedListHandler());
+
+        //Maps
+        registerTypeHandler(new AdvancedHandlers.MapHandler());
+        registerTypeHandler(new AdvancedHandlers.HashMapHandler());
+        registerTypeHandler(new AdvancedHandlers.LinkedHashMapHandler());
     }
 
     public static void registerTypeHandler(AbstractTypeHandler typeHandler) {
