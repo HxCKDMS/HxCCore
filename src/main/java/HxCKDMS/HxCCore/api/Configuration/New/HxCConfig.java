@@ -55,7 +55,6 @@ public class HxCConfig {
 
     private void read() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"));
-        reader.reset();
         String line;
         String category = "";
         while ((line = reader.readLine()) != null) {
