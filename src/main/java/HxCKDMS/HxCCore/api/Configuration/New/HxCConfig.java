@@ -3,7 +3,6 @@ package HxCKDMS.HxCCore.api.Configuration.New;
 import HxCKDMS.HxCCore.api.Configuration.New.Exceptions.InvalidConfigClassException;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -14,15 +13,10 @@ import java.util.Map;
 
 public class HxCConfig {
     private Class<?> configClass;
-    private File configFile;
     //TODO: replace with own file type.
     private NBTTagCompound configDataWatcher;
-    private File dataWatcherFile;
-    private File configDirectory;
-    private File dataWatcherDirectory;
-
-    private LinkedHashMap<String, LinkedHashMap<String, String>> configData = new LinkedHashMap<>();
-
+    private File configFile, dataWatcherFile, configDirectory, dataWatcherDirectory;
+    private LinkedHashMap<String, LinkedHashMap<String, Object>> configWritingData = new LinkedHashMap<>(), configReadingData = new LinkedHashMap<>(), configData = new LinkedHashMap<>();
     private static HashMap<Class<?>, AbstractTypeHandler> TypeHandlers = new HashMap<>();
 
     public static boolean registerTypeHandler(AbstractTypeHandler typeHandler) {
@@ -59,8 +53,44 @@ public class HxCConfig {
         return true;
     }
 
-    private void read() {
+    private void read() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"));
+        reader.reset();
+        String line;
+        String category = "";
+        while ((line = reader.readLine()) != null) {
+            boolean firstIteration = true;
+            line = line.replaceFirst("    ", "\t");
+            char[] characters = line.toCharArray();
+            StringBuilder nameBuilder = new StringBuilder();
 
+            if (line.endsWith("{")) {
+                StringBuilder categoryBuilder = new StringBuilder();
+                for (int i = 0; i < characters.length; i++) {
+                    if (i == 0) continue;
+                    if (characters[i] == '{' && characters[i-1] == ' ') break;
+                    categoryBuilder.append(characters[i-1]);
+                }
+
+                if (categoryBuilder.length() != 0) category = categoryBuilder.toString();
+            }
+
+            for (char character : characters) {
+                if (firstIteration && character == '\t') {
+                    firstIteration = false;
+                    continue;
+                } else if (firstIteration) break;
+                if (character == '\t' || character == '=') break;
+                nameBuilder.append(character);
+                firstIteration = false;
+            }
+
+            if (nameBuilder.length() == 0) continue;
+            String variableName = nameBuilder.toString();
+            System.out.printf("%1$s: %2$s\n", category, variableName);
+        }
+
+        reader.close();
     }
 
     private void write() throws IOException {
@@ -68,14 +98,14 @@ public class HxCConfig {
         Arrays.stream(configClass.getDeclaredFields()).filter(field -> !field.isAnnotationPresent(Config.ignore.class)).forEachOrdered(this::handleFieldWriting);
         Arrays.stream(configClass.getDeclaredClasses()).filter(clazz -> !clazz.isAnnotationPresent(Config.ignore.class)).forEachOrdered(this::handleClass);
 
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile)));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), "UTF-8"));
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (Map.Entry<String, LinkedHashMap<String, String>> entry : configData.entrySet()) {
+        for (Map.Entry<String, LinkedHashMap<String, Object>> entry : configWritingData.entrySet()) {
             stringBuilder.append(entry.getKey()).append(" {\n");
 
-            for (Map.Entry<String, String> entry2 : entry.getValue().entrySet()) {
+            for (Map.Entry<String, Object> entry2 : entry.getValue().entrySet()) {
                 stringBuilder.append("\t").append(entry2.getKey()).append('=').append(entry2.getValue()).append('\n');
             }
             stringBuilder.append("}\n\n");
@@ -92,17 +122,19 @@ public class HxCConfig {
     }
 
     private void handleFieldReading(Field field) {
-        NBTTagList data = configDataWatcher.getTagList(field.getName(), 0);
-        System.out.println(data);
 
-        TypeHandlers.get(field.getType());
     }
 
     private void handleFieldWriting(Field field) {
         if (TypeHandlers.containsKey(field.getType())) try {
-            NBTTagList data = new NBTTagList();
-            TypeHandlers.get(field.getType()).write(field, configData, data);
-            configDataWatcher.setTag(field.getName(), data);
+            NBTTagCompound data = new NBTTagCompound();
+            String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "Default";
+            NBTTagCompound category = configDataWatcher.getCompoundTag(categoryName);
+
+            TypeHandlers.get(field.getType()).write(field, configWritingData, data);
+
+            category.setTag(field.getName(), data);
+            configDataWatcher.setTag(categoryName, category);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
