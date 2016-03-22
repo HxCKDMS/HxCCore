@@ -27,4 +27,10 @@ public class ConfTest {
         add("test");
         add("lol");
     }};
+
+    public static List<Integer> listTest2 = new ArrayList(){{
+        add(1);
+        add(2);
+        add(3);
+    }};
 }
