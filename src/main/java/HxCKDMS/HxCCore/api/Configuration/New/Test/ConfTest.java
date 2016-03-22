@@ -2,6 +2,9 @@ package HxCKDMS.HxCCore.api.Configuration.New.Test;
 
 import HxCKDMS.HxCCore.api.Configuration.New.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Config
 public class ConfTest {
     @Config.category("29")
@@ -14,7 +17,14 @@ public class ConfTest {
 
     public static int asdvasd = 45;
     @Config.category("asdf")
+    @Config.comment("This is an Integer!")
     public static Integer lolasdf = 59;
     public static Double asfasdffdsa = 45.12;
     public static double asdfasdfasdf = 5123.5235;
+    public static boolean troll = false;
+
+    public static List<String> listTest = new ArrayList(){{
+        add("test");
+        add("lol");
+    }};
 }

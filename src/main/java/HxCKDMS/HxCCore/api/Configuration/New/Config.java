@@ -14,6 +14,11 @@ public @interface Config {
 
     @Retention(RetentionPolicy.RUNTIME)
     @interface category {
-        String value() default "Default";
+        String value();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface comment {
+        String value();
     }
 }
