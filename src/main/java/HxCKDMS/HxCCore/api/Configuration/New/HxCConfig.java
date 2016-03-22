@@ -41,6 +41,8 @@ public class HxCConfig {
         registerTypeHandler(new BasicHandlers.BooleanHandler());
 
         registerTypeHandler(new AdvancedHandlers.ListHandler());
+        registerTypeHandler(new AdvancedHandlers.ArrayListHandler());
+        registerTypeHandler(new AdvancedHandlers.LinkedListHandler());
     }
 
     public static void registerTypeHandler(AbstractTypeHandler typeHandler) {
