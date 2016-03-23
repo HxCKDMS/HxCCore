@@ -1,44 +1,54 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Configuration.Category;
-import HxCKDMS.HxCCore.api.Configuration.Config;
+import HxCKDMS.HxCCore.api.Configuration.New.Config;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@Config
 public class Configurations {
-    @Config.Boolean(description = "Debug Mode Enable? Can cause lag and console spam!")
+    @Config.comment("Debug Mode Enable? Can cause lag and console spam!")
     public static boolean DebugMode;
 
-    @Config.Boolean(description = "Enable all HxCCommands. (Disable if you don't want any new commands)", category = "Features")
+    @Config.comment("Enable all HxCCommands. (Disable if you don't want any new commands)")
+    @Config.category("Features")
     public static boolean enableCommands = true;
-    @Config.Integer(description = "Don't Exceed 100 without Tinkers or a mod that changes Health Bar.", category = "Features")
+
+    @Config.comment("Don't Exceed 100 without Tinkers or a mod that changes Health Bar.")
+    @Config.category("Features")
     public static int MaxHealth = 20;
-    @Config.Integer(description = "The higher the number the more Max Damage!", category = "Features")
+
+    @Config.comment("The higher the number the more Max Damage!")
+    @Config.category("Features")
     public static int MaxDamage = 11;
-    @Config.Integer(description = "Sets the amount of ticks it takes for a tpa request to time out.", category = "Features")
+
+    @Config.comment("Sets the amount of ticks it takes for a tpa request to time out.")
+    @Config.category("Features")
     public static Integer TpaTimeout = 600;
-    @Config.Integer(description = "How many levels are required per increment of buffs.", category = "Features")
+
+    @Config.comment("How many levels are required per increment of buffs.")
+    @Config.category("Features")
     public static Integer XPBuffPerLevels = 5;
 
-    @Config.List
     public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
 
-    @Config.Boolean(description = "Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.", category = "Features")
+    @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
+    @Config.category("Features")
     public static boolean autoCrashReporterEnabled = true;
 
-    @Config.Map(category = "Permissions", description = "You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
+    @Config.comment("You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
+    @Config.category("Permissions")
     public static LinkedHashMap<String, String> Permissions = new LinkedHashMap<>();
-    @Config.Map(description = "HxC is labels given to special people. Group is the Server rank Name is nickname", forceReset = true)
+
+    @Config.comment("HxC is labels given to special people. Group is the Server rank Name is nickname")
     public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
-    @Config.Boolean
     public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
 
-    @Config.String(description = "This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.", category = "DNT", forceReset = true)
+    @Config.comment("This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.")
+    @Config.category("DNT")
     public static String lastCheckedCrash = "";
 
     static {
@@ -49,16 +59,13 @@ public class Configurations {
         formats.put("BroadcastFormat", "&f[&6SERVER&f] &f<SENDER&f> &4MESSAGE");
     }
 
-    public static void updateCFGS() {
+    private static void putValues() {
         if (Permissions.isEmpty()) {
             Permissions.put("Default", "f, 3, 0");
             Permissions.put("Helper", "e, 5, 512");
             Permissions.put("Moderator", "9, 10, 4096");
             Permissions.put("Admin", "6, 16, 32768");
             Permissions.put("Owner", "4, -1, -1");
-        }
-        if (CommandsConfig.BannedCommands.isEmpty()) {
-            CommandsConfig.BannedCommands.put("example command", 0);
         }
 
         if (Kits.Kits.isEmpty() && Kits.KitPerms.isEmpty()) {
@@ -74,22 +81,12 @@ public class Configurations {
     }
 
     public static void preInitConfigs() {
-        HxCCore.hxCConfig.registerCategory(new Category("General"));
-        HxCCore.hxCConfig.registerCategory(new Category("Features"));
-        HxCCore.hxCConfig.registerCategory(new Category("Permissions", "Do not add a permission level requirement for a command if the permission level doesn't exist!"));
-        HxCCore.hxCConfig.registerCategory(new Category("DNT", "DO NOT TOUCH!!!!!!!!!"));
+        putValues();
 
-        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
-
-        HxCCore.commandCFG.registerCategory(new Category("General"));
-        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
-
-        HxCCore.kits.registerCategory(new Category("General"));
-        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
-
-        updateCFGS();
-        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
-        HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
-        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+        HxCCore.config.setCategoryComment("Permission", "Do not add a permission level requirement for a command if the permission level doesn't exist!");
+        HxCCore.config.setCategoryComment("DNT", "DO NOT TOUCH!!!!!!!!!");
+        HxCCore.config.initConfiguration();
+        HxCCore.commandConfig.initConfiguration();
+        HxCCore.kitConfig.initConfiguration();
     }
 }

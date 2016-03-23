@@ -72,22 +72,25 @@ public class HxCConfig {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void initConfiguration() throws IOException, ClassNotFoundException {
-
-        configDirectory.mkdirs();
-        if(!configFile.exists()) configFile.createNewFile();
-        dataWatcherDirectory.mkdirs();
-        if(!dataWatcherFile.exists()) dataWatcherFile.createNewFile();
-
-        Path path = dataWatcherDirectory.toPath();
-        Files.setAttribute(path, "dos:hidden", true);
-
+    public void initConfiguration() {
         try {
-            configDataWatcher = CompressedStreamTools.read(dataWatcherFile);
-        } catch (EOFException ignored) {}
+            configDirectory.mkdirs();
+            if(!configFile.exists()) configFile.createNewFile();
+            dataWatcherDirectory.mkdirs();
+            if(!dataWatcherFile.exists()) dataWatcherFile.createNewFile();
 
-        read();
-        write();
+            Path path = dataWatcherDirectory.toPath();
+            Files.setAttribute(path, "dos:hidden", true);
+
+            try {
+                configDataWatcher = CompressedStreamTools.read(dataWatcherFile);
+            } catch (EOFException ignored) {}
+
+            read();
+            write();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void read() throws IOException {

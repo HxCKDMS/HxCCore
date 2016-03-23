@@ -167,7 +167,7 @@ public class AdvancedHandlers {
 
         @Override
         public Class<?>[] getTypes() {
-            return new Class<?>[0];
+            return new Class<?>[]{HashMap.class};
         }
     }
 
@@ -186,7 +186,7 @@ public class AdvancedHandlers {
 
         @Override
         public Class<?>[] getTypes() {
-            return new Class<?>[0];
+            return new Class<?>[]{LinkedHashMap.class};
         }
     }
 }

@@ -2,6 +2,7 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Configs.Kits;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
@@ -10,7 +11,7 @@ import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
-import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
+import HxCKDMS.HxCCore.api.Configuration.New.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
@@ -51,10 +52,9 @@ public class HxCCore {
     public static HashMap<EntityPlayerMP, EntityPlayerMP> tpaRequestList = new HashMap<>();
     public static HashMap<EntityPlayerMP, Integer> TpaTimeoutList = new HashMap<>();
     public static SimpleNetworkWrapper network;
+    public static HxCConfig config, commandConfig, kitConfig;
 
     public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData;
-    public static HxCConfig hxCConfig = new HxCConfig(), commandCFG = new HxCConfig(),
-            kits = new HxCConfig();
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
@@ -78,6 +78,10 @@ public class HxCCore {
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         commandCFGFile = new File(HxCConfigDir, "HxCCommands.cfg");
         kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
+
+        config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg");
+        commandConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
+        kitConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
 
         Configurations.preInitConfigs();
 

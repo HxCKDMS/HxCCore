@@ -53,7 +53,7 @@ public class CrashReportThread implements Runnable {
         if (Configurations.lastCheckedCrash.equals(mostRecent.getName())) return;
 
         Configurations.lastCheckedCrash = mostRecent.getName();
-        HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
+        HxCCore.config.initConfiguration();
 
         if (hasMod) sendToServer(crash);
     }

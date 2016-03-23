@@ -1,6 +1,5 @@
 package HxCKDMS.HxCCore.Registry;
 
-import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
@@ -37,6 +36,6 @@ public class CommandRegistry {
                 }
             }
         }
-        HxCCore.commandCFG.handleConfig(Configurations.class, HxCCore.commandCFGFile);
+        HxCCore.commandConfig.initConfiguration();
     }
 }

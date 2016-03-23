@@ -2,7 +2,6 @@ package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Configs.Kits;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
@@ -16,9 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-import static HxCKDMS.HxCCore.lib.References.HOMES;
-import static HxCKDMS.HxCCore.lib.References.PERM_COLOURS;
-import static HxCKDMS.HxCCore.lib.References.PERM_NAMES;
+import static HxCKDMS.HxCCore.lib.References.*;
 
 @HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandReloadConfigs implements ISubCommand {
@@ -40,9 +37,9 @@ public class CommandReloadConfigs implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ReloadConfigs"), player);
             if (CanSend) {
-                HxCCore.commandCFG.handleConfig(CommandsConfig.class, HxCCore.commandCFGFile);
-                HxCCore.hxCConfig.handleConfig(Configurations.class, HxCCore.HxCConfigFile);
-                HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+                HxCCore.commandConfig.initConfiguration();
+                HxCCore.config.initConfiguration();
+                HxCCore.kitConfig.initConfiguration();
                 PERM_NAMES =  new String[Configurations.Permissions.size()];
                 PERM_COLOURS = new char[Configurations.Permissions.size()];
                 HOMES = new int[Configurations.Permissions.size()];

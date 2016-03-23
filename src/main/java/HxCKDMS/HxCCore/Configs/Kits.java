@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Configuration.Config;
+import HxCKDMS.HxCCore.api.Configuration.New.Config;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -13,11 +13,10 @@ import net.minecraft.potion.PotionEffect;
 
 import java.util.*;
 
+@Config
 public class Kits {
-    @Config.Map
     public static LinkedHashMap<String, String> Kits = new LinkedHashMap<>();
 
-    @Config.Map
     public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
 
     public static boolean canGetKit(int permLevel, String kit) {
@@ -164,18 +163,18 @@ public class Kits {
         str = str.substring(0, str.length()-1).replace("(~", "(").replaceAll(":0>", ">").replaceAll(";<", "; <");
         Kits.put(name, "{" + str + "}");
         KitPerms.put(name, permLevel);
-        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+        HxCCore.kitConfig.initConfiguration();
     }
 
     public static void removeKit(String name) {
         Kits.remove(name);
         KitPerms.remove(name);
-        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+        HxCCore.kitConfig.initConfiguration();
     }
 
     public static void chngKitPerms(String name, int lvl) {
         KitPerms.replace(name, lvl);
-        HxCCore.kits.handleConfig(Kits.class, HxCCore.kitsFile);
+        HxCCore.kitConfig.initConfiguration();
     }
 
     public static String setItems(List<ItemStack> items) {
