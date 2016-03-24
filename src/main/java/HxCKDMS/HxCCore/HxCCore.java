@@ -54,7 +54,7 @@ public class HxCCore {
     public static SimpleNetworkWrapper network;
     public static HxCConfig config, commandConfig, kitConfig;
 
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData, KitsData;
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
@@ -105,7 +105,6 @@ public class HxCCore {
                     event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
-        //NEED TO IMPLEMENT Reika's Packet changes...
 
         HxCRules.putIfAbsent("XPBuffs", "false");
         HxCRules.putIfAbsent("LogCommands", "false");
@@ -118,6 +117,7 @@ public class HxCCore {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        //yay 1.8.x+ all is Forge EventBus :D
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
         FMLCommonHandler.instance().bus().register(new EventJoinWorld());
@@ -166,6 +166,7 @@ public class HxCCore {
         if (!WorldDir.exists())
             WorldDir.mkdirs();
         HxCCoreDir = WorldDir;
+
         File LogDir = new File(ForgeModContainer.getConfig().getConfigFile().getPath().replace("config\\forge.cfg", "logs\\"), "HxCLogs");
         if (!LogDir.exists())
             LogDir.mkdirs();
@@ -173,6 +174,7 @@ public class HxCCore {
 
         CustomWorldData = new File(HxCCoreDir, "HxCWorld.dat");
         PermissionsData = new File(HxCCoreDir, "HxC-Permissions.dat");
+        KitsData = new File(HxCCoreDir, "HxC-Kits.dat");
         File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
 
         try {
@@ -180,16 +182,15 @@ public class HxCCore {
                 CustomWorldData.createNewFile();
             if (!PermissionsData.exists())
                 PermissionsData.createNewFile();
-            if (!OLDLOG.exists()) {
+            if (!KitsData.exists())
+                KitsData.createNewFile();
+            if (!OLDLOG.exists())
                 OLDLOG.createNewFile();
-            }
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
-        } catch (IOException ignored) {
-        }
-        try {
-            EventProtection.load();
-        } catch (Exception ignored) {
-        }
+        } catch (IOException ignored) {}
+//        try {
+//            EventProtection.load();
+//        } catch (Exception ignored) {}
     }
 
     public void registerGamerule(String rule, String value) {
@@ -231,36 +232,6 @@ public class HxCCore {
         } catch (Exception ignored) {}
     }
 
-    private static void extendEnchantsArray() {
-        /**
-         * Made by DrZed inspired by
-         * Biomes O'Plenty
-         **/
-        int enchantsOffset;
-        LogHelper.info("Extending Enchants Array", MOD_NAME);
-        enchantsOffset = Enchantment.enchantmentsList.length;
-        Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
-        System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
-        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
-        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
-    }
-
-    private static void extendPotionsArray() {
-        /**
-         * Taken From Biomes O'Plenty
-         * modified to fit my interest
-         * The License for BOP is CC
-         * I Thank BOP Team for this
-         **/
-        //TODO: Reika's Packet hack
-        int potionOffset;
-        LogHelper.info("Extending Potions Array.", MOD_NAME);
-        potionOffset = Potion.potionTypes.length;
-        Potion[] potionTypes = new Potion[potionOffset + 256];
-        System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
-        HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
-    }
-
     @NetworkCheckHandler
     public boolean checkNetwork(Map<String, String> mods, Side side) {
         return !mods.containsKey("HxCCore") || mods.get("HxCCore").equals(VERSION);
@@ -291,5 +262,31 @@ public class HxCCore {
             LogHelper.error("Can not resolve HxCVersions.txt", References.MOD_NAME);
             if (Configurations.DebugMode) e.printStackTrace();
         }
+    }
+
+    private static void extendEnchantsArray() {
+        int enchantsOffset;
+        LogHelper.info("Extending Enchants Array", MOD_NAME);
+        enchantsOffset = Enchantment.enchantmentsList.length;
+        Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
+        System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
+        HxCReflectionHandler.setPrivateFinalValue(Enchantment.class, null, enchantmentsList, "enchantmentsList", "field_77331_b");
+        LogHelper.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
+    }
+
+    private static void extendPotionsArray() {
+        /**
+         * Taken From Biomes O'Plenty
+         * modified to fit my interest
+         * The License for BOP is CC
+         * I Thank BOP Team for this
+         **/
+        //TODO: Reika's Packet hack
+        int potionOffset;
+        LogHelper.info("Extending Potions Array.", MOD_NAME);
+        potionOffset = Potion.potionTypes.length;
+        Potion[] potionTypes = new Potion[potionOffset + 256];
+        System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
+        HxCReflectionHandler.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "field_76425_a");
     }
 }

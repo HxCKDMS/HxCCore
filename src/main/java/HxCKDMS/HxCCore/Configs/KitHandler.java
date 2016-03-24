@@ -1,10 +1,9 @@
 package HxCKDMS.HxCCore.Configs;
 
+import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Configuration.New.Config;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,18 +12,33 @@ import net.minecraft.potion.PotionEffect;
 
 import java.util.*;
 
-@Config
-public class Kits {
-    public static LinkedHashMap<String, String> Kits = new LinkedHashMap<>();
-
-    public static LinkedHashMap<String, Integer> KitPerms = new LinkedHashMap<>();
-
-    public static boolean canGetKit(int permLevel, String kit) {
-        return KitPerms.get(kit) <= permLevel;
+public class KitHandler {
+    public static HashMap<String, String> defaultKits = new HashMap<>();
+    static {
+        defaultKits.putIfAbsent("BobCutter", "4<minecraft:stone_sword> = 1 (name=BOB Cutter~unbreakable~enchantments=21:5:20:1~lore=Bob cutter hurts bob...=Therefore bob is sad.~attributes=generic.attackDamage:Damage:mainhand:0:50.0); <minecraft:stone_pickaxe> = 1; <minecraft:stone_axe> = 1; <minecraft:stone_shovel> = 1; <minecraft:cooked_porkchop> = 8");
+        defaultKits.putIfAbsent("Starter", "1<minecraft:stone_sword> = 1 (name=Starter Sword~unbreakable~enchantments=21:1:20:1~lore=A Divine Gift from DrZed.~attributes=generic.attackDamage:Damage:mainhand:0:5.0); <minecraft:stone_pickaxe> = 1 (name=Starter Pick~unbreakable~enchantments=32:3:35:1~lore=A Divine Gift from DrZed.); <minecraft:stone_axe> = 1 (name=Starter Axe~unbreakable~enchantments=32:5~lore=A Divine Gift from DrZed.); <minecraft:stone_shovel> = 1 (name=Starter Spade~unbreakable~enchantments=32:3~lore=A Divine Gift from DrZed.); <minecraft:cooked_porkchop> = 8 (name=Almighty Bacon~unbreakable~lore=The Almighty Bacon!); <minecraft:leather_helmet> = 1 (name=Starter Helmet~unbreakable~color=0~lore=A Divine Gift from DrZed)~attributes=generic.maxHealth:HealthBoost:head:0:2.0); <minecraft:leather_chestplate> = 1 (name=Starter Chestplate~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:torso:0:3.0); <minecraft:leather_leggings> = 1 (name=Starter Leggings~unbreakable~color=0~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:legs:0:3.0); <minecraft:leather_boots> = 1 (name=Starter Shoes~color=0~unbreakable~lore=A Divine Gift from DrZed.~attributes=generic.maxHealth:HealthBoost:feet:0:2.0)");
+        defaultKits.putIfAbsent("Drugs", "4<minecraft:potion> = 1 (name=Speed~lore=A Divine Gift from DrZed.~effects=1:10000:15:2:16000:4:3:10000:15:4:16000:3:9:120:1)");
     }
 
-    public static List<ItemStack> getItems(String Kit) {
-        String[] vals = Kits.get(Kit).substring(1, Kits.get(Kit).length() - 1).split("; ");
+    public static boolean canGetKit(String Kit, int permLevel) {
+        NBTTagCompound Kits = NBTFileIO.getNbtTagCompound(HxCCore.KitsData, "Kits");
+        return Kits.getInteger(Kit) <= permLevel;
+    }
+//Too tired to continue, future me, don't yell at me, I'm sure this is something stupid, but I can't think well. Enjoy cleaning up my mess.
+    public static List<ItemStack> getKit(String Kit) {
+        NBTTagCompound Kits = NBTFileIO.getNbtTagCompound(HxCCore.KitsData, "Kits");
+        NBTTagList sets = Kits.getTagList("Items", 10);
+        for (int i = 0; i < sets.tagCount() - 1; i++) {
+            if (sets.getCompoundTagAt(i).getString("name").equalsIgnoreCase(Kit)) {
+                sets.getCompoundTagAt(i).getCompoundTag("KitItems");
+            }
+        }
+        return null;
+    }
+
+    public static List<ItemStack> createKitByString(String Kit) {
+        int lvl = Integer.getInteger(String.valueOf(Kit.charAt(0)));
+        String[] vals = Kit.substring(1).split("; ");
         List<ItemStack> items = new ArrayList<>();
         int color = -1;
         for (String tmp : vals) {
@@ -156,91 +170,5 @@ public class Kits {
             items.add(tmp3);
         }
         return items;
-    }
-
-    public static void createKit(List<ItemStack> stacks, String name, int permLevel) {
-        String str = setItems(stacks);
-        str = str.substring(0, str.length()-1).replace("(~", "(").replaceAll(":0>", ">").replaceAll(";<", "; <");
-        Kits.put(name, "{" + str + "}");
-        KitPerms.put(name, permLevel);
-        HxCCore.kitConfig.initConfiguration();
-    }
-
-    public static void removeKit(String name) {
-        Kits.remove(name);
-        KitPerms.remove(name);
-        HxCCore.kitConfig.initConfiguration();
-    }
-
-    public static void chngKitPerms(String name, int lvl) {
-        KitPerms.replace(name, lvl);
-        HxCCore.kitConfig.initConfiguration();
-    }
-
-    public static String setItems(List<ItemStack> items) {
-        String str = "";
-        for (ItemStack z : items) {
-            if (z != null)
-                str = str + setItem(z) + ";";
-        }
-        return str;
-    }
-
-    public static String setItem(ItemStack item) {
-        String str = Item.itemRegistry.getNameForObject(item.getItem());
-        str = "<" + str + ":" + item.getMetadata() + "> = " + item.stackSize;
-        if (item.hasTagCompound()) {
-            NBTTagCompound tags = item.getTagCompound();
-            String ench = "", display = "", pots = "", unbreakable = "", attribs = "";
-            for (int i = 0; i < item.getEnchantmentTagList().tagCount(); i++) {
-                int a = item.getEnchantmentTagList().getCompoundTagAt(i).getInteger("id");
-                int b = item.getEnchantmentTagList().getCompoundTagAt(i).getInteger("lvl");
-                if (ench.isEmpty())
-                    ench = "~enchantments=" + a + ":" + b;
-                else ench = ench + ":"+ a + ":" + b;
-            }
-            if (tags.hasKey("unbreakable")) {
-                unbreakable = "~unbreakable";
-            }
-            if (tags.hasKey("CustomPotionEffects")) {
-                NBTTagList ps = tags.getTagList("CustomPotionEffects", 10);
-                pots = pots + "~effects=";
-                for (int i = 0; i < ps.tagCount(); i++) {
-                    pots = pots + ps.getCompoundTagAt(i).getByte("id");
-                    pots = ":" + pots + ps.getCompoundTagAt(i).getInteger("duration") + ":";
-                    pots = pots + ps.getCompoundTagAt(i).getByte("amplifier");
-                    if (i != ps.tagCount()-1)
-                        pots = pots + ":";
-                }
-            }
-            if (tags.hasKey("AttributeModifiers")) {
-                NBTTagList ps = tags.getTagList("AttributeModifiers", 10);
-                attribs = attribs + "~attributes=";
-                for (int i = 0; i < ps.tagCount(); i++) {
-                    attribs = attribs + ps.getCompoundTagAt(i).getString("attributename");
-                    attribs = ":" + attribs + ps.getCompoundTagAt(i).getString("name");
-                    attribs = ":" + attribs + ps.getCompoundTagAt(i).getString("slot");
-                    attribs = ":" + attribs + ps.getCompoundTagAt(i).getInteger("operation");
-                    attribs = ":" + attribs + ps.getCompoundTagAt(i).getDouble("amount");
-                    if (i != ps.tagCount()-1)
-                        attribs = attribs + ":";
-                }
-            }
-            if (tags.hasKey("display")) {
-                NBTTagCompound dis = tags.getCompoundTag("display");
-                if (dis.hasKey("name")) {
-                    display = display + "~name=" + dis.getString("name");
-                } if (dis.hasKey("color")) {
-                    display = display + "~color=" + dis.getInteger("color");
-                } if (dis.hasKey("lore")) {
-                    NBTTagList lore = dis.getTagList("lore", 8);
-                    display = display + "~lore";
-                    for (int i = 0; i < lore.tagCount(); i++)
-                        display = "=" + display + lore.getStringTagAt(i);
-                }
-            }
-            str = str + " (" + ench + display + unbreakable + attribs + pots + ")";
-        }
-        return str;
     }
 }
