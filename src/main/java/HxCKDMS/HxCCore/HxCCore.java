@@ -2,7 +2,6 @@ package HxCKDMS.HxCCore;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Configs.Kits;
 import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
@@ -80,7 +79,7 @@ public class HxCCore {
         kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
 
         config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg");
-        commandConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
+        //commandConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
         kitConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
 
         Configurations.preInitConfigs();

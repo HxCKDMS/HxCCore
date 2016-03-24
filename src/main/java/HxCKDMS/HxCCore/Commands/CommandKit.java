@@ -1,23 +1,14 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.Configs.Kits;
-import HxCKDMS.HxCCore.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
+//@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandKit implements ISubCommand {
     public static CommandBroadcast instance = new CommandBroadcast();
 
@@ -33,7 +24,7 @@ public class CommandKit implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
-        if (isPlayer) {
+        /*if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kit"), player);
             if (CanSend) {
@@ -73,15 +64,15 @@ public class CommandKit implements ISubCommand {
                     } else { throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.give.failure", args[2], args[3]));}
                 }
             } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));*/
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 2)
             return Arrays.asList("spawn", "create", "remove", "edit", "give");
-        else if (args.length == 3)
-            return Arrays.asList((String[])Kits.Kits.keySet().toArray());
+        //else if (args.length == 3)
+            //return Arrays.asList((String[])Kits.Kits.keySet().toArray());
         return null;
     }
 }
