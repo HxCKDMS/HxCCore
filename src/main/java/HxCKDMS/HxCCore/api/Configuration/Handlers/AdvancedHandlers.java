@@ -13,7 +13,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","unused"})
 public class AdvancedHandlers {
 
-    static Object getValue(Class<?> type, String value) {
+    private static Object getValue(Class<?> type, String value) {
         if (type == String.class) return value;
         else if (type == Integer.class) return Integer.parseInt(value);
         else if (type == Double.class) return Double.parseDouble(value);
