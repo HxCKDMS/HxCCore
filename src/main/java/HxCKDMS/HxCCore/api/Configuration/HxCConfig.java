@@ -1,8 +1,8 @@
-package HxCKDMS.HxCCore.api.Configuration.New;
+package HxCKDMS.HxCCore.api.Configuration;
 
-import HxCKDMS.HxCCore.api.Configuration.New.Exceptions.InvalidConfigClassException;
-import HxCKDMS.HxCCore.api.Configuration.New.Handlers.AdvancedHandlers;
-import HxCKDMS.HxCCore.api.Configuration.New.Handlers.BasicHandlers;
+import HxCKDMS.HxCCore.api.Configuration.Handlers.AdvancedHandlers;
+import HxCKDMS.HxCCore.api.Configuration.Exceptions.InvalidConfigClassException;
+import HxCKDMS.HxCCore.api.Configuration.Handlers.BasicHandlers;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.api.Utils.StringHelper;
 import HxCKDMS.HxCCore.lib.References;
@@ -73,6 +73,8 @@ public class HxCConfig {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void initConfiguration() {
+        configWritingData.clear();
+
         try {
             configDirectory.mkdirs();
             if(!configFile.exists()) configFile.createNewFile();

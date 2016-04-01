@@ -1,7 +1,7 @@
-package HxCKDMS.HxCCore.api.Configuration.New.Handlers;
+package HxCKDMS.HxCCore.api.Configuration.Handlers;
 
-import HxCKDMS.HxCCore.api.Configuration.New.AbstractTypeHandler;
-import HxCKDMS.HxCCore.api.Configuration.New.Config;
+import HxCKDMS.HxCCore.api.Configuration.Config;
+import HxCKDMS.HxCCore.api.Configuration.AbstractTypeHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.BufferedReader;
@@ -12,6 +12,19 @@ import java.util.*;
 
 @SuppressWarnings({"unchecked","unused"})
 public class AdvancedHandlers {
+
+    static Object getValue(Class<?> type, String value) {
+        if (type == String.class) return value;
+        else if (type == Integer.class) return Integer.parseInt(value);
+        else if (type == Double.class) return Double.parseDouble(value);
+        else if (type == Character.class) return value.toCharArray()[0];
+        else if (type == Float.class) return Float.parseFloat(value);
+        else if (type == Long.class) return Long.parseLong(value);
+        else if (type == Short.class) return Short.parseShort(value);
+        else if (type == Byte.class) return Byte.parseByte(value);
+        else if (type == Boolean.class) return Boolean.parseBoolean(value);
+        else throw new NullPointerException("fuck you!");
+    }
 
     //LIST STUFF
     //The above comment is very descriptive @Karel
@@ -36,9 +49,10 @@ public class AdvancedHandlers {
     private static <T> void mainListReader(String variable, NBTTagCompound DataWatcher, BufferedReader reader, Class<?> configClass, List<T> tempList) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
         Field field = configClass.getField(variable);
         Class<T> listType = (Class<T>) Class.forName(DataWatcher.getString("ListType"));
+        if (field.isAnnotationPresent(Config.retainOriginalValues.class)) tempList = (List<T>) field.get(null);
 
         String line;
-        while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempList.add((T)line.trim());
+        while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempList.add((T) getValue(listType, line.trim()));
 
         field.set(configClass, tempList);
     }
@@ -130,8 +144,9 @@ public class AdvancedHandlers {
         Class<V> mapValueType = (Class<V>) Class.forName(DataWatcher.getString("MapValueType"));
 
         String line;
-        while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempMap.put((K)line.split("=")[0].trim(), (V)line.split("=")[1]);
+        while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempMap.put((K)getValue(mapKeyType, line.split("=")[0].trim()), (V)getValue(mapValueType, line.split("=")[1]));
 
+        System.out.println(field.getName() + "-" + ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[1] + "-" + tempMap);
         field.set(configClass, tempMap);
     }
 

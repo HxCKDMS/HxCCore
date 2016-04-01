@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.api.Configuration.New;
+package HxCKDMS.HxCCore.api.Configuration;
 
 import net.minecraft.nbt.NBTTagCompound;
 

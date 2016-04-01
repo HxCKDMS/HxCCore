@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.api.Configuration.New;
+package HxCKDMS.HxCCore.api.Configuration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,4 +21,11 @@ public @interface Config {
     @interface comment {
         String value();
     }
+
+
+    /**
+     * Only used on Lists, Maps, Sets etc.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface retainOriginalValues {}
 }

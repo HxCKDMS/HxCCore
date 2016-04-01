@@ -10,7 +10,7 @@ import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
-import HxCKDMS.HxCCore.api.Configuration.New.HxCConfig;
+import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
@@ -141,6 +141,8 @@ public class HxCCore {
             if (Loader.isModLoaded(mod))
                 LogHelper.info("Thank you for using " + mod, MOD_NAME);
         });
+
+        System.out.println(CommandsConfig.EnabledCommands.get("Hat"));
     }
 
     private GameRules rules;

@@ -1,6 +1,6 @@
-package HxCKDMS.HxCCore.api.Configuration.New.Test;
+package HxCKDMS.HxCCore.api.Configuration.Test;
 
-import HxCKDMS.HxCCore.api.Configuration.New.Config;
+import HxCKDMS.HxCCore.api.Configuration.Config;
 
 import java.util.ArrayList;
 import java.util.HashMap;

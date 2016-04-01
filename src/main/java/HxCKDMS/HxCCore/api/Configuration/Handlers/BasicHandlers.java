@@ -1,7 +1,7 @@
-package HxCKDMS.HxCCore.api.Configuration.New.Handlers;
+package HxCKDMS.HxCCore.api.Configuration.Handlers;
 
-import HxCKDMS.HxCCore.api.Configuration.New.AbstractTypeHandler;
-import HxCKDMS.HxCCore.api.Configuration.New.Config;
+import HxCKDMS.HxCCore.api.Configuration.AbstractTypeHandler;
+import HxCKDMS.HxCCore.api.Configuration.Config;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.BufferedReader;

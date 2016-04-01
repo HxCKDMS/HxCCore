@@ -1,6 +1,6 @@
-package HxCKDMS.HxCCore.api.Configuration.New.Test;
+package HxCKDMS.HxCCore.api.Configuration.Test;
 
-import HxCKDMS.HxCCore.api.Configuration.New.HxCConfig;
+import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 
 import java.io.File;
 import java.io.IOException;

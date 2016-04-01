@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Configs;
 
 import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Configuration.New.Config;
+import HxCKDMS.HxCCore.api.Configuration.Config;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
