@@ -79,8 +79,8 @@ public class HxCCore {
         kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
 
         config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg");
-        //commandConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
-        kitConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
+        //kitConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
+        commandConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
 
         Configurations.preInitConfigs();
 

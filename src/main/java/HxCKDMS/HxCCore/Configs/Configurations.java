@@ -75,6 +75,6 @@ public class Configurations {
         HxCCore.config.setCategoryComment("DNT", "DO NOT TOUCH!!!!!!!!!");
         HxCCore.config.initConfiguration();
         HxCCore.commandConfig.initConfiguration();
-        HxCCore.kitConfig.initConfiguration();
+        //HxCCore.kitConfig.initConfiguration();
     }
 }
