@@ -38,7 +38,7 @@ import java.util.*;
 
 import static HxCKDMS.HxCCore.lib.References.*;
 
-@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "WeakerAccess"})
 @Mod(modid = MOD_ID, name = MOD_NAME, version = VERSION, dependencies = DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
     @Instance(MOD_ID)
@@ -53,13 +53,14 @@ public class HxCCore {
     public static SimpleNetworkWrapper network;
     public static HxCConfig config, commandConfig, kitConfig;
 
-    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile, HxCLogDir, CustomWorldData, PermissionsData, KitsData;
+    public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile,
+            HxCLogDir, CustomWorldData, PermissionsData, KitsData;
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
     private static PrintWriter commandLog;
 
-    public static final Thread crashReportThread = new Thread(new CrashReportThread()),
+    private static final Thread crashReportThread = new Thread(new CrashReportThread()),
             CodersCheckThread = new Thread(new CodersCheck());
 
     public HashMap<String, String> HxCRules = new HashMap<>();

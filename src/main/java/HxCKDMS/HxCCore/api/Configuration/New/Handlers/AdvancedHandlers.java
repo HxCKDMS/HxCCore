@@ -10,9 +10,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
+@SuppressWarnings({"unchecked","unused"})
 public class AdvancedHandlers {
 
     //LIST STUFF
+    //The above comment is very descriptive @Karel
     private static void mainListWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
         List<Object> tempList = (List<Object>) field.get(null);
 
