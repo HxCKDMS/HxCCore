@@ -154,12 +154,10 @@ public class HxCCore {
         rules = server.worldServerForDimension(0).getGameRules();
         HxCRules.forEach(this::registerGamerule);
         if(Configurations.versionCheck)
-            Loader.instance().getModList().forEach(m -> {
-                if (knownMods.contains(m.getModId())) {
-                    String s = getNewVer(m.getModId(), m.getVersion());
-                    if (!s.isEmpty())
-                        server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
-                }
+            Loader.instance().getModList().stream().filter(m -> knownMods.contains(m.getModId())).forEach(m -> {
+                String s = getNewVer(m.getModId(), m.getVersion());
+                if (!s.isEmpty())
+                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
             });
 
         if (Configurations.enableCommands) CommandsHandler.initCommands(event);
