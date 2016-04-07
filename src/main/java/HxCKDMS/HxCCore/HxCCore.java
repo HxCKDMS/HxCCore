@@ -157,7 +157,7 @@ public class HxCCore {
             Loader.instance().getModList().stream().filter(m -> knownMods.contains(m.getModId())).forEach(m -> {
                 String s = getNewVer(m.getModId(), m.getVersion());
                 if (!s.isEmpty())
-                    server.logWarning("A New version of " + m.getModId() + " has been found please update ASAP! New Version Found = " + s);
+                    server.logWarning("A new version of " + m.getModId() + " has been released. Please update! New Version:" + s);
             });
 
         if (Configurations.enableCommands) CommandsHandler.initCommands(event);
