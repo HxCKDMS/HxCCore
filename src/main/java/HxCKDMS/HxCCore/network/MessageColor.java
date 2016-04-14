@@ -12,7 +12,7 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 public class MessageColor implements IMessage {
-    public NBTTagCompound tagCompound;
+    private NBTTagCompound tagCompound;
 
     //Empty constructor needed for FML initializing the packet.
     public MessageColor() {

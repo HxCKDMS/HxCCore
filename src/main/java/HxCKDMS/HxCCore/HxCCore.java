@@ -10,6 +10,7 @@ import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Configuration.Flags;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.lib.References;
@@ -36,6 +37,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
+import static HxCKDMS.HxCCore.api.Configuration.Flags.overwrite;
+import static HxCKDMS.HxCCore.api.Configuration.Flags.retainOriginalValues;
 import static HxCKDMS.HxCCore.lib.References.*;
 
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored", "WeakerAccess"})

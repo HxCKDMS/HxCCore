@@ -10,6 +10,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
+import static HxCKDMS.HxCCore.api.Configuration.Flags.retainOriginalValues;
+
 @SuppressWarnings({"unchecked","unused"})
 public class AdvancedHandlers {
 
@@ -49,7 +51,7 @@ public class AdvancedHandlers {
     private static <T> void mainListReader(String variable, NBTTagCompound DataWatcher, BufferedReader reader, Class<?> configClass, List<T> tempList) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
         Field field = configClass.getField(variable);
         Class<T> listType = (Class<T>) Class.forName(DataWatcher.getString("ListType"));
-        if (field.isAnnotationPresent(Config.retainOriginalValues.class)) tempList = (List<T>) field.get(null);
+        if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & retainOriginalValues) == 1) tempList = (List<T>) field.get(null);
 
         String line;
         while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempList.add((T) getValue(listType, line.trim()));
@@ -142,6 +144,7 @@ public class AdvancedHandlers {
         Field field = configClass.getField(variable);
         Class<K> mapKeyType = (Class<K>) Class.forName(DataWatcher.getString("MapKeyType"));
         Class<V> mapValueType = (Class<V>) Class.forName(DataWatcher.getString("MapValueType"));
+        if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & retainOriginalValues) == 1) tempMap = (Map<K, V>) field.get(null);
 
         String line;
         while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempMap.put((K)getValue(mapKeyType, line.split("=")[0].trim()), (V)getValue(mapValueType, line.split("=")[1]));

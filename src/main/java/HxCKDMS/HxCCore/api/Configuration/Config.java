@@ -22,10 +22,8 @@ public @interface Config {
         String value();
     }
 
-
-    /**
-     * Only used on Lists, Maps, Sets etc.
-     */
     @Retention(RetentionPolicy.RUNTIME)
-    @interface retainOriginalValues {}
+    @interface flags {
+        int value() default 0b0;
+    }
 }

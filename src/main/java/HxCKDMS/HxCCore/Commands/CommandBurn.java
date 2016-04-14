@@ -47,6 +47,7 @@ public class CommandBurn implements ISubCommand {
                     player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
                     player2.setFire(750000000);
                     sender.addChatMessage(new ChatComponentText(player2.getDisplayName() + " \u00A74has been set on fire for 750000000 ticks."));
+                    break;
                 case 3:
                     player2 = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
                     player2.addChatMessage(new ChatComponentText("\u00A79You suddenly feel warmer."));
