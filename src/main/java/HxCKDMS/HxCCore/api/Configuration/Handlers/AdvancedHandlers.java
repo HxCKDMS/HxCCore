@@ -2,7 +2,6 @@ package HxCKDMS.HxCCore.api.Configuration.Handlers;
 
 import HxCKDMS.HxCCore.api.Configuration.Config;
 import HxCKDMS.HxCCore.api.Configuration.AbstractTypeHandler;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class AdvancedHandlers {
 
     //LIST STUFF
     //The above comment is very descriptive @Karel
-    private static void mainListWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+    private static void mainListWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
         List<Object> tempList = (List<Object>) field.get(null);
 
         String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "General";
@@ -45,12 +44,12 @@ public class AdvancedHandlers {
         config.put(categoryName, categoryValues);
 
         ParameterizedType parameterizedType = (ParameterizedType)field.getGenericType();
-        DataWatcher.setString("ListType", ((Class<?>)parameterizedType.getActualTypeArguments()[0]).getCanonicalName());
+        DataWatcher.put("ListType", ((Class<?>)parameterizedType.getActualTypeArguments()[0]).getCanonicalName());
     }
 
-    private static <T> void mainListReader(String variable, NBTTagCompound DataWatcher, BufferedReader reader, Class<?> configClass, List<T> tempList) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+    private static <T> void mainListReader(String variable, HashMap<String, String> DataWatcher, BufferedReader reader, Class<?> configClass, List<T> tempList) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
         Field field = configClass.getField(variable);
-        Class<T> listType = (Class<T>) Class.forName(DataWatcher.getString("ListType"));
+        Class<T> listType = (Class<T>) Class.forName(DataWatcher.get("ListType"));
         if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & retainOriginalValues) == 1) tempList = (List<T>) field.get(null);
 
         String line;
@@ -62,13 +61,13 @@ public class AdvancedHandlers {
     public static class ListHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainListWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", List.class.getCanonicalName());
+            DataWatcher.put("Type", List.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainListReader(variable, DataWatcher, reader, configClass, new LinkedList<>());
         }
 
@@ -81,13 +80,13 @@ public class AdvancedHandlers {
     public static class LinkedListHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainListWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", LinkedList.class.getCanonicalName());
+            DataWatcher.put("Type", LinkedList.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainListReader(variable, DataWatcher, reader, configClass, new LinkedList<>());
         }
 
@@ -100,13 +99,13 @@ public class AdvancedHandlers {
     public static class ArrayListHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainListWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", ArrayList.class.getCanonicalName());
+            DataWatcher.put("Type", ArrayList.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainListReader(variable, DataWatcher, reader, configClass, new ArrayList<>());
         }
 
@@ -121,7 +120,7 @@ public class AdvancedHandlers {
 
     //MAP STUFF
 
-    private static void mainMapWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+    private static void mainMapWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
         Map<Object, Object> tempMap = (Map<Object, Object>) field.get(null);
 
         String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "General";
@@ -136,14 +135,14 @@ public class AdvancedHandlers {
         config.put(categoryName, categoryValues);
 
         ParameterizedType parameterizedType = (ParameterizedType)field.getGenericType();
-        DataWatcher.setString("MapKeyType", ((Class<?>)parameterizedType.getActualTypeArguments()[0]).getCanonicalName());
-        DataWatcher.setString("MapValueType", ((Class<?>)parameterizedType.getActualTypeArguments()[1]).getCanonicalName());
+        DataWatcher.put("MapKeyType", ((Class<?>)parameterizedType.getActualTypeArguments()[0]).getCanonicalName());
+        DataWatcher.put("MapValueType", ((Class<?>)parameterizedType.getActualTypeArguments()[1]).getCanonicalName());
     }
 
-    private static <K,V> void mainMapReader(String variable, NBTTagCompound DataWatcher, BufferedReader reader, Class<?> configClass, Map<K,V> tempMap) throws NoSuchFieldException, ClassNotFoundException, IOException, IllegalAccessException {
+    private static <K,V> void mainMapReader(String variable, HashMap<String, String> DataWatcher, BufferedReader reader, Class<?> configClass, Map<K,V> tempMap) throws NoSuchFieldException, ClassNotFoundException, IOException, IllegalAccessException {
         Field field = configClass.getField(variable);
-        Class<K> mapKeyType = (Class<K>) Class.forName(DataWatcher.getString("MapKeyType"));
-        Class<V> mapValueType = (Class<V>) Class.forName(DataWatcher.getString("MapValueType"));
+        Class<K> mapKeyType = (Class<K>) Class.forName(DataWatcher.get("MapKeyType"));
+        Class<V> mapValueType = (Class<V>) Class.forName(DataWatcher.get("MapValueType"));
         if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & retainOriginalValues) == 1) tempMap = (Map<K, V>) field.get(null);
 
         String line;
@@ -156,13 +155,13 @@ public class AdvancedHandlers {
     public static class MapHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainMapWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", Map.class.getCanonicalName());
+            DataWatcher.put("Type", Map.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainMapReader(variable, DataWatcher, reader, configClass, new HashMap<>());
         }
 
@@ -175,13 +174,13 @@ public class AdvancedHandlers {
     public static class HashMapHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainMapWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", HashMap.class.getCanonicalName());
+            DataWatcher.put("Type", HashMap.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainMapReader(variable, DataWatcher, reader, configClass, new HashMap<>());
         }
 
@@ -194,13 +193,13 @@ public class AdvancedHandlers {
     public static class LinkedHashMapHandler extends AbstractTypeHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, NBTTagCompound DataWatcher) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
             mainMapWriter(field, config, DataWatcher);
-            DataWatcher.setString("Type", LinkedHashMap.class.getCanonicalName());
+            DataWatcher.put("Type", LinkedHashMap.class.getCanonicalName());
         }
 
         @Override
-        public void read(String variable, NBTTagCompound DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, HashMap<String, String> DataWatcher, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             mainMapReader(variable, DataWatcher, reader, configClass, new LinkedHashMap<>());
         }
 

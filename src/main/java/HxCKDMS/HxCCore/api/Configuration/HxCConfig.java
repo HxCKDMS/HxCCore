@@ -6,23 +6,17 @@ import HxCKDMS.HxCCore.api.Configuration.Handlers.BasicHandlers;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.api.Utils.StringHelper;
 import HxCKDMS.HxCCore.lib.References;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
 public class HxCConfig {
     private Class<?> configClass;
-    //TODO: replace with own file type.
-    private NBTTagCompound configDataWatcher;
+    private HashMap<String, HashMap<String, HashMap<String, String>>> configDataWatcherTest = new HashMap<>();
     private File configFile, dataWatcherFile, configDirectory, dataWatcherDirectory;
     private LinkedHashMap<String, LinkedHashMap<String, Object>> configWritingData = new LinkedHashMap<>();
     private static HashMap<Class<?>, AbstractTypeHandler> TypeHandlers = new HashMap<>();
@@ -63,7 +57,7 @@ public class HxCConfig {
     public HxCConfig(Class<?> clazz, String configName, File configDirectory, String extension) {
         this.configClass = clazz;
         this.configFile = new File(configDirectory, configName + "." + extension);
-        this.configDataWatcher = new NBTTagCompound();
+        //this.configDataWatcher = new NBTTagCompound();
         this.configDirectory = configDirectory;
         this.dataWatcherDirectory = new File(configDirectory + "/.datawatcher/");
         this.dataWatcherFile = new File(dataWatcherDirectory, configName + ".dat");
@@ -83,13 +77,21 @@ public class HxCConfig {
 
             Path path = dataWatcherDirectory.toPath();
             Files.setAttribute(path, "dos:hidden", true);
-
-            try {
-                configDataWatcher = CompressedStreamTools.read(dataWatcherFile);
-            } catch (EOFException ignored) {}
+            deSerialize();
 
             read();
             write();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void deSerialize() {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(dataWatcherFile));
+            configDataWatcherTest = (HashMap<String, HashMap<String, HashMap<String, String>>>) inputStream.readObject();
+            inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,14 +133,25 @@ public class HxCConfig {
             String variableName = nameBuilder.toString();
 
             try {
-                Class<?> type = Class.forName(configDataWatcher.getCompoundTag(category).getCompoundTag(variableName).getString("Type"));
-                TypeHandlers.get(type).read(variableName, configDataWatcher.getCompoundTag(category).getCompoundTag(variableName), line, reader, configClass);
+                Class<?> type = Class.forName(configDataWatcherTest.get(category).get(variableName).get("Type"));
+
+                TypeHandlers.get(type).read(variableName, configDataWatcherTest.get(category).get(variableName), line, reader, configClass);
             } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
         }
 
         reader.close();
+    }
+
+    private void serialize() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(dataWatcherFile));
+            outputStream.writeObject(configDataWatcherTest);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void write() throws IOException {
@@ -174,7 +187,7 @@ public class HxCConfig {
         writer.write(stringBuilder.toString().trim());
         writer.close();
 
-        CompressedStreamTools.write(configDataWatcher, dataWatcherFile);
+        serialize();
     }
 
     private void handleClass(Class clazz) {
@@ -183,14 +196,14 @@ public class HxCConfig {
 
     private void handleFieldWriting(Field field) {
         if (TypeHandlers.containsKey(field.getType())) try {
-            NBTTagCompound data = new NBTTagCompound();
+            HashMap<String, String> data = new HashMap<>();
             String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "General";
-            NBTTagCompound category = configDataWatcher.getCompoundTag(categoryName);
+            HashMap<String, HashMap<String, String>> category = configDataWatcherTest.getOrDefault(categoryName, new HashMap<>());
 
             TypeHandlers.get(field.getType()).write(field, configWritingData, data);
 
-            category.setTag(field.getName(), data);
-            configDataWatcher.setTag(categoryName, category);
+            category.put(field.getName(), data);
+            configDataWatcherTest.put(categoryName, category);
 
             HashMap<String, String> comment = valueComments.getOrDefault(categoryName, new HashMap<>());
             if(field.isAnnotationPresent(Config.comment.class)) comment.put(field.getName(), field.getAnnotation(Config.comment.class).value());
