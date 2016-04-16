@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static HxCKDMS.HxCCore.api.Configuration.Flags.overwrite;
+
 @Config
 public class Configurations {
     @Config.comment("Debug Mode Enable? Can cause lag and console spam!")
@@ -49,6 +51,7 @@ public class Configurations {
 
     @Config.category("DNT")
     @Config.comment("This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.")
+    @Config.flags(overwrite)
     public static String lastCheckedCrash = "";
 
     private static void putValues() {

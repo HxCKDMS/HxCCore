@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
+import static HxCKDMS.HxCCore.api.Configuration.Flags.overwrite;
 import static HxCKDMS.HxCCore.api.Configuration.Flags.retainOriginalValues;
 
 @SuppressWarnings({"unchecked","unused"})
@@ -54,7 +55,9 @@ public class AdvancedHandlers {
         String line;
         while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempList.add((T) getValue(listType, line.trim()));
 
-        field.set(configClass, tempList);
+        if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & overwrite) == 2) {
+            if (field.get(null) == null || ((List) field.get(null)).isEmpty()) field.set(configClass, tempList);
+        } else field.set(configClass, tempList);
     }
 
     public static class ListHandler extends AbstractTypeHandler {
@@ -147,8 +150,9 @@ public class AdvancedHandlers {
         String line;
         while ((line = reader.readLine()) != null && !line.trim().equals("]")) tempMap.put((K)getValue(mapKeyType, line.split("=")[0].trim()), (V)getValue(mapValueType, line.split("=")[1]));
 
-        System.out.println(field.getName() + "-" + ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[1] + "-" + tempMap);
-        field.set(configClass, tempMap);
+        if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & overwrite) == 2) {
+            if (field.get(null) == null || ((Map) field.get(null)).isEmpty()) field.set(configClass, tempMap);
+        } else field.set(configClass, tempMap);
     }
 
     public static class MapHandler extends AbstractTypeHandler {
