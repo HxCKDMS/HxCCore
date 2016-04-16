@@ -28,7 +28,6 @@ public class AdvancedHandlers {
     }
 
     //LIST STUFF
-    //The above comment is very descriptive @Karel
     private static void mainListWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HashMap<String, String> DataWatcher) throws IllegalAccessException {
         List<Object> tempList = (List<Object>) field.get(null);
 
