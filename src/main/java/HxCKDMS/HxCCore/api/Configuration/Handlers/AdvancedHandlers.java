@@ -25,7 +25,7 @@ public class AdvancedHandlers {
         else if (type == Short.class) return Short.parseShort(value);
         else if (type == Byte.class) return Byte.parseByte(value);
         else if (type == Boolean.class) return Boolean.parseBoolean(value);
-        else throw new NullPointerException("fuck you!");
+        else throw new NullPointerException("Good job you broke something.");
     }
 
     //LIST STUFF
