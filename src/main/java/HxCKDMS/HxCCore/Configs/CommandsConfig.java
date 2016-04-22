@@ -10,6 +10,7 @@ import static HxCKDMS.HxCCore.api.Configuration.Flags.retainOriginalValues;
 
 @Config
 public class CommandsConfig {
+    @Config.flags(retainOriginalValues)
     public static LinkedHashMap<String, Integer> CommandPermissions = new LinkedHashMap<>();
 
     @Config.flags(retainOriginalValues)
