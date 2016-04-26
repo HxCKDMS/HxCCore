@@ -58,10 +58,12 @@ public class ColorHelper {
             wordBuilder.append(previousCharacter);
             messageBuilder.append(' ').append(wordBuilder.toString());
         }
-        return messageBuilder.toString().trim();
+
+        if (message.isEmpty()) return "";
+        else return messageBuilder.toString().trim();
     }
 
-    public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) throws NullPointerException {
+    public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) {
         UUID UUID = player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
         if (!CustomPlayerData.exists()) throw new NullPointerException();
