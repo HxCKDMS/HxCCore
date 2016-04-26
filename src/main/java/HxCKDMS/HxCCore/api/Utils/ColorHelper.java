@@ -15,102 +15,50 @@ public class ColorHelper {
     private static List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private static List<Character> effects = Arrays.asList('l', 'n', 'o', 'k', 'm', 'r');
 
-    boolean first, needsNext, end, needsLast, okUseAND;
-    Character character, activeColour;
-    List<Character> activeEffects;
-    StringBuilder messageBuilder;
-    ListIterator<Character> iterator;
+    private Character  activeColour;
+    private List<Character> activeEffects;
+    private StringBuilder messageBuilder;
+
+    private String message;
+    private Character defaultColour;
 
     private ColorHelper (String message, Character defaultColour) {
-        iterator = Arrays.asList(ArrayUtils.toObject(message.toCharArray())).listIterator();
+        this.message = message;
+        this.defaultColour = defaultColour;
         messageBuilder = new StringBuilder();
         activeColour = defaultColour;
         activeEffects = new ArrayList<>();
     }
 
-    private void addAllColoursAndEffectsForSpecials() {
-        if (iterator.hasNext()) {
-            character = iterator.next();
-            if(!character.equals(' ') && !character.equals('&')) addAllColoursAndEffects();
-        } else character = ' ';
-    }
+    private String colour() {
+        List<String> words = Arrays.asList(message.split(" "));
 
-    private void addAllColoursAndEffects() {
-        messageBuilder.append("\u00a7").append(activeColour);
-        if (!activeEffects.isEmpty()) activeEffects.forEach(a -> messageBuilder.append("\u00a7").append(a));
-    }
+        for (String word : words) {
+            ListIterator<Character> iterator = Arrays.asList(ArrayUtils.toObject(word.toCharArray())).listIterator();
+            StringBuilder wordBuilder = new StringBuilder();
 
-    private void handleSpecialCharacter() throws NullPointerException {
-        if (iterator.hasNext()) {
-            Character nextCharacter = iterator.next();
-            if (colours.contains(nextCharacter)) {
-                activeColour = nextCharacter;
+            wordBuilder.append('\u00a7').append(activeColour);
+            activeEffects.forEach(c -> wordBuilder.append('\u00a7').append(c));
 
-                addAllColoursAndEffectsForSpecials();
-                if(!iterator.hasNext() && first) throw new NullPointerException("Empty message");
-
-            } else if(effects.contains(nextCharacter)) {
-                if (nextCharacter.equals('r')) activeEffects.clear();
-                else activeEffects.add(nextCharacter);
-
-                addAllColoursAndEffectsForSpecials();
-                if(!iterator.hasNext() && first) throw new NullPointerException("Empty message");
-
-            } else {
-                okUseAND = true;
-                character = nextCharacter;
-                messageBuilder.append('&');
-                needsNext = false;
-                needsLast = false;
-                first = false;
+            Character previousCharacter = null;
+            while (iterator.hasNext()) {
+                Character character = iterator.next();
+                if (previousCharacter != null && colours.contains(character)) {
+                    wordBuilder.append(previousCharacter == '&' ? '\u00a7' : previousCharacter);
+                    if (previousCharacter == '&') activeColour = character;
+                } else if (previousCharacter != null && effects.contains(character)) {
+                    wordBuilder.append(previousCharacter == '&' ? '\u00a7' : previousCharacter);
+                    if (previousCharacter == '&' && character == 'r') {
+                        activeEffects.clear();
+                        activeColour = defaultColour;
+                    } else if (previousCharacter == '&') activeEffects.add(character);
+                }  else if (previousCharacter != null) wordBuilder.append(previousCharacter);
+                previousCharacter = character;
             }
-        } else {
-            messageBuilder.append('&');
-            end = true;
+            wordBuilder.append(previousCharacter);
+            messageBuilder.append(' ').append(wordBuilder.toString());
         }
-    }
-
-    private String colour() throws NullPointerException {
-        first = true; end = false; needsNext = true;
-
-        while (iterator.hasNext() || !needsNext) {
-            if (needsNext) character = iterator.next();
-            needsNext = true; needsLast = true; okUseAND = false;
-
-            if (character.equals('&')) handleSpecialCharacter();
-
-            if (first && !character.equals('&') && !end) {
-                addAllColoursAndEffects();
-                messageBuilder.append(character);
-                first = false;
-                needsLast = false;
-            } else if (character.equals('&') && !okUseAND && !end) {
-                needsNext = false;
-            }
-
-            if (character.equals(' ')) {
-                needsLast = false;
-                if (iterator.hasNext()) {
-                    Character nextCharacter = iterator.next();
-                    if (nextCharacter.equals(' ') || nextCharacter.equals('&')) {
-                        messageBuilder.append(' ');
-                        needsNext = false;
-                        character = nextCharacter;
-                    } else {
-                        addAllColoursAndEffects();
-                        character = nextCharacter;
-                        needsNext = false;
-                    }
-                }
-            }
-
-            if (needsLast && !character.equals('&') && !end) {
-                messageBuilder.append(character);
-            } else if (character.equals('&') && !okUseAND && !end) {
-                needsNext = false;
-            }
-        }
-        return messageBuilder.toString();
+        return messageBuilder.toString().trim();
     }
 
     public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) throws NullPointerException {
@@ -122,10 +70,9 @@ public class ColorHelper {
         String playerColour = NBTFileIO.getString(CustomPlayerData, "color");
         if (!playerColour.equals("")) defaultColour = playerColour.charAt(0);
         message = message.replace("https://www.youtube.com/watch?v=", "http://youtu.be/").replace("http://www.youtube.com/watch?v=", "http://youtu.be/");
-
         message = new ColorHelper(message, defaultColour).colour();
 
-        return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message));
+        return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message).trim());
     }
 
     public static String handleSign(String text) {
