@@ -5,23 +5,25 @@ import net.minecraft.world.World;
 
 //@SuppressWarnings("unused")
 public class WorldHelper {
-    private static double nthrt(double d, double n) {
-        if(n == 2) return Math.sqrt(d);
-        else if(n == 3) return Math.cbrt(d);
-        else return Math.pow(d, 1.0D / n);
-    }
-
-    public static void draw2DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta, double n) {
+    public static void draw2DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double precision, int blockMeta, double n) {
         Thread thread = new Thread(() -> {
-            double step = 2 * Math.PI / 2000;
+            for (float X_offset = -radius; X_offset <= radius; X_offset += precision) {
 
-            for(double theta=0;  theta < 2*Math.PI; theta+=step) {
-                int xl = (int)Math.round(radius * Math.cos(theta));
-                int zl = (int)Math.round(radius * Math.sin(theta));
+                double Z_offsetPowered = radius * radius - X_offset * X_offset;
+                if (Z_offsetPowered < 0) continue;
+                float Z_offset = (float) Math.sqrt(Z_offsetPowered);
 
-                System.out.println(zl);
+                int uX_offset = Math.round(X_offset) + (x < 0 ? -1 : 0);
+                int uZ_offset = Math.round(Z_offset) + (z < 0 ? -1 : 0);
+                checkAndPlaceBlock(world, block, x + uX_offset, y, z + uZ_offset, blockMeta);
+                checkAndPlaceBlock(world, block, x - uX_offset, y, z - uZ_offset, blockMeta);
 
-                checkAndPlaceBlock(world, block, x + xl - 1, y, z + zl - 1, blockMeta);
+                if (!hollow) {
+                    for (int X_fill = -uX_offset; X_fill < uX_offset; X_fill++) {
+                        checkAndPlaceBlock(world, block, x + X_fill, y, z + uZ_offset, blockMeta);
+                        checkAndPlaceBlock(world, block, x + X_fill, y, z - uZ_offset, blockMeta);
+                    }
+                }
             }
         });
         thread.setName("2DEllipsoidCalculationThread");
@@ -29,18 +31,27 @@ public class WorldHelper {
         thread.start();
     }
 
-    public static void draw3DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double checkCounter, int blockMeta, double n) {
+    public static void draw3DEllipsoid(World world, int x, int y, int z, Block block, int radius, boolean hollow, double precision, int blockMeta, double n) {
         Thread thread = new Thread(() -> {
-            double stepTheta = 2 * Math.PI / 2000;
-            double stepPhi = Math.PI / 2000;
+            for (float X_offset = -radius; X_offset < radius; X_offset += precision) {
+                for (float Z_offset = -radius; Z_offset < radius; Z_offset += precision) {
+                    double Y_offset_powered = radius * radius - X_offset * X_offset - Z_offset * Z_offset;
+                    if(Y_offset_powered < 0) continue;
+                    float Y_offset = (float) Math.sqrt(Y_offset_powered);
 
-            for(double theta = 0;  theta < 2 * Math.PI; theta += stepTheta) {
-                for(double phi = 0; phi < Math.PI; phi += stepPhi) {
-                    int xl = (int)Math.round(radius * Math.cos(theta) * Math.sin(phi));
-                    int yl = (int)Math.round(radius * Math.sin(theta) * Math.sin(phi));
-                    int zl = (int)Math.round(radius * Math.cos(phi));
+                    int uX_offset = Math.round(X_offset) + (x < 0 ? -1 : 0);
+                    int uY_offset = Math.round(Y_offset);
+                    int uZ_offset = Math.round(Z_offset) + (z < 0 ? -1 : 0);
 
-                    checkAndPlaceBlock(world, block, x + xl - 1, y + yl + 1, z + zl - 1, blockMeta);
+                    checkAndPlaceBlock(world, block, x + uX_offset, y + uY_offset, z + uZ_offset, blockMeta);
+                    checkAndPlaceBlock(world, block, x + uX_offset, y - uY_offset, z + uZ_offset, blockMeta);
+
+                    if (!hollow) {
+                        for (int Y_fill = -uY_offset; Y_fill < uY_offset; Y_fill++) {
+                            checkAndPlaceBlock(world, block, x + uX_offset, y + Y_fill, z + uZ_offset, blockMeta);
+                            checkAndPlaceBlock(world, block, x + uX_offset, y - Y_fill, z + uZ_offset, blockMeta);
+                        }
+                    }
                 }
             }
         });
@@ -51,6 +62,6 @@ public class WorldHelper {
     }
 
     private synchronized static void checkAndPlaceBlock(World world, Block block, int x, int y, int z, int blockMeta) {
-        if(world.getBlock(x, y, z) != block && y >= 0) world.setBlock(x, y, z, block, blockMeta, 3);
+        if(world.getBlock(x, y, z) != block && y >= 0) world.setBlock(x, y, z, block, blockMeta, 1 | 2);
     }
 }

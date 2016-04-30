@@ -1,8 +1,6 @@
 package HxCKDMS.HxCCore.Handlers;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.api.Utils.LogHelper;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -29,7 +27,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return tagCompound;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return tagCompound;
             }
         }
@@ -62,7 +59,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return false;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return false;
             }
         }
@@ -95,7 +91,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return "";
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return "";
             }
         }
@@ -128,7 +123,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -161,7 +155,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -194,7 +187,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -227,7 +219,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -260,7 +251,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -293,7 +283,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return 0;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return 0;
             }
         }
@@ -326,7 +315,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return null;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return null;
             }
         }
@@ -359,7 +347,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return null;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return null;
             }
         }
@@ -392,7 +379,6 @@ public class NBTFileIO {
                 e.printStackTrace();
                 return false;
             } else {
-                LogHelper.error(e.getLocalizedMessage(), References.MOD_NAME);
                 return false;
             }
         }

@@ -44,6 +44,7 @@ public class CommandsHandler extends AbstractCommandMain {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
+        System.out.println(commands);
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))

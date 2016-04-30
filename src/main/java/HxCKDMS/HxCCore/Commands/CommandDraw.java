@@ -38,17 +38,17 @@ public class CommandDraw implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Draw"), player);
             String[] args2;
             switch (args.length) {
-                case 3 : args2 = new String[]{args[2], "~", "~", "8", "minecraft:glass", "true", "0.1"};
+                case 3 : args2 = new String[]{args[2], "~", "~", "8", "minecraft:glass", "true", "0.005"};
                     break;
-                case 4 : args2 = new String[]{args[2], args[3], "~", "8", "minecraft:glass", "true", "0.1"};
+                case 4 : args2 = new String[]{args[2], args[3], "~", "8", "minecraft:glass", "true", "0.005"};
                     break;
-                case 5 : args2 = new String[]{args[2], args[3], args[4], "8", "minecraft:glass", "true", "0.1"};
+                case 5 : args2 = new String[]{args[2], args[3], args[4], "8", "minecraft:glass", "true", "0.005"};
                     break;
-                case 6 : args2 = new String[]{args[2], args[3], args[4], args[5], "minecraft:glass", "true", "0.1"};
+                case 6 : args2 = new String[]{args[2], args[3], args[4], args[5], "minecraft:glass", "true", "0.005"};
                     break;
-                case 7 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], "true", "0.1"};
+                case 7 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], "true", "0.005"};
                     break;
-                case 8 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], "0.1"};
+                case 8 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], "0.005"};
                     break;
                 case 9 : args2 = new String[]{args[2], args[3], args[4], args[5], args[6], args[7], args[8]};
                     break;
@@ -108,7 +108,7 @@ public class CommandDraw implements ISubCommand {
         boolean hollow = Boolean.parseBoolean(args[5]);
         Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
         double n = Double.parseDouble(args[6]);
-        double updateAmount = args.length >= 8 ? Double.parseDouble(args[7]) : 0.05D;
+        double updateAmount = args.length >= 8 ? Double.parseDouble(args[7]) : 0.005D;
 
         System.out.println(updateAmount);
         long cNano = System.nanoTime();
@@ -161,7 +161,7 @@ public class CommandDraw implements ISubCommand {
         String unlocalizedName = args[4];
         boolean hollow = Boolean.parseBoolean(args[5]);
         Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
-        double updateAmount = args.length == 7 ? Double.parseDouble(args[6]) : 0.05D;
+        double updateAmount = args.length == 7 ? Double.parseDouble(args[6]) : 0.005D;
 
         long cNano = System.nanoTime();
         WorldHelper.draw2DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, 2);
@@ -180,7 +180,7 @@ public class CommandDraw implements ISubCommand {
         boolean hollow = !args[5].isEmpty() && Boolean.parseBoolean(args[5]);
 
         Block block = (Block) Block.blockRegistry.getObject(unlocalizedName);
-        double updateAmount = args.length == 7 ? Double.parseDouble(args[6]) : 0.05D;
+        double updateAmount = args.length == 7 ? Double.parseDouble(args[6]) : 0.005D;
 
         long cNano = System.nanoTime();
         WorldHelper.draw3DEllipsoid(player.worldObj, x, y, z, block, radius, hollow, updateAmount, 0, 2);
