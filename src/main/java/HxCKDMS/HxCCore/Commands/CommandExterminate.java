@@ -19,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 import java.util.List;
 

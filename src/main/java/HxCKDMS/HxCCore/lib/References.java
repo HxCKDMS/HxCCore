@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.Configs.Configurations;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class References {
     public static final String MOD_ID = "HxCCore";
@@ -12,6 +13,9 @@ public class References {
     public static final String VERSION = "1.11.0";
     public static final String DEPENDENCIES = "required-after:Forge@[10.13.4.1448,)";
     public static final String PACKET_CHANNEL_NAME = MOD_ID.toLowerCase();
+    public static final Pattern colourRegex = Pattern.compile("&(?=[0123456789abcdefrklmn])");
+    public static final List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    public static final List<Character> effects = Arrays.asList('l', 'n', 'o', 'k', 'm', 'r');
 
     public static final String ERROR_REPORT_ADDRESS = "163.158.174.229";
     public static final int ERROR_REPORT_PORT = 7643;

@@ -13,8 +13,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
-import scala.actors.threadpool.Arrays;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
@@ -54,7 +54,7 @@ public class CommandDrain implements ISubCommand {
     @SuppressWarnings("unchecked")
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 3)
-            return Arrays.asList(FluidRegistry.getRegisteredFluids().keySet().toArray());
+            return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
         return null;
     }
 }

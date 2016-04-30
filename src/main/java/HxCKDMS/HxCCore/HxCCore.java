@@ -185,10 +185,8 @@ public class HxCCore {
             if (!OLDLOG.exists())
                 OLDLOG.createNewFile();
             commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
-        } catch (IOException ignored) {}
-//        try {
 //            EventProtection.load();
-//        } catch (Exception ignored) {}
+        } catch (IOException ignored) {}
     }
 
     public void registerGamerule(String rule, String value) {

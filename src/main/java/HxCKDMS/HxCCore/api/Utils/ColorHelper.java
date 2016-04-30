@@ -11,15 +11,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.io.File;
 import java.util.*;
 
-public class ColorHelper {
-    private static List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-    private static List<Character> effects = Arrays.asList('l', 'n', 'o', 'k', 'm', 'r');
+import static HxCKDMS.HxCCore.lib.References.*;
 
-    boolean first, needsNext, end, needsLast, okUseAND;
-    Character character, activeColour;
-    List<Character> activeEffects;
-    StringBuilder messageBuilder;
-    ListIterator<Character> iterator;
+public class ColorHelper {
+
+    private boolean first, needsNext, end, needsLast, okUseAND;
+    private Character character, activeColour;
+    private List<Character> activeEffects;
+    private StringBuilder messageBuilder;
+    private ListIterator<Character> iterator;
 
     private ColorHelper (String message, Character defaultColour) {
         iterator = Arrays.asList(ArrayUtils.toObject(message.toCharArray())).listIterator();
