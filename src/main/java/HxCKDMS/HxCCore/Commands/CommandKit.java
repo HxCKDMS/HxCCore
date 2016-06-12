@@ -10,7 +10,7 @@ import java.util.List;
 @SuppressWarnings({"unchecked", "unused"})
 //@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandKit implements ISubCommand {
-    public static CommandKit instance = new CommandKit();
+    public static CommandBroadcast instance = new CommandBroadcast();
 
     @Override
     public String getCommandName() {
@@ -63,8 +63,8 @@ public class CommandKit implements ISubCommand {
                         player.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commands.kit.give.success", args[2], args[3])));
                     } else { throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.give.failure", args[2], args[3]));}
                 }
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));*/
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));*/
     }
 
     @Override

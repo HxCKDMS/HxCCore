@@ -8,6 +8,7 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -15,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,7 +44,7 @@ public class CommandClientInfo implements ISubCommand {
             if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ClientInfo"), (EntityPlayerMP) sender)) {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
         } else {
             getClientInfo(sender, CommandBase.getPlayer(sender, args[1]));
         }

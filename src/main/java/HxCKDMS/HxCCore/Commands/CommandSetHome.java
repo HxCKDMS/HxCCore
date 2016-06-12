@@ -54,7 +54,7 @@ public class CommandSetHome implements ISubCommand {
 
                 if (References.HOMES[pl] != -1 && oldhomes.size() >= References.HOMES[pl])
                     if (!oldhomes.contains(hName))
-                        throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.home.outOfHomes"));
+                        throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.home.outOfHomes"));
 
                 int x = (int)Math.round(player.posX);
                 int y = (int)Math.round(player.posY);
@@ -73,8 +73,8 @@ public class CommandSetHome implements ISubCommand {
                 home.setTag(hName, homeDir);
 
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

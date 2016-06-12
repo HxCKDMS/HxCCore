@@ -7,12 +7,14 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import net.minecraft.command.*;
+import HxCKDMS.HxCCore.lib.References;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CommandMute implements ISubCommand {
                         mutes.setBoolean(player.getUniqueID().toString(), true);
                         NBTFileIO.setNbtTagCompound(worldData, "mutedPlayers", mutes);
                     } else
-                        throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                        throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
                     break;
                 case 2:
                     player = net.minecraft.command.CommandBase.getPlayer(sender, args[1]);
@@ -66,9 +68,9 @@ public class CommandMute implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("\u00A79You've been muted for " + Integer.parseInt(args[2]) / 60 + " minutes!"));
                     mutes.setBoolean(player.getUniqueID().toString(), true);
                     break;*/ //TODO: Find good way to make timed mute without causing lag with yet another tick counter
-                default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+                default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
             }
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
     }
 
     @Override

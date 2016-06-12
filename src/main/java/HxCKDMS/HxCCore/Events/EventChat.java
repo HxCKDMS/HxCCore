@@ -7,6 +7,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.ColorHelper;
+import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.command.WrongUsageException;
@@ -16,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 
@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EventListener;
 import java.util.UUID;
+
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class EventChat implements EventListener {
 
@@ -75,16 +76,21 @@ public class EventChat implements EventListener {
                 });
             }
 
+            CommandsConfig.VanillaPermissionOverwrites.forEach((command, level) -> {
+                if (command.equalsIgnoreCase(cmd))
+                    event.setCanceled(!PermissionsHandler.canUseCommand(level, (EntityPlayerMP) event.sender));
+            });
+
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
                 if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
                 }
             });
 

@@ -11,13 +11,10 @@ import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-import static HxCKDMS.HxCCore.lib.References.*;
-
-@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = true)
+@HxCCommand(defaultPermission = 4, mainCommand = CommandsHandler.class, isEnabled = false)
 public class CommandReloadConfigs implements ISubCommand {
     public static CommandReloadConfigs instance = new CommandReloadConfigs();
 
@@ -37,19 +34,13 @@ public class CommandReloadConfigs implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ReloadConfigs"), player);
             if (CanSend) {
+                Configurations.preInitConfigs();
                 HxCCore.commandConfig.initConfiguration();
                 HxCCore.config.initConfiguration();
-                HxCCore.kitConfig.initConfiguration();
-                PERM_NAMES =  new String[Configurations.Permissions.size()];
-                PERM_COLOURS = new char[Configurations.Permissions.size()];
-                HOMES = new int[Configurations.Permissions.size()];
-                for (int i = 0; i < Configurations.Permissions.size(); i++) {
-                    PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
-                    PERM_COLOURS[i] = Configurations.Permissions.get(PERM_NAMES[i]).charAt(0);
-                    HOMES[i] = Integer.parseInt(Configurations.Permissions.get(PERM_NAMES[i]).substring(1).trim());
-                }
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+//                HxCCore.kitConfig.initConfiguration();
+                HxCCore.updateConfigs();
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

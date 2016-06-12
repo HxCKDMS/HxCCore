@@ -3,8 +3,10 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -13,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class CommandHeal implements ISubCommand {
                     if (CanSend) {
                         player.setHealth(player.getMaxHealth());
                         sender.addChatMessage(new ChatComponentText("\u00A76Healed."));
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+                    } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+                } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
                 break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
@@ -50,7 +51,7 @@ public class CommandHeal implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A76You have received some divine intervention."));
                 sender.addChatMessage(new ChatComponentText("\u00A76Healed " + player2.getDisplayName() + "."));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

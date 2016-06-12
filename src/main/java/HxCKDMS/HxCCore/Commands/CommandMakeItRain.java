@@ -3,12 +3,13 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -44,8 +45,8 @@ public class CommandMakeItRain implements ISubCommand {
 //                kitty.setVelocity(x * speed, y * speed, z * speed);
 //                tnt.setVelocity(x * speed, y * speed, z * speed);
 //                player.worldObj.spawnEntityInWorld(isKitty ? kitty : tnt);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

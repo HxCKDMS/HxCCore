@@ -12,6 +12,7 @@ import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
+import HxCKDMS.HxCCore.api.Utils.TestUtil;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -44,6 +45,7 @@ public class HxCCore {
     @Instance(MOD_ID)
     public static HxCCore instance;
 
+    public static TestUtil util = new TestUtil();
     private static LinkedHashMap<String, String> vers = new LinkedHashMap<>();
     public static final List<String> knownMods = Arrays.asList("HxCCore", "HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
             "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
@@ -84,14 +86,7 @@ public class HxCCore {
         commandConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
 
         Configurations.preInitConfigs();
-
-        for (int i = 0; i < Configurations.Permissions.size(); i++) {
-            PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
-            String[] temp = Configurations.Permissions.get(PERM_NAMES[i]).replaceAll(" ", "").split(",");
-            PERM_COLOURS[i] = temp[0].charAt(0);
-            HOMES[i] = Integer.parseInt(temp[1]);
-            PROTECT_SIZE[i] = Long.parseLong(temp[2]);
-        }
+        updateConfigs();
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageColor.Handler.class, MessageColor.class, 0, Side.CLIENT);
@@ -241,6 +236,19 @@ public class HxCCore {
                 return vers.get(mod + ":1.7.10");
         } catch(Exception ignored) {}
         return "";
+    }
+
+    public static void updateConfigs() {
+        PERM_NAMES = new String[Configurations.Permissions.size()];
+        PERM_COLOURS = new char[Configurations.Permissions.size()];
+        HOMES = new int[Configurations.Permissions.size()];
+        for (int i = 0; i < Configurations.Permissions.size(); i++) {
+            PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
+            String[] temp = Configurations.Permissions.get(PERM_NAMES[i]).replaceAll(" ", "").split(",");
+            PERM_COLOURS[i] = temp[0].charAt(0);
+            HOMES[i] = Integer.parseInt(temp[1]);
+            PROTECT_SIZE[i] = Long.parseLong(temp[2]);
+        }
     }
 
     public static void versionCheck() {

@@ -8,12 +8,12 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -47,7 +47,7 @@ public class CommandWarp implements ISubCommand {
 
                 String wName = args.length == 1 ? "default" : args[1];
                 NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
-                if(warpDir.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noWarps"));
+                if(warpDir.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noWarps"));
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
@@ -58,8 +58,8 @@ public class CommandWarp implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 }
                 NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

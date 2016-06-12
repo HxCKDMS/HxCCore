@@ -3,8 +3,10 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -12,7 +14,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -39,14 +40,14 @@ public class CommandKill implements ISubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kill"), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill." + player.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
-                    else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+                    else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+                } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
             break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                 player2.attackEntityFrom(new DamageSource("command_kill." + player2.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

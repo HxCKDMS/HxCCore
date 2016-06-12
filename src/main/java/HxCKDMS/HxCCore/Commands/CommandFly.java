@@ -7,13 +7,13 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -41,8 +41,8 @@ public class CommandFly implements ISubCommand {
                     boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Fly"), player);
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player) + " flight."));
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-                } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+                    } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+                } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
             break;
             case 2:
                 if (isPlayer) {
@@ -52,14 +52,14 @@ public class CommandFly implements ISubCommand {
                         EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                         player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayName() + "."));
                         player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel like the wind can carry you." : "\u00A7bYou feel like an unmovable boulder."));
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
+                    } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
                 } else {
                     EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                     sender.addChatMessage(new ChatComponentText((toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayName() + ".")));
                     player2.addChatMessage(new ChatComponentText(player2.capabilities.allowFlying ? "\u00A7bYou feel like the wind can carry you." : "\u00A7bYou feel like an unmovable boulder."));
                 }
                 break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

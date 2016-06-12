@@ -7,6 +7,7 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -19,7 +20,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -81,8 +81,8 @@ public class CommandAFK implements ISubCommand {
                 List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
                 for (EntityPlayerMP p : list)
                     p.addChatMessage(AFKStatus ? Back : AFK);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

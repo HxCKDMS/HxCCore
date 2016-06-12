@@ -8,12 +8,12 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -47,7 +47,7 @@ public class CommandHome implements ISubCommand {
 
                 String hName = args.length == 1 ? "home" : args[1];
                 NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-                if(homeDir.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noHomes"));
+                if(homeDir.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noHomes"));
                 if(!homeDir.hasKey(hName)){
                     throw new WrongUsageException("\u00a74\u00a7oThe home named: '" + hName + "' does not exist.");
                 }
@@ -60,8 +60,8 @@ public class CommandHome implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 }
                 NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

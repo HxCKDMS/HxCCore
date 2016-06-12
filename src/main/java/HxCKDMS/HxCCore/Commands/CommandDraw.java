@@ -3,9 +3,11 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -13,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,8 +82,8 @@ public class CommandDraw implements ISubCommand {
                     default:
                         break;
                 }
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName() + ".usage"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName() + ".usage"));
     }
 
     @Override

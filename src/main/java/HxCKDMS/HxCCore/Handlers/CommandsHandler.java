@@ -63,7 +63,7 @@ public class CommandsHandler extends AbstractCommandMain {
                 else if ((commands.get(k).getCommandRequiredParams()[2] != -1) && !sender.getCommandSenderName().equals(HxCCore.server.getCommandSenderName()) && args.length >= commands.get(k).getCommandRequiredParams()[2])
                     commands.get(k).handleCommand(sender, args, false);
                 else
-                    throw new WrongUsageException(StatCollector.translateToLocal("commands." + commands.get(k).getCommandName() + ".usage"));
+                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + commands.get(k).getCommandName() + ".usage"));
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }

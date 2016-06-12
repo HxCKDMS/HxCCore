@@ -3,14 +3,15 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -46,8 +47,8 @@ public class CommandDrain implements ISubCommand {
                         for (int k = z - range; k < z + range; k++)
                             if (args.length == 3 ? player.worldObj.getBlock(i, j, k) == block : (player.worldObj.getBlock(i, j, k) instanceof IFluidBlock || player.worldObj.getBlock(i, j, k).getMaterial().isLiquid()))
                                 player.worldObj.setBlockToAir(i, j, k);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

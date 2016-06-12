@@ -3,15 +3,16 @@ package HxCKDMS.HxCCore.Commands;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class CommandExtinguish implements ISubCommand {
                     if (CanSend) {
                         player.extinguish();
                         player.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
-                    } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+                    } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
                 }
             break;
             case 2:
@@ -48,7 +49,7 @@ public class CommandExtinguish implements ISubCommand {
                 player2.addChatMessage(new ChatComponentText("\u00A7bYou suddenly feel refreshed."));
                 sender.addChatMessage(new ChatComponentText("\u00A7eYou have extinguished " + player2.getDisplayName()));
             break;
-            default: throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
         }
     }
 

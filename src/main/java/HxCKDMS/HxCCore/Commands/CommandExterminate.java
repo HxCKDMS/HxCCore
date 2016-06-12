@@ -6,6 +6,7 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
@@ -18,9 +19,8 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
-import java.util.Arrays;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -85,8 +85,8 @@ public class CommandExterminate implements ISubCommand {
                             tmp += 1;
                         }
                 player.addChatMessage(new ChatComponentText("You have exterminated " + tmp + " entities!"));
-            } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("command.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

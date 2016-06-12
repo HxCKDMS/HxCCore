@@ -56,8 +56,8 @@ public class CommandNick implements ISubCommand {
                     NBTFileIO.setString(CustomPlayerData, "nickname", nick);
                     player.addChatMessage(new ChatComponentText(("Your nickname has been set to " + nick).replace("&", References.CC)));
                 }
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @Override

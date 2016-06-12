@@ -7,11 +7,11 @@ import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -44,8 +44,8 @@ public class CommandPath implements ISubCommand {
                     NBTFileIO.setInteger(CustomPlayerData, "PathMeta", args.length >= 3 ? Integer.valueOf(args[2]) : 0);
                     NBTFileIO.setInteger(CustomPlayerData, "PathSize", args.length >= 4 ? Integer.valueOf(args[3]) : 2);
                 }
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.permission"));
-        } else throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

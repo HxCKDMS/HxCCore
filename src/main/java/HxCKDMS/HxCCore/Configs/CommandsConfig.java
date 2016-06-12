@@ -14,6 +14,9 @@ public class CommandsConfig {
     public static LinkedHashMap<String, Integer> CommandPermissions = new LinkedHashMap<>();
 
     @Config.flags(retainOriginalValues)
+    public static LinkedHashMap<String, Integer> VanillaPermissionOverwrites = new LinkedHashMap<>();
+
+    @Config.flags(retainOriginalValues)
     public static LinkedHashMap<String, Boolean> EnabledCommands = new LinkedHashMap<>();
 
 //    @Config.flags(retainOriginalValues)

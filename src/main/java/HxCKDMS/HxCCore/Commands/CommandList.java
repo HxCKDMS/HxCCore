@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.Arrays;
@@ -37,14 +37,14 @@ public class CommandList implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException {
         if(args.length >= 2) {
             if (args[1].toLowerCase().contains("h")) {
-                if(!(sender instanceof EntityPlayerMP)) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.playersonly"));
+                if(!(sender instanceof EntityPlayerMP)) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
 
                 EntityPlayerMP player = (EntityPlayerMP) sender;
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
                 NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
 
-                if(home.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noHomes"));
+                if(home.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noHomes"));
 
                 ChatComponentText homes = new ChatComponentText(home.getKeySet().toString().replace("[", "").replace("]", ""));
                 homes.getChatStyle().setColor(EnumChatFormatting.GOLD);
@@ -53,13 +53,13 @@ public class CommandList implements ISubCommand {
                 File CustomWorldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
                 NBTTagCompound warp = NBTFileIO.getNbtTagCompound(CustomWorldData, "warp");
 
-                if(warp.getKeySet().isEmpty()) throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.noWarps"));
+                if(warp.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noWarps"));
 
                 ChatComponentText warps = new ChatComponentText(warp.getKeySet().toString().replace("[", "").replace("]", ""));
                 warps.getChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE);
                 sender.addChatMessage(warps);
-            } else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
-        }else throw new WrongUsageException(StatCollector.translateToLocal("commands." + getCommandName().toLowerCase() + ".usage"));
+            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
+        }else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
     }
 
     @SuppressWarnings("unchecked")
