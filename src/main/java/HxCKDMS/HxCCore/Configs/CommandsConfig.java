@@ -16,6 +16,12 @@ public class CommandsConfig {
     @Config.flags(retainOriginalValues)
     public static LinkedHashMap<String, Boolean> EnabledCommands = new LinkedHashMap<>();
 
+//    @Config.flags(retainOriginalValues)
+//    public static LinkedHashMap<String, Integer> OverwrittenCommands = new LinkedHashMap<>();
+
+    @Config.flags(retainOriginalValues)
+    public static LinkedHashMap<String, String> CommandCosts = new LinkedHashMap<>();
+
     @Config.comment("Add commands to this list to prevent their execution entirely... 0 means exact command, 1 means commands that begins with")
     public static LinkedHashMap<String, Integer> BannedCommands = new LinkedHashMap<>();
 

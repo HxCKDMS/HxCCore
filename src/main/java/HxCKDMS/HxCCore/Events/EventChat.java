@@ -2,13 +2,17 @@ package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.ColorHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -52,6 +56,24 @@ public class EventChat implements EventListener {
                 HxCCore.updateGamerules();
             }
             String cmd = event.command.getCommandName() + " " + Arrays.asList(event.parameters).toString().replace(",", "").substring(1, Arrays.asList(event.parameters).toString().replace(",", "").length() - 1);
+            final Item[] price = new Item[1];
+            final int[] times = new int[1];
+
+            if (!PermissionsHandler.hasHighestPermissions((EntityPlayerMP) event.sender)) {
+                CommandsConfig.CommandCosts.forEach((command, limiter) -> {
+                    if (cmd.startsWith(command)) {
+                        String[] t = limiter.split("/");
+                        if (GameRegistry.findItem(t[1].split(":")[0], t[1].split(":")[1]) != null) {
+                            price[0] = GameRegistry.findItem(t[1].split(":")[0], t[1].split(":")[1]);
+                            times[0] = Integer.parseInt(t[0]);
+                            if (!((EntityPlayerMP) event.sender).inventory.hasItem(GameRegistry.findItem(t[1].split(":")[0], t[1].split(":")[1]))) {
+                                ((EntityPlayerMP) event.sender).addChatComponentMessage(new ChatComponentText("\u00a74Requires " + price[0].getItemStackDisplayName(new ItemStack(price[0]))));
+                                event.setCanceled(true);
+                            }
+                        }
+                    }
+                });
+            }
 
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
                 if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
@@ -65,6 +87,17 @@ public class EventChat implements EventListener {
                     throw new WrongUsageException(StatCollector.translateToLocal("commands.exception.bannedCommand"));
                 }
             });
+
+            if (price[0] != null) {
+                if (cmd.startsWith("HxC ")) {
+                    if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(CommandsHandler.getSubName(event.parameters[0])), (EntityPlayerMP) event.sender))
+                        for (int i = 0; i < times[0]; i++)
+                            ((EntityPlayerMP) event.sender).inventory.consumeInventoryItem(price[0]);
+                } else {
+                    for (int i = 0; i < times[0]; i++)
+                        ((EntityPlayerMP) event.sender).inventory.consumeInventoryItem(price[0]);
+                }
+            }
 
             if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))
                 if (!CommandsConfig.IgnoredCommands.contains(event.command.getCommandName().toLowerCase())) {

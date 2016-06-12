@@ -30,6 +30,10 @@ public class CommandsHandler extends AbstractCommandMain {
     public static void initCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(instance);
     }
+
+    public static String getSubName(String name) {
+        return commands.get(name).getCommandName();
+    }
     
     @Override
     public String getCommandName() {
@@ -44,7 +48,6 @@ public class CommandsHandler extends AbstractCommandMain {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException, PlayerNotFoundException {
-        System.out.println(commands);
         if (args.length > 0) {
             String k = args[0].toLowerCase();
             if (HxCCore.instance.HxCRules.get("LogCommands").equals("true"))

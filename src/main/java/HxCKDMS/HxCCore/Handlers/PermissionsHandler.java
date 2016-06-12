@@ -18,6 +18,13 @@ public class PermissionsHandler {
         return (isopped || SenderPermLevel >= RequiredLevel);
     }
 
+    public static boolean hasHighestPermissions(EntityPlayer player) {
+        NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(HxCCore.PermissionsData, "Permissions");
+        int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
+        boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
+        return (isopped || SenderPermLevel == Configurations.Permissions.size() || player.capabilities.isCreativeMode);
+    }
+
     public static int permLevel(EntityPlayer player) {
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(HxCCore.PermissionsData, "Permissions");
         boolean isopped = HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile());
