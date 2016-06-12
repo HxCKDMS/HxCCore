@@ -235,7 +235,9 @@ public class HxCCore {
 
     public static String getNewVer(String mod, String Version) {
         try {
-            if (!vers.get(mod + ":1.7.10").equalsIgnoreCase(Version))
+            int a = Integer.parseInt(Version.replaceAll("\\.", "")),
+                    b = Integer.parseInt(vers.get(mod + ":1.7.10").replaceAll("\\.", ""));
+            if (b > a)
                 return vers.get(mod + ":1.7.10");
         } catch(Exception ignored) {}
         return "";
