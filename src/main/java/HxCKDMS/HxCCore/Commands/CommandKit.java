@@ -10,7 +10,7 @@ import java.util.List;
 @SuppressWarnings({"unchecked", "unused"})
 //@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandKit implements ISubCommand {
-    public static CommandBroadcast instance = new CommandBroadcast();
+    public static CommandKit instance = new CommandKit();
 
     @Override
     public String getCommandName() {
