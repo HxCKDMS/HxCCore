@@ -42,7 +42,7 @@ public class CommandBroadcast implements ISubCommand {
 
             tmp = tmp.trim();
             if (CanSend && !tmp.isEmpty()) {
-                String formattedMessage = Configurations.formats.get("BroadcastVariable").replace("SENDER", NickHandler.getColouredNick(player)).replace("MESSAGE", tmp).replaceAll("&", References.CC);
+                String formattedMessage = Configurations.formats.get("BroadcastFormat").replace("SENDER", NickHandler.getColouredNick(player)).replace("MESSAGE", tmp).replaceAll("&", References.CC);
                 for (EntityPlayer p : (List<EntityPlayer>) HxCCore.server.getEntityWorld().playerEntities)
                     p.addChatComponentMessage(new ChatComponentText(formattedMessage));
             }
