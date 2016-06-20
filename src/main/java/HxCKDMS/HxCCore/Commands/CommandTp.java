@@ -14,11 +14,10 @@ import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
 
-@HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
+@HxCCommand(defaultPermission = 3, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandTp implements ISubCommand {
     public static CommandTp instance = new CommandTp();
 
@@ -48,7 +47,6 @@ public class CommandTp implements ISubCommand {
                     Teleporter.transferPlayerToDimension(player, player2.dimension, Math.round((float)player2.posX), Math.round((float)player2.posY), Math.round((float)player2.posZ));
                 else
                     player.playerNetServerHandler.setPlayerLocation(Math.round((float)player2.posX), Math.round((float)player2.posY), Math.round((float)player2.posZ), player2.rotationYaw, player2.rotationPitch);
-                player.addChatComponentMessage(new ChatComponentText("Teleported successfully to player: " + player2.getDisplayName() + "."));
             } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
         } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
     }
