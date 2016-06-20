@@ -45,7 +45,7 @@ public class CommandKill implements ISubCommand {
             break;
             case 2:
                 EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
-                player2.attackEntityFrom(new DamageSource("command_kill." + player2.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
+                player2.attackEntityFrom(new DamageSource("command_kill." + player2.worldObj.rand.nextInt(45)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
             break;
             default: throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName().toLowerCase() + ".usage"));
         }

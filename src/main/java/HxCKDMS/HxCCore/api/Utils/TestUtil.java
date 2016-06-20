@@ -144,6 +144,17 @@ public class TestUtil {
         translations.put("death.attack.command_kill.32", "RIP %1$s...");
         translations.put("death.attack.command_kill.33", "%1$s...");
         translations.put("death.attack.command_kill.34", "%1$s failed...");
+        translations.put("death.attack.command_kill.35", "%1$s turned to dust...");
+        translations.put("death.attack.command_kill.36", "%1$s became fertilizer...");
+        translations.put("death.attack.command_kill.37", "%1$s decomposed instantly...");
+        translations.put("death.attack.command_kill.38", "%1$s prayed to the wrong deity...");
+        translations.put("death.attack.command_kill.39", "%1$s asked for it...");
+        translations.put("death.attack.command_kill.40", "%1$s vanished...");
+        translations.put("death.attack.command_kill.41", "%1$s did a magic trick...");
+        translations.put("death.attack.command_kill.42", "%1$s forgot how to exist...");
+        translations.put("death.attack.command_kill.43", "%1$s is no longer being observed...");
+        translations.put("death.attack.command_kill.44", "%1$s decided to reset...");
+        translations.put("death.attack.command_kill.45", "%1$s was replaced with a corpse...");
     
     }
     
