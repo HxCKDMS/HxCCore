@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
+import HxCKDMS.HxCCore.Commands.CommandKill;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
 import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Handlers.CommandsHandler;
@@ -39,6 +40,7 @@ public class EventChat implements EventListener {
 
         UUID UUID = event.player.getUniqueID();
         File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
+        File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
         if (!worldData.exists()) worldData.mkdirs();
         try {
             NBTTagCompound mutes = NBTFileIO.getNbtTagCompound(worldData, "mutedPlayers");
@@ -47,6 +49,20 @@ public class EventChat implements EventListener {
                 event.setCanceled(true);
             }
         } catch (Exception ignored) {}
+
+        if ((event.component.getFormattedText().contains("herobrine") || event.component.getFormattedText().contains("my lord"))) {
+            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
+            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                    ((EntityPlayerMP)player).addChatComponentMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74What is your request mortal?")));
+        }
+
+        if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine") && (event.component.getFormattedText().contains("die") || event.component.getFormattedText().contains("kill") || event.component.getFormattedText().contains("misery") || event.component.getFormattedText().contains("suffer") || event.component.getFormattedText().contains("torment"))) {
+            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
+            CommandKill.instance.handleCommand(event.player, new String[]{event.player.getDisplayName()}, true);
+        } else if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine")) {
+            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                    ((EntityPlayerMP)player).addChatComponentMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74Mortals annoy me.")));
+        }
     }
 
 
