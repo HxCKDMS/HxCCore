@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Asm.Hooks;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.Handlers.PermissionsHandler;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.ColorHelper;
 import HxCKDMS.HxCCore.lib.References;

@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Handlers;
+package HxCKDMS.HxCCore.api.Handlers;
 
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.AbstractCommandMain;
@@ -11,7 +11,6 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Arrays;

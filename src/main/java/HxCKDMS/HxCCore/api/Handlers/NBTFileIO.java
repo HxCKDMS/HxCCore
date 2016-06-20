@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Handlers;
+package HxCKDMS.HxCCore.api.Handlers;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
 import net.minecraft.nbt.CompressedStreamTools;

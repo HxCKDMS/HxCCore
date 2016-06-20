@@ -1,4 +1,4 @@
-package HxCKDMS.HxCCore.Handlers;
+package HxCKDMS.HxCCore.api.Handlers;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.ReflectionHelper;
