@@ -14,7 +14,7 @@ public class Configurations {
     @Config.comment("Debug Mode Enable? Can cause lag and console spam!")
     public static boolean DebugMode;
 
-    @Config.comment("Gamemode Related things, not survival listing of players.")
+    @Config.comment("Gamemode Related things, list players that aren't in survival mode.")
     public static boolean GameMode = true;
 
     @Config.category("Features")
@@ -37,14 +37,14 @@ public class Configurations {
     @Config.comment("How many levels are required per increment of buffs.")
     public static Integer XPBuffPerLevels = 5;
 
-    public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4');
+    public static List<Character> bannedColorCharacters = Arrays.asList('k', 'm', '4', '0');
 
     @Config.category("Features")
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
     public static boolean autoCrashReporterEnabled = true;
 
     @Config.category("Permissions")
-    @Config.comment("You can rename these... and the second part is colour. the third is number of homes (-1 = infinite) AND you can add more..")
+    @Config.comment("You can rename these... and you can add more.. or Remove some. -1 = infinite GroupName=MaxHomes, MaxBlocksProtected")
     public static LinkedHashMap<String, String> Permissions = new LinkedHashMap<>();
 
     @Config.comment("HxC is labels given to special people. Group is the Server rank Name is nickname")
@@ -59,12 +59,13 @@ public class Configurations {
 
     private static void putValues() {
         if (Permissions.isEmpty()) {
-            Permissions.put("Default", "f, 3, 0");
-            Permissions.put("Helper", "e, 5, 512");
-            Permissions.put("Moderator", "9, 10, 4096");
-            Permissions.put("Admin", "6, 16, 32768");
-            Permissions.put("Owner", "4, -1, -1");
+            Permissions.put("Default", "3, 0");
+            Permissions.put("&eHelper", "5, 512");
+            Permissions.put("&9Moderator", "10, 4096");
+            Permissions.put("&6Admin", "16, 32768");
+            Permissions.put("&4&lOwner", "-1, -1");
         }
+
         if (formats.isEmpty()) {
             formats.put("ChatFormat", "HEADER MESSAGE");
             formats.put("PlayerNametagFormat", "HXC GROUP NAME");

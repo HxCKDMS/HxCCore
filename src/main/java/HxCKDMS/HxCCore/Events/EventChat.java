@@ -32,10 +32,12 @@ public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
-        try {
-            event.component = ColorHelper.handleChat(event.message, event.player);
-        } catch (Exception unhandled) {
-            event.setCanceled(true);
+        if (Configurations.EnableColourInChat) {
+            try {
+                event.component = ColorHelper.handleChat(event.message, event.player);
+            } catch (Exception unhandled) {
+                event.setCanceled(true);
+            }
         }
 
         UUID UUID = event.player.getUniqueID();

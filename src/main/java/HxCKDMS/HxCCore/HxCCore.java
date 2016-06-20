@@ -245,9 +245,14 @@ public class HxCCore {
         for (int i = 0; i < Configurations.Permissions.size(); i++) {
             PERM_NAMES[i] = (String) Configurations.Permissions.keySet().toArray()[i];
             String[] temp = Configurations.Permissions.get(PERM_NAMES[i]).replaceAll(" ", "").split(",");
-            PERM_COLOURS[i] = temp[0].charAt(0);
-            HOMES[i] = Integer.parseInt(temp[1]);
-            PROTECT_SIZE[i] = Long.parseLong(temp[2]);
+            if (temp.length == 3) {
+                PERM_COLOURS[i] = temp[0].charAt(0);
+                HOMES[i] = Integer.parseInt(temp[1]);
+                PROTECT_SIZE[i] = Long.parseLong(temp[2]);
+            } else {
+                HOMES[i] = Integer.parseInt(temp[0]);
+                PROTECT_SIZE[i] = Long.parseLong(temp[1]);
+            }
         }
     }
 

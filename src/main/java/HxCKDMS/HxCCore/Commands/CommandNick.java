@@ -12,7 +12,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 import java.io.File;
 import java.util.List;
@@ -37,13 +36,30 @@ public class CommandNick implements ISubCommand {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
-                String UUID = player.getUniqueID().toString();
-                File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 if (args.length == 1) {
+                    String UUID = player.getUniqueID().toString();
+                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
                     NBTFileIO.setString(CustomPlayerData, "nickname", "");
                     player.addChatMessage(new ChatComponentText("Your nickname has been removed."));
+                } else if (args.length == 3) {
+                    EntityPlayerMP player2 = CommandsHandler.getPlayer(sender, args[1]);
+                    String UUID = player2.getUniqueID().toString();
+                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
+                    if (!PermissionsHandler.hasHighestPermissions(player2)) {
+                        if (args[2].equalsIgnoreCase("remove")) {
+                            NBTFileIO.setString(CustomPlayerData, "nickname", "");
+                            player.addChatMessage(new ChatComponentText(player2.getDisplayName() + "'s nickname has been removed."));
+                            player2.addChatMessage(new ChatComponentText("Your nickname has been removed by " + player.getDisplayName()));
+                        } else {
+                            NBTFileIO.setString(CustomPlayerData, "nickname", args[2]);
+                            player.addChatMessage(new ChatComponentText(player2.getDisplayName() + "'s nickname has been changed to " + args[2].replaceAll("&",  References.CC)));
+                            player2.addChatMessage(new ChatComponentText("Your nickname has been changed to" + args[2].replaceAll("&",  References.CC) + " by " + player.getDisplayName()));
+                        }
+                    }
                 } else {
+                    String UUID = player.getUniqueID().toString();
+                    File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
                     String nick = null;
 
                     for(int i = 1; i < args.length; i++){
