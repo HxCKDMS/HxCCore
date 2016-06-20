@@ -36,7 +36,7 @@ public class CommandDraw implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Draw"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             String[] args2;
             switch (args.length) {
                 case 3 : args2 = new String[]{args[2], "~", "~", "8", "minecraft:glass", "true", "0.005"};

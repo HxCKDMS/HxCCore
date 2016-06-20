@@ -42,7 +42,7 @@ public class CommandServerInfo implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ServerInfo"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 sender.addChatMessage(new ChatComponentText(defaultColor + String.format("CPU usage: %1$s", getCPUUsageStyled())));
                 sender.addChatMessage(new ChatComponentText(defaultColor + String.format("Memory usage: %1$s.", getMemoryUsageStyled())));

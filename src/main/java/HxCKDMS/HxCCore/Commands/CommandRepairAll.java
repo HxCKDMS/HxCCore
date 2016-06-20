@@ -38,7 +38,7 @@ public class CommandRepairAll implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws PlayerNotFoundException, WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("RepairAll"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 if (args.length == 2) target = CommandsHandler.getPlayer(sender, args[1]); else target = player;
                 repairItems(target);

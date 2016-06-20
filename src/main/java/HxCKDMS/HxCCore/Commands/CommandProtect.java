@@ -40,7 +40,7 @@ public class CommandProtect implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Protect"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 //parameters = /HxC protect <regionName> <add/transfer/create/delete>
                 // create = /HxC protect <regionName> create <x1> <y1> <z1> <x2> <y2> <z2>

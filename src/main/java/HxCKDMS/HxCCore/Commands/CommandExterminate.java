@@ -42,7 +42,7 @@ public class CommandExterminate implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Exterminate"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 int tmp = 0;
                 List<Entity> ents = HxCCore.server.worldServerForDimension(0).loadedEntityList;

@@ -36,7 +36,7 @@ public class CommandMute implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException, PlayerNotFoundException {
-        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Mute"), (EntityPlayerMP) sender);
+        boolean CanSend = (!(sender instanceof EntityPlayerMP)) || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), (EntityPlayerMP) sender);
         EntityPlayerMP player;
         File worldData = new File(HxCCore.HxCCoreDir, "HxCWorld.dat");
         NBTTagCompound mutes = NBTFileIO.getNbtTagCompound(worldData, "mutedPlayers");

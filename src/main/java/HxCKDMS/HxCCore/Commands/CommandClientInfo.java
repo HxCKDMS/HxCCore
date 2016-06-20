@@ -41,7 +41,7 @@ public class CommandClientInfo implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
-            if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ClientInfo"), (EntityPlayerMP) sender)) {
+            if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), (EntityPlayerMP) sender)) {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
             } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));

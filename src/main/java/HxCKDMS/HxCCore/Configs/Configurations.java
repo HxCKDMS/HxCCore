@@ -14,6 +14,9 @@ public class Configurations {
     @Config.comment("Debug Mode Enable? Can cause lag and console spam!")
     public static boolean DebugMode;
 
+    @Config.comment("Gamemode Related things, not survival listing of players.")
+    public static boolean GameMode = true;
+
     @Config.category("Features")
     @Config.comment("Enable all HxCCommands. (Disable if you don't want any new commands)")
     public static boolean enableCommands = true;

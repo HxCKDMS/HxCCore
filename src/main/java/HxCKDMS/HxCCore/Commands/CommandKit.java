@@ -26,7 +26,7 @@ public class CommandKit implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         /*if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kit"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 if (args[1].equalsIgnoreCase("spawn") && args.length == 3 && Kits.Kits.keySet().contains(args[2])) {
                     List<ItemStack> items = Kits.getItems(args[2]);

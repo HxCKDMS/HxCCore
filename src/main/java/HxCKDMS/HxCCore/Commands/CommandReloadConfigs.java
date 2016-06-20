@@ -32,7 +32,7 @@ public class CommandReloadConfigs implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("ReloadConfigs"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 Configurations.preInitConfigs();
                 HxCCore.commandConfig.initConfiguration();

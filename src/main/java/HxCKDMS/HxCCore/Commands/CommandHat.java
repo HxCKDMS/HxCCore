@@ -26,14 +26,14 @@ public class CommandHat implements ISubCommand {
 
     @Override
     public int[] getCommandRequiredParams() {
-        return new int[]{1, -1, -1};
+        return new int[]{0, -1, -1};
     }
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP)sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Hat"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 ItemStack helm = player.inventory.armorItemInSlot(3);
                 ItemStack hat = player.getHeldItem();

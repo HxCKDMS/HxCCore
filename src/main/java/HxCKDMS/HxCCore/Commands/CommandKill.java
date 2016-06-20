@@ -38,7 +38,7 @@ public class CommandKill implements ISubCommand {
             case 1:
                 if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Kill"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
                     if (CanSend) player.attackEntityFrom(new DamageSource("command_kill." + player.worldObj.rand.nextInt(35)).setDamageBypassesArmor().setDamageAllowedInCreativeMode(), Float.MAX_VALUE);
                     else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
                 } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));

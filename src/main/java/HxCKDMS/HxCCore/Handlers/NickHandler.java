@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Handlers;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,13 +14,12 @@ import static HxCKDMS.HxCCore.Configs.Configurations.*;
 public class NickHandler {
     public static String getMessageHeader(EntityPlayerMP player) {
         UUID UUID = player.getUniqueID();
-        String colouredNick = getColouredNick(player);
 
         File PermissionsData = new File(HxCCore.HxCCoreDir, "HxC-Permissions.dat");
         NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(PermissionsData, "Permissions");
         int SenderPermLevel = Permissions.getInteger(player.getDisplayName());
 
-        String rawGroup, formattedString = "<" + colouredNick + ">";
+        String rawGroup, formattedString = "<" + getColouredNick(player) + ">";
 
         rawGroup = CC + PERM_COLOURS[SenderPermLevel] + PERM_NAMES[SenderPermLevel];
 
@@ -28,7 +28,12 @@ public class NickHandler {
 
         if (EnableHxCTagInChat && HxCCore.HxCLabels.containsKey(UUID))
             formattedString = String.format(formats.get("HxCFormat"), CC + HxCCore.HxCLabels.get(UUID)) + formattedString;
+        String gm = "";
+        if (Configurations.GameMode)
+            gm = "(" + (player.capabilities.isCreativeMode ? "&6Creative" : player.capabilities.allowEdit ? "&bAdventure" : "") + ")";
 
+        if (!gm.isEmpty() && !gm.equals("()"))
+            formattedString = gm + formattedString;
         return formattedString.replaceAll("&", CC);
     }
 
@@ -38,7 +43,11 @@ public class NickHandler {
         String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
         boolean isOpped = player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
 
-        String tmp = nick.isEmpty() ? player.getDisplayName() : nick;
+        String DrZed = "";
+        if (UUID.toString().equals("f636c1c4-a2c5-4b4d-b43a-5e419eb48bfb"))
+            DrZed = "&3DrZed";
+
+        String tmp = !nick.isEmpty() ? nick : (DrZed.isEmpty() ? player.getDisplayName() : DrZed);
 
         if (nick.isEmpty() && isOpped) tmp = CC + '4' + tmp;
         else if (nick.isEmpty()) tmp = CC + 'f' + tmp;

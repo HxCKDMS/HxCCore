@@ -33,7 +33,7 @@ public class CommandBurn implements ISubCommand {
 
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
-        boolean CanSend = !isPlayer || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Burn"), (EntityPlayerMP) sender);
+        boolean CanSend = !isPlayer || PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), (EntityPlayerMP) sender);
         if (CanSend) {
             switch(args.length) {
                 case 1:

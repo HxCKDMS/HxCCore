@@ -38,7 +38,7 @@ public class CommandFly implements ISubCommand {
             case 1:
                 if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Fly"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
                     if (CanSend) {
                         player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player) + " flight."));
                     } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
@@ -47,7 +47,7 @@ public class CommandFly implements ISubCommand {
             case 2:
                 if (isPlayer) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Fly"), player);
+                    boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
                     if (CanSend) {
                         EntityPlayerMP player2 = CommandBase.getPlayer(sender, args[1]);
                         player.addChatMessage(new ChatComponentText("\u00A76" + toggleFlightForPlayer(player2) + " flight, for player " + player2.getDisplayName() + "."));

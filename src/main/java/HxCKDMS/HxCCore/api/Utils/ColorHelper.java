@@ -71,8 +71,7 @@ public class ColorHelper {
         Character defaultColour = 'f';
         String playerColour = NBTFileIO.getString(CustomPlayerData, "color");
         if (!playerColour.equals("")) defaultColour = playerColour.charAt(0);
-        message = message.replace("https://www.youtube.com/watch?v=", "http://youtu.be/").replace("http://www.youtube.com/watch?v=", "http://youtu.be/");
-        message = new ColorHelper(message, defaultColour).colour();
+        message = new ColorHelper(defaultColour + message, defaultColour).colour();
 
         return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message).trim());
     }

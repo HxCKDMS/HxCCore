@@ -35,7 +35,7 @@ public class CommandJump implements ISubCommand {
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) throws WrongUsageException {
         if (isPlayer) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get("Jump"), player);
+            boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 Vec3 vec3 = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
                 Vec3 vec31 = player.getLook(1.0f);
