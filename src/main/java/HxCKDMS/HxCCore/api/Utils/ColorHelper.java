@@ -69,9 +69,9 @@ public class ColorHelper {
         if (!CustomPlayerData.exists()) throw new NullPointerException();
 
         Character defaultColour = 'f';
-        String playerColour = NBTFileIO.getString(CustomPlayerData, "color");
+        String playerColour = NBTFileIO.getString(CustomPlayerData, "Color");
         if (!playerColour.equals("")) defaultColour = playerColour.charAt(0);
-        message = new ColorHelper(defaultColour + message, defaultColour).colour();
+        message = new ColorHelper(message, defaultColour).colour();
 
         return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message).trim());
     }

@@ -30,10 +30,11 @@ public class NickHandler {
             formattedString = String.format(formats.get("HxCFormat"), CC + HxCCore.HxCLabels.get(UUID)) + formattedString;
         String gm = "";
         if (Configurations.GameMode)
-            gm = "(" + (player.capabilities.isCreativeMode ? "&6Creative" : player.capabilities.allowEdit ? "&bAdventure" : "") + ")";
+            gm = "(" + (player.capabilities.isCreativeMode ? "&6Creative" : player.capabilities.allowEdit ? "" : "&bAdventure") + "&f)";
 
-        if (!gm.isEmpty() && !gm.equals("()"))
+        if (!gm.isEmpty() && !gm.equals("(&f)"))
             formattedString = gm + formattedString;
+
         return formattedString.replaceAll("&", CC);
     }
 
@@ -44,7 +45,7 @@ public class NickHandler {
         boolean isOpped = player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
 
         String DrZed = "";
-        if (UUID.toString().equals("f636c1c4-a2c5-4b4d-b43a-5e419eb48bfb"))
+        if (UUID.toString().equalsIgnoreCase("f636c1c4-a2c5-4b4d-b43a-5e419eb48bfb"))
             DrZed = "&3DrZed";
 
         String tmp = !nick.isEmpty() ? nick : (DrZed.isEmpty() ? player.getDisplayName() : DrZed);
