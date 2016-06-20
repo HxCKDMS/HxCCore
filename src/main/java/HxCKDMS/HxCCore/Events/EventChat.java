@@ -49,20 +49,21 @@ public class EventChat implements EventListener {
                 event.setCanceled(true);
             }
         } catch (Exception ignored) {}
+        try {
+            if ((event.message.contains("herobrine") || event.message.contains("my lord"))) {
+                NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
+                HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                        ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74What is your request mortal?")));
+            }
 
-        if ((event.component.getFormattedText().contains("herobrine") || event.component.getFormattedText().contains("my lord"))) {
-            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
-            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
-                    ((EntityPlayerMP)player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74What is your request mortal?")));
-        }
-
-        if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine") && (event.component.getFormattedText().contains("die") || event.component.getFormattedText().contains("kill") || event.component.getFormattedText().contains("misery") || event.component.getFormattedText().contains("suffer") || event.component.getFormattedText().contains("torment"))) {
-            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
-            CommandKill.instance.handleCommand(event.player, new String[]{event.player.getDisplayName()}, true);
-        } else if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine")) {
-            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
-                    ((EntityPlayerMP)player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74Mortals annoy me.")));
-        }
+            if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine") && (event.message.contains("die") || event.message.contains("kill") || event.message.contains("misery") || event.message.contains("suffer") || event.message.contains("torment"))) {
+                NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
+                CommandKill.instance.handleCommand(event.player, new String[]{event.player.getDisplayName()}, true);
+            } else if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine")) {
+                HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                        ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74Mortals annoy me.")));
+            }
+        } catch (Exception ignored) {}
     }
 
 
