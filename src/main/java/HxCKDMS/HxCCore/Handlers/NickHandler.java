@@ -53,6 +53,10 @@ public class NickHandler {
         if (nick.isEmpty() && isOpped) tmp = CC + '4' + tmp;
         else if (nick.isEmpty()) tmp = CC + 'f' + tmp;
 
+        for (Character bannedChar : Configurations.bannedColorCharacters)
+            if (tmp.contains(CC + bannedChar))
+                tmp = tmp.replaceAll(CC + bannedChar, "");
+
         return tmp + CC + 'f';
     }
 }

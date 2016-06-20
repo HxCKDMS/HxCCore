@@ -11,6 +11,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.io.File;
 import java.util.*;
 
+import static HxCKDMS.HxCCore.lib.References.CC;
+
 public class ColorHelper {
     private static List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private static List<Character> effects = Arrays.asList('l', 'n', 'o', 'k', 'm', 'r');
@@ -72,6 +74,10 @@ public class ColorHelper {
         String playerColour = NBTFileIO.getString(CustomPlayerData, "Color");
         if (!playerColour.equals("")) defaultColour = playerColour.charAt(0);
         message = new ColorHelper(message, defaultColour).colour();
+
+        for (Character bannedChar : Configurations.bannedColorCharacters)
+            if (message.contains(CC + bannedChar))
+                message = message.replaceAll(CC + bannedChar, "");
 
         return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message).trim());
     }
