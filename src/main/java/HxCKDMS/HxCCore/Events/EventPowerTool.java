@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.Entity.HxCFakePlayer;
 import HxCKDMS.HxCCore.HxCCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -17,8 +18,8 @@ public class EventPowerTool {
             if (stack.hasTagCompound() && !stack.getTagCompound().getString("powertool").isEmpty() && cooldown <= 0) {
                 if (event.entityLiving instanceof EntityPlayerMP)
                     HxCCore.server.getCommandManager().executeCommand((EntityPlayerMP)event.entityLiving, stack.getTagCompound().getString("powertool"));
-                else
-                    HxCCore.server.getCommandManager().executeCommand(new HxCFakePlayer(HxCCore.server.worldServerForDimension(event.entityLiving.dimension), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, event.entityLiving.rotationYaw, event.entityLiving.rotationPitch), stack.getTagCompound().getString("powertool"));
+                else if (Configurations.allowMobsPowertool)
+                    HxCCore.server.getCommandManager().executeCommand(new HxCFakePlayer(HxCCore.server.worldServerForDimension(event.entityLiving.dimension), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, event.entityLiving.rotationYawHead, event.entityLiving.rotationPitch), stack.getTagCompound().getString("powertool"));
                 cooldown = 2;
             }
         }

@@ -51,7 +51,7 @@ public class Configurations {
     public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
     public static byte ColorChatMinimumPermLevel = 0;
-    public static boolean EnableGroupTagInChat = true, HerobrineMessages, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
+    public static boolean EnableGroupTagInChat = true, allowMobsPowertool, HerobrineMessages, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
 
     @Config.category("DNT")
     @Config.comment("This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.")

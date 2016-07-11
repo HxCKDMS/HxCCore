@@ -1,5 +1,6 @@
 package HxCKDMS.HxCCore.Events;
 
+import HxCKDMS.HxCCore.Configs.Configurations;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -12,7 +13,7 @@ import java.util.EventListener;
 
 @SuppressWarnings("unused")
 public class EventGod implements EventListener {
-    private int HealTimer = 0;
+    private int secondCounter = 0, delay = 0;
 
     @SubscribeEvent
     public void playerHurt(LivingHurtEvent event){
@@ -32,7 +33,7 @@ public class EventGod implements EventListener {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event){
-        if(event.entityLiving instanceof EntityPlayer && HealTimer >= 20 && !event.entityLiving.worldObj.isRemote){
+        if(event.entityLiving instanceof EntityPlayer && secondCounter >= 20 && !event.entityLiving.worldObj.isRemote){
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
@@ -40,12 +41,15 @@ public class EventGod implements EventListener {
             if(NBTFileIO.getBoolean(CustomPlayerData, "god")){
                 player.heal(player.getMaxHealth() - player.getHealth());
                 player.getFoodStats().addStats(20, 20F);
-            } else if (NBTFileIO.getBoolean(CustomPlayerData, "AFK")) {
+            } else if (((EntityPlayer) event.entityLiving).capabilities.isCreativeMode && delay <= 0 && Configurations.GameMode) {
+                HxCCore.instance.logCommand(player.getDisplayName() + " is in Creative mode.");
+                delay = 60;
             }
         }
-        HealTimer++;
-        if(HealTimer > 20){
-            HealTimer = 0;
+        secondCounter++;
+        delay--;
+        if(secondCounter > 20){
+            secondCounter = 0;
         }
     }
 }
