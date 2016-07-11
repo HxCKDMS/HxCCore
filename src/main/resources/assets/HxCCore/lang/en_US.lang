@@ -35,7 +35,19 @@ commands.afk.info=go to/return from afk mode
 commands.mute.info=prevent specified player from communicating
 commands.repairall.info=repair all items in specified player's inventory
 commands.protect.info=protects specified region from player interaction
-
+commands.delHome.info=delete specified home (waypoint).
+commands.delWarp.info=delete specified warp (waypoint).
+commands.cannon.info=fires tnt or cannon at specified velocity.
+commands.updateCheck.info=checks for updates.
+commands.override.usage=override the protect command
+commands.thaw.usage=melt snow and ice in radius around player.
+commands.reloadconfigs.usage=reload the configs.
+commands.powertool.usage=bind command to tool for execute on tool use.
+commands.rename.usage=rename held item.
+commands.tp.usage=teleport player to another player cross dimension.
+commands.updatecheck.usage=check for updates
+commands.changepermission.info=temporarily renames/creates a permission class.
+        
 commands.help.usage=help
 commands.heal.usage=heal [player]
 commands.kill.usage=kill [player]
@@ -74,7 +86,18 @@ commands.afk.usage=afk
 commands.mute.usage=mute [player]
 commands.repairall.usage=repairall [player]
 commands.protect.usage=protect <regionName> <add/transfer/create/delete>
-
+commands.delhome.usage=delhome <name>
+commands.delwarp.usage=delwarp <name>
+commands.cannon.usage=cannon <velocity> [kitty]
+commands.override.usage=override [true/false]
+commands.thaw.usage=thaw [radius]
+commands.reloadconfigs.usage=reloadconfigs
+commands.powertool.usage=powertool [command]
+commands.rename.usage=rename <name>
+commands.tp.usage=tp [player] <to player>
+commands.updatecheck.usage=updatecheck
+commands.changepermission.usage=changepermission <permlevel> <newname> [color]
+        
 commands.exception.playeronly=This command can only be executed by players.
 commands.exception.home.outOfHomes=You have run out of homes.
 

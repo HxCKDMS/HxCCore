@@ -12,7 +12,7 @@ import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
-import HxCKDMS.HxCCore.api.Utils.TestUtil;
+import HxCKDMS.HxCCore.api.Utils.ServerTranslationUtil;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
 import HxCKDMS.HxCCore.network.PacketClientSync;
@@ -46,7 +46,7 @@ public class HxCCore {
     @Instance(MOD_ID)
     public static HxCCore instance;
 
-    public static TestUtil util = new TestUtil();
+    public static ServerTranslationUtil util = new ServerTranslationUtil();
 
     private static LinkedHashMap<String, String> vers = new LinkedHashMap<>();
     public static final List<String> knownMods = Arrays.asList("HxCCore", "HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",

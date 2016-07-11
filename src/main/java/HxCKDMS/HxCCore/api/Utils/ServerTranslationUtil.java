@@ -1,11 +1,12 @@
 package HxCKDMS.HxCCore.api.Utils;
 
 import HxCKDMS.HxCCore.Events.EventPlayerNetworkCheck;
+import net.minecraft.util.StatCollector;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class TestUtil {
+public class ServerTranslationUtil {
     static HashMap<String, String> translations = new HashMap<>();
     
     static {
@@ -186,7 +187,7 @@ public class TestUtil {
     
     public String getTranslation(UUID uuid, String line) {
         if (EventPlayerNetworkCheck.hasPlayerMod.contains(uuid))
-            return line;
+            return StatCollector.translateToLocal(line);
         return translations.get(line);
        /*
         try {
