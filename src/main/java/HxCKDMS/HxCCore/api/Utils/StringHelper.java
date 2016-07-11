@@ -1,6 +1,7 @@
 package HxCKDMS.HxCCore.api.Utils;
 
 public class StringHelper {
+    @SuppressWarnings("unchecked")
     public static <T> T repeat(T input, int times) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < times; i++) builder.append(input);

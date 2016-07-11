@@ -11,11 +11,9 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CommandsHandler extends AbstractCommandMain {
     public static HashMap<String, ISubCommand> commands = new HashMap<>();
@@ -62,7 +60,7 @@ public class CommandsHandler extends AbstractCommandMain {
                 else if ((commands.get(k).getCommandRequiredParams()[2] != -1) && !sender.getCommandSenderName().equals(HxCCore.server.getCommandSenderName()) && args.length >= commands.get(k).getCommandRequiredParams()[2])
                     commands.get(k).handleCommand(sender, args, false);
                 else
-                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + commands.get(k).getCommandName() + ".usage"));
+                    throw new WrongUsageException(HxCCore.util.getTranslation((sender instanceof EntityPlayerMP) ? ((EntityPlayerMP)sender).getUniqueID() : UUID.randomUUID(), "commands." + commands.get(k).getCommandName() + ".usage"));
             } else {
                 throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             }

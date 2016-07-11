@@ -1,12 +1,11 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
@@ -85,8 +84,8 @@ public class CommandExterminate implements ISubCommand {
                             tmp += 1;
                         }
                 player.addChatMessage(new ChatComponentText("You have exterminated " + tmp + " entities!"));
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @Override

@@ -1,6 +1,9 @@
 package HxCKDMS.HxCCore.api.Utils;
 
+import HxCKDMS.HxCCore.Events.EventPlayerNetworkCheck;
+
 import java.util.HashMap;
+import java.util.UUID;
 
 public class TestUtil {
     static HashMap<String, String> translations = new HashMap<>();
@@ -16,6 +19,18 @@ public class TestUtil {
         translations.put("commands.extinguish.info", "extinguish your self or another player.");
         translations.put("commands.smite.info", "spawn a lightning bolt on target.");
         translations.put("commands.setHome.info", "set a home (waypoint) at your location.");
+        translations.put("commands.delhome.info", "delete specified home (waypoint).");
+        translations.put("commands.delwarp.info", "delete specified warp (waypoint).");
+        translations.put("commands.cannon.info", "fires tnt or cannon at specified velocity.");
+        translations.put("commands.updatecheck.info", "checks for updates.");
+        translations.put("commands.override.info", "override the protect command");
+        translations.put("commands.thaw.info", "melt snow and ice in radius around player.");
+        translations.put("commands.reloadconfigs.info", "reload the configs.");
+        translations.put("commands.powertool.info", "bind command to tool for execute on tool use.");
+        translations.put("commands.rename.info", "rename held item.");
+        translations.put("commands.tp.info", "teleport player to another player cross dimension.");
+        translations.put("commands.updatecheck.info", "check for updates");
+        translations.put("commands.changepermission.info", "temporarily renames/creates a permission class.");
         translations.put("commands.home.info", "return to a home (waypoint).");
         translations.put("commands.setWarp.info", "set a server warp (waypoint) at your location.");
         translations.put("commands.warp.info", "return to a server warp (waypoint).");
@@ -54,6 +69,17 @@ public class TestUtil {
         translations.put("commands.extinguish.usage", "extinguish [player]");
         translations.put("commands.smite.usage", "smite [player]");
         translations.put("commands.setHome.usage", "setHome [home]");
+        translations.put("commands.delhome.usage", "delhome <name>");
+        translations.put("commands.delwarp.usage", "delwarp <name>");
+        translations.put("commands.cannon.usage", "cannon <velocity> [kitty]");
+        translations.put("commands.override.usage", "override [true/false]");
+        translations.put("commands.thaw.usage", "thaw [radius]");
+        translations.put("commands.reloadconfigs.usage", "reloadconfigs");
+        translations.put("commands.powertool.usage", "powertool [command]");
+        translations.put("commands.rename.usage", "rename <name>");
+        translations.put("commands.tp.usage", "tp [player] <to player>");
+        translations.put("commands.updatecheck.usage", "updatecheck");
+        translations.put("commands.changepermission.usage", "changepermission <permlevel> <newname> [color]");
         translations.put("commands.home.usage", "home [home]");
         translations.put("commands.setWarp.usage", "setWarp [warp]");
         translations.put("commands.warp.usage", "warp [warp]");
@@ -158,7 +184,9 @@ public class TestUtil {
     
     }
     
-    public String readLangOnServer(String mod, String line) {
+    public String getTranslation(UUID uuid, String line) {
+        if (EventPlayerNetworkCheck.hasPlayerMod.contains(uuid))
+            return line;
         return translations.get(line);
        /*
         try {

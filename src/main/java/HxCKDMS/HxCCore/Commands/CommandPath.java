@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -44,8 +43,8 @@ public class CommandPath implements ISubCommand {
                     NBTFileIO.setInteger(CustomPlayerData, "PathMeta", args.length >= 3 ? Integer.valueOf(args[2]) : 0);
                     NBTFileIO.setInteger(CustomPlayerData, "PathSize", args.length >= 4 ? Integer.valueOf(args[3]) : 2);
                 }
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

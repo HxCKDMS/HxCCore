@@ -1,13 +1,12 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.WorldHelper;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -82,8 +81,8 @@ public class CommandDraw implements ISubCommand {
                     default:
                         break;
                 }
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + getCommandName() + ".usage"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands." + getCommandName() + ".usage"));
     }
 
     @Override
@@ -101,9 +100,9 @@ public class CommandDraw implements ISubCommand {
     }
 
     public void draw2DEllipsoid(EntityPlayerMP player, String[] args) {
-        int x = (int) CommandsHandler.clamp_coord(player, player.posX, args[0]);
-        int y = (int) CommandsHandler.clamp_double(player, player.posY, args[1], 0, 0);
-        int z = (int) CommandsHandler.clamp_coord(player, player.posZ, args[2]);
+        int x = (int) CommandsHandler.func_110666_a(player, player.posX, args[0]);
+        int y = (int) CommandsHandler.func_110665_a(player, player.posY, args[1], 0, 0);
+        int z = (int) CommandsHandler.func_110666_a(player, player.posZ, args[2]);
         int radius = Integer.parseInt(args[3]);
         String unlocalizedName = args[4];
         boolean hollow = Boolean.parseBoolean(args[5]);
@@ -120,9 +119,9 @@ public class CommandDraw implements ISubCommand {
     }
 
     public void draw2DSquircle(EntityPlayerMP player, String[] args) {
-        int x = (int) CommandsHandler.clamp_coord(player, player.posX, args[0]);
-        int y = (int) CommandsHandler.clamp_double(player, player.posY, args[1], 0, 0);
-        int z = (int) CommandsHandler.clamp_coord(player, player.posZ, args[2]);
+        int x = (int) CommandsHandler.func_110666_a(player, player.posX, args[0]);
+        int y = (int) CommandsHandler.func_110665_a(player, player.posY, args[1], 0, 0);
+        int z = (int) CommandsHandler.func_110666_a(player, player.posZ, args[2]);
         int radius = Integer.parseInt(args[3]);
         String unlocalizedName = args[4];
         boolean hollow = Boolean.parseBoolean(args[5]);
@@ -137,9 +136,9 @@ public class CommandDraw implements ISubCommand {
     }
 
     public void draw3DSquircle(EntityPlayerMP player, String[] args) {
-        int x = (int) CommandsHandler.clamp_coord(player, player.posX, args[0]);
-        int y = (int) CommandsHandler.clamp_double(player, player.posY, args[1], 0, 0);
-        int z = (int) CommandsHandler.clamp_coord(player, player.posZ, args[2]);
+        int x = (int) CommandsHandler.func_110666_a(player, player.posX, args[0]);
+        int y = (int) CommandsHandler.func_110665_a(player, player.posY, args[1], 0, 0);
+        int z = (int) CommandsHandler.func_110666_a(player, player.posZ, args[2]);
         int radius = Integer.parseInt(args[3]);
         String unlocalizedName = args[4];
         boolean hollow = Boolean.parseBoolean(args[5]);
@@ -155,9 +154,9 @@ public class CommandDraw implements ISubCommand {
 
 
     public void drawCircle(EntityPlayerMP player, String[] args) {
-        int x = (int) CommandsHandler.clamp_coord(player, player.posX, args[0]);
-        int y = (int) CommandsHandler.clamp_double(player, player.posY, args[1], 0, 0);
-        int z = (int) CommandsHandler.clamp_coord(player, player.posZ, args[2]);
+        int x = (int) CommandsHandler.func_110666_a(player, player.posX, args[0]);
+        int y = (int) CommandsHandler.func_110665_a(player, player.posY, args[1], 0, 0);
+        int z = (int) CommandsHandler.func_110666_a(player, player.posZ, args[2]);
         int radius = Integer.parseInt(args[3]);
         String unlocalizedName = args[4];
         boolean hollow = Boolean.parseBoolean(args[5]);
@@ -170,12 +169,12 @@ public class CommandDraw implements ISubCommand {
         chatComponentText.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
         player.addChatMessage(chatComponentText);
     }
-
+//clamp_coord & clamp_double = 66 & 65
 
     public void drawSphere(EntityPlayerMP player, String[] args) {
-        int x = (int)CommandsHandler.clamp_coord(player, player.posX, args[0]);
-        int y = (int)CommandsHandler.clamp_double(player, player.posY, args[1], 0, 0);
-        int z = (int)CommandsHandler.clamp_coord(player, player.posZ, args[2]);
+        int x = (int)CommandsHandler.func_110666_a(player, player.posX, args[0]);
+        int y = (int)CommandsHandler.func_110665_a(player, player.posY, args[1], 0, 0);
+        int z = (int)CommandsHandler.func_110666_a(player, player.posZ, args[2]);
         int radius = args[3].isEmpty() ? 8 : Integer.parseInt(args[3]);
         String unlocalizedName = args[4].isEmpty() ? "minecraft:stone" : args[4];
         boolean hollow = !args[5].isEmpty() && Boolean.parseBoolean(args[5]);

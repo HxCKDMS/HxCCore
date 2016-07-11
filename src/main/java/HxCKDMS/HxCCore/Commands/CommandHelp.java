@@ -1,11 +1,11 @@
 package HxCKDMS.HxCCore.Commands;
 
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -28,7 +28,7 @@ public class CommandHelp implements ISubCommand {
     @Override
     public void handleCommand(ICommandSender sender, String[] args, boolean isPlayer) {
         if (args.length == 2 && Integer.valueOf(args[1]) == null) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + HxCCore.util.readLangOnServer(References.MOD_ID, "commands." + CommandsHandler.commands.get(args[1].toLowerCase()).getCommandName() + ".usage")));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands." + CommandsHandler.commands.get(args[1].toLowerCase()).getCommandName() + ".usage")));
         } else {
             int commandsPerPage = 7;
             int pages = (int) Math.ceil(CommandsHandler.commands.size() / (float) commandsPerPage);
@@ -44,8 +44,8 @@ public class CommandHelp implements ISubCommand {
                 String line = ((ISubCommand) CommandsHandler.commands.values().toArray()[i]).getCommandName();
                 line = "commands." + line.toLowerCase() + ".usage";
                 String info = line.replace("usage", "info");
-                line = HxCCore.util.readLangOnServer(References.MOD_ID, line);
-                info = HxCCore.util.readLangOnServer(References.MOD_ID, info);
+                line = HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), line);
+                info = HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), info);
                 line = "/HxC " + line + " : used to " + info;
                 ChatComponentText message = new ChatComponentText(line);
                 message.getChatStyle().setColor((b = !b) ? EnumChatFormatting.BLUE : EnumChatFormatting.DARK_AQUA);

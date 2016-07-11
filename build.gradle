@@ -25,7 +25,6 @@ group= "HxCKDMS.HxCCore"
 archivesBaseName = "HxCCore"
 
 minecraft {
-    mappings = "stable_12"
     version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "eclipse"
 }
@@ -53,7 +52,7 @@ jar {
 	classifier = 'universal'
 
     manifest {
-        attributes 'FMLAT': 'accessTransformer.cfg'
+        attributes 'FMLAT': 'HxC_at.cfg'
         attributes "FMLCorePluginContainsFMLMod": "true"
         attributes "FMLCorePlugin": 'HxCKDMS.HxCCore.Asm.HxCLoader'
     }

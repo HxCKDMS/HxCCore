@@ -54,8 +54,8 @@ public class CommandAFK implements ISubCommand {
                 List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
                 for (EntityPlayerMP p : list)
                     p.addChatMessage(AFKStatus ? Back : AFK);
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @Override

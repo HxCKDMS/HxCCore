@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused", "unchecked"})
-public class PermissionsHandler {
+public class PermissionsHandler { //func g is canSendCommands
     private static NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(HxCCore.PermissionsData, "Permissions");
     public static boolean canUseCommand(int RequiredLevel, EntityPlayer player) {
-        return (HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile()) ||
+        return (HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile()) ||
                 permLevel(player) >= RequiredLevel || player.getDisplayName().equals("[HxC]"));
     }
 
     public static boolean hasHighestPermissions(EntityPlayer player) {
-        return (HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile()) ||
+        return (HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile()) ||
                 permLevel(player) == Configurations.Permissions.size()-1 || player.capabilities.isCreativeMode);
     }
 
     public static int permLevel(EntityPlayer player) {
-        return HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile()) ?
+        return HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile()) ?
                 Configurations.Permissions.size() - 1 : (Permissions.getInteger(player.getDisplayName()) > Configurations.Permissions.size()-1) ? Configurations.Permissions.size()-1 : Permissions.getInteger(player.getDisplayName());
     }
 

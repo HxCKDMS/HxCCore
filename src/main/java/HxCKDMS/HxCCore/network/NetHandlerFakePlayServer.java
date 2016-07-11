@@ -42,7 +42,7 @@ public class NetHandlerFakePlayServer extends NetHandlerPlayServer {
         public void processReceivedPackets() {}
 
         @Override
-        public SocketAddress getRemoteAddress() {
+        public SocketAddress getSocketAddress() {
             return null;
         }
 

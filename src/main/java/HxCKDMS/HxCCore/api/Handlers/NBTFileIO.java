@@ -13,23 +13,15 @@ public class NBTFileIO {
         try {
             return CompressedStreamTools.read(dataFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            if (Configurations.DebugMode)
+                e.printStackTrace();
             return new NBTTagCompound();
         }
     }
 
     public static NBTTagCompound getNbtTagCompound(File dataFile, String tag) {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        try {
-            tagCompound = CompressedStreamTools.read(dataFile);
-        } catch (IOException e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return tagCompound;
-            } else {
-                return tagCompound;
-            }
-        }
+        NBTTagCompound tagCompound = getData(dataFile);
+        if (tagCompound == null || !tagCompound.hasKey(tag)) return new NBTTagCompound();
         return tagCompound.getCompoundTag(tag);
     }
 
@@ -51,18 +43,8 @@ public class NBTFileIO {
     }
 
     public static boolean getBoolean(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return false;
-            } else {
-                return false;
-            }
-        }
-        return data.getBoolean(tag);
+        NBTTagCompound data = getData(dataFile);
+        return !(data == null || !data.hasKey(tag)) && data.getBoolean(tag);
     }
 
     public static void setBoolean(File dataFile, String tag, Boolean bool) {
@@ -83,17 +65,8 @@ public class NBTFileIO {
     }
 
     public static String getString(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return "";
-            } else {
-                return "";
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return "";
         return data.getString(tag);
     }
 
@@ -115,17 +88,8 @@ public class NBTFileIO {
     }
 
     public static int getInteger(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getInteger(tag);
     }
 
@@ -147,17 +111,8 @@ public class NBTFileIO {
     }
 
     public static double getDouble(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getDouble(tag);
     }
 
@@ -179,17 +134,8 @@ public class NBTFileIO {
     }
 
     public static float getFloat(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getFloat(tag);
     }
 
@@ -211,17 +157,8 @@ public class NBTFileIO {
     }
 
     public static short getShort(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getShort(tag);
     }
 
@@ -243,17 +180,8 @@ public class NBTFileIO {
     }
 
     public static long getLong(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getLong(tag);
     }
 
@@ -275,17 +203,8 @@ public class NBTFileIO {
     }
 
     public static byte getByte(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return 0;
-            } else {
-                return 0;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return 0;
         return data.getByte(tag);
     }
 
@@ -307,17 +226,8 @@ public class NBTFileIO {
     }
 
     public static int[] getIntArray(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return null;
-            } else {
-                return null;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return new int[1];
         return data.getIntArray(tag);
     }
 
@@ -339,17 +249,8 @@ public class NBTFileIO {
     }
 
     public static byte[] getByteArray(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return null;
-            } else {
-                return null;
-            }
-        }
+        NBTTagCompound data = getData(dataFile);
+        if (data == null || !data.hasKey(tag)) return new byte[1];
         return data.getByteArray(tag);
     }
 
@@ -371,17 +272,7 @@ public class NBTFileIO {
     }
 
     public static boolean hasKey(File dataFile, String tag) {
-        NBTTagCompound data;
-        try {
-            data = CompressedStreamTools.read(dataFile);
-        } catch (Exception e) {
-            if (Configurations.DebugMode) {
-                e.printStackTrace();
-                return false;
-            } else {
-                return false;
-            }
-        }
-        return data.hasKey(tag);
+        NBTTagCompound data = getData(dataFile);
+        return data != null && data.hasKey(tag);
     }
 }

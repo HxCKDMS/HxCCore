@@ -1,14 +1,13 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -46,8 +45,8 @@ public class CommandWarp implements ISubCommand {
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 String wName = args.length == 1 ? "default" : args[1];
-                NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
-                if(warpDir.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noWarps"));
+                NBTTagCompound warpDir = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");//func_150296_c getKeySet
+                if(warpDir.func_150296_c().isEmpty()) throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.noWarps"));
                 if(!warpDir.hasKey(wName)) throw new WrongUsageException("The warp named: '" + wName + "' does not exist.");
                 NBTTagCompound warp = warpDir.getCompoundTag(wName);
                 if(player.dimension != warp.getInteger("dim")) {
@@ -58,15 +57,15 @@ public class CommandWarp implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("You have teleported to " + wName + "."));
                 }
                 NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 2) {
             NBTTagCompound warp = NBTFileIO.getNbtTagCompound(HxCCore.CustomWorldData, "warp");
-            return new LinkedList<>((Set<String>) warp.getKeySet());
+            return new LinkedList<>((Set<String>) warp.func_150296_c());
         }
         return null;
     }

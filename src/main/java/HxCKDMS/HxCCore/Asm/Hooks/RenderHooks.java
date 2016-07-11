@@ -58,7 +58,7 @@ public class RenderHooks {
         return "";
     }
 
-    private static String getGroupTag(UUID UUID, String name) {
-        return CC + "r" + "[" + CC + References.PERM_NAMES[PermissionsHandler.permLevel(HxCCore.server.getConfigurationManager().getPlayerByUsername(name))] + CC + "r]";
+    private static String getGroupTag(UUID UUID, String name) {                                                                //getPlayerByUsername
+        return CC + "r" + "[" + CC + References.PERM_NAMES[PermissionsHandler.permLevel(HxCCore.server.getConfigurationManager().func_152612_a(name))] + CC + "r]";
     }
 }

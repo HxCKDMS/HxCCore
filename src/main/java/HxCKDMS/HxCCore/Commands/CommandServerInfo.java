@@ -1,12 +1,11 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import com.sun.management.OperatingSystemMXBean;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -50,7 +49,7 @@ public class CommandServerInfo implements ISubCommand {
 
                 for (WorldServer worldServer : DimensionManager.getWorlds())
                     sender.addChatMessage(new ChatComponentText(defaultColor + String.format("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", getDimensionStyled(worldServer), getWorldTPSStyled(worldServer), TPSDefaultColor.toString() + worldServer.loadedEntityList.size() + defaultColor, TPSDefaultColor.toString() + worldServer.getChunkProvider().getLoadedChunkCount() + defaultColor)));
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
         } else {
             sender.addChatMessage(new ChatComponentText(String.format("CPU usage: %1$s", getCPUUsageStyled())));
             sender.addChatMessage(new ChatComponentText(String.format("Memory usage: %1$s.", getMemoryUsageStyled())));

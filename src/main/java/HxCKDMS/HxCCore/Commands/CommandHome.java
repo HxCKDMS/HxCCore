@@ -1,14 +1,13 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.Teleporter;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -46,8 +45,8 @@ public class CommandHome implements ISubCommand {
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
 
                 String hName = args.length == 1 ? "home" : args[1];
-                NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-                if(homeDir.getKeySet().isEmpty()) throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.noHomes"));
+                NBTTagCompound homeDir = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home"); //func_150296_c = getKeySet
+                if(homeDir.func_150296_c().isEmpty()) throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.noHomes"));
                 if(!homeDir.hasKey(hName)){
                     throw new WrongUsageException("\u00a74\u00a7oThe home named: '" + hName + "' does not exist.");
                 }
@@ -60,8 +59,8 @@ public class CommandHome implements ISubCommand {
                     player.addChatMessage(new ChatComponentText("You have returned to " + hName + "."));
                 }
                 NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{oldx, oldy, oldz, olddim});
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @Override
@@ -71,7 +70,7 @@ public class CommandHome implements ISubCommand {
             String UUID = player.getUniqueID().toString();
             File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
             NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
-            return new LinkedList<>((Set<String>) home.getKeySet());
+            return new LinkedList<>((Set<String>) home.func_150296_c());
         }
         return null;
     }

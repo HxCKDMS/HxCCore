@@ -7,7 +7,6 @@ import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.api.Utils.ColorHelper;
-import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.command.WrongUsageException;
@@ -95,13 +94,13 @@ public class EventChat implements EventListener {
             CommandsConfig.BannedCommands.keySet().forEach(c -> {
                 if (CommandsConfig.BannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.getTranslation(((EntityPlayerMP) event.sender).getUniqueID(), "commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 1 && cmd.startsWith(c)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.getTranslation(((EntityPlayerMP) event.sender).getUniqueID(), "commands.exception.bannedCommand"));
                 } else if (CommandsConfig.BannedCommands.get(c) == 2 && cmd.contains(c)) {
                     event.setCanceled(true);
-                    throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.bannedCommand"));
+                    throw new WrongUsageException(HxCCore.util.getTranslation(((EntityPlayerMP) event.sender).getUniqueID(), "commands.exception.bannedCommand"));
                 }
             });
 
@@ -132,8 +131,8 @@ public class EventChat implements EventListener {
                 });
         }
     }
-    
-    public void eventHerobrine(String message, EntityPlayer entityPlayer, File CustomPlayerData) {
+    @SuppressWarnings("unchecked")
+    private void eventHerobrine(String message, EntityPlayer entityPlayer, File CustomPlayerData) {
         if ((message.contains("herobrine") || message.contains("my lord"))) {
             NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
             HxCCore.server.getEntityWorld().playerEntities.forEach(player ->

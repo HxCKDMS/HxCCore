@@ -41,8 +41,8 @@ public class NickHandler {
     public static String getColouredNick(EntityPlayerMP player) {
         UUID UUID = player.getUniqueID();
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
-        String nick = NBTFileIO.getString(CustomPlayerData, "nickname");
-        boolean isOpped = player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
+        String nick = NBTFileIO.getString(CustomPlayerData, "nickname"); //canSendCommands
+        boolean isOpped = player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
 
         String DrZed = "";
         if (UUID.toString().equalsIgnoreCase("f636c1c4-a2c5-4b4d-b43a-5e419eb48bfb"))

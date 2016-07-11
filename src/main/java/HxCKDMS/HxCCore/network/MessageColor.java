@@ -37,7 +37,8 @@ public class MessageColor implements IMessage {
 
         @Override
         public IMessage onMessage(MessageColor message, MessageContext ctx) {
-            Set<String> UUIDs = (Set<String>) message.tagCompound.getKeySet();
+            //func_150296_c is getKeySet
+            Set<String> UUIDs = (Set<String>) message.tagCompound.func_150296_c();
             for (String UUID : UUIDs) {
                 NBTTagCompound tagCompound2 = (NBTTagCompound) message.tagCompound.getTag(UUID);
                 RenderHooks.nameNicks.put(UUID, tagCompound2.getString("nick"));

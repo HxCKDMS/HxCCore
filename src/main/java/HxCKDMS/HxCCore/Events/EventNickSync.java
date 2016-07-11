@@ -48,8 +48,8 @@ public class EventNickSync implements EventListener {
                 nick = NBTFileIO.getString(CustomPlayerData, "nickname");
             } catch (NullPointerException ignored) {}
 
-            tagCompound2.setString("nick", nick);
-            tagCompound2.setBoolean("isOP", player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile()));
+            tagCompound2.setString("nick", nick);                                       //canSendCommands
+            tagCompound2.setBoolean("isOP", player.mcServer.getConfigurationManager().func_152596_g(player.getGameProfile()));
 
             tagCompound.setTag(UUID, tagCompound2);
 

@@ -47,6 +47,7 @@ public class HxCCore {
     public static HxCCore instance;
 
     public static TestUtil util = new TestUtil();
+
     private static LinkedHashMap<String, String> vers = new LinkedHashMap<>();
     public static final List<String> knownMods = Arrays.asList("HxCCore", "HxCSkills", "HxCEnchants", "HxCWorldGen", "HxCLinkPads", "HxCBlocks",
             "HxCFactions", "HxCTiC", "HxCArcanea", "HxCBows", "HxCDiseases", "HxCArmory");
@@ -127,6 +128,7 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
+        MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
         if (Configurations.DebugMode)
             MinecraftForge.EVENT_BUS.register(new EventPlayerHxCDataSync());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
@@ -201,8 +203,7 @@ public class HxCCore {
 
         if (instance.HxCRules.get("XPBuffs").equals("true"))
             MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
-        if (instance.HxCRules.get("XPCooldownInterrupt").equals("true"))
-            MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
+//        if (instance.HxCRules.get("XPCooldownInterrupt").equals("true"))
     }
 
     private boolean loggedCommand;

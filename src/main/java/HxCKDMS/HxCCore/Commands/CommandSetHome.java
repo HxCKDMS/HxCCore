@@ -46,14 +46,14 @@ public class CommandSetHome implements ISubCommand {
 
                 NBTTagCompound home = NBTFileIO.getNbtTagCompound(CustomPlayerData, "home");
                 NBTTagCompound homeDir = new NBTTagCompound();
-
-                Set<String> oldhomes = home.getKeySet();
+//getKeySet
+                Set<String> oldhomes = home.func_150296_c();
 
                 String hName = args.length == 1 ? "home" : args[1];
 
                 if (References.HOMES[pl] != -1 && oldhomes.size() >= References.HOMES[pl])
                     if (!oldhomes.contains(hName))
-                        throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.home.outOfHomes"));
+                        throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.home.outOfHomes"));
 
                 int x = (int)Math.round(player.posX);
                 int y = (int)Math.round(player.posY);
@@ -72,8 +72,8 @@ public class CommandSetHome implements ISubCommand {
                 home.setTag(hName, homeDir);
 
                 NBTFileIO.setNbtTagCompound(CustomPlayerData, "home", home);
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
 
     @SuppressWarnings("unchecked")

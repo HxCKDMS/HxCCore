@@ -1,14 +1,13 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
+import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Command.HxCCommand;
+import HxCKDMS.HxCCore.api.Command.ISubCommand;
 import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.api.Handlers.NickHandler;
 import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.HxCCore;
-import HxCKDMS.HxCCore.api.Command.HxCCommand;
-import HxCKDMS.HxCCore.api.Command.ISubCommand;
-import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -44,7 +43,7 @@ public class CommandClientInfo implements ISubCommand {
             if (PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), (EntityPlayerMP) sender)) {
                 EntityPlayerMP player = args.length > 1 ? CommandBase.getPlayer(sender, args[1]) : (EntityPlayerMP) sender;
                 getClientInfo(sender, player);
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
         } else {
             getClientInfo(sender, CommandBase.getPlayer(sender, args[1]));
         }
@@ -103,8 +102,8 @@ public class CommandClientInfo implements ISubCommand {
         return EnumChatFormatting.AQUA + player.getDisplayName() + defaultColor;
     }
 
-    private String getOPStyled(EntityPlayerMP player){
-        return EnumChatFormatting.GREEN + String.valueOf(HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile())) + defaultColor;
+    private String getOPStyled(EntityPlayerMP player){ //canSendCommands
+        return EnumChatFormatting.GREEN + String.valueOf(HxCCore.server.getConfigurationManager().func_152596_g(player.getGameProfile())) + defaultColor;
     }
 
     private String getGameModeStyled(EntityPlayerMP player) {

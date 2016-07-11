@@ -63,8 +63,8 @@ public class CommandKit implements ISubCommand {
                         player.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted("commands.kit.give.success", args[2], args[3])));
                     } else { throw new WrongUsageException(StatCollector.translateToLocalFormatted("commands.kit.give.failure", args[2], args[3]));}
                 }
-            } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
-        } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.playersonly"));*/
+            } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
+        } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));*/
     }
 
     @Override
