@@ -6,11 +6,11 @@ import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.HxCReflectionHandler;
 import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.api.Utils.ServerTranslationUtil;
 import HxCKDMS.HxCCore.lib.References;
@@ -28,6 +28,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
@@ -75,10 +76,10 @@ public class HxCCore {
         FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
         crashReportThread.setName("HxCKDMS Crash check thread");
         Runtime.getRuntime().addShutdownHook(crashReportThread);
-
+        if (!event.getSourceFile().getName().equals("HxCCore-" + MinecraftForge.MC_VERSION + "-" + References.VERSION + "-universal.jar") && !((boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment")))
+            throw new RuntimeException("You have renamed HxCCore or downloaded it from an illegal place, Be sure you got it from http://mods.curse.com/mc-mods/minecraft/227594-hxc-core");
         HxCConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
         if (!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
-
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         commandCFGFile = new File(HxCConfigDir, "HxCCommands.cfg");
         kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
