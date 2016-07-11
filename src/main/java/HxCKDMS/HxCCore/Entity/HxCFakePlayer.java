@@ -28,6 +28,17 @@ public class HxCFakePlayer extends FakePlayer {
         this.addedToChunk = false;
     }
 
+    public HxCFakePlayer(WorldServer world, double x, double y, double z, float yaw, float pitch) {
+        super(world, gameProfile);
+        playerNetServerHandler = new NetHandlerFakePlayServer(FMLCommonHandler.instance().getMinecraftServerInstance(), this);
+        this.posX = x;
+        this.posY = y;
+        this.posZ = z;
+        this.rotationYaw = yaw;
+        this.rotationPitch = pitch;
+        this.addedToChunk = false;
+    }
+
     public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
         if (fakePlayer == null) {

@@ -15,6 +15,7 @@ import HxCKDMS.HxCCore.api.Utils.LogHelper;
 import HxCKDMS.HxCCore.api.Utils.TestUtil;
 import HxCKDMS.HxCCore.lib.References;
 import HxCKDMS.HxCCore.network.MessageColor;
+import HxCKDMS.HxCCore.network.PacketClientSync;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -90,6 +91,7 @@ public class HxCCore {
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageColor.Handler.class, MessageColor.class, 0, Side.CLIENT);
+        network.registerMessage(PacketClientSync.Handler.class, PacketClientSync.class, 1, Side.CLIENT);
 
         CodersCheckThread.setName("HxCKDMS Contributors check thread");
         CodersCheckThread.start();
@@ -124,6 +126,7 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventChat());
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
+        MinecraftForge.EVENT_BUS.register(new EventPlayerHxCDataSync());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
     }

@@ -40,20 +40,40 @@ public class CommandPowertool implements ISubCommand {
                 for (int i = 1; i < args.length; i++)
                     c = c + " " + args[i];
                 c = c.trim();
+                if (!c.startsWith("/")) c = "/" + c;
                 if (player.getHeldItem().hasTagCompound()) {
                     NBTTagCompound tag = player.getHeldItem().getTagCompound();
                     tag.setString("powertool", c);
-                    if (tag.hasKey("display")) {
-                        NBTTagList l = tag.getCompoundTag("display").getTagList("Lore", 8);
-                        l.appendTag(new NBTTagString(c));
+                    if (!c.isEmpty() && !c.equalsIgnoreCase("/")) {
+                        if (tag.hasKey("display")) {
+                            NBTTagList l = tag.getCompoundTag("display").getTagList("Lore", 8);
+                            l.appendTag(new NBTTagString(c));
+                        } else {
+                            NBTTagCompound d = new NBTTagCompound();
+                            NBTTagList l = new NBTTagList();
+                            l.appendTag(new NBTTagString(c));
+                            d.setTag("Lore", l);
+                            tag.setTag("display", d);
+                        }
                     } else {
-                        NBTTagList l = new NBTTagList();
-                        l.appendTag(new NBTTagString(c));
+                        if (tag.hasKey("display")) {
+                            NBTTagList l = tag.getCompoundTag("display").getTagList("Lore", 8);
+                            for (int li = 0; li < l.tagCount(); li++) {
+                                if (l.getStringTagAt(li).startsWith("HxC") || l.getStringTagAt(li).startsWith("/"))
+                                    l.removeTag(li);
+                            }
+                        }
+                        tag.removeTag("powertool");
                     }
                     player.getHeldItem().setTagCompound(tag);
                 } else {
                     NBTTagCompound tag = new NBTTagCompound();
                     tag.setString("powertool", c);
+                    NBTTagCompound d = new NBTTagCompound();
+                    NBTTagList l = new NBTTagList();
+                    l.appendTag(new NBTTagString(c));
+                    d.setTag("Lore", l);
+                    tag.setTag("display", d);
                     player.getHeldItem().setTagCompound(tag);
                 }
             } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));

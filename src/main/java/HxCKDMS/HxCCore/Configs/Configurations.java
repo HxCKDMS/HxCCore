@@ -50,7 +50,8 @@ public class Configurations {
     @Config.comment("HxC is labels given to special people. Group is the Server rank Name is nickname")
     public static LinkedHashMap<String, String> formats = new LinkedHashMap<>();
 
-    public static boolean EnableGroupTagInChat = true, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
+    public static byte ColorChatMinimumPermLevel = 0;
+    public static boolean EnableGroupTagInChat = true, HerobrineMessages, EnableHxCTagInChat = true, EnableColourInChat = true, versionCheck = true;
 
     @Config.category("DNT")
     @Config.comment("This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.")

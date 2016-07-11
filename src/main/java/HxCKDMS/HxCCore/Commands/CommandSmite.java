@@ -46,10 +46,15 @@ public class CommandSmite implements ISubCommand {
                     Vec3 vec3 = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
                     Vec3 vec31 = player.getLook(1.0f);
                     Vec3 vec32 = vec3.addVector(vec31.xCoord * 200, vec31.yCoord * 200, vec31.zCoord * 200);
-                    MovingObjectPosition rayTrace = player.worldObj.rayTraceBlocks(vec3, vec32);
-                    if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) smite(player.worldObj, rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
-                    else if(rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) smite(player.worldObj, rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
-                    else smite(player.worldObj, player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ);
+                    MovingObjectPosition rayTrace = HxCCore.server.worldServerForDimension(player.dimension).rayTraceBlocks(vec3, vec32);
+                    if (rayTrace != null) {
+                        if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY)
+                            smite(HxCCore.server.worldServerForDimension(player.dimension), rayTrace.entityHit.posX, rayTrace.entityHit.posY, rayTrace.entityHit.posZ);
+                        else if (rayTrace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+                            smite(HxCCore.server.worldServerForDimension(player.dimension), rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
+                        else
+                            smite(HxCCore.server.worldServerForDimension(player.dimension), player.getLookVec().xCoord * 50D + player.posX, player.getLookVec().yCoord * 50D + player.posY, player.getLookVec().zCoord * 50D + player.posZ);
+                    }
                 }
             } else throw new WrongUsageException(HxCCore.util.readLangOnServer(References.MOD_ID, "commands.exception.permission"));
         } else {

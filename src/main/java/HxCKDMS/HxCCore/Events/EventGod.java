@@ -1,7 +1,7 @@
 package HxCKDMS.HxCCore.Events;
 
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.HxCCore;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -24,6 +24,8 @@ public class EventGod implements EventListener {
 
             if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable()) {
                 event.setCanceled(true);
+            } else if (NBTFileIO.getBoolean(CustomPlayerData, "AFK") && event.isCancelable() && event.source.getEntity() instanceof EntityPlayer) {
+                event.setCanceled(true);
             }
         }
     }
@@ -38,6 +40,7 @@ public class EventGod implements EventListener {
             if(NBTFileIO.getBoolean(CustomPlayerData, "god")){
                 player.heal(player.getMaxHealth() - player.getHealth());
                 player.getFoodStats().addStats(20, 20F);
+            } else if (NBTFileIO.getBoolean(CustomPlayerData, "AFK")) {
             }
         }
         HealTimer++;

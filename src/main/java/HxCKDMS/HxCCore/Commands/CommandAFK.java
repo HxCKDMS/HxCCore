@@ -1,36 +1,30 @@
 package HxCKDMS.HxCCore.Commands;
 
 import HxCKDMS.HxCCore.Configs.CommandsConfig;
-import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
-import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
-import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Command.ISubCommand;
+import HxCKDMS.HxCCore.api.Handlers.CommandsHandler;
+import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
+import HxCKDMS.HxCCore.api.Handlers.PermissionsHandler;
 import HxCKDMS.HxCCore.lib.References;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.File;
 import java.util.List;
 
-import static HxCKDMS.HxCCore.lib.References.*;
+import static HxCKDMS.HxCCore.lib.References.CC;
 
 @SuppressWarnings({"unchecked", "unused"})
 @HxCCommand(defaultPermission = 0, mainCommand = CommandsHandler.class, isEnabled = true)
 public class CommandAFK implements ISubCommand {
     public static CommandAFK instance = new CommandAFK();
-    //TODO: See if there is a better way to code this??? Players who're AFK CAN'T MOVE and Can't DIE... (Make config to make it so only player damage is canceled)
     //TODO: make a time delay between excecutions of the command... and add a delay for the damage prevention so it can't be used as a damage prevention
     @Override
     public String getCommandName() {
@@ -51,33 +45,12 @@ public class CommandAFK implements ISubCommand {
                 String UUID = player.getUniqueID().toString();
                 File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID + ".dat");
                 String tmp = player.getDisplayName() + CC + NBTFileIO.getString(CustomPlayerData, "Color");
-                ChatComponentText AFK = new ChatComponentText(tmp + " has gone AFK.");
-                ChatComponentText Back = new ChatComponentText(tmp + " is no longer AFK.");
-                IAttributeInstance ps = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-                AttributeModifier SpeedDeBuff = new AttributeModifier(SpeedUUID, "AFKDeBuff", -1000, 1);
-                IAttributeInstance pd = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
-                AttributeModifier DMGDeBuff = new AttributeModifier(DMdeBuffUUID, "AFKDeBuff", -1000000000, 1);
+                ChatComponentText AFK = new ChatComponentText(tmp + "  has gone AFK.");
+                ChatComponentText Back = new ChatComponentText(tmp + "  is no longer AFK.");
                 boolean AFKStatus;
-                try {
-                    AFKStatus = NBTFileIO.getBoolean(CustomPlayerData, "AFK");
-                    NBTFileIO.setBoolean(CustomPlayerData, "AFK", !AFKStatus);
-                } catch (Exception ignored) {
-                    AFKStatus = false;
-                    NBTFileIO.setBoolean(CustomPlayerData, "AFK", true);
-                }
-                if (HxCCore.instance.HxCRules.get("AFKDebuffs").equals("true")) {
-                    NBTFileIO.setBoolean(CustomPlayerData, "god", !AFKStatus);
-                    player.setInvisible(!AFKStatus);
-                    if (!AFKStatus) {
-                        ps.applyModifier(SpeedDeBuff);
-                        pd.applyModifier(DMGDeBuff);
-                        player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), 100000, 254, true));
-                    } else {
-                        ps.removeModifier(SpeedDeBuff);
-                        pd.removeModifier(DMGDeBuff);
-                        player.removePotionEffect(Potion.digSlowdown.getId());
-                    }
-                }
+                AFKStatus = NBTFileIO.getBoolean(CustomPlayerData, "AFK");
+                NBTFileIO.setBoolean(CustomPlayerData, "AFK", !AFKStatus);
+
                 List<EntityPlayerMP> list = HxCCore.server.getConfigurationManager().playerEntityList;
                 for (EntityPlayerMP p : list)
                     p.addChatMessage(AFKStatus ? Back : AFK);
