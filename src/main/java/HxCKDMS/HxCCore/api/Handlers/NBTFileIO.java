@@ -20,9 +20,15 @@ public class NBTFileIO {
     }
 
     public static NBTTagCompound getNbtTagCompound(File dataFile, String tag) {
-        NBTTagCompound tagCompound = getData(dataFile);
-        if (tagCompound == null || !tagCompound.hasKey(tag)) return new NBTTagCompound();
-        return tagCompound.getCompoundTag(tag);
+        try {
+            NBTTagCompound tagCompound = getData(dataFile);
+            if (tagCompound == null || !tagCompound.hasKey(tag)) return new NBTTagCompound();
+            return tagCompound.getCompoundTag(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return new NBTTagCompound();
+        }
     }
 
     public static void setNbtTagCompound(File dataFile, String tag, NBTTagCompound tagCompound) {
@@ -43,8 +49,14 @@ public class NBTFileIO {
     }
 
     public static boolean getBoolean(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        return !(data == null || !data.hasKey(tag)) && data.getBoolean(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            return !(data == null || !data.hasKey(tag)) && data.getBoolean(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return false;
+        }
     }
 
     public static void setBoolean(File dataFile, String tag, Boolean bool) {
@@ -65,9 +77,15 @@ public class NBTFileIO {
     }
 
     public static String getString(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return "";
-        return data.getString(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return "";
+            return data.getString(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return "";
+        }
     }
 
     public static void setString(File dataFile, String tag, String string) {
@@ -88,9 +106,15 @@ public class NBTFileIO {
     }
 
     public static int getInteger(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getInteger(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getInteger(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0;
+        }
     }
 
     public static void setInteger(File dataFile, String tag, int i) {
@@ -111,9 +135,15 @@ public class NBTFileIO {
     }
 
     public static double getDouble(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getDouble(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getDouble(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0;
+        }
     }
 
     public static void setDouble(File dataFile, String tag, double i) {
@@ -134,9 +164,20 @@ public class NBTFileIO {
     }
 
     public static float getFloat(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getFloat(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getFloat(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return new NBTTagCompound();
+        };
+        }
     }
 
     public static void setFloat(File dataFile, String tag, float i) {
@@ -157,9 +198,15 @@ public class NBTFileIO {
     }
 
     public static short getShort(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getShort(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getShort(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0;
+        }
     }
 
     public static void setShort(File dataFile, String tag, short i) {
@@ -180,9 +227,15 @@ public class NBTFileIO {
     }
 
     public static long getLong(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getLong(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getLong(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0;
+        }
     }
 
     public static void setLong(File dataFile, String tag, long i) {
@@ -203,9 +256,15 @@ public class NBTFileIO {
     }
 
     public static byte getByte(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return 0;
-        return data.getByte(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return 0;
+            return data.getByte(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return 0;
+        }
     }
 
     public static void setByte(File dataFile, String tag, byte i) {
@@ -226,9 +285,15 @@ public class NBTFileIO {
     }
 
     public static int[] getIntArray(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return new int[1];
-        return data.getIntArray(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return new int[1];
+            return data.getIntArray(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return new int[1];
+        }
     }
 
     public static void setIntArray(File dataFile, String tag, int[] i) {
@@ -249,9 +314,15 @@ public class NBTFileIO {
     }
 
     public static byte[] getByteArray(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        if (data == null || !data.hasKey(tag)) return new byte[1];
-        return data.getByteArray(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            if (data == null || !data.hasKey(tag)) return new byte[1];
+            return data.getByteArray(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return new byte[1];
+        }
     }
 
     public static void setByteArray(File dataFile, String tag, byte[] i) {
@@ -272,7 +343,13 @@ public class NBTFileIO {
     }
 
     public static boolean hasKey(File dataFile, String tag) {
-        NBTTagCompound data = getData(dataFile);
-        return data != null && data.hasKey(tag);
+        try {
+            NBTTagCompound data = getData(dataFile);
+            return data != null && data.hasKey(tag);
+        } catch (IOException e) {
+            if (Configurations.DebugMode)
+                e.printStackTrace();
+            return false;
+        }
     }
 }
