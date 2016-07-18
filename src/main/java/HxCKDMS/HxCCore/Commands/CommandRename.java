@@ -34,7 +34,12 @@ public class CommandRename implements ISubCommand {
             boolean CanSend = PermissionsHandler.canUseCommand(CommandsConfig.CommandPermissions.get(getCommandName()), player);
             if (CanSend) {
                 ItemStack item = player.getHeldItem();
-                item.setStackDisplayName(args[1].replaceAll("&", "\u00a7"));
+                String name = args[1];
+                for (int i = 2; i < args.length; i++) {
+                    name = name + " " + args[i];
+                }
+                name.replaceAll("  ", " ").replaceAll("&", "\u00a7");
+                item.setStackDisplayName(name);
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
             } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));
         } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));

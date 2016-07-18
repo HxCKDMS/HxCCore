@@ -46,7 +46,7 @@ import static HxCKDMS.HxCCore.lib.References.*;
 public class HxCCore {
     @Instance(MOD_ID)
     public static HxCCore instance;
-
+    private long initTime = 0;
     public static ServerTranslationUtil util = new ServerTranslationUtil();
 
     private static LinkedHashMap<String, String> vers = new LinkedHashMap<>();
@@ -72,7 +72,7 @@ public class HxCCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-
+        long t = System.nanoTime();
         FMLCommonHandler.instance().registerCrashCallable(new CrashHandler());
         crashReportThread.setName("HxCKDMS Crash check thread");
         Runtime.getRuntime().addShutdownHook(crashReportThread);
@@ -82,7 +82,7 @@ public class HxCCore {
         if (!HxCConfigDir.exists()) HxCConfigDir.mkdirs();
         HxCConfigFile = new File(HxCConfigDir, "HxCCore.cfg");
         commandCFGFile = new File(HxCConfigDir, "HxCCommands.cfg");
-        kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
+//        kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
 
         config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg");
         //kitConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
@@ -113,10 +113,12 @@ public class HxCCore {
         HxCRules.putIfAbsent("XPCooldownInterrupt", "true");
 
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
+        initTime += System.nanoTime() - t;
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        long t = System.nanoTime();
         //yay 1.8.x+ all is Forge EventBus :D
         FMLCommonHandler.instance().bus().register(new EventNickSync());
         FMLCommonHandler.instance().bus().register(new EventTpRequest());
@@ -134,16 +136,20 @@ public class HxCCore {
             MinecraftForge.EVENT_BUS.register(new EventPlayerHxCDataSync());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
             MinecraftForge.EVENT_BUS.register(new EventBuildPath());
+        initTime += System.nanoTime() - t;
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        long t = System.nanoTime();
         if(Configurations.versionCheck)
             versionCheck();
         knownMods.forEach(mod -> {
             if (Loader.isModLoaded(mod))
                 LogHelper.info("Thank you for using " + mod, MOD_NAME);
         });
+        initTime += System.nanoTime() - t; //718758345
+        LogHelper.info("HxCCore initialized all parts in a total of " + initTime + " nano seconds. Or " + initTime/100000000 + " seconds", MOD_NAME);
     }
 
     private GameRules rules;
@@ -211,10 +217,15 @@ public class HxCCore {
 
     public void logCommand(String str) {
         try {
-            if (commandLog != null)
+            if (commandLog != null) {
                 commandLog.println(str);
-            else
+            } else {
+                File OLDLOG = new File(HxCLogDir, "HxC-Command.log");
+                if (!OLDLOG.exists())
+                    OLDLOG.createNewFile();
+                commandLog = new PrintWriter(new File(HxCLogDir, "HxC-Command.log"), "UTF-8");
                 LogHelper.error("HxCCommand Log doesn't exist.", MOD_NAME);
+            }
             loggedCommand = true;
         } catch (Exception ignored) {}
     }
