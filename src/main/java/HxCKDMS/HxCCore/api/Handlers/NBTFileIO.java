@@ -24,7 +24,7 @@ public class NBTFileIO {
             NBTTagCompound tagCompound = getData(dataFile);
             if (tagCompound == null || !tagCompound.hasKey(tag)) return new NBTTagCompound();
             return tagCompound.getCompoundTag(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return new NBTTagCompound();
@@ -52,7 +52,7 @@ public class NBTFileIO {
         try {
             NBTTagCompound data = getData(dataFile);
             return !(data == null || !data.hasKey(tag)) && data.getBoolean(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return false;
@@ -81,7 +81,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return "";
             return data.getString(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return "";
@@ -110,7 +110,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getInteger(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return 0;
@@ -139,7 +139,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getDouble(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return 0;
@@ -168,15 +168,10 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getFloat(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
-            return 0
-        } catch (IOException e) {
-            if (Configurations.DebugMode)
-                e.printStackTrace();
-            return new NBTTagCompound();
-        };
+            return 0;
         }
     }
 
@@ -202,7 +197,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getShort(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return 0;
@@ -231,7 +226,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getLong(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return 0;
@@ -260,7 +255,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return 0;
             return data.getByte(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return 0;
@@ -289,7 +284,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return new int[1];
             return data.getIntArray(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return new int[1];
@@ -318,7 +313,7 @@ public class NBTFileIO {
             NBTTagCompound data = getData(dataFile);
             if (data == null || !data.hasKey(tag)) return new byte[1];
             return data.getByteArray(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return new byte[1];
@@ -346,7 +341,7 @@ public class NBTFileIO {
         try {
             NBTTagCompound data = getData(dataFile);
             return data != null && data.hasKey(tag);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (Configurations.DebugMode)
                 e.printStackTrace();
             return false;
