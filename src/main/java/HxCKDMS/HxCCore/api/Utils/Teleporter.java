@@ -43,7 +43,7 @@ public class Teleporter {
         player.isDead = false;
         transferPlayerToWorld(player, worldServer_old, worldServer_new, x, y, z);
         player.mcServer.getConfigurationManager().func_72375_a(player, worldServer_old);
-        player.playerNetServerHandler.setPlayerLocation(z + 0.5, y + 0.5, z + 0.5, player.rotationYaw, player.rotationPitch);
+        player.playerNetServerHandler.setPlayerLocation(x + 0.5, y + 0.5, z + 0.5, player.rotationYaw, player.rotationPitch);
         player.theItemInWorldManager.setWorld(worldServer_new);
         player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, worldServer_new);
         player.mcServer.getConfigurationManager().syncPlayerInventory(player);
