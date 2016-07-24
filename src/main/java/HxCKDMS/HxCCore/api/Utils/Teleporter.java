@@ -19,7 +19,7 @@ public class Teleporter {
         int oldx = 0, oldy = 0, oldz = 0;
         if(player.isEntityAlive()){
             oldx = (int)player.posX; oldy = (int)player.posY; oldz = (int)player.posZ;
-            player.playerNetServerHandler.setPlayerLocation(x, y, z, player.rotationYaw, player.rotationPitch);
+            player.playerNetServerHandler.setPlayerLocation(x + 0.5, y + 0.5, z + 0.5, player.rotationYaw, player.rotationPitch);
             newWorldServer.spawnEntityInWorld(player);
             newWorldServer.updateEntityWithOptionalForce(player, false);
         }
@@ -43,7 +43,7 @@ public class Teleporter {
         player.isDead = false;
         transferPlayerToWorld(player, worldServer_old, worldServer_new, x, y, z);
         player.mcServer.getConfigurationManager().func_72375_a(player, worldServer_old);
-        player.playerNetServerHandler.setPlayerLocation(x, y, z, player.rotationYaw, player.rotationPitch);
+        player.playerNetServerHandler.setPlayerLocation(z + 0.5, y + 0.5, z + 0.5, player.rotationYaw, player.rotationPitch);
         player.theItemInWorldManager.setWorld(worldServer_new);
         player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, worldServer_new);
         player.mcServer.getConfigurationManager().syncPlayerInventory(player);

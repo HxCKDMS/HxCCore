@@ -20,7 +20,7 @@ public class EventPlayerDeath {
             if (NBTFileIO.getBoolean(CustomPlayerData, "god") && event.isCancelable())
                 event.setCanceled(true);
             else
-                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{(int) player.posX, (int) player.posY, (int) player.posZ, player.dimension});
+                NBTFileIO.setIntArray(CustomPlayerData, "back", new int[]{(int) Math.round(player.posX), (int) Math.round(player.posY), (int) Math.round(player.posZ), player.dimension});
         }
     }
 }

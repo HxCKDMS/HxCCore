@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class ServerTranslationUtil {
-    static HashMap<String, String> translations = new HashMap<>();
+    private static HashMap<String, String> translations = new HashMap<>();
     
     static {
         translations.put("commands.help.info", "show all commands with usage and explanation.");

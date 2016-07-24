@@ -40,7 +40,7 @@ public class CommandBack implements ISubCommand {
             int[] tmp = NBTFileIO.getIntArray(CustomPlayerData, "back");
             if (CanSend && tmp != null && tmp.length == 4) {
                 if (tmp[3] != player.dimension) Teleporter.transferPlayerToDimension(player, tmp[3], tmp[0], tmp[1], tmp[2]);
-                else player.playerNetServerHandler.setPlayerLocation(tmp[0], tmp[1], tmp[2], player.cameraPitch, player.cameraYaw);
+                else player.playerNetServerHandler.setPlayerLocation(tmp[0] + 0.5, tmp[1] + 0.5, tmp[2] + 0.5, player.cameraPitch, player.cameraYaw);
             } else player.addChatMessage(new ChatComponentText("You don't have a back stored or do not have permission to run this command."));
         } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.playersonly"));
     }
