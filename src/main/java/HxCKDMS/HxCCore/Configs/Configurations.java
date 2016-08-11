@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static HxCKDMS.HxCCore.api.Configuration.Flags.overwrite;
+import static HxCKDMS.HxCCore.api.Configuration.Flags.OVERWRITE;
 
 @Config
 public class Configurations {
@@ -55,7 +55,7 @@ public class Configurations {
 
     @Config.category("DNT")
     @Config.comment("This is the file name of the last crash reported so the same crash-report doesn't get reported multiple times.")
-    @Config.flags(overwrite)
+    @Config.flags(OVERWRITE)
     public static String lastCheckedCrash = "";
 
     private static void putValues() {

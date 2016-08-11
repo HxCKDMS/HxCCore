@@ -26,4 +26,7 @@ public @interface Config {
     @interface flags {
         int value() default 0b0;
     }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface force {}
 }

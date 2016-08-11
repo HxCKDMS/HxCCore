@@ -84,9 +84,9 @@ public class HxCCore {
         commandCFGFile = new File(HxCConfigDir, "HxCCommands.cfg");
 //        kitsFile = new File(HxCConfigDir, "HxC-Kits.cfg");
 
-        config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg");
+        config = new HxCConfig(Configurations.class, "HxCCore", HxCConfigDir, "cfg", MOD_NAME);
         //kitConfig = new HxCConfig(Kits.class, "HxC-Kits", HxCConfigDir, "cfg");
-        commandConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg");
+        commandConfig = new HxCConfig(CommandsConfig.class, "HxCCommands", HxCConfigDir, "cfg", MOD_NAME);
 
         Configurations.preInitConfigs();
         updateConfigs();
@@ -101,8 +101,7 @@ public class HxCCore {
         extendEnchantsArray();
 
         if (Configurations.enableCommands)
-            CommandRegistry.registerCommands(new CommandsHandler(),
-                    event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
+            CommandRegistry.registerCommands(new CommandsHandler(), event.getAsmData().getAll(HxCCommand.class.getCanonicalName()));
 
         if (!Loader.isModLoaded("BiomesOPlenty")) extendPotionsArray();
 
