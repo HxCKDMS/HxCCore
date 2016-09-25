@@ -222,7 +222,7 @@ public class HxCConfig {
         return field;
     }
 
-    private static void setPublicStatic(Field field) {
+    public static void setPublicStatic(Field field) {
         if (field.isAnnotationPresent(Config.force.class)) try {
             Field modField = Field.class.getDeclaredField("modifiers");
             modField.setAccessible(true);
