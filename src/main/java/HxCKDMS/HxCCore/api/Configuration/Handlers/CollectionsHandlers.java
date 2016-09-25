@@ -235,7 +235,7 @@ public class CollectionsHandlers {
     private static void mainMapWriter(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config) throws IllegalAccessException {
         Map<Object, Object> tempMap = (Map<Object, Object>) field.get(null);
 
-        Type[] types = ((ParameterizedType)field.getGenericType()).getActualTypeArguments();
+        Type[] types = ((ParameterizedType) field.getGenericType()).getActualTypeArguments();
 
         boolean isKeyParameterized = types[0] instanceof ParameterizedType;
         boolean isValueParameterized = types[1] instanceof ParameterizedType;

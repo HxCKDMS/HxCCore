@@ -103,7 +103,7 @@ public class HxCConfig {
     private void read() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"));
         String line;
-        String category = "";
+        //String category = "";
         while ((line = reader.readLine()) != null) {
             if (line.trim().startsWith("#")) continue;
             boolean firstIteration = true;

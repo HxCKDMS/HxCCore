@@ -68,6 +68,8 @@ public class SpecialHandlers {
                     aField.set(field.get(null), cHandler.readFromCollection(null, line.split("=")[1].trim(), reader, info));
 
                     fName = "";
+
+                    reader.mark(1000000);
                 }
             } catch (Exception ignored) {
                 ignored.printStackTrace();

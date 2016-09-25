@@ -3,7 +3,7 @@ package HxCKDMS.HxCCore.api.Utils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class LogHelper {
     public static void log(Level logLevel, Object object, String modName){
         LogManager.getLogger(modName).log(logLevel, object);
