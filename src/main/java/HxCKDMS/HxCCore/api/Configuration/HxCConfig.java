@@ -22,13 +22,13 @@ public class HxCConfig {
     private Class<?> configClass;
     private File configFile, configDirectory;
     private LinkedHashMap<String, LinkedHashMap<String, Object>> configWritingData = new LinkedHashMap<>();
-    private static HashMap<Class<?>, ITypeHandler> typeHandlers = new HashMap<>();
-    private static HashMap<Class<?>, ICollectionsHandler> collectionsHandlers = new HashMap<>();
+    private HashMap<Class<?>, ITypeHandler> typeHandlers = new HashMap<>();
+    private HashMap<Class<?>, ICollectionsHandler> collectionsHandlers = new HashMap<>();
     private HashMap<String, String> categoryComments = new HashMap<>();
     private HashMap<String, HashMap<String, String>> valueComments = new HashMap<>();
     private String app_name;
 
-    static {
+    private void registerDefaultHandlers() {
         //Basic types
         registerHandler(new PrimaryHandlers.StringHandler(), TYPE_HANDLER | COLLECTION_HANDLER);
         registerHandler(new PrimaryHandlers.IntegerHandler(), TYPE_HANDLER | COLLECTION_HANDLER);
@@ -54,17 +54,12 @@ public class HxCConfig {
         registerHandler(new SpecialHandlers.SpecialClassHandler(), TYPE_HANDLER | COLLECTION_HANDLER);
     }
 
-    @Deprecated
-    public static void registerTypeHandler(ITypeHandler handler) {
-        registerHandler(handler, TYPE_HANDLER);
-    }
-
-    public static void registerHandler(Object handler, int flag) {
+    public void registerHandler(Object handler, int flag) {
         if ((flag & TYPE_HANDLER) == TYPE_HANDLER) Arrays.stream(((ITypeHandler)handler).getTypes()).forEach(clazz -> typeHandlers.putIfAbsent(clazz, (ITypeHandler) handler));
         if ((flag & COLLECTION_HANDLER) == COLLECTION_HANDLER) Arrays.stream(((ICollectionsHandler)handler).getTypes()).forEach(clazz -> collectionsHandlers.putIfAbsent(clazz, (ICollectionsHandler) handler));
     }
 
-    public static ICollectionsHandler getCollectionsHandler(Class<?> type) {
+    public ICollectionsHandler getCollectionsHandler(Class<?> type) {
         if (collectionsHandlers.containsKey(type)) return collectionsHandlers.get(type);
         else throw new NullPointerException(String.format("No collections handler for type: %s exists.", type.getCanonicalName()));
     }
@@ -79,6 +74,7 @@ public class HxCConfig {
         this.configDirectory = configDirectory;
         this.app_name = app_name;
 
+        registerDefaultHandlers();
         setCategoryComment("Default", "This is the default category.");
     }
 
@@ -90,11 +86,8 @@ public class HxCConfig {
             configDirectory.mkdirs();
             if (!configFile.exists()) configFile.createNewFile();
 
-            //deSerialize();
             read();
-            //configDataWatcherTest.clear();
             write();
-            //serialize();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,7 +131,7 @@ public class HxCConfig {
             try {
                 Class<?> type = HxCConfig.getField(configClass, variableName).getType();
 
-                typeHandlers.get(type).read(variableName, line, reader, configClass);
+                typeHandlers.get(type).read(variableName, line, reader, configClass, this);
             } catch (IllegalArgumentException | ClassNotFoundException | IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
@@ -195,7 +188,7 @@ public class HxCConfig {
             if (!Modifier.isPublic(field.getModifiers())) return;
 
             String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "General";
-            typeHandlers.get(field.getType()).write(field, configWritingData);
+            typeHandlers.get(field.getType()).write(field, configWritingData, this);
 
             HashMap<String, String> comment = valueComments.getOrDefault(categoryName, new HashMap<>());
             if(field.isAnnotationPresent(Config.comment.class)) comment.put(field.getName(), field.getAnnotation(Config.comment.class).value());

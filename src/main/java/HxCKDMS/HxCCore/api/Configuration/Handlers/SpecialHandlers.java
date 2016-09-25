@@ -25,13 +25,14 @@ public class SpecialHandlers {
     public static class SpecialClassHandler implements ITypeHandler, IMultiLineHandler, ICollectionsHandler {
 
         @Override
-        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config) throws IllegalAccessException {
+        public void write(Field field, LinkedHashMap<String, LinkedHashMap<String, Object>> config, HxCConfig HxCConfigClass) throws IllegalAccessException {
             List<Field> fields = Arrays.asList(field.get(null).getClass().getDeclaredFields());
             String categoryName = field.isAnnotationPresent(Config.category.class) ? field.getAnnotation(Config.category.class).value() : "General";
             StringBuilder classTextBuilder = new StringBuilder();
 
             classTextBuilder.append('[');
             for (Field aField : fields) {
+
                 HxCConfig.setPublicStatic(aField);
                 if (!Modifier.isPublic(aField.getModifiers())) continue;
 
@@ -41,9 +42,9 @@ public class SpecialHandlers {
                 Type type = aField.getGenericType();
                 boolean isParameterized = (type instanceof ParameterizedType);
                 Class<?> cType = isParameterized ? (Class<?>) ((ParameterizedType) type).getRawType() : (Class<?>) type;
-                ICollectionsHandler cHandler = HxCConfig.getCollectionsHandler(cType);
+                ICollectionsHandler cHandler = HxCConfigClass.getCollectionsHandler(cType);
 
-                classTextBuilder.append("\n\t\t").append(fName).append('=').append(cHandler.writeInCollection(aField, value, null, isParameterized ? (ParameterizedType) type : null).stream().map(str -> "\t\t" + str).reduce((a, b) -> a + '\n' + b).get().trim());
+                classTextBuilder.append("\n\t\t").append(fName).append('=').append(cHandler.writeInCollection(aField, value, null, isParameterized ? (ParameterizedType) type : null, HxCConfigClass).stream().map(str -> "\t\t" + str).reduce((a, b) -> a + '\n' + b).get().trim());
             }
             classTextBuilder.append("\n\t]");
             LinkedHashMap<String, Object> categoryValues = config.getOrDefault(categoryName, new LinkedHashMap<>());
@@ -52,7 +53,7 @@ public class SpecialHandlers {
         }
 
         @Override
-        public void read(String variable, String currentLine, BufferedReader reader, Class<?> configClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
+        public void read(String variable, String currentLine, BufferedReader reader, Class<?> configClass, HxCConfig HxCConfigClass) throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IOException {
             Field field = HxCConfig.getField(configClass, variable);
             if (field.isAnnotationPresent(Config.flags.class) && (field.getAnnotation(Config.flags.class).value() & OVERWRITE) == OVERWRITE && field.get(null) != null) return;
 
@@ -64,16 +65,14 @@ public class SpecialHandlers {
                 if (line.contains("=") && !fName.isEmpty()) {
 
                     Field aField = HxCConfig.getField(field.get(null).getClass(), fName);
-                    ICollectionsHandler cHandler = HxCConfig.getCollectionsHandler(aField.getType());
+                    ICollectionsHandler cHandler = HxCConfigClass.getCollectionsHandler(aField.getType());
 
                     Map<String, Object> info = new HashMap<>();
                     info.put("Type", aField.getGenericType());
 
-                    aField.set(field.get(null), cHandler.readFromCollection(null, line.split("=")[1].trim(), reader, info));
+                    aField.set(field.get(null), cHandler.readFromCollection(null, line.split("=")[1].trim(), reader, info, HxCConfigClass));
 
                     fName = "";
-
-                    reader.mark(1000000);
                 }
             } catch (Exception ignored) {
                 ignored.printStackTrace();
@@ -81,7 +80,7 @@ public class SpecialHandlers {
         }
 
         @Override
-        public List<String> writeInCollection(Field field, Object value, HashMap<String, Object> not, ParameterizedType parameterizedType) {
+        public List<String> writeInCollection(Field field, Object value, HashMap<String, Object> not, ParameterizedType parameterizedType, HxCConfig HxCConfigClass) {
             List<Field> fields = Arrays.asList(value.getClass().getDeclaredFields());
             LinkedList<String> lines = new LinkedList<>();
 
@@ -97,9 +96,9 @@ public class SpecialHandlers {
                 Type type = aField.getGenericType();
                 boolean isParameterized = (type instanceof ParameterizedType);
                 Class<?> cType = isParameterized ? (Class<?>) ((ParameterizedType) type).getRawType() : (Class<?>) type;
-                ICollectionsHandler cHandler = HxCConfig.getCollectionsHandler(cType);
+                ICollectionsHandler cHandler = HxCConfigClass.getCollectionsHandler(cType);
 
-                LinkedList<String> itValue = new LinkedList<>(cHandler.writeInCollection(field, fValue, null, isParameterized ? (ParameterizedType) type : null).stream().map(str -> "\t" +str).collect(Collectors.toList()));
+                LinkedList<String> itValue = new LinkedList<>(cHandler.writeInCollection(field, fValue, null, isParameterized ? (ParameterizedType) type : null, HxCConfigClass).stream().map(str -> "\t" +str).collect(Collectors.toList()));
                 String valueFirst = itValue.getFirst();
                 itValue.removeFirst();
 
@@ -115,7 +114,7 @@ public class SpecialHandlers {
         }
 
         @Override
-        public Object readFromCollection(HashMap<String, Object> not, String currentLine, BufferedReader reader, Map<String, Object> info) throws IOException {
+        public Object readFromCollection(HashMap<String, Object> not, String currentLine, BufferedReader reader, Map<String, Object> info, HxCConfig HxCConfigClass) throws IOException {
             Class<?> type = (Class<?>) info.get("Type");
             Object instance;
             try {
@@ -137,11 +136,13 @@ public class SpecialHandlers {
                     Map<String, Object> innerInfo = new HashMap<>();
                     innerInfo.put("Type", field.getGenericType());
 
-                    ICollectionsHandler cHandler = HxCConfig.getCollectionsHandler(field.getType());
+                    ICollectionsHandler cHandler = HxCConfigClass.getCollectionsHandler(field.getType());
 
-                    field.set(instance, cHandler.readFromCollection(null, line.split("=")[1].trim(), reader, innerInfo));
+                    field.set(instance, cHandler.readFromCollection(null, line.split("=")[1].trim(), reader, innerInfo, HxCConfigClass));
 
                     fName = "";
+
+                    reader.mark(1000000);
                 }
             } catch (Exception ignored) {
                 ignored.printStackTrace();
