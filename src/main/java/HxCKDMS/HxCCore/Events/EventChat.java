@@ -35,9 +35,9 @@ public class EventChat implements EventListener {
     public void onServerChatEvent(ServerChatEvent event) {
         if (EnableColourInChat) {
             try {
-                if (PermissionsHandler.permLevel(event.player) >= ColorChatMinimumPermLevel)
-                    event.component = ColorHelper.handleChat(event.message.replaceAll("%", "%%"), event.player);
+                event.component = ColorHelper.handleChat(event.message, event.player);
             } catch (Exception unhandled) {
+                unhandled.printStackTrace();
                 event.setCanceled(true);
             }
         }

@@ -1,68 +1,102 @@
 package HxCKDMS.HxCCore.api.Utils;
 
 import HxCKDMS.HxCCore.Configs.Configurations;
+import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.api.Handlers.NickHandler;
-import HxCKDMS.HxCCore.HxCCore;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.*;
 
-import static HxCKDMS.HxCCore.lib.References.CC;
-
+@SuppressWarnings("unchecked")
 public class ColorHelper {
-    private static List<Character> colours = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-    private static List<Character> effects = Arrays.asList('l', 'n', 'o', 'k', 'm', 'r');
+    private static Map<Character, EnumChatFormatting> chatThingies;
 
-    private Character  activeColour;
-    private List<Character> activeEffects;
-    private StringBuilder messageBuilder;
+    static {
+        try {
+            Field field = EnumChatFormatting.class.getDeclaredField("formattingCodeMapping");
+            field.setAccessible(true);
 
-    private String message;
-    private Character defaultColour;
-
-    private ColorHelper (String message, Character defaultColour) {
-        this.message = message;
-        this.defaultColour = defaultColour;
-        messageBuilder = new StringBuilder();
-        activeColour = defaultColour;
-        activeEffects = new ArrayList<>();
+            chatThingies = (Map<Character, EnumChatFormatting>) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {}
     }
 
-    private String colour() {
-        List<String> words = Arrays.asList(message.split(" "));
+    private static ChatComponentTranslation color(String message, char defaultColor) {
+
+        char currentColor = defaultColor;
+        HashSet<Character> currentEffects = new HashSet<>();
+        LinkedList<String> words = new LinkedList<>(Arrays.asList(message.split(" ")));
+        ChatComponentTranslation text = new ChatComponentTranslation("");
+
+        StringBuilder cBuilder = new StringBuilder();
 
         for (String word : words) {
-            ListIterator<Character> iterator = Arrays.asList(ArrayUtils.toObject(word.toCharArray())).listIterator();
-            StringBuilder wordBuilder = new StringBuilder();
+            LinkedList<Character> characters = new LinkedList<>(Arrays.asList(ArrayUtils.toObject(word.toCharArray())));
 
-            wordBuilder.append('\u00a7').append(activeColour);
-            activeEffects.forEach(c -> wordBuilder.append('\u00a7').append(c));
+            Character prevChar = null;
+            for (Character character : characters) {
+                if (prevChar != null) {
+                    if (prevChar == '%' && chatThingies.get(character) != null) {
+                        EnumChatFormatting formatting = chatThingies.get(character);
 
-            Character previousCharacter = null;
-            while (iterator.hasNext()) {
-                Character character = iterator.next();
-                if (previousCharacter != null && colours.contains(character)) {
-                    wordBuilder.append(previousCharacter == '&' ? '\u00a7' : previousCharacter);
-                    if (previousCharacter == '&') activeColour = character;
-                } else if (previousCharacter != null && effects.contains(character)) {
-                    wordBuilder.append(previousCharacter == '&' ? '\u00a7' : previousCharacter);
-                    if (previousCharacter == '&' && character == 'r') {
-                        activeEffects.clear();
-                        activeColour = defaultColour;
-                    } else if (previousCharacter == '&') activeEffects.add(character);
-                }  else if (previousCharacter != null) wordBuilder.append(previousCharacter);
-                previousCharacter = character;
+                        if (cBuilder.length() != 0) {
+                            ChatComponentTranslation subText = new ChatComponentTranslation(cBuilder.toString());
+                            ChatStyle subStyle = new ChatStyle();
+                            subStyle.setColor(chatThingies.get(currentColor))
+                                    .setBold(currentEffects.contains(EnumChatFormatting.BOLD.getFormattingCode()))
+                                    .setItalic(currentEffects.contains(EnumChatFormatting.ITALIC.getFormattingCode()))
+                                    .setObfuscated(currentEffects.contains(EnumChatFormatting.OBFUSCATED.getFormattingCode()))
+                                    .setStrikethrough(currentEffects.contains(EnumChatFormatting.STRIKETHROUGH.getFormattingCode()))
+                                    .setUnderlined(currentEffects.contains(EnumChatFormatting.UNDERLINE.getFormattingCode()));
+
+                            subText.setChatStyle(subStyle);
+                            text.appendSibling(subText);
+
+                            cBuilder = new StringBuilder();
+                        }
+
+                        if (formatting.isColor()) {
+                            if (!Configurations.bannedColorCharacters.contains(character)) currentColor = character;
+                            prevChar = null;
+                            continue;
+                        } else if (formatting.isFancyStyling()) {
+                            if (!Configurations.bannedColorCharacters.contains(character)) currentEffects.add(character);
+                            prevChar = null;
+                            continue;
+                        } else if (formatting == EnumChatFormatting.RESET) {
+                            currentColor = 'f';
+                            currentEffects = new HashSet<>();
+                            prevChar = null;
+                            continue;
+                        }
+                    } else cBuilder.append(prevChar == '%' ? "%%" : prevChar);
+                }
+
+                //last
+                prevChar = character;
             }
-            wordBuilder.append(previousCharacter);
-            messageBuilder.append(' ').append(wordBuilder.toString());
+            if (prevChar != null) cBuilder.append(prevChar == '%' ? "%%" : prevChar);
+            cBuilder.append(' ');
         }
 
-        if (message.isEmpty()) return "";
-        else return messageBuilder.toString().trim();
+        ChatComponentTranslation subText = new ChatComponentTranslation(cBuilder.toString());
+        ChatStyle subStyle = new ChatStyle();
+        subStyle.setColor(chatThingies.get(currentColor))
+                .setBold(currentEffects.contains(EnumChatFormatting.BOLD.getFormattingCode()))
+                .setItalic(currentEffects.contains(EnumChatFormatting.ITALIC.getFormattingCode()))
+                .setObfuscated(currentEffects.contains(EnumChatFormatting.OBFUSCATED.getFormattingCode()))
+                .setStrikethrough(currentEffects.contains(EnumChatFormatting.STRIKETHROUGH.getFormattingCode()))
+                .setUnderlined(currentEffects.contains(EnumChatFormatting.UNDERLINE.getFormattingCode()));
+
+        subText.setChatStyle(subStyle);
+        text.appendSibling(subText);
+        return text;
     }
 
     public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) {
@@ -70,19 +104,13 @@ public class ColorHelper {
         File CustomPlayerData = new File(HxCCore.HxCCoreDir, "HxC-" + UUID.toString() + ".dat");
         if (!CustomPlayerData.exists()) throw new NullPointerException();
 
-        Character defaultColour = 'f';
-        String playerColour = NBTFileIO.getString(CustomPlayerData, "Color");
-        if (!playerColour.equals("")) defaultColour = playerColour.charAt(0);
-        message = new ColorHelper(message, defaultColour).colour();
+        String playerColor = NBTFileIO.getString(CustomPlayerData, "Color");
+        char defaultColor = playerColor.isEmpty() ? 'f' : playerColor.charAt(0);
 
-        for (Character bannedChar : Configurations.bannedColorCharacters)
-            if (message.contains(CC + bannedChar))
-                message = message.replaceAll(CC + bannedChar, "");
-
-        return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", NickHandler.getMessageHeader(player)).replace("MESSAGE", message).trim());
+        return new ChatComponentTranslation(Configurations.formats.get("ChatFormat").replace("HEADER", "%1$s").replace("MESSAGE", "%2$s"), NickHandler.getMessageHeader(player), color(message, defaultColor));
     }
 
     public static String handleSign(String text) {
-        return new ColorHelper(text, '0').colour().concat("\u00a70");
+        return color(text, EnumChatFormatting.BLACK.getFormattingCode()).getFormattedText();
     }
 }
