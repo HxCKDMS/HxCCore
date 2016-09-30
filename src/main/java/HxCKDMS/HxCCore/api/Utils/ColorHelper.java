@@ -5,6 +5,7 @@ import HxCKDMS.HxCCore.HxCCore;
 import HxCKDMS.HxCCore.api.Handlers.NBTFileIO;
 import HxCKDMS.HxCCore.api.Handlers.NickHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,7 +21,7 @@ public class ColorHelper {
 
     static {
         try {
-            Field field = EnumChatFormatting.class.getDeclaredField("formattingCodeMapping");
+            Field field = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") ? EnumChatFormatting.class.getDeclaredField("formattingCodeMapping") : EnumChatFormatting.class.getDeclaredField("field_96321_w");
             field.setAccessible(true);
 
             chatThingies = (Map<Character, EnumChatFormatting>) field.get(null);
