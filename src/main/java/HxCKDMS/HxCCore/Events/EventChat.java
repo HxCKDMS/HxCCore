@@ -38,9 +38,9 @@ public class EventChat implements EventListener {
                 if (PermissionsHandler.permLevel(event.player) >= ColorChatMinimumPermLevel)
                     event.component = ColorHelper.handleChat(event.message, event.player);
             } catch (Exception unhandled) {
-                unhandled.printStackTrace();
                 event.setCanceled(true);
             }
+
         }
 
         UUID UUID = event.player.getUniqueID();

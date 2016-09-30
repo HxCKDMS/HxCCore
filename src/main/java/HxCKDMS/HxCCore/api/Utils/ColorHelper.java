@@ -42,7 +42,7 @@ public class ColorHelper {
             Character prevChar = null;
             for (Character character : characters) {
                 if (prevChar != null) {
-                    if (prevChar == '%' && chatThingies.get(character) != null) {
+                    if (prevChar == '&' && chatThingies.get(character) != null) {
                         EnumChatFormatting formatting = chatThingies.get(character);
 
                         if (cBuilder.length() != 0) {
