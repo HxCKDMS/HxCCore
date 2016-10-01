@@ -1,0 +1,1 @@
+gradle clean setupDecompWorkspace genIntellijRuns --refresh-dependencies getAssets idea
