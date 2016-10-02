@@ -1,4 +1,4 @@
-package hxckdms.hxccore.utilities;
+package hxckdms.hxccore;
 
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
@@ -6,6 +6,7 @@ import hxckdms.hxccore.events.EventChat;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.proxy.IProxy;
 import hxckdms.hxccore.registry.command.CommandRegistry;
+import hxckdms.hxccore.utilities.Logger;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
