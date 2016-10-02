@@ -12,12 +12,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import scala.actors.threadpool.Arrays;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 import static hxckdms.hxcconfig.Flags.RETAIN_ORIGINAL_VALUES;
 import static hxckdms.hxccore.libraries.Constants.MOD_ID;
