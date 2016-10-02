@@ -3,7 +3,6 @@ package hxckdms.hxccore.registry.command;
 import hxckdms.hxcconfig.Config;
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxcconfig.handlers.SpecialHandlers;
-import hxckdms.hxccore.HxCCore;
 import hxckdms.hxccore.api.command.AbstractCommandMain;
 import hxckdms.hxccore.api.command.ISubCommand;
 import net.minecraft.command.CommandException;
@@ -22,6 +21,7 @@ import java.util.Set;
 
 import static hxckdms.hxcconfig.Flags.RETAIN_ORIGINAL_VALUES;
 import static hxckdms.hxccore.libraries.Constants.MOD_ID;
+import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 
 @SuppressWarnings({"unchecked", "WeakerAccess"})
 public class CommandRegistry {
@@ -30,7 +30,7 @@ public class CommandRegistry {
     public static void registerCommands(FMLPreInitializationEvent event) {
         SpecialHandlers.registerSpecialClass(SubCommandsHandler.class);
 
-        HxCConfig commandConfig = new HxCConfig(CommandConfig.class, "HxCCommands", HxCCore.modConfigDir, "cfg", MOD_ID);
+        HxCConfig commandConfig = new HxCConfig(CommandConfig.class, "HxCCommands", modConfigDir, "cfg", MOD_ID);
         commandConfig.initConfiguration();
 
         Set<ASMDataTable.ASMData> asmDataTable = event.getAsmData().getAll(HxCCommand.class.getCanonicalName());

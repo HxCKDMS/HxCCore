@@ -81,3 +81,13 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+jar {
+    classifier = 'universal'
+
+    manifest {
+        attributes 'FMLAT': 'HxC_at.cfg'
+        attributes "FMLCorePluginContainsFMLMod": "true"
+        attributes "FMLCorePlugin": 'hxckdms.hxccore.asm.HxCLoader'
+    }
+}
