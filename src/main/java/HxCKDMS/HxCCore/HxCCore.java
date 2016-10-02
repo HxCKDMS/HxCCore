@@ -58,7 +58,7 @@ public class HxCCore {
     }
 
     @Mod.EventHandler
-    public void postInitialization(FMLPostInitializationEvent event) throws NoSuchFieldException, IllegalAccessException {
+    public void postInitialization(FMLPostInitializationEvent event) throws NoSuchFieldException {
         Field field = TextFormatting.class.getDeclaredField("formattingCode");
         field.setAccessible(true);
 
