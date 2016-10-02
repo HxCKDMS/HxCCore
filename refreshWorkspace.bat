@@ -1,1 +1,1 @@
-gradle --refresh-dependencies eclipse idea
+gradle --refresh-dependencies idea
