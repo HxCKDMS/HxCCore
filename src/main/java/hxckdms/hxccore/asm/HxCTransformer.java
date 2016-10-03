@@ -59,12 +59,10 @@ public class HxCTransformer implements IClassTransformer {
             if(methodNode.name.equals(RENDERER_SIGN) && methodNode.desc.equals(RENDERER_SIGN_DESC)) {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == ASTORE && instruction.getNext().getNext().getNext().getOpcode() == ILOAD && instruction.getNext().getNext().getNext().getNext().getOpcode() == ALOAD) {
+                    if (instruction.getOpcode() == ASTORE && instruction.getNext().getNext().getNext().getOpcode() == ILOAD && instruction.getNext().getNext().getNext().getNext().getOpcode() == ALOAD)
                         targetNode = instruction.getNext();
-                        System.out.println("asdf");
-                    }
 
-                if(targetNode != null) {
+                if (targetNode != null) {
                     LabelNode newLabelNode = new LabelNode();
 
                     InsnList toInsert = new InsnList();
@@ -80,7 +78,7 @@ public class HxCTransformer implements IClassTransformer {
                 Logger.info("Successfully transformed: RendererSign.", Constants.MOD_NAME + " ASM");
             }
         }
-        if(!hasTransformed) Logger.error("Failed to transform: RendererSign.", Constants.MOD_NAME + " ASM");
+        if (!hasTransformed) Logger.error("Failed to transform: RendererSign.", Constants.MOD_NAME + " ASM");
     }
 
 
