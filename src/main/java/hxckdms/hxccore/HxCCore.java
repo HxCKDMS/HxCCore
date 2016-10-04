@@ -2,10 +2,12 @@ package hxckdms.hxccore;
 
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.events.CommandEvents;
 import hxckdms.hxccore.events.EventChat;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.proxy.IProxy;
 import hxckdms.hxccore.registry.command.CommandRegistry;
+import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.Logger;
 import hxckdms.hxccore.utilities.NBTFileHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,8 +25,6 @@ import static hxckdms.hxccore.libraries.GlobalVariables.*;
 public class HxCCore {
     private static final Thread codersCheckThread = new Thread(new CodersCheck());
 
-    public static NBTFileHandler test;
-
     @Mod.Instance(MOD_ID)
     public static HxCCore instance;
 
@@ -34,7 +34,6 @@ public class HxCCore {
     @Mod.EventHandler
     public void preInitialization(FMLPreInitializationEvent event) {
         modConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
-
 
         codersCheckThread.setName("Coders check thread");
         codersCheckThread.start();
@@ -52,6 +51,9 @@ public class HxCCore {
     public void initialization(FMLInitializationEvent event) {
         proxy.init(event);
         MinecraftForge.EVENT_BUS.register(new EventChat());
+        MinecraftForge.EVENT_BUS.register(new NBTFileHandler.NBTSaveEvents());
+        MinecraftForge.EVENT_BUS.register(new HxCPlayerInfoHandler.CustomPlayerDataEvents());
+        MinecraftForge.EVENT_BUS.register(new CommandEvents());
 
         Logger.info("HxCKDMS Core has finished the initialization process.", MOD_NAME);
     }
@@ -73,24 +75,26 @@ public class HxCCore {
         modWorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCData");
         if (!modWorldDir.exists()) modWorldDir.mkdirs();
 
-        customWorldData = new File(modWorldDir, "HxCWorld.dat");
-        permissionData = new File(modWorldDir, "HxC-Permissions.dat");
-
-        test = new NBTFileHandler(customWorldData);
+        customWorldDataFile = new File(modWorldDir, "HxCWorld.dat");
+        permissionDataFile = new File(modWorldDir, "HxC-Permissions.dat");
 
         try {
-            if (!permissionData.exists()) permissionData.createNewFile();
-            if (!customWorldData.exists()) customWorldData.createNewFile();
+            if (!permissionDataFile.exists()) permissionDataFile.createNewFile();
+            if (!customWorldDataFile.exists()) customWorldDataFile.createNewFile();
         } catch (IOException ignored) {}
+
+        customWorldData = new NBTFileHandler("HxCWorldData", customWorldDataFile);
+        permissionData = new NBTFileHandler("HxCPermissionData", permissionDataFile);
     }
 
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
-        //NBTFileHandler.loadCustomNBTFiles();
+        NBTFileHandler.loadCustomNBTFiles(true);
     }
 
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
-        NBTFileHandler.saveCustomNBTFiles();
+        NBTFileHandler.saveCustomNBTFiles(true);
+        NBTFileHandler.getHandlers().parallelStream().forEach(NBTFileHandler::unRegister);
     }
 }

@@ -3,23 +3,34 @@ package hxckdms.hxccore.utilities;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class NBTFileHandler {
-    private static HashSet<NBTFileHandler> fileHandlers = new HashSet<>();
+    private static Hashtable<String, NBTFileHandler> fileHandlers = new Hashtable<>();
     private Hashtable<String, Data> table = new Hashtable<>();
     private File nbtFile;
+    private long saveTime = 0, loadTime = 0;
 
-    public NBTFileHandler(File nbtFile) {
+    public NBTFileHandler(String handlerName, File nbtFile) {
         this.nbtFile = nbtFile;
 
-        readFromFile();
-        fileHandlers.add(this);
+        readFromFile(true);
+        fileHandlers.putIfAbsent(handlerName, this);
+    }
+
+    public static void unRegister(String handlerName) {
+        fileHandlers.remove(handlerName);
+    }
+
+    public static Set<String> getHandlers() {
+        return new HashSet<>(fileHandlers.keySet());
     }
 
     public void setString(String tagName, String value) {
@@ -38,18 +49,84 @@ public class NBTFileHandler {
         return hasTag(tagName) && getValue(Byte.class, tagName) == (byte) 1;
     }
 
-    public void setInteger(String tagName, int value) {
-        setValue(tagName, Integer.class, value);
+    public void setDouble(String tagName, double value) {
+        setValue(tagName, Double.class, value);
     }
 
-    public int getInteger(String tagName) {
-        return hasTag(tagName) ? getValue(Integer.class, tagName) : 0;
+    public double getDouble(String tagName) {
+        return hasTag(tagName) ? getValue(Double.class, tagName) : 0D;
     }
+
+    public void setFloat(String tagName, float value) {
+        setValue(tagName, Float.class, value);
+    }
+
+    public float getFloat(String tagName) {
+        return hasTag(tagName) ? getValue(Float.class, tagName) : 0F;
+    }
+
+    public void setShort(String tagName, short value) {
+        setValue(tagName, Short.class, value);
+    }
+
+    public short getShort(String tagName) {
+        return hasTag(tagName) ? getValue(Short.class, tagName) : 0;
+    }
+
+    public void setLong(String tagName, long value) {
+        setValue(tagName, Long.class, value);
+    }
+
+    public long getLong(String tagName) {
+        return hasTag(tagName) ? getValue(Long.class, tagName) : 0;
+    }
+
+    public void setByte(String tagName, byte value) {
+        setValue(tagName, Byte.class, value);
+    }
+
+    public byte getByte(String tagName) {
+        return hasTag(tagName) ? getValue(Byte.class, tagName) : 0;
+    }
+
+    public void setIntArray(String tagName, int[] value) {
+        setValue(tagName, int[].class, value);
+    }
+
+    public int[] getIntArray(String tagName) {
+        return hasTag(tagName) ? getValue(int[].class, tagName) : null;
+    }
+
+    public void setByteArray(String tagName, byte[] value) {
+        setValue(tagName, byte[].class, value);
+    }
+
+    public byte[] getByteArray(String tagName) {
+        return hasTag(tagName) ? getValue(byte[].class, tagName) : null;
+    }
+
+    public void setTagCompound(String tagName, NBTTagCompound value) {
+        setValue(tagName, NBTTagCompound.class, value);
+    }
+
+    public NBTTagCompound getTagCompound(String tagName) {
+        return hasTag(tagName) ? getValue(NBTTagCompound.class, tagName) : null;
+    }
+
+    public void setTagList(String tagName, NBTTagList value) {
+        setValue(tagName, NBTTagList.class, value);
+    }
+
+    public NBTTagList getTagList(String tagName) {
+        return hasTag(tagName) ? getValue(NBTTagList.class, tagName) : null;
+    }
+
 
     private synchronized <T> void setValue(String tagName, Class<T> type, T value) {
         table.put(tagName, new Data<>(value, type));
     }
 
+    @SuppressWarnings("unchecked")
     private synchronized <T> T getValue(Class<T> type, String tagName) {
         if(table.get(tagName).type == type )
             return ((Data<T>) table.get(tagName)).value ;
@@ -60,18 +137,19 @@ public class NBTFileHandler {
         return table.containsKey(tagName);
     }
 
-    private synchronized void saveToFile() {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private synchronized void saveToFile(boolean force) {
+        if (!force && Calendar.getInstance().getTimeInMillis() - saveTime < 10000L) return;
+        saveTime = Calendar.getInstance().getTimeInMillis();
+
         try {
             if (!nbtFile.exists()) nbtFile.createNewFile();
         } catch (Exception ignored) {}
 
         NBTTagCompound tagCompound = new NBTTagCompound();
 
-        System.out.println(table);
-
         for (Map.Entry<String, Data> entry : table.entrySet()) {
             if (entry.getValue().type == String.class) tagCompound.setString(entry.getKey(), (String) entry.getValue().value);
-            //else if (entry.getValue().type == Boolean.class) tagCompound.setBoolean(entry.getKey(), (Boolean) entry.getValue().value);
             else if (entry.getValue().type == Integer.class) tagCompound.setInteger(entry.getKey(), (Integer) entry.getValue().value);
             else if (entry.getValue().type == Double.class) tagCompound.setDouble(entry.getKey(), (Double) entry.getValue().value);
             else if (entry.getValue().type == Float.class) tagCompound.setFloat(entry.getKey(), (Float) entry.getValue().value);
@@ -81,6 +159,7 @@ public class NBTFileHandler {
             else if (entry.getValue().type == int[].class) tagCompound.setIntArray(entry.getKey(), (int[]) entry.getValue().value);
             else if (entry.getValue().type == byte[].class) tagCompound.setByteArray(entry.getKey(), (byte[]) entry.getValue().value);
             else if (entry.getValue().type == NBTTagCompound.class) tagCompound.setTag(entry.getKey(), (NBTBase) entry.getValue().value);
+            else if (entry.getValue().type == NBTTagList.class) tagCompound.setTag(entry.getKey(), (NBTBase) entry.getValue().value);
         }
 
         try {
@@ -90,9 +169,14 @@ public class NBTFileHandler {
         }
     }
 
-    private synchronized void readFromFile() {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private synchronized void readFromFile(boolean force) {
+        if (!force && Calendar.getInstance().getTimeInMillis() - loadTime < 10000L) return;
+        loadTime = Calendar.getInstance().getTimeInMillis();
+
         NBTTagCompound tagCompound;
         try {
+            if (!nbtFile.exists()) nbtFile.createNewFile();
             tagCompound = CompressedStreamTools.read(nbtFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -134,6 +218,9 @@ public class NBTFileHandler {
                 case "COMPOUND":
                     table.put(key, new Data<>((NBTTagCompound) tagCompound.getTag(key), NBTTagCompound.class));
                     break;
+                case "LIST":
+                    table.put(key, new Data<>((NBTTagList) tagCompound.getTag(key), NBTTagList.class));
+                    break;
 
             }
         }
@@ -149,11 +236,19 @@ public class NBTFileHandler {
         }
     }
 
-    public static void loadCustomNBTFiles() {
-        //fileHandlers.parallelStream().forEach(NBTFileHandler::readFromFile);
+    public static void loadCustomNBTFiles(final boolean force) {
+        fileHandlers.forEach((name, handler) -> handler.readFromFile(force));
     }
 
-    public static void saveCustomNBTFiles() {
-        fileHandlers.parallelStream().forEach(NBTFileHandler::saveToFile);
+    public static void saveCustomNBTFiles(final boolean force) {
+        fileHandlers.forEach((name, handler) -> handler.saveToFile(force));
+    }
+
+    public static class NBTSaveEvents implements EventListener {
+
+        @SubscribeEvent
+        public void WorldSaveEvent(WorldEvent.Save event) {
+            saveCustomNBTFiles(false);
+        }
     }
 }

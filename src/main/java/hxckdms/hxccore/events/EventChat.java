@@ -1,6 +1,5 @@
 package hxckdms.hxccore.events;
 
-import hxckdms.hxccore.HxCCore;
 import hxckdms.hxccore.utilities.ColorHelper;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -11,7 +10,5 @@ public class EventChat implements EventListener {
     @SubscribeEvent
     public void onServerChatEvent(ServerChatEvent event) {
         event.setComponent(ColorHelper.handleChat(event.getMessage(), event.getPlayer()));
-
-        HxCCore.test.setInteger("chatCount", HxCCore.test.getInteger("chatCount") + 1);
     }
 }

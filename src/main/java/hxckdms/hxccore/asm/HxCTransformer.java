@@ -15,7 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class HxCTransformer implements IClassTransformer {
     private static final String[] classesBeingTransformed = {
-            "net.minecraft.client.renderer.entity.RendererLivingEntity",
+            "net.minecraft.client.renderer.entity.Render",
             "net.minecraft.client.renderer.tileentity.TileEntitySignRenderer"
     };
 
@@ -33,11 +33,9 @@ public class HxCTransformer implements IClassTransformer {
             classReader.accept(classNode, 0);
             switch (index) {
                 case 0:
-                    System.out.println("asdf1");
-                    //TransformRendererLivingEntity(classNode);
+                    TransformRender(classNode);
                     break;
                 case 1:
-                    System.out.println("asdf2");
                     TransformRendererSign(classNode);
                     break;
             }
@@ -51,8 +49,39 @@ public class HxCTransformer implements IClassTransformer {
         return classBeingTransformed;
     }
 
+    private static void TransformRender(ClassNode classNode) {
+        final String RENDERER_LIVING_ENTITY = HxCLoader.RuntimeDeobf ? "func_147906_a" : "renderLivingLabel";
+        final String RENDERER_LIVING_ENTITY_DESC = "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if (methodNode.name.equals(RENDERER_LIVING_ENTITY) && methodNode.desc.equals(RENDERER_LIVING_ENTITY_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == ISTORE && instruction.getNext().getNext().getNext().getNext().getOpcode() == INVOKEVIRTUAL)
+                        targetNode = instruction.getNext();
+
+                if (targetNode != null) {
+                    LabelNode newLabelNode = new LabelNode();
+
+                    InsnList toInsert = new InsnList();
+                    toInsert.add(new VarInsnNode(ALOAD, 2));
+                    toInsert.add(new VarInsnNode(ALOAD, 1));
+
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ColorHelper.class), "getTagName", "(Ljava/lang/String;Lnet/minecraft/entity/Entity;)Ljava/lang/String;", false));
+                    toInsert.add(new VarInsnNode(ASTORE, 2));
+
+                    methodNode.instructions.insert(targetNode, toInsert);
+                    methodNode.instructions.insert(targetNode, newLabelNode);
+                }
+                hasTransformed = true;
+                Logger.info("Successfully transformed: RendererLivingEntity.", Constants.MOD_NAME + " ASM");
+            }
+        }
+        if (!hasTransformed) Logger.error("Failed to transform: RendererLivingEntity.", Constants.MOD_NAME + " ASM");
+    }
+
     private static void TransformRendererSign(ClassNode classNode) {
-        final String RENDERER_SIGN = HxCLoader.RuntimeDeobf ? "func_147500_a" : "renderTileEntityAt";
+        final String RENDERER_SIGN = HxCLoader.RuntimeDeobf ? "func_180535_a" : "renderTileEntityAt";
         final String RENDERER_SIGN_DESC = "(Lnet/minecraft/tileentity/TileEntitySign;DDDFI)V";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
@@ -80,6 +109,4 @@ public class HxCTransformer implements IClassTransformer {
         }
         if (!hasTransformed) Logger.error("Failed to transform: RendererSign.", Constants.MOD_NAME + " ASM");
     }
-
-
 }
