@@ -49,6 +49,15 @@ public class NBTFileHandler {
         return hasTag(tagName) && getValue(Byte.class, tagName) == (byte) 1;
     }
 
+    public void setInteger(String tagName, int value) {
+        setValue(tagName, Integer.class, value);
+    }
+
+    public int getInteger(String tagName) {
+        return hasTag(tagName) ? getValue(Integer.class, tagName) : 0;
+    }
+
+
     public void setDouble(String tagName, double value) {
         setValue(tagName, Double.class, value);
     }

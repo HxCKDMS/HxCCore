@@ -68,7 +68,7 @@ public class HxCCore {
     }
 
     @Mod.EventHandler
-    public void postInitialization(FMLPostInitializationEvent event) throws NoSuchFieldException {
+    public void postInitialization(FMLPostInitializationEvent event) {
 
         proxy.postInit(event);
         Logger.info("HxCKDMS Core has finished the post-initialization process.", MOD_NAME);

@@ -21,7 +21,7 @@ public class ColorHelper {
 
     static {
         try {
-            formattingCodeField = TextFormatting.class.getDeclaredField("formattingCode");
+            formattingCodeField = HxCReflectionHelper.getDeclaredField(TextFormatting.class, "formattingCode", "field_96329_z");
             formattingCodeField.setAccessible(true);
 
             for (TextFormatting textFormatting : TextFormatting.values())
@@ -111,6 +111,11 @@ public class ColorHelper {
         } catch (IllegalAccessException unhandled) {
             return null;
         }
+    }
+
+    public static TextComponentTranslation handleMessage(String message, char defaultColor) {
+        TextComponentTranslation text = color(message, defaultColor);
+        return text == null ? new TextComponentTranslation("") : text;
     }
 
     public static HashMap<UUID, String> playerNickNames = new HashMap<>();

@@ -15,7 +15,7 @@ public class CodersCheck implements Runnable {
         try {
             URL url = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/HxCLib.txt");
             InputStream inputStream = url.openStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             String inputLine;
             while ((inputLine = reader.readLine()) != null) {
