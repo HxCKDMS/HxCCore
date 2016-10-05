@@ -33,6 +33,8 @@ public class ColorHelper {
 
     private static TextComponentTranslation color(String message, char defaultColor) {
         try {
+            if (message == null || message.isEmpty()) return new TextComponentTranslation("");
+
             char currentColor = defaultColor;
             HashSet<Character> currentEffects = new HashSet<>();
             LinkedList<String> words = new LinkedList<>(Arrays.asList(message.split(" ")));
@@ -117,7 +119,7 @@ public class ColorHelper {
     public static TextComponentTranslation handleNick(EntityPlayer player, boolean nameTagRender) {
         if (nameTagRender) return "".equals(playerNickNames.get(player.getUniqueID())) ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');
         else {
-            if ("".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
+            if (HxCPlayerInfoHandler.getString(player, "NickName") == null || "".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
                 return (Arrays.asList(((EntityPlayerMP) player).mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? color(player.getName(), '4') : color(player.getName(), 'f'));
             else return color(HxCPlayerInfoHandler.getString(player, "NickName"), 'f');
         }

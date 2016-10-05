@@ -4,7 +4,9 @@ import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.events.CommandEvents;
 import hxckdms.hxccore.events.EventChat;
+import hxckdms.hxccore.events.EventNickSync;
 import hxckdms.hxccore.network.CodersCheck;
+import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
 import hxckdms.hxccore.registry.command.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
@@ -14,6 +16,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +45,9 @@ public class HxCCore {
         HxCConfig config = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
         config.initConfiguration();
 
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
+        network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);
+
         CommandRegistry.registerCommands(event);
 
         proxy.preInit(event);
@@ -51,9 +58,11 @@ public class HxCCore {
     public void initialization(FMLInitializationEvent event) {
         proxy.init(event);
         MinecraftForge.EVENT_BUS.register(new EventChat());
+        MinecraftForge.EVENT_BUS.register(new CommandEvents());
+        MinecraftForge.EVENT_BUS.register(new EventNickSync());
         MinecraftForge.EVENT_BUS.register(new NBTFileHandler.NBTSaveEvents());
         MinecraftForge.EVENT_BUS.register(new HxCPlayerInfoHandler.CustomPlayerDataEvents());
-        MinecraftForge.EVENT_BUS.register(new CommandEvents());
+
 
         Logger.info("HxCKDMS Core has finished the initialization process.", MOD_NAME);
     }

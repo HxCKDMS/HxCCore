@@ -74,10 +74,10 @@ public class HxCTransformer implements IClassTransformer {
                     methodNode.instructions.insert(targetNode, newLabelNode);
                 }
                 hasTransformed = true;
-                Logger.info("Successfully transformed: RendererLivingEntity.", Constants.MOD_NAME + " ASM");
+                Logger.info("Successfully transformed: Render.", Constants.MOD_NAME + " ASM");
             }
         }
-        if (!hasTransformed) Logger.error("Failed to transform: RendererLivingEntity.", Constants.MOD_NAME + " ASM");
+        if (!hasTransformed) Logger.error("Failed to transform: Render.", Constants.MOD_NAME + " ASM");
     }
 
     private static void TransformRendererSign(ClassNode classNode) {

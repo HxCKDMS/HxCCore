@@ -2,6 +2,7 @@ package hxckdms.hxccore.libraries;
 
 import hxckdms.hxccore.utilities.NBTFileHandler;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,4 +13,5 @@ public class GlobalVariables {
     public static NBTFileHandler customWorldData, permissionData;
     public static volatile HashMap<UUID, String> devTags = new HashMap<>();
     public static MinecraftServer server;
+    public static SimpleNetworkWrapper network;
 }
