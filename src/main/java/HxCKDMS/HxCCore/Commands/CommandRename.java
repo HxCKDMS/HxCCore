@@ -38,7 +38,7 @@ public class CommandRename implements ISubCommand {
                 for (int i = 2; i < args.length; i++) {
                     name = name + " " + args[i];
                 }
-                name.replaceAll("  ", " ").replaceAll("&", "\u00a7");
+                name = name.replaceAll("  ", " ").replaceAll("&", "\u00a7");
                 item.setStackDisplayName(name);
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
             } else throw new WrongUsageException(HxCCore.util.getTranslation((isPlayer ? ((EntityPlayerMP) sender).getUniqueID() : java.util.UUID.randomUUID()), "commands.exception.permission"));

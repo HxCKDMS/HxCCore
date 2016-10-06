@@ -131,6 +131,7 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventPowerTool());
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
         MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
+        MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
         if (Configurations.DebugMode)
             MinecraftForge.EVENT_BUS.register(new EventPlayerHxCDataSync());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
@@ -207,8 +208,6 @@ public class HxCCore {
     public static void updateGamerules() {
         instance.HxCRules.forEach((rule,value) -> instance.HxCRules.replace(rule, instance.rules.getGameRuleStringValue(rule)));
 
-        if (instance.HxCRules.get("XPBuffs").equals("true"))
-            MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
 //        if (instance.HxCRules.get("XPCooldownInterrupt").equals("true"))
     }
 

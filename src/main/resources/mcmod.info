@@ -3,7 +3,7 @@
     "modid": "HxCCore",
     "name": "HxC-Core",
     "description": "Core for all HxC mods. Contains Important Libraries such as config system.",
-    "version": "1.12.4",
+    "version": "1.13.0",
     "credits": "Minor help from Opensource COFH core",
 	"logoFile": "assets/HxCCore/textures/HxC.png",
     "mcversion": "1.7.10",
