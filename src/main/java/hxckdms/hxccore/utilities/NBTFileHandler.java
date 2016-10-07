@@ -142,7 +142,7 @@ public class NBTFileHandler {
         else throw new NullPointerException();
     }
 
-    private synchronized boolean hasTag(String tagName) {
+    public synchronized boolean hasTag(String tagName) {
         return table.containsKey(tagName);
     }
 
@@ -245,8 +245,16 @@ public class NBTFileHandler {
         }
     }
 
+    public static void loadCertainNBTFile(final String name) {
+        fileHandlers.get(name).readFromFile(true);
+    }
+
     public static void loadCustomNBTFiles(final boolean force) {
         fileHandlers.forEach((name, handler) -> handler.readFromFile(force));
+    }
+
+    public static void saveCertainNBTFile(final String name) {
+        fileHandlers.get(name).saveToFile(true);
     }
 
     public static void saveCustomNBTFiles(final boolean force) {

@@ -9,15 +9,18 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 import static hxckdms.hxcconfig.Flags.RETAIN_ORIGINAL_VALUES;
 import static hxckdms.hxccore.libraries.Constants.MOD_ID;
 import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
+import static hxckdms.hxccore.registry.command.CommandRegistry.CommandConfig.commands;
 
 @SuppressWarnings({"unchecked", "WeakerAccess"})
 public class CommandRegistry {
@@ -25,6 +28,7 @@ public class CommandRegistry {
 
     public static void registerCommands(FMLPreInitializationEvent event) {
         SpecialHandlers.registerSpecialClass(SubCommandsHandler.class);
+        SpecialHandlers.registerSpecialClass(SubPermissions.class);
 
         HxCConfig commandConfig = new HxCConfig(CommandConfig.class, "HxCCommands", modConfigDir, "cfg", MOD_ID);
         commandConfig.initConfiguration();
@@ -39,12 +43,12 @@ public class CommandRegistry {
 
                     if (mainClazz == CommandHxC.class) {
                         ISubCommand subCommand = clazz.newInstance();
-                        SubCommandsHandler subCommandsHandler = CommandConfig.commands.getOrDefault(subCommand.getCommandName(), new SubCommandsHandler());
+                        SubCommandsHandler subCommandsHandler = commands.getOrDefault(subCommand.getCommandName(), new SubCommandsHandler());
 
-                        if (!CommandConfig.commands.containsKey(subCommand.getCommandName())) {
+                        if (!commands.containsKey(subCommand.getCommandName())) {
                             subCommandsHandler.permissionLevel = clazz.getAnnotation(HxCCommand.class).defaultPermission();
                             subCommandsHandler.enable = clazz.getAnnotation(HxCCommand.class).isEnabled();
-                            CommandConfig.commands.put(subCommand.getCommandName(), subCommandsHandler);
+                            commands.put(subCommand.getCommandName(), subCommandsHandler);
                         }
 
                         if (subCommandsHandler.enable) subCommands.put(subCommand.getCommandName().toLowerCase(), subCommand);
@@ -86,16 +90,69 @@ public class CommandRegistry {
             LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
             subArgs.removeFirst();
 
-            command.handleCommand(sender, subArgs, true);
+            command.execute(sender, subArgs, true);
 
+        }
+
+        @Override
+        public List<String> getCommandAliases() {
+            return Arrays.asList("HxCCore", "HxC", "hxccore", "hxC", "hxc", "Hxc", "HXC");
+        }
+
+        @Override
+        public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+            return true;
+        }
+
+        @Override
+        public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, subCommands.keySet().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
+            } else if (subCommands.containsKey(args[0])) {
+                return subCommands.get(args[0]).addTabCompletionOptions(sender, args);
+            }
+            return null;
         }
     }
 
     @Config
     public static class CommandConfig {
         public static boolean enableCommands = true;
+
         @Config.flags(RETAIN_ORIGINAL_VALUES)
         public static LinkedHashMap<String, SubCommandsHandler> commands = new LinkedHashMap<>();
+
+        public static LinkedHashMap<Integer, SubPermissions> commandPermissions = new LinkedHashMap<Integer, SubPermissions>(){{
+            put(1, new SubPermissions("Default", 3, 0));
+            put(2, new SubPermissions("&eHelper", 5, 512));
+            put(3, new SubPermissions("&9Moderator", 10, 4096));
+            put(4, new SubPermissions("&6Admin", 16, 32768));
+            put(5, new SubPermissions("&4&lOwner", -1, -1));
+        }};
+    }
+
+    public static class SubPermissions {
+        public String name;
+        public int homeAmount;
+        public int maxBlocksProtected;
+
+        public SubPermissions(String name, int homeAmount, int maxBlocksProtected) {
+            this.name = name;
+            this.homeAmount = homeAmount;
+            this.maxBlocksProtected = maxBlocksProtected;
+        }
+
+        public SubPermissions() {
+        }
+
+        @Override
+        public String toString() {
+            return "SubPermissions{" +
+                    "name='" + name + '\'' +
+                    ", homeAmount=" + homeAmount +
+                    ", maxBlocksProtected=" + maxBlocksProtected +
+                    '}';
+        }
     }
 
     public static class SubCommandsHandler {

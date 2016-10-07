@@ -1,6 +1,7 @@
 package hxckdms.hxccore.utilities;
 
 import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.registry.command.CommandRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.devTags;
+import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
 public class ColorHelper {
     private static Map<Character, TextFormatting> chatThingies = new HashMap<>();
@@ -63,7 +65,6 @@ public class ColorHelper {
                                         .setStrikethrough(currentEffects.contains(formattingCodeField.getChar(TextFormatting.STRIKETHROUGH)))
                                         .setUnderlined(currentEffects.contains(formattingCodeField.getChar(TextFormatting.UNDERLINE)));
 
-                                subText.setStyle(subStyle);
                                 text.appendSibling(subText);
 
                                 cBuilder = new StringBuilder();
@@ -105,7 +106,6 @@ public class ColorHelper {
                     .setUnderlined(currentEffects.contains(formattingCodeField.getChar(TextFormatting.UNDERLINE)));
 
 
-            subText.setStyle(subStyle);
             text.appendSibling(subText);
             return text;
         } catch (IllegalAccessException unhandled) {
@@ -130,6 +130,7 @@ public class ColorHelper {
         }
     }
 
+    @SuppressWarnings("unused")
     public static String getTagName(String name, Entity entity) {
         TextComponentTranslation text;
         if (entity instanceof EntityPlayer) return handleNick((EntityPlayer) entity, true).getFormattedText();
@@ -157,7 +158,7 @@ public class ColorHelper {
 
         TextComponentTranslation gameMode = color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), 'f');
         TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
-        TextComponentTranslation permissionTag = new TextComponentTranslation("temp");
+        TextComponentTranslation permissionTag = color(CommandRegistry.CommandConfig.commandPermissions.get(permissionData.getInteger(player.getUniqueID().toString())).name, 'f');
         TextComponentTranslation nick = handleNick(player, false);
         TextComponentTranslation chatMessage = color(message, 'f');
 

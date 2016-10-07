@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ISubCommand {
     String getCommandName();
-    int[] getCommandRequiredParams();
-    void handleCommand(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException;
+    void execute(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException;
     List<String> addTabCompletionOptions(ICommandSender sender, String[] args);
 }

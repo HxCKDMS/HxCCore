@@ -151,7 +151,7 @@ public class HxCPlayerInfoHandler {
             }
 
             playerDataTable.put(uuid, new NBTFileHandler(uuid.toString(), modPlayerData));
-            NBTFileHandler.loadCustomNBTFiles(true);
+            NBTFileHandler.loadCertainNBTFile(uuid.toString());
         }
 
         @SubscribeEvent

@@ -1,4 +1,4 @@
-package hxckdms.hxccore.events;
+package hxckdms.hxccore.event;
 
 import hxckdms.hxccore.api.event.EmoteEvent;
 import hxckdms.hxccore.utilities.ColorHelper;

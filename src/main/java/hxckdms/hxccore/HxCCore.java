@@ -2,9 +2,9 @@ package hxckdms.hxccore;
 
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
-import hxckdms.hxccore.events.CommandEvents;
-import hxckdms.hxccore.events.EventChat;
-import hxckdms.hxccore.events.EventNickSync;
+import hxckdms.hxccore.event.CommandEvents;
+import hxckdms.hxccore.event.EventChat;
+import hxckdms.hxccore.event.EventNickSync;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
@@ -62,7 +62,6 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventNickSync());
         MinecraftForge.EVENT_BUS.register(new NBTFileHandler.NBTSaveEvents());
         MinecraftForge.EVENT_BUS.register(new HxCPlayerInfoHandler.CustomPlayerDataEvents());
-
 
         Logger.info("HxCKDMS Core has finished the initialization process.", MOD_NAME);
     }

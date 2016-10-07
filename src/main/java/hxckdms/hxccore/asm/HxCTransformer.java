@@ -18,7 +18,8 @@ public class HxCTransformer implements IClassTransformer {
     private static final String[] classesBeingTransformed = {
             "net.minecraft.client.renderer.entity.Render",
             "net.minecraft.client.renderer.tileentity.TileEntitySignRenderer",
-            "net.minecraft.command.server.CommandEmote"
+            "net.minecraft.command.server.CommandEmote",
+            "net.minecraft.command.CommandHandler"
     };
 
     @Override
@@ -41,7 +42,10 @@ public class HxCTransformer implements IClassTransformer {
                     TransformRendererSign(classNode);
                     break;
                 case 2:
-                    TransformEmoteEvent(classNode);
+                    TransformCommandEmote(classNode);
+                    break;
+                case 3:
+                    transformCommandHandler(classNode);
                     break;
             }
 
@@ -115,7 +119,7 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: RendererSign.", Constants.MOD_NAME + " ASM");
     }
 
-    private static void TransformEmoteEvent(ClassNode classNode) {
+    private static void TransformCommandEmote(ClassNode classNode) {
         final String EXECUTE = HxCLoader.RuntimeDeobf ? "func_184881_a" : "execute";
         final String EXECUTE_DESC = "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/command/ICommandSender;[Ljava/lang/String;)V";
         boolean hasTransformed = false;
@@ -135,8 +139,6 @@ public class HxCTransformer implements IClassTransformer {
                     toInsert.add(new VarInsnNode(ALOAD, 4));
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onEmoteEvent", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/util/text/ITextComponent;)Lnet/minecraft/util/text/ITextComponent;", false));
                     toInsert.add(new VarInsnNode(ASTORE, 5));
-
-                    toInsert.add(new LabelNode());
 
                     toInsert.add(new VarInsnNode(ALOAD, 5));
                     toInsert.add(new JumpInsnNode(IFNONNULL, node));
@@ -161,5 +163,35 @@ public class HxCTransformer implements IClassTransformer {
             }
         }
         if (!hasTransformed) Logger.error("Failed to transform: CommandEmote.", Constants.MOD_NAME + " ASM");
+    }
+
+    private static void transformCommandHandler(ClassNode classNode) {
+        final String EXECUTE_COMMAND = HxCLoader.RuntimeDeobf ? "func_71556_a" : "executeCommand";
+        final String EXECUTE_COMMAND_DESC = "(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;)I";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if(methodNode.name.equals(EXECUTE_COMMAND) && methodNode.desc.equals(EXECUTE_COMMAND_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == INVOKEVIRTUAL && instruction.getNext().getNext().getNext().getOpcode() == IFEQ)
+                        targetNode = instruction.getPrevious().getPrevious();
+
+                if (targetNode != null) {
+                    for (int i = 0; i < 5; ++i) {
+                        targetNode = targetNode.getNext();
+                        methodNode.instructions.remove(targetNode.getPrevious());
+                    }
+
+                    InsnList toInsert = new InsnList();
+                    toInsert.add(new VarInsnNode(ALOAD, 1));
+                    toInsert.add(new VarInsnNode(ALOAD, 5));
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "checkPermission", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
+                    methodNode.instructions.insert(targetNode.getPrevious(), toInsert);
+                }
+                hasTransformed = true;
+                Logger.info("Successfully transformed: CommandHandler.", Constants.MOD_NAME + " ASM");
+            }
+        }
+        if (!hasTransformed) Logger.error("Failed to transform: CommandHandler.", Constants.MOD_NAME + " ASM");
     }
 }

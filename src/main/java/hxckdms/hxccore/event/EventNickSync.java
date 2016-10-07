@@ -1,4 +1,4 @@
-package hxckdms.hxccore.events;
+package hxckdms.hxccore.event;
 
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.network.MessageNameTagSync;

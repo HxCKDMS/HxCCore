@@ -23,12 +23,7 @@ public class CommandNick implements ISubCommand {
     }
 
     @Override
-    public int[] getCommandRequiredParams() {
-        return new int[0];
-    }
-
-    @Override
-    public void handleCommand(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException {
+    public void execute(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException {
         if (args.size() == 0 && sender instanceof EntityPlayerMP) {
             HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", "");
         } else {
