@@ -3,6 +3,7 @@ package hxckdms.hxccore.asm;
 import hxckdms.hxccore.libraries.Constants;
 import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.Logger;
+import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.server.management.PlayerList;
 import org.objectweb.asm.ClassReader;
@@ -185,7 +186,7 @@ public class HxCTransformer implements IClassTransformer {
                     InsnList toInsert = new InsnList();
                     toInsert.add(new VarInsnNode(ALOAD, 1));
                     toInsert.add(new VarInsnNode(ALOAD, 5));
-                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "checkPermission", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(PermissionHandler.class), "canUseCommand", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
                     methodNode.instructions.insert(targetNode.getPrevious(), toInsert);
                 }
                 hasTransformed = true;

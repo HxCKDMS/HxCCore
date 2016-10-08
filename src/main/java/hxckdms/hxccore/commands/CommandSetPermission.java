@@ -21,14 +21,10 @@ public class CommandSetPermission implements ISubCommand {
 
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException {
-        if (sender instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) sender;
+        EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
+        int level = CommandBase.parseInt(args.get(1));
 
-            EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-            int level = CommandBase.parseInt(args.get(1));
-
-            GlobalVariables.permissionData.setInteger(target.getUniqueID().toString(), level);
-        }
+        GlobalVariables.permissionData.setInteger(target.getUniqueID().toString(), level);
     }
 
     @Override

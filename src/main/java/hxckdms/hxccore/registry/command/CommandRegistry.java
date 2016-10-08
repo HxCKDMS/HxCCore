@@ -5,6 +5,7 @@ import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxcconfig.handlers.SpecialHandlers;
 import hxckdms.hxccore.api.command.AbstractCommandMain;
 import hxckdms.hxccore.api.command.ISubCommand;
+import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -87,6 +88,8 @@ public class CommandRegistry {
             if (!subCommands.containsKey(commandName)) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
             ISubCommand command = subCommands.get(commandName);
 
+            if (!PermissionHandler.canUseSubCommand(sender, command)) throw new CommandException("commands.generic.permission");
+
             LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
             subArgs.removeFirst();
 
@@ -121,6 +124,8 @@ public class CommandRegistry {
 
         @Config.flags(RETAIN_ORIGINAL_VALUES)
         public static LinkedHashMap<String, SubCommandsHandler> commands = new LinkedHashMap<>();
+
+        public static LinkedHashMap<String, Integer> vanillaPermissionOverride = new LinkedHashMap<>();
 
         public static LinkedHashMap<Integer, SubPermissions> commandPermissions = new LinkedHashMap<Integer, SubPermissions>(){{
             put(1, new SubPermissions("Default", 3, 0));

@@ -8,12 +8,15 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
 import static hxckdms.hxccore.registry.command.CommandRegistry.CommandConfig.commands;
 
 public class PermissionHandler {
     public static boolean canUseCommand(ICommandSender sender, ICommand command) {
-        return command instanceof CommandRegistry.CommandHxC || getPermissionLevel(sender) == -1 || getPermissionLevel(sender) >= 3;
+        Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getCommandName().toLowerCase())).findAny();
+        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : command.checkPermission(GlobalVariables.server, sender);
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, ISubCommand command) {
