@@ -6,6 +6,8 @@ import hxckdms.hxccore.registry.command.CommandRegistry;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -16,11 +18,11 @@ import static hxckdms.hxccore.registry.command.CommandRegistry.CommandConfig.com
 public class PermissionHandler {
     public static boolean canUseCommand(ICommandSender sender, ICommand command) {
         Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getCommandName().toLowerCase())).findAny();
-        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : command.checkPermission(GlobalVariables.server, sender);
+        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() || FMLCommonHandler.instance().getSide() == Side.CLIENT : command.checkPermission(GlobalVariables.server, sender);
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, ISubCommand command) {
-        return getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= commands.get(command.getCommandName()).permissionLevel;
+        return FMLCommonHandler.instance().getSide() == Side.CLIENT  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= commands.get(command.getCommandName()).permissionLevel;
     }
 
     public static int getPermissionLevel(ICommandSender sender) {

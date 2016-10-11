@@ -1,6 +1,6 @@
 [
 {
-  "modid": "HxCCore",
+  "modid": "hxccore",
   "name": "HxC-Core",
   "description": "Core for all HxC mods. Contains Important Libraries such as config system.",
   "version": "2.0.0",

@@ -11,7 +11,6 @@ import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.devTags;
@@ -19,98 +18,84 @@ import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
 public class ColorHelper {
     private static Map<Character, TextFormatting> chatThingies = new HashMap<>();
-    private static Field formattingCodeField;
 
     static {
-        try {
-            formattingCodeField = HxCReflectionHelper.getDeclaredField(TextFormatting.class, "formattingCode", "field_96329_z");
-            formattingCodeField.setAccessible(true);
-
-            for (TextFormatting textFormatting : TextFormatting.values())
-                chatThingies.put(formattingCodeField.getChar(textFormatting), textFormatting);
-
-
-        } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+        for (TextFormatting textFormatting : TextFormatting.values())
+            chatThingies.put(textFormatting.formattingCode, textFormatting);
     }
 
     private static TextComponentTranslation color(String message, char defaultColor) {
-        try {
-            if (message == null || message.isEmpty()) return new TextComponentTranslation("");
+        if (message == null || message.isEmpty()) return new TextComponentTranslation("");
 
-            char currentColor = defaultColor;
-            HashSet<Character> currentEffects = new HashSet<>();
-            LinkedList<String> words = new LinkedList<>(Arrays.asList(message.split(" ")));
-            TextComponentTranslation text = new TextComponentTranslation("");
+        char currentColor = defaultColor;
+        HashSet<Character> currentEffects = new HashSet<>();
+        LinkedList<String> words = new LinkedList<>(Arrays.asList(message.split(" ")));
+        TextComponentTranslation text = new TextComponentTranslation("");
 
-            StringBuilder cBuilder = new StringBuilder();
+        StringBuilder cBuilder = new StringBuilder();
 
-            for (String word : words) {
-                LinkedList<Character> characters = new LinkedList<>(Arrays.asList(ArrayUtils.toObject(word.toCharArray())));
+        for (String word : words) {
+            LinkedList<Character> characters = new LinkedList<>(Arrays.asList(ArrayUtils.toObject(word.toCharArray())));
 
-                Character prevChar = null;
-                for (Character character : characters) {
-                    if (prevChar != null) {
-                        if (prevChar == '&' && chatThingies.get(character) != null) {
-                            TextFormatting formatting = chatThingies.get(character);
+            Character prevChar = null;
+            for (Character character : characters) {
+                if (prevChar != null) {
+                    if (prevChar == '&' && chatThingies.get(character) != null) {
+                        TextFormatting formatting = chatThingies.get(character);
 
-                            if (cBuilder.length() != 0) {
-                                TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString());
-                                Style subStyle = subText.getStyle();
+                        if (cBuilder.length() != 0) {
+                            TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString());
+                            Style subStyle = subText.getStyle();
 
 
-                                subStyle.setColor(chatThingies.get(currentColor))
-                                        .setBold(currentEffects.contains(formattingCodeField.getChar(TextFormatting.BOLD)))
-                                        .setItalic(currentEffects.contains(formattingCodeField.getChar(TextFormatting.ITALIC)))
-                                        .setObfuscated(currentEffects.contains(formattingCodeField.getChar(TextFormatting.OBFUSCATED)))
-                                        .setStrikethrough(currentEffects.contains(formattingCodeField.getChar(TextFormatting.STRIKETHROUGH)))
-                                        .setUnderlined(currentEffects.contains(formattingCodeField.getChar(TextFormatting.UNDERLINE)));
+                            subStyle.setColor(chatThingies.get(currentColor))
+                                    .setBold(currentEffects.contains(TextFormatting.BOLD.formattingCode))
+                                    .setItalic(currentEffects.contains(TextFormatting.ITALIC.formattingCode))
+                                    .setObfuscated(currentEffects.contains(TextFormatting.OBFUSCATED.formattingCode))
+                                    .setStrikethrough(currentEffects.contains(TextFormatting.STRIKETHROUGH.formattingCode))
+                                    .setUnderlined(currentEffects.contains(TextFormatting.UNDERLINE.formattingCode));
 
-                                text.appendSibling(subText);
+                            text.appendSibling(subText);
 
-                                cBuilder = new StringBuilder();
-                            }
+                            cBuilder = new StringBuilder();
+                        }
 
-                            if (formatting.isColor()) {
-                                if (!Configuration.bannedColorCharacters.contains(character)) currentColor = character;
-                                prevChar = null;
-                                continue;
-                            } else if (formatting.isFancyStyling()) {
-                                if (!Configuration.bannedColorCharacters.contains(character)) currentEffects.add(character);
-                                prevChar = null;
-                                continue;
-                            } else if (formatting == TextFormatting.RESET) {
-                                currentColor = 'f';
-                                currentEffects = new HashSet<>();
-                                prevChar = null;
-                                continue;
-                            }
-                        } else cBuilder.append(prevChar == '%' ? "%%" : prevChar);
-                    }
-
-                    //last
-                    prevChar = character;
+                        if (formatting.isColor()) {
+                            if (!Configuration.bannedColorCharacters.contains(character)) currentColor = character;
+                            prevChar = null;
+                            continue;
+                        } else if (formatting.isFancyStyling()) {
+                            if (!Configuration.bannedColorCharacters.contains(character)) currentEffects.add(character);
+                            prevChar = null;
+                            continue;
+                        } else if (formatting == TextFormatting.RESET) {
+                            currentColor = 'f';
+                            currentEffects = new HashSet<>();
+                            prevChar = null;
+                            continue;
+                        }
+                    } else cBuilder.append(prevChar == '%' ? "%%" : prevChar);
                 }
-                if (prevChar != null) cBuilder.append(prevChar == '%' ? "%%" : prevChar);
-                cBuilder.append(' ');
+
+                //last
+                prevChar = character;
             }
-
-
-            TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString().trim());
-            Style subStyle = subText.getStyle();
-
-            subStyle.setColor(chatThingies.get(currentColor))
-                    .setBold(currentEffects.contains(formattingCodeField.getChar(TextFormatting.BOLD)))
-                    .setItalic(currentEffects.contains(formattingCodeField.getChar(TextFormatting.ITALIC)))
-                    .setObfuscated(currentEffects.contains(formattingCodeField.getChar(TextFormatting.OBFUSCATED)))
-                    .setStrikethrough(currentEffects.contains(formattingCodeField.getChar(TextFormatting.STRIKETHROUGH)))
-                    .setUnderlined(currentEffects.contains(formattingCodeField.getChar(TextFormatting.UNDERLINE)));
-
-
-            text.appendSibling(subText);
-            return text;
-        } catch (IllegalAccessException unhandled) {
-            return null;
+            if (prevChar != null) cBuilder.append(prevChar == '%' ? "%%" : prevChar);
+            cBuilder.append(' ');
         }
+
+        TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString().trim());
+        Style subStyle = subText.getStyle();
+
+        subStyle.setColor(chatThingies.get(currentColor))
+                .setBold(currentEffects.contains(TextFormatting.BOLD.formattingCode))
+                .setItalic(currentEffects.contains(TextFormatting.ITALIC.formattingCode))
+                .setObfuscated(currentEffects.contains(TextFormatting.OBFUSCATED.formattingCode))
+                .setStrikethrough(currentEffects.contains(TextFormatting.STRIKETHROUGH.formattingCode))
+                .setUnderlined(currentEffects.contains(TextFormatting.UNDERLINE.formattingCode));
+
+        text.appendSibling(subText);
+        return text;
     }
 
     public static TextComponentTranslation handleMessage(String message, char defaultColor) {
@@ -137,6 +122,14 @@ public class ColorHelper {
         else return (text = color(name, 'f')) == null ? name : text.getFormattedText();
     }
 
+    public static TextComponentTranslation getPermissionTag(EntityPlayerMP player) {
+        return getPermissionTag(permissionData.getInteger(player.getUniqueID().toString()));
+    }
+
+    public static TextComponentTranslation getPermissionTag(int permissionLevel) {
+        return color(CommandRegistry.CommandConfig.commandPermissions.get(permissionLevel).name, 'f');
+    }
+
     public static TextComponentTranslation handleChat(String message, EntityPlayerMP player) {
         UUID UUID = player.getUniqueID();
         String GMColor = "&";
@@ -158,10 +151,9 @@ public class ColorHelper {
 
         TextComponentTranslation gameMode = color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), 'f');
         TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
-        TextComponentTranslation permissionTag = color(CommandRegistry.CommandConfig.commandPermissions.get(permissionData.getInteger(player.getUniqueID().toString())).name, 'f');
+        TextComponentTranslation permissionTag = getPermissionTag(player);
         TextComponentTranslation nick = handleNick(player, false);
         TextComponentTranslation chatMessage = color(message, 'f');
-
 
         return new TextComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
     }

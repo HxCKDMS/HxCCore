@@ -1,14 +1,20 @@
 package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.ISubCommand;
+import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.command.CommandRegistry;
 import hxckdms.hxccore.registry.command.HxCCommand;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
+import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,21 +26,24 @@ public class CommandFly implements ISubCommand {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args, boolean isPlayer) throws CommandException {
+    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (sender instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) sender;
+            EntityPlayerMP target = args.isEmpty() ? (EntityPlayerMP) sender : CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
 
-            player.capabilities.allowFlying = !player.capabilities.allowFlying;
-            player.capabilities.isFlying = !player.capabilities.isFlying;
-            HxCPlayerInfoHandler.setBoolean(player, "AllowFlying", player.capabilities.allowFlying);
-            player.sendPlayerAbilities();
+            target.capabilities.allowFlying = !target.capabilities.allowFlying;
+            target.capabilities.isFlying = !target.capabilities.isFlying;
+            HxCPlayerInfoHandler.setBoolean(target, "AllowFlying", target.capabilities.allowFlying);
+            target.sendPlayerAbilities();
 
-            player.addChatComponentMessage(new TextComponentTranslation(player.capabilities.allowFlying ? "command.fly.enabled" : "command.fly.disabled"));
+            TextComponentTranslation msg = new TextComponentTranslation(target.capabilities.allowFlying ? "commands.fly.enabled" : "commands.fly.disabled");
+            msg.getStyle().setColor(target.capabilities.allowFlying ? TextFormatting.GREEN : TextFormatting.YELLOW);
+
+            target.addChatComponentMessage(msg);
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        return null;
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 }

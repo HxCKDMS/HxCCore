@@ -93,7 +93,7 @@ public class CommandRegistry {
             LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
             subArgs.removeFirst();
 
-            command.execute(sender, subArgs, true);
+            command.execute(sender, subArgs);
 
         }
 
@@ -110,11 +110,13 @@ public class CommandRegistry {
         @Override
         public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
             if (args.length == 1) {
-                return getListOfStringsMatchingLastWord(args, subCommands.keySet().toString().replace('[', ' ').replace(']', ' ').trim().split(", "));
+                return getListOfStringsMatchingLastWord(args, subCommands.keySet());
             } else if (subCommands.containsKey(args[0])) {
-                return subCommands.get(args[0]).addTabCompletionOptions(sender, args);
+                LinkedList<String> lArgs = new LinkedList<>(Arrays.asList(args));
+                lArgs.removeFirst();
+                return subCommands.get(args[0]).addTabCompletionOptions(sender, lArgs, pos);
             }
-            return null;
+            return getCommandAliases();
         }
     }
 

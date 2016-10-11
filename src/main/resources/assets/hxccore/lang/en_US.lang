@@ -1,0 +1,16 @@
+commands.drain.successful.all=Successfully drained all fluids in a %s block radius in %s seconds.
+commands.drain.successful.single=Successfully drained all %s in a %s block radius in %s seconds.
+
+commands.fly.enabled=You suddenly feel lighter.
+commands.fly.disabled=You suddenly feel heavier.
+
+commands.nick.removed.self=Your nickname has been removed.
+commands.nick.removed.other.sender=You have removed %s's nickname.
+commands.nick.removed.other.target=%s removed your nickname.
+commands.nick.set.other.sender=You set %s's nick to %s.
+commands.nick.set.other.target=%s set your nickname to %s
+commands.nick.set.self=Your nickname has been set to %s.
+
+commands.setpermissions.sender=You have set %s's permission level to %s.
+commands.setpermissions.target=%s set your permission level to %s.
+commands.setpermissions.self=Your permission level has been set to %s.
