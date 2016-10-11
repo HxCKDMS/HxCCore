@@ -24,6 +24,9 @@ public class CodersCheck implements Runnable {
                 String[] textParts = inputLine.split(":");
                 GlobalVariables.devTags.put(UUID.fromString(textParts[1]), textParts[0]);
             }
+
+            reader.close();
+            inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

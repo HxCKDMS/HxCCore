@@ -235,7 +235,7 @@ public class NBTFileHandler {
         }
     }
 
-    private class Data<T> {
+    private static class Data<T> {
         private T value;
         private Class<T> type;
 
@@ -264,7 +264,7 @@ public class NBTFileHandler {
     public static class NBTSaveEvents implements EventListener {
 
         @SubscribeEvent
-        public void WorldSaveEvent(WorldEvent.Save event) {
+        public void worldSaveEvent(WorldEvent.Save event) {
             saveCustomNBTFiles(false);
         }
     }
