@@ -1,9 +1,7 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.ISubCommand;
+import hxckdms.hxccore.api.command.*;
 import hxckdms.hxccore.libraries.GlobalVariables;
-import hxckdms.hxccore.registry.command.CommandRegistry;
-import hxckdms.hxccore.registry.command.HxCCommand;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -18,8 +16,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-@HxCCommand(defaultPermission = 1, mainCommand = CommandRegistry.CommandHxC.class, isEnabled = true)
-public class CommandFly implements ISubCommand {
+@HxCCommand
+public class CommandFly extends AbstractSubCommand {
+    {
+        permissionLevel = 1;
+        state = CommandState.ENABLED;
+    }
+
     @Override
     public String getCommandName() {
         return "fly";
@@ -45,5 +48,10 @@ public class CommandFly implements ISubCommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    }
+
+    @Override
+    public Class<? extends AbstractMultiCommand> getParentCommand() {
+        return CommandHxC.class;
     }
 }

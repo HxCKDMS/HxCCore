@@ -1,8 +1,6 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.ISubCommand;
-import hxckdms.hxccore.registry.command.CommandRegistry;
-import hxckdms.hxccore.registry.command.HxCCommand;
+import hxckdms.hxccore.api.command.*;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -21,8 +19,12 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
-@HxCCommand(defaultPermission = 4, mainCommand = CommandRegistry.CommandHxC.class, isEnabled = true)
-public class CommandDrain implements ISubCommand {
+@HxCCommand
+public class CommandDrain extends AbstractSubCommand {
+    {
+        permissionLevel = 4;
+        state = CommandState.ENABLED;
+    }
 
     @Override
     public String getCommandName() {
@@ -65,5 +67,10 @@ public class CommandDrain implements ISubCommand {
         if (args.size() == 1) return Collections.singletonList(String.valueOf(8));
         else if (args.size() == 2) return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
         else return null;
+    }
+
+    @Override
+    public Class<? extends AbstractMultiCommand> getParentCommand() {
+        return CommandHxC.class;
     }
 }

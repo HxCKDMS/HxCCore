@@ -1,9 +1,8 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.ISubCommand;
+import hxckdms.hxccore.api.command.*;
 import hxckdms.hxccore.libraries.GlobalVariables;
-import hxckdms.hxccore.registry.command.CommandRegistry;
-import hxckdms.hxccore.registry.command.HxCCommand;
+import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.ColorHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -16,8 +15,13 @@ import net.minecraft.util.text.TextFormatting;
 import javax.annotation.Nullable;
 import java.util.*;
 
-@HxCCommand(defaultPermission = 5, mainCommand = CommandRegistry.CommandHxC.class, isEnabled = true)
-public class CommandSetPermission implements ISubCommand {
+@HxCCommand
+public class CommandSetPermission extends AbstractSubCommand {
+    {
+        permissionLevel = 5;
+        state = CommandState.ENABLED;
+    }
+
     @Override
     public String getCommandName() {
         return "SetPermission";
@@ -56,5 +60,10 @@ public class CommandSetPermission implements ISubCommand {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) CommandRegistry.CommandConfig.commandPermissions.keySet();
         return Collections.emptyList();
+    }
+
+    @Override
+    public Class<? extends AbstractMultiCommand> getParentCommand() {
+        return CommandHxC.class;
     }
 }

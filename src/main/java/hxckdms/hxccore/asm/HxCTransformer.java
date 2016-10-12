@@ -20,7 +20,7 @@ public class HxCTransformer implements IClassTransformer {
             "net.minecraft.client.renderer.entity.Render",
             "net.minecraft.client.renderer.tileentity.TileEntitySignRenderer",
             "net.minecraft.command.server.CommandEmote",
-            "net.minecraft.command.CommandHandler"
+            "net.minecraft.command.CommandBase"
     };
 
     @Override
@@ -46,7 +46,7 @@ public class HxCTransformer implements IClassTransformer {
                     TransformCommandEmote(classNode);
                     break;
                 case 3:
-                    transformCommandHandler(classNode);
+                    transformCommandBase(classNode);
                     break;
             }
 
@@ -166,33 +166,33 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: CommandEmote.", Constants.MOD_NAME + " ASM");
     }
 
-    private static void transformCommandHandler(ClassNode classNode) {
-        final String EXECUTE_COMMAND = HxCLoader.RuntimeDeobf ? "func_71556_a" : "executeCommand";
-        final String EXECUTE_COMMAND_DESC = "(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;)I";
+    private static void transformCommandBase(ClassNode classNode) {
+        final String CHECK_PERMISSION = HxCLoader.RuntimeDeobf ? "func_184882_a" : "checkPermission";
+        final String CHECK_PERMISSION_DESC = "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/command/ICommandSender;)Z";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
-            if(methodNode.name.equals(EXECUTE_COMMAND) && methodNode.desc.equals(EXECUTE_COMMAND_DESC)) {
+            if(methodNode.name.equals(CHECK_PERMISSION) && methodNode.desc.equals(CHECK_PERMISSION_DESC)) {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == INVOKEVIRTUAL && instruction.getNext().getNext().getNext().getOpcode() == IFEQ)
-                        targetNode = instruction.getPrevious().getPrevious();
+                    if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == ALOAD)
+                        targetNode = instruction;
 
                 if (targetNode != null) {
-                    for (int i = 0; i < 5; ++i) {
+                    for (int i = 0; i < 6; ++i) {
                         targetNode = targetNode.getNext();
                         methodNode.instructions.remove(targetNode.getPrevious());
                     }
 
                     InsnList toInsert = new InsnList();
-                    toInsert.add(new VarInsnNode(ALOAD, 1));
-                    toInsert.add(new VarInsnNode(ALOAD, 5));
+                    toInsert.add(new VarInsnNode(ALOAD, 2));
+                    toInsert.add(new VarInsnNode(ALOAD, 0));
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(PermissionHandler.class), "canUseCommand", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
                     methodNode.instructions.insert(targetNode.getPrevious(), toInsert);
                 }
                 hasTransformed = true;
-                Logger.info("Successfully transformed: CommandHandler.", Constants.MOD_NAME + " ASM");
+                Logger.info("Successfully transformed: CommandBase.", Constants.MOD_NAME + " ASM");
             }
         }
-        if (!hasTransformed) Logger.error("Failed to transform: CommandHandler.", Constants.MOD_NAME + " ASM");
+        if (!hasTransformed) Logger.error("Failed to transform: CommandBase.", Constants.MOD_NAME + " ASM");
     }
 }

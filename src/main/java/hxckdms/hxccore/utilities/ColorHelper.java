@@ -1,7 +1,7 @@
 package hxckdms.hxccore.utilities;
 
 import hxckdms.hxccore.configs.Configuration;
-import hxckdms.hxccore.registry.command.CommandRegistry;
+import hxckdms.hxccore.registry.CommandRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

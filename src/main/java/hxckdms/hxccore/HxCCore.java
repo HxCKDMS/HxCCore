@@ -8,7 +8,7 @@ import hxckdms.hxccore.event.EventNickSync;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
-import hxckdms.hxccore.registry.command.CommandRegistry;
+import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.Logger;
 import hxckdms.hxccore.utilities.NBTFileHandler;
@@ -48,7 +48,13 @@ public class HxCCore {
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);
 
-        CommandRegistry.registerCommands(event);
+        try {
+            CommandRegistry.registerCommands(event);
+            System.out.println("asdffdsa2");
+        } catch (Exception e) {
+            System.out.println("asdf1");
+            e.printStackTrace();
+        }
 
         proxy.preInit(event);
         Logger.info("HxCKDMS Core has finished the pre-initialization process.", MOD_NAME);
