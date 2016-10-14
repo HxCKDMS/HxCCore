@@ -35,26 +35,35 @@ public class HxCTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(classBeingTransformed);
             classReader.accept(classNode, 0);
+            ClassWriter classWriter;
+
             switch (index) {
                 case 0:
                     TransformRender(classNode);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 1:
                     TransformRendererSign(classNode);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 2:
                     TransformCommandEmote(classNode);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 3:
                     transformCommandBase(classNode);
+                    classWriter = new ClassWriter(0);
+                    break;
+                default:
+                    classWriter = new ClassWriter(0);
                     break;
             }
 
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
             classNode.accept(classWriter);
             return classWriter.toByteArray();
         } catch (Exception exception) {
             exception.printStackTrace();
+            System.out.println("asdf: " + classesBeingTransformed[index]);
         }
         return classBeingTransformed;
     }
@@ -155,7 +164,7 @@ public class HxCTransformer implements IClassTransformer {
 
                     toInsert = new InsnList();
                     toInsert.add(new VarInsnNode(ALOAD, 5));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(PlayerList.class), "sendChatMsg", "(Lnet/minecraft/util/text/ITextComponent;)V", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(PlayerList.class), HxCLoader.RuntimeDeobf ? "func_148539_a" : "sendChatMsg", "(Lnet/minecraft/util/text/ITextComponent;)V", false));
 
                     methodNode.instructions.insert(targetNode, toInsert);
                 }
@@ -175,19 +184,17 @@ public class HxCTransformer implements IClassTransformer {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
                     if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == ALOAD)
-                        targetNode = instruction;
+                        targetNode = instruction.getNext().getNext();
+
+                System.out.println(targetNode);
 
                 if (targetNode != null) {
-                    for (int i = 0; i < 6; ++i) {
+                    for (int i = 0; i < 4; ++i) {
                         targetNode = targetNode.getNext();
                         methodNode.instructions.remove(targetNode.getPrevious());
                     }
 
-                    InsnList toInsert = new InsnList();
-                    toInsert.add(new VarInsnNode(ALOAD, 2));
-                    toInsert.add(new VarInsnNode(ALOAD, 0));
-                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(PermissionHandler.class), "canUseCommand", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
-                    methodNode.instructions.insert(targetNode.getPrevious(), toInsert);
+                    methodNode.instructions.insert(targetNode.getPrevious(), new MethodInsnNode(INVOKESTATIC, Type.getInternalName(PermissionHandler.class), "canUseCommand", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;)Z", false));
                 }
                 hasTransformed = true;
                 Logger.info("Successfully transformed: CommandBase.", Constants.MOD_NAME + " ASM");

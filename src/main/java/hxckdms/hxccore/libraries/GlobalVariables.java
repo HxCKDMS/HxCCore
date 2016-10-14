@@ -5,8 +5,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class GlobalVariables {
     public static File modConfigDir, modWorldDir, customWorldDataFile, permissionDataFile;
@@ -14,4 +13,6 @@ public class GlobalVariables {
     public static volatile HashMap<UUID, String> devTags = new HashMap<>();
     public static MinecraftServer server;
     public static SimpleNetworkWrapper network;
+    public static Map<String, String> langFile;
+    public static HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
 }

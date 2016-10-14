@@ -1,1 +1,1 @@
-gradle clean setupDecompWorkspace --refresh-dependencies getAssets idea
+gradle clean setupDecompWorkspace --refresh-dependencies getAssets idea  --stacktrace

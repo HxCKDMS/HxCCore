@@ -13,13 +13,13 @@ public class HxCLoader implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         return new String[]{
-                HxCTransformer.class.getName()
+                HxCTransformer.class.getCanonicalName()
         };
     }
 
     @Override
     public String getModContainerClass() {
-        return HxCContainer.class.getName();
+        return HxCContainer.class.getCanonicalName();
     }
 
     @Override
@@ -46,6 +46,6 @@ public class HxCLoader implements IFMLLoadingPlugin {
 
     @Override
     public String getAccessTransformerClass() {
-        return HxCAccessTransformer.class.getName();
+        return HxCAccessTransformer.class.getCanonicalName();
     }
 }

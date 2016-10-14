@@ -22,7 +22,7 @@ import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 public class CommandRegistry {
     private static HashSet<AbstractMultiCommand> multiCommands = new HashSet<>();
 
-    public static void registerCommands(FMLPreInitializationEvent event) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void registerCommands(FMLPreInitializationEvent event) {
         SpecialHandlers.registerSpecialClass(SubCommandConfigHandler.class);
         SpecialHandlers.registerSpecialClass(SubPermissions.class);
 

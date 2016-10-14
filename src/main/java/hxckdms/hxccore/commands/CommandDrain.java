@@ -1,6 +1,7 @@
 package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.*;
+import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -52,21 +53,20 @@ public class CommandDrain extends AbstractSubCommand {
             StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(x - r, y - r, z - r), new BlockPos(x + r, y + r, z + r)).spliterator(), false).filter(predicate).forEach(player.worldObj::setBlockToAir);
             nano = System.nanoTime() - nano;
 
-
-            TextComponentTranslation msg = fluid == null ? new TextComponentTranslation("commands.drain.successful.all", Integer.toString(r), String.format("%.1f", nano * 1e-9)) :
-                    new TextComponentTranslation("commands.drain.successful.single", new TextComponentTranslation(fluid.getBlock().getUnlocalizedName() + ".name"), Integer.toString(r), String.format("%.1f", nano * 1e-9));
+            TextComponentTranslation msg = fluid == null ? ServerTranslationHelper.getTranslation(player, "commands.drain.successful.all", Integer.toString(r), String.format("%.1f", nano * 1e-9)) :
+                    ServerTranslationHelper.getTranslation(player, "commands.drain.successful.single", new TextComponentTranslation(fluid.getBlock().getUnlocalizedName() + ".name"), Integer.toString(r), String.format("%.1f", nano * 1e-9));
 
             msg.getStyle().setColor(TextFormatting.GREEN);
 
             player.addChatMessage(msg);
-        }
+        } else throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.exception.playersonly").getUnformattedText());
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return Collections.singletonList(String.valueOf(8));
         else if (args.size() == 2) return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
-        else return null;
+        else return Collections.emptyList();
     }
 
     @Override

@@ -1,10 +1,8 @@
 package hxckdms.hxccore.api.command;
 
 import hxckdms.hxccore.utilities.PermissionHandler;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import hxckdms.hxccore.utilities.ServerTranslationHelper;
+import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -21,11 +19,11 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
     public void executeSubCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length == 0) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
         String commandName = args[0].toLowerCase();
-        if (!subCommands.containsKey(commandName)) throw new SubCommandNotFoundException();
+        if (!subCommands.containsKey(commandName)) throw new CommandNotFoundException(ServerTranslationHelper.getTranslation(sender, "commands.sub.exception.notFound").getUnformattedText());
         AbstractSubCommand command = subCommands.get(commandName);
 
-        if (!command.getCommandState().isUsageAllowed()) throw new CommandException(command.getCommandState().getErrorText().getFormattedText());
-        if (!PermissionHandler.canUseSubCommand(sender, command)) throw new CommandException("commands.generic.permission");
+        if (!command.getCommandState().isUsageAllowed()) throw new CommandException(ServerTranslationHelper.getTranslation(sender, command.getCommandState().getErrorText()).getUnformattedText());
+        if (!PermissionHandler.canUseSubCommand(sender, command)) throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.generic.permission").getUnformattedText());
 
         LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
         subArgs.removeFirst();

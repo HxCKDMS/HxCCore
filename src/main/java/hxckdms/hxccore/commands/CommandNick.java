@@ -4,6 +4,7 @@ import hxckdms.hxccore.api.command.*;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
+import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -34,35 +35,40 @@ public class CommandNick extends AbstractSubCommand {
 
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        if (args.size() == 0 && sender instanceof EntityPlayerMP) {
-            HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", "");
+        switch (args.size()) {
+            case 0:
+                if (sender instanceof EntityPlayerMP) {
+                    HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", "");
 
-            TextComponentTranslation msg = new TextComponentTranslation("commands.nick.removed.self");
-            msg.getStyle().setColor(TextFormatting.YELLOW);
-            sender.addChatMessage(msg);
-        } else {
-            if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
-                EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.removeFirst());
-                String nick = args.stream().collect(Collectors.joining(" "));
+                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(sender, "commands.nick.removed.self");
+                    msg.getStyle().setColor(TextFormatting.YELLOW);
+                    sender.addChatMessage(msg);
+                }
+                break;
+            default:
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
+                    EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.removeFirst());
+                    String nick = args.stream().collect(Collectors.joining(" "));
 
-                HxCPlayerInfoHandler.setString(target, "NickName", nick);
+                    HxCPlayerInfoHandler.setString(target, "NickName", nick);
 
-                TextComponentTranslation msgS = nick.isEmpty() ? new TextComponentTranslation("commands.nick.removed.other.sender", target.getDisplayName()) : new TextComponentTranslation("commands.nick.set.other.sender", target.getDisplayName(), ColorHelper.handleNick(target, false));
-                msgS.getStyle().setColor(nick.isEmpty() ? TextFormatting.YELLOW : TextFormatting.GREEN);
-                sender.addChatMessage(msgS);
+                    TextComponentTranslation msgS = nick.isEmpty() ? ServerTranslationHelper.getTranslation(sender, "commands.nick.removed.other.sender", target.getDisplayName()) : ServerTranslationHelper.getTranslation(sender, "commands.nick.set.other.sender", target.getDisplayName(), ColorHelper.handleNick(target, false));
+                    msgS.getStyle().setColor(nick.isEmpty() ? TextFormatting.YELLOW : TextFormatting.GREEN);
+                    sender.addChatMessage(msgS);
 
-                TextComponentTranslation msgT = nick.isEmpty() ? new TextComponentTranslation("commands.nick.removed.other.target", sender.getDisplayName()) : new TextComponentTranslation("commands.nick.set.other.target", sender.getDisplayName(), ColorHelper.handleNick(target, false));
-                msgT.getStyle().setColor(TextFormatting.YELLOW);
-                target.addChatMessage(msgT);
-            } else if (sender instanceof EntityPlayerMP) {
-                String nick = args.stream().collect(Collectors.joining(" "));
+                    TextComponentTranslation msgT = nick.isEmpty() ? ServerTranslationHelper.getTranslation(target, "commands.nick.removed.other.target", sender.getDisplayName()) : ServerTranslationHelper.getTranslation(target, "commands.nick.set.other.target", sender.getDisplayName(), ColorHelper.handleNick(target, false));
+                    msgT.getStyle().setColor(TextFormatting.YELLOW);
+                    target.addChatMessage(msgT);
+                } else if (sender instanceof EntityPlayerMP) {
+                    String nick = args.stream().collect(Collectors.joining(" "));
 
-                HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", nick);
+                    HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", nick);
 
-                TextComponentTranslation msg = new TextComponentTranslation("commands.nick.set.self", ColorHelper.handleNick((EntityPlayer) sender, false));
-                msg.getStyle().setColor(TextFormatting.GREEN);
-                sender.addChatMessage(msg);
-            }
+                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(sender, "commands.nick.set.self", ColorHelper.handleNick((EntityPlayer) sender, false));
+                    msg.getStyle().setColor(TextFormatting.GREEN);
+                    sender.addChatMessage(msg);
+                }
+                break;
         }
     }
 

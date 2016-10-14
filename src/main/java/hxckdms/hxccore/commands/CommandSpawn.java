@@ -5,10 +5,13 @@ import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.CommandState;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
+import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
+import hxckdms.hxccore.utilities.TeleportHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -20,15 +23,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandHeal extends AbstractSubCommand {
+public class CommandSpawn extends AbstractSubCommand {
     {
-        permissionLevel = 2;
+        permissionLevel = 1;
         state = CommandState.ENABLED;
     }
 
     @Override
     public String getCommandName() {
-        return "heal";
+        return "spawn";
     }
 
     @Override
@@ -37,22 +40,26 @@ public class CommandHeal extends AbstractSubCommand {
             case 0:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    player.setHealth(player.getMaxHealth());
 
-                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(player, "commands.heal.self");
+                    BlockPos pos = player.getEntityWorld().getSpawnPoint();
+                    TeleportHelper.teleportEntityToDimension(player, pos, 0);
+
+                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false));
                     msg.getStyle().setColor(TextFormatting.GREEN);
                     sender.addChatMessage(msg);
                 }
                 break;
             case 1:
-                EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.removeFirst());
-                target.setHealth(target.getMaxHealth());
+                EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
 
-                TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.heal.other.sender", target.getDisplayName());
+                BlockPos pos = target.getEntityWorld().getSpawnPoint();
+                TeleportHelper.teleportEntityToDimension(target, pos, 0);
+
+                TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.spawn.other.sender", sender.getDisplayName());
                 msgS.getStyle().setColor(TextFormatting.YELLOW);
                 sender.addChatMessage(msgS);
 
-                TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.heal.other.target", sender.getDisplayName());
+                TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.spawn.other.target", target.getDisplayName());
                 msgT.getStyle().setColor(TextFormatting.GOLD);
                 sender.addChatMessage(msgT);
                 break;
@@ -61,7 +68,7 @@ public class CommandHeal extends AbstractSubCommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return  args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 
     @Override

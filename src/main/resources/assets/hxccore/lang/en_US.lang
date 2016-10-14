@@ -1,8 +1,14 @@
+commands.error.creativeMode=You are currently in creativeMode!
+
 commands.drain.successful.all=Successfully drained all fluids in a %s block radius in %s seconds.
 commands.drain.successful.single=Successfully drained all %s in a %s block radius in %s seconds.
 
-commands.fly.enabled=You suddenly feel lighter.
-commands.fly.disabled=You suddenly feel heavier.
+commands.fly.self.enabled=You have granted yourself the ability to fly.
+commands.fly.self.disabled=You have forfeited the ability to fly.
+commands.fly.other.sender.enabled=You granted %s the ability to fly.
+commands.fly.other.sender.disabled=You have taken the ability to fly away from %s.
+commands.fly.other.target.enabled=%s granted you the ability to fly.
+commands.fly.other.target.disabled=%s has taken your ability to fly away.
 
 commands.nick.removed.self=Your nickname has been removed.
 commands.nick.removed.other.sender=You have removed %s's nickname.
@@ -14,3 +20,15 @@ commands.nick.set.self=Your nickname has been set to %s.
 commands.setpermissions.sender=You have set %s's permission level to %s.
 commands.setpermissions.target=%s set your permission level to %s.
 commands.setpermissions.self=Your permission level has been set to %s.
+
+commands.heal.self=You have healed yourself.
+commands.heal.other.sender=You have healed %s.
+commands.heal.other.target=You have been healed by %s.
+
+commands.feed.self=You have fed yourself.
+commands.feed.other.sender=You have fed %s.
+commands.feed.other.target=You have been fed by %s.
+
+commands.spawn.self=You have been teleported to spawn.
+commands.spawn.other.sender=You have teleported %s to spawn.
+commands.spawn.other.target=%s teleported you to spawn.

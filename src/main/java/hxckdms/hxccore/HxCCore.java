@@ -4,6 +4,7 @@ import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.event.CommandEvents;
 import hxckdms.hxccore.event.EventChat;
+import hxckdms.hxccore.event.EventNetworkCheck;
 import hxckdms.hxccore.event.EventNickSync;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
@@ -12,20 +13,23 @@ import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.Logger;
 import hxckdms.hxccore.utilities.NBTFileHandler;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import static hxckdms.hxccore.libraries.Constants.*;
 import static hxckdms.hxccore.libraries.GlobalVariables.*;
 
-@Mod(modid = MOD_ID, name = MOD_NAME, version = VERSION, dependencies = DEPENDENCIES)
+@Mod(modid = MOD_ID, name = MOD_NAME, version = VERSION, dependencies = DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
     private static final Thread codersCheckThread = new Thread(new CodersCheck());
 
@@ -47,14 +51,7 @@ public class HxCCore {
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);
-
-        try {
-            CommandRegistry.registerCommands(event);
-            System.out.println("asdffdsa2");
-        } catch (Exception e) {
-            System.out.println("asdf1");
-            e.printStackTrace();
-        }
+        CommandRegistry.registerCommands(event);
 
         proxy.preInit(event);
         Logger.info("HxCKDMS Core has finished the pre-initialization process.", MOD_NAME);
@@ -68,12 +65,14 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventNickSync());
         MinecraftForge.EVENT_BUS.register(new NBTFileHandler.NBTSaveEvents());
         MinecraftForge.EVENT_BUS.register(new HxCPlayerInfoHandler.CustomPlayerDataEvents());
+        MinecraftForge.EVENT_BUS.register(new EventNetworkCheck());
 
         Logger.info("HxCKDMS Core has finished the initialization process.", MOD_NAME);
     }
 
     @Mod.EventHandler
     public void postInitialization(FMLPostInitializationEvent event) {
+        langFile = LanguageMap.parseLangFile(this.getClass().getResourceAsStream("/assets/hxccore/lang/en_US.lang"));
 
         proxy.postInit(event);
         Logger.info("HxCKDMS Core has finished the post-initialization process.", MOD_NAME);
@@ -110,5 +109,10 @@ public class HxCCore {
     public void serverStopped(FMLServerStoppedEvent event) {
         NBTFileHandler.saveCustomNBTFiles(true);
         NBTFileHandler.getHandlers().parallelStream().forEach(NBTFileHandler::unRegister);
+    }
+
+    @NetworkCheckHandler
+    public boolean networkCheck(Map<String, String> mods, Side side) {
+        return !mods.containsKey("hxccore") || mods.get("hxccore").equals(VERSION);
     }
 }

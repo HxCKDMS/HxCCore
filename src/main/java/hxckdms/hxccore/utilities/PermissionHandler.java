@@ -14,18 +14,18 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
-import static hxckdms.hxccore.registry.CommandRegistry.CommandConfig.commands;
-
 public class PermissionHandler {
     public static boolean canUseCommand(ICommandSender sender, ICommand command) {
         int permLevel = command instanceof CommandBase ? ((CommandBase) command).getRequiredPermissionLevel() : 4;
 
+        System.out.println("asdf");
+
         Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getCommandName().toLowerCase())).findAny();
-        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() || FMLCommonHandler.instance().getSide() == Side.CLIENT : sender.canCommandSenderUseCommand(permLevel, command.getCommandName());
+        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : sender.canCommandSenderUseCommand(permLevel, command.getCommandName());
     }
 
-    public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand command) {
-        return FMLCommonHandler.instance().getSide() == Side.CLIENT  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= commands.get(command.getCommandName()).permissionLevel;
+    public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {
+        return FMLCommonHandler.instance().getSide() == Side.CLIENT  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
     }
 
     public static int getPermissionLevel(ICommandSender sender) {

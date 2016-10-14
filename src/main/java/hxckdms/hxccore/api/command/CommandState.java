@@ -1,20 +1,18 @@
 package hxckdms.hxccore.api.command;
 
-import net.minecraft.util.text.TextComponentTranslation;
-
 public enum CommandState {
     ENABLED(null, true),
-    DISABLED(new TextComponentTranslation("commands.sub.disabled"), false);
+    DISABLED("commands.sub.disabled", false);
 
-    private final TextComponentTranslation errorText;
+    private final String errorText;
     private final boolean usageAllowed;
 
-    CommandState(TextComponentTranslation errorText, boolean usageAllowed) {
+    CommandState(String errorText, boolean usageAllowed) {
         this.errorText = errorText;
         this.usageAllowed = usageAllowed;
     }
 
-    public TextComponentTranslation getErrorText() {
+    public String getErrorText() {
         return errorText;
     }
 
