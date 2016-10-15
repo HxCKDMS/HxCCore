@@ -2,7 +2,7 @@ package hxckdms.hxccore.api.command;
 
 public abstract class AbstractSubCommand implements ISubCommand {
     protected int permissionLevel = 1;
-    protected CommandState state;
+    protected CommandState state = CommandState.ENABLED;
 
     @Override
     public int getPermissionLevel() {

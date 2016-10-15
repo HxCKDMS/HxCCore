@@ -21,7 +21,6 @@ import java.util.List;
 public class CommandFly extends AbstractSubCommand {
     {
         permissionLevel = 1;
-        state = CommandState.ENABLED;
     }
 
     @Override

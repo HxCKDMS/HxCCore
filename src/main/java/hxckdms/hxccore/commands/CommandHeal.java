@@ -2,7 +2,6 @@ package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
-import hxckdms.hxccore.api.command.CommandState;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
@@ -23,7 +22,6 @@ import java.util.List;
 public class CommandHeal extends AbstractSubCommand {
     {
         permissionLevel = 2;
-        state = CommandState.ENABLED;
     }
 
     @Override

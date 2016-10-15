@@ -25,7 +25,7 @@ public class PermissionHandler {
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {
-        return FMLCommonHandler.instance().getSide() == Side.CLIENT  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
+        return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
     }
 
     public static int getPermissionLevel(ICommandSender sender) {

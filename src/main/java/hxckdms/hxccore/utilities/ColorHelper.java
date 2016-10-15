@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.WorldServer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -122,18 +124,16 @@ public class ColorHelper {
         else return (text = color(name, 'f')) == null ? name : text.getFormattedText();
     }
 
-    public static TextComponentTranslation getPermissionTag(EntityPlayerMP player) {
-        return getPermissionTag(permissionData.getInteger(player.getUniqueID().toString()));
+    public static TextComponentTranslation handlePermission(EntityPlayerMP player) {
+        return handlePermission(permissionData.getInteger(player.getUniqueID().toString()));
     }
 
-    public static TextComponentTranslation getPermissionTag(int permissionLevel) {
+    public static TextComponentTranslation handlePermission(int permissionLevel) {
         return color(CommandRegistry.CommandConfig.commandPermissions.get(permissionLevel).name, 'f');
     }
 
-    public static TextComponentTranslation handleChat(String message, EntityPlayerMP player) {
-        UUID UUID = player.getUniqueID();
+    public static TextComponentTranslation handleGameMode(EntityPlayerMP player) {
         String GMColor = "&";
-
         switch (player.interactionManager.getGameType()) {
             case CREATIVE:
                 GMColor += "6";
@@ -149,9 +149,39 @@ public class ColorHelper {
                 break;
         }
 
-        TextComponentTranslation gameMode = color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), 'f');
+        return color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), 'f');
+    }
+
+    public static TextComponentTranslation handleDimension(EntityPlayerMP player) {
+        return handleDimension(player.dimension);
+    }
+
+    public static TextComponentTranslation handleDimension(WorldServer worldServer) {
+        return handleDimension(worldServer.provider.getDimension());
+    }
+
+    public static TextComponentTranslation handleDimension(int dimensionID) {
+        TextComponentTranslation textComponent = new TextComponentTranslation(DimensionType.getById(dimensionID).getName());
+        switch (dimensionID) {
+            case -1:
+                textComponent.getStyle().setColor(TextFormatting.RED);
+                break;
+            case 0:
+                textComponent.getStyle().setColor(TextFormatting.GREEN);
+                break;
+            case 1:
+                textComponent.getStyle().setColor(TextFormatting.YELLOW);
+                break;
+        }
+        return textComponent;
+    }
+
+    public static TextComponentTranslation handleChat(String message, EntityPlayerMP player) {
+        UUID UUID = player.getUniqueID();
+
+        TextComponentTranslation gameMode = handleGameMode(player);
         TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
-        TextComponentTranslation permissionTag = getPermissionTag(player);
+        TextComponentTranslation permissionTag = handlePermission(player);
         TextComponentTranslation nick = handleNick(player, false);
         TextComponentTranslation chatMessage = color(message, 'f');
 

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class CommandNick extends AbstractSubCommand {
     {
         permissionLevel = 1;
-        state = CommandState.ENABLED;
     }
 
     @Override

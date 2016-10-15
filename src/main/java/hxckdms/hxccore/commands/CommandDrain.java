@@ -24,7 +24,6 @@ import java.util.stream.StreamSupport;
 public class CommandDrain extends AbstractSubCommand {
     {
         permissionLevel = 4;
-        state = CommandState.ENABLED;
     }
 
     @Override

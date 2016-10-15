@@ -4,6 +4,7 @@ import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.CommandState;
 import hxckdms.hxccore.api.command.SubCommandConfigHandler;
+import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +50,7 @@ public class CommandHxC extends AbstractMultiCommand {
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, subCommands.entrySet().parallelStream().filter(entry -> entry.getValue().getCommandState().isUsageAllowed()).map(Map.Entry::getKey).collect(Collectors.toList()));
+            return getListOfStringsMatchingLastWord(args, subCommands.entrySet().parallelStream().filter(entry -> entry.getValue().getCommandState().isUsageAllowed()).filter(entry -> PermissionHandler.canUseSubCommand(sender, entry.getValue())).map(Map.Entry::getKey).collect(Collectors.toList()));
         } else if (subCommands.containsKey(args[0])) {
             LinkedList<String> lArgs = new LinkedList<>(Arrays.asList(args));
             lArgs.removeFirst();

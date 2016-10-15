@@ -20,7 +20,6 @@ import java.util.*;
 public class CommandSetPermission extends AbstractSubCommand {
     {
         permissionLevel = 5;
-        state = CommandState.ENABLED;
     }
 
     @Override
@@ -39,15 +38,15 @@ public class CommandSetPermission extends AbstractSubCommand {
         int level = CommandBase.parseInt(args.get(hasTarget ? 1 : 0), 1, optional.get());
 
         if (hasTarget) {
-            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.getPermissionTag(level));
+            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.handlePermission(level));
             msgS.getStyle().setColor(TextFormatting.GREEN);
             sender.addChatMessage(msgS);
 
-            TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getDisplayName(), ColorHelper.getPermissionTag(level));
+            TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getDisplayName(), ColorHelper.handlePermission(level));
             msgT.getStyle().setColor(TextFormatting.YELLOW);
             target.addChatMessage(msgT);
         } else {
-            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.getPermissionTag(level));
+            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.handlePermission(level));
             msgS.getStyle().setColor(TextFormatting.GREEN);
             sender.addChatMessage(msgS);
         }
