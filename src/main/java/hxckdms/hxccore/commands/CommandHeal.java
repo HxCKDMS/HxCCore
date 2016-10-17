@@ -10,7 +10,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -36,23 +36,14 @@ public class CommandHeal extends AbstractSubCommand {
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.setHealth(player.getMaxHealth());
-
-                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(player, "commands.heal.self");
-                    msg.getStyle().setColor(TextFormatting.GREEN);
-                    sender.addChatMessage(msg);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(player, "commands.heal.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.removeFirst());
                 target.setHealth(target.getMaxHealth());
-
-                TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.heal.other.sender", target.getDisplayName());
-                msgS.getStyle().setColor(TextFormatting.YELLOW);
-                sender.addChatMessage(msgS);
-
-                TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.heal.other.target", sender.getDisplayName());
-                msgT.getStyle().setColor(TextFormatting.GOLD);
-                sender.addChatMessage(msgT);
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.heal.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.heal.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 break;
         }
     }

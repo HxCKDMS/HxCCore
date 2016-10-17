@@ -1,7 +1,7 @@
 commands.error.creativeMode=You are currently in creativeMode!
 
-commands.drain.successful.all=Successfully drained all fluids in a %s block radius in %s seconds.
-commands.drain.successful.single=Successfully drained all %s in a %s block radius in %s seconds.
+commands.drain.successful.all=Successfully drained all fluids in a %1$s block radius in %2$s seconds.
+commands.drain.successful.single=Successfully drained all %1$s in a %s block radius in %2$s seconds.
 
 commands.fly.self.enabled=You have granted yourself the ability to fly.
 commands.fly.self.disabled=You have forfeited the ability to fly.
@@ -13,12 +13,12 @@ commands.fly.other.target.disabled=%s has taken your ability to fly away.
 commands.nick.removed.self=Your nickname has been removed.
 commands.nick.removed.other.sender=You have removed %s's nickname.
 commands.nick.removed.other.target=%s removed your nickname.
-commands.nick.set.other.sender=You set %s's nick to %s.
-commands.nick.set.other.target=%s set your nickname to %s
+commands.nick.set.other.sender=You set %1$s's nick to %2$s.
+commands.nick.set.other.target=%1$s set your nickname to %2$s
 commands.nick.set.self=Your nickname has been set to %s.
 
-commands.setpermissions.sender=You have set %s's permission level to %s.
-commands.setpermissions.target=%s set your permission level to %s.
+commands.setpermissions.sender=You have set %1$s's permission level to %2$s.
+commands.setpermissions.target=%1$s set your permission level to %2$s.
 commands.setpermissions.self=Your permission level has been set to %s.
 
 commands.heal.self=You have healed yourself.
@@ -32,3 +32,36 @@ commands.feed.other.target=You have been fed by %s.
 commands.spawn.self=You have been teleported to spawn.
 commands.spawn.other.sender=You have teleported %s to spawn.
 commands.spawn.other.target=%s teleported you to spawn.
+
+commands.burn.self=You set yourself ablaze for %s seconds.
+commands.burn.other.sender=You set %1$s ablaze for %2$s seconds.
+commands.burn.other.target=%1$s set you ablaze for %2$s seconds.
+
+commands.extinguish.self=You extinguished yourself.
+commands.extinguish.other.sender=You extinguished %s.
+commands.extinguish.other.target=%s extinguished you.
+
+commands.hat.self=You set your hat to %s.
+
+commands.god.self.enabled=You have granted yourself to power of a god.
+commands.god.self.disabled=You have forfeited the power of a god.
+commands.god.other.sender.enabled=You granted %s the power of a god.
+commands.god.other.sender.disabled=You have taken the power of a god away from %s.
+commands.god.other.target.enabled=%s gave you the power of a god.
+commands.god.other.target.disabled=%s has taken the power of a god away from you.
+
+commands.vanish.all.appear=You are now visible to all players.
+commands.vanish.all.disappear=You are now invisible to all players.
+commands.vanish.single.appear=You are now visible to %s.
+commands.vanish.single.disappear=You are now invisible to %s.
+
+commands.smite.world=Thou hast smitten the location %1$s, %2$s, %3$s
+commands.smite.other.sender=Thou hast smitten %s.
+commands.smite.other.target=Thou hast been smitten by %s.
+
+commands.warp.set=Warp '%1$s' has been set to coordinates: X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.warp.list.header=Warps page: %1$s/%2$s.
+commands.warp.list.format=name: '%1$s', X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.warp.teleport.self=You sent yourself to warp: '%s'
+commands.warp.teleport.other.sender=You sent %1$s to warp: '%2$s'.
+commands.warp.teleport.other.target=%1$s sent you to warp: '%2$s'.

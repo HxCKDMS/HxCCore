@@ -1,6 +1,8 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.*;
+import hxckdms.hxccore.api.command.AbstractMultiCommand;
+import hxckdms.hxccore.api.command.AbstractSubCommand;
+import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.ColorHelper;
@@ -10,7 +12,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -38,18 +40,10 @@ public class CommandSetPermission extends AbstractSubCommand {
         int level = CommandBase.parseInt(args.get(hasTarget ? 1 : 0), 1, optional.get());
 
         if (hasTarget) {
-            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.handlePermission(level));
-            msgS.getStyle().setColor(TextFormatting.GREEN);
-            sender.addChatMessage(msgS);
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.GRAY)));
+            target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getDisplayName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+        } else sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.handlePermission(level).setStyle(new Style().setColor(TextFormatting.GREEN))));
 
-            TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getDisplayName(), ColorHelper.handlePermission(level));
-            msgT.getStyle().setColor(TextFormatting.YELLOW);
-            target.addChatMessage(msgT);
-        } else {
-            TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.handlePermission(level));
-            msgS.getStyle().setColor(TextFormatting.GREEN);
-            sender.addChatMessage(msgS);
-        }
 
         GlobalVariables.permissionData.setInteger(target.getUniqueID().toString(), level);
     }

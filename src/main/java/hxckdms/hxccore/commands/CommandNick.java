@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -39,9 +40,7 @@ public class CommandNick extends AbstractSubCommand {
                 if (sender instanceof EntityPlayerMP) {
                     HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", "");
 
-                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(sender, "commands.nick.removed.self");
-                    msg.getStyle().setColor(TextFormatting.YELLOW);
-                    sender.addChatMessage(msg);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.nick.removed.self").setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 }
                 break;
             default:
@@ -52,7 +51,7 @@ public class CommandNick extends AbstractSubCommand {
                     HxCPlayerInfoHandler.setString(target, "NickName", nick);
 
                     TextComponentTranslation msgS = nick.isEmpty() ? ServerTranslationHelper.getTranslation(sender, "commands.nick.removed.other.sender", target.getDisplayName()) : ServerTranslationHelper.getTranslation(sender, "commands.nick.set.other.sender", target.getDisplayName(), ColorHelper.handleNick(target, false));
-                    msgS.getStyle().setColor(nick.isEmpty() ? TextFormatting.YELLOW : TextFormatting.GREEN);
+                    msgS.getStyle().setColor(nick.isEmpty() ? TextFormatting.DARK_GRAY : TextFormatting.GRAY);
                     sender.addChatMessage(msgS);
 
                     TextComponentTranslation msgT = nick.isEmpty() ? ServerTranslationHelper.getTranslation(target, "commands.nick.removed.other.target", sender.getDisplayName()) : ServerTranslationHelper.getTranslation(target, "commands.nick.set.other.target", sender.getDisplayName(), ColorHelper.handleNick(target, false));

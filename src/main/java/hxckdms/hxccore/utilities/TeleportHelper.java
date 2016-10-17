@@ -13,9 +13,13 @@ import static hxckdms.hxccore.libraries.GlobalVariables.server;
 public class TeleportHelper {
 
     public static void teleportEntityToDimension(Entity entity, BlockPos pos, int dimension) throws CommandException {
+        teleportEntityToDimension(entity, pos.getX(), pos.getY(), pos.getZ(), dimension);
+    }
+
+    public static void teleportEntityToDimension(Entity entity, double x, double y, double z, int dimension) throws CommandException {
         if (entity.dimension == dimension) {
-            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(pos.getX(), pos.getY(), pos.getZ(), ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
-            else entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
+            else entity.setPositionAndUpdate(x, y, z);
             return;
         }
 
@@ -23,8 +27,8 @@ public class TeleportHelper {
         else teleportEntity(entity, dimension);
 
         if (entity.dimension == dimension) {
-            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(pos.getX(), pos.getY(), pos.getZ(), ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
-            else entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
+            else entity.setPositionAndUpdate(x, y, z);
         }
     }
 

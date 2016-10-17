@@ -4,15 +4,15 @@ import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
-import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
-import hxckdms.hxccore.utilities.TeleportHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
@@ -22,14 +22,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandSpawn extends AbstractSubCommand {
+public class CommandSmite extends AbstractSubCommand {
     {
-        permissionLevel = 1;
+        permissionLevel = 3;
     }
 
     @Override
     public String getCommandName() {
-        return "spawn";
+        return "smite";
     }
 
     @Override
@@ -39,20 +39,21 @@ public class CommandSpawn extends AbstractSubCommand {
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
 
-                    BlockPos pos = player.getEntityWorld().getSpawnPoint();
-                    TeleportHelper.teleportEntityToDimension(player, pos, 0);
-
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    Vec3d vec3d = new Vec3d(player.posX, player.posY + (double)player.getEyeHeight(), player.posZ);
+                    Vec3d vec3d1 = player.getLook(1);
+                    Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * 4096, vec3d1.yCoord * 4096, vec3d1.zCoord * 4096);
+                    RayTraceResult rayTraceResult = player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
+                    if (rayTraceResult == null) return;
+                    BlockPos pos = rayTraceResult.getBlockPos();
+                    player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, pos.getX(), pos.getY(), pos.getZ(), false));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.world", pos.getX(), pos.getY(), pos.getZ()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-
-                BlockPos pos = target.getEntityWorld().getSpawnPoint();
-                TeleportHelper.teleportEntityToDimension(target, pos, 0);
-
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.other.sender", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.spawn.other.target", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
+                target.worldObj.addWeatherEffect(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ, false));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.smite.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
         }
     }

@@ -4,13 +4,10 @@ import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
-import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
-import hxckdms.hxccore.utilities.TeleportHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
@@ -22,14 +19,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandSpawn extends AbstractSubCommand {
+public class CommandExtinguish extends AbstractSubCommand {
     {
-        permissionLevel = 1;
+        permissionLevel = 2;
     }
 
     @Override
     public String getCommandName() {
-        return "spawn";
+        return "extinguish";
     }
 
     @Override
@@ -38,28 +35,22 @@ public class CommandSpawn extends AbstractSubCommand {
             case 0:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-
-                    BlockPos pos = player.getEntityWorld().getSpawnPoint();
-                    TeleportHelper.teleportEntityToDimension(player, pos, 0);
-
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    player.extinguish();
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-
-                BlockPos pos = target.getEntityWorld().getSpawnPoint();
-                TeleportHelper.teleportEntityToDimension(target, pos, 0);
-
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.other.sender", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.spawn.other.target", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
+                target.extinguish();
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.extinguish.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 break;
         }
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+        return  args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 
     @Override

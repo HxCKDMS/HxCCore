@@ -58,7 +58,7 @@ public class CommandDrain extends AbstractSubCommand {
             msg.getStyle().setColor(TextFormatting.GREEN);
 
             player.addChatMessage(msg);
-        } else throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.exception.playersonly").getUnformattedText());
+        } else throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.exception.playersOnly").getUnformattedText());
     }
 
     @Override

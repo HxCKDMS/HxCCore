@@ -2,7 +2,6 @@ package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
-import hxckdms.hxccore.api.command.CommandState;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.ColorHelper;
@@ -25,12 +24,11 @@ import java.util.List;
 public class CommandPlayerInfo extends AbstractSubCommand {
     {
         permissionLevel = 4;
-        state = CommandState.ENABLED;
     }
 
     @Override
     public String getCommandName() {
-        return "PlayerInfo";
+        return "playerInfo";
     }
 
     @Override

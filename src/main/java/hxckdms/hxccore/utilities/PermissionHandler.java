@@ -17,11 +17,8 @@ import java.util.Optional;
 public class PermissionHandler {
     public static boolean canUseCommand(ICommandSender sender, ICommand command) {
         int permLevel = command instanceof CommandBase ? ((CommandBase) command).getRequiredPermissionLevel() : 4;
-
-        System.out.println("asdf");
-
         Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getCommandName().toLowerCase())).findAny();
-        return commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : sender.canCommandSenderUseCommand(permLevel, command.getCommandName());
+        return getPermissionLevel(sender) == -1 || (commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : sender.canCommandSenderUseCommand(permLevel, command.getCommandName()));
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {

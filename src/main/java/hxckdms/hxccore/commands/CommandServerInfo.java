@@ -35,7 +35,7 @@ public class CommandServerInfo extends AbstractSubCommand {
 
     @Override
     public String getCommandName() {
-        return "ServerInfo";
+        return "serverInfo";
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -37,22 +37,15 @@ public class CommandFeed extends AbstractSubCommand {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.getFoodStats().addStats(20, 1F);
 
-                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(player, "commands.feed.self");
-                    msg.getStyle().setColor(TextFormatting.GREEN);
-                    sender.addChatMessage(msg);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(player, "commands.feed.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.removeFirst());
-                target.getFoodStats().addStats(20, 20F);
+                target.getFoodStats().addStats(20, 1F);
 
-                TextComponentTranslation msgS = ServerTranslationHelper.getTranslation(sender, "commands.feed.other.sender", sender.getDisplayName());
-                msgS.getStyle().setColor(TextFormatting.YELLOW);
-                sender.addChatMessage(msgS);
-
-                TextComponentTranslation msgT = ServerTranslationHelper.getTranslation(target, "commands.feed.other.target", target.getDisplayName());
-                msgT.getStyle().setColor(TextFormatting.GOLD);
-                sender.addChatMessage(msgT);
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.feed.other.sender", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.feed.other.target", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 break;
         }
     }
