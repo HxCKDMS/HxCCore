@@ -24,6 +24,10 @@ import java.util.List;
 
 @HxCCommand
 public class CommandWarp extends AbstractSubCommand {
+    {
+        permissionLevel = 1;
+    }
+
     @Override
     public String getCommandName() {
         return "warp";

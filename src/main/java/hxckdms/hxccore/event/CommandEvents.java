@@ -38,7 +38,7 @@ public class CommandEvents implements EventListener {
 
     @SubscribeEvent
     public void eventGod(LivingAttackEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayerMP && HxCPlayerInfoHandler.getBoolean((EntityPlayer) event.getEntityLiving(), "GodMode")) {
+        if (!event.getSource().damageType.contains("command_hxc_kill") && event.getEntityLiving() instanceof EntityPlayerMP && HxCPlayerInfoHandler.getBoolean((EntityPlayer) event.getEntityLiving(), "GodMode")) {
             event.getEntityLiving().heal(20);
             event.setCanceled(true);
         }

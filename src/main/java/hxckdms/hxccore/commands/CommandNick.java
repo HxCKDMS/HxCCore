@@ -61,10 +61,7 @@ public class CommandNick extends AbstractSubCommand {
                     String nick = args.stream().collect(Collectors.joining(" "));
 
                     HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "NickName", nick);
-
-                    TextComponentTranslation msg = ServerTranslationHelper.getTranslation(sender, "commands.nick.set.self", ColorHelper.handleNick((EntityPlayer) sender, false));
-                    msg.getStyle().setColor(TextFormatting.GREEN);
-                    sender.addChatMessage(msg);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.nick.set.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
         }

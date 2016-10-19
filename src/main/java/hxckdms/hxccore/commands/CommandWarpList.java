@@ -14,12 +14,17 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @HxCCommand
 public class CommandWarpList extends AbstractSubCommand {
+    {
+        permissionLevel = 1;
+    }
+
     @Override
     public String getCommandName() {
         return "warpList";
@@ -50,7 +55,11 @@ public class CommandWarpList extends AbstractSubCommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return Collections.singletonList(Integer.toString(1));
+        NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
+        int warpAmount = warps.getKeySet().size();
+        int warpsPerPage = 7;
+        int pages = (int) Math.ceil((float) warpAmount / (float) warpsPerPage);
+        return IntStream.rangeClosed(1, pages).mapToObj(Integer::toString).collect(Collectors.toList());
     }
 
     @Override

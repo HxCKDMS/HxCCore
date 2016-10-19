@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 
 @HxCCommand
 public class CommandSetWarp extends AbstractSubCommand {
+    {
+        permissionLevel = 4;
+    }
+
     @Override
     public String getCommandName() {
         return "setWarp";

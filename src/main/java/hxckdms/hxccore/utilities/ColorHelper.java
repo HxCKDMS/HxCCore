@@ -177,13 +177,16 @@ public class ColorHelper {
     }
 
     public static TextComponentTranslation handleChat(String message, EntityPlayerMP player) {
+        String colorString = HxCPlayerInfoHandler.getString(player, "ChatColor");
+        char color = (colorString == null || colorString.isEmpty()) ? 'f' : colorString.charAt(0);
+
         UUID UUID = player.getUniqueID();
 
         TextComponentTranslation gameMode = handleGameMode(player);
         TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
         TextComponentTranslation permissionTag = handlePermission(player);
         TextComponentTranslation nick = handleNick(player, false);
-        TextComponentTranslation chatMessage = color(message, 'f');
+        TextComponentTranslation chatMessage = color(message, color);
 
         return new TextComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
     }
