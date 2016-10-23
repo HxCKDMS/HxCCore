@@ -1,6 +1,5 @@
 package hxckdms.hxccore.utilities;
 
-import net.minecraft.command.CommandException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,11 +11,11 @@ import static hxckdms.hxccore.libraries.GlobalVariables.server;
 
 public class TeleportHelper {
 
-    public static void teleportEntityToDimension(Entity entity, BlockPos pos, int dimension) throws CommandException {
+    public static void teleportEntityToDimension(Entity entity, BlockPos pos, int dimension) {
         teleportEntityToDimension(entity, pos.getX(), pos.getY(), pos.getZ(), dimension);
     }
 
-    public static void teleportEntityToDimension(Entity entity, double x, double y, double z, int dimension) throws CommandException {
+    public static void teleportEntityToDimension(Entity entity, double x, double y, double z, int dimension) {
         if (entity.dimension == dimension) {
             if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
             else entity.setPositionAndUpdate(x, y, z);

@@ -3,6 +3,7 @@ package hxckdms.hxccore.commands;
 import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
+import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import hxckdms.hxccore.utilities.TeleportHelper;
@@ -17,10 +18,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @HxCCommand
 public class CommandWarp extends AbstractSubCommand {
@@ -36,36 +34,47 @@ public class CommandWarp extends AbstractSubCommand {
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         switch (args.size()) {
-            case 1:
+            case 0:
                 if (sender instanceof EntityPlayerMP) {
-                    EntityPlayerMP player = (EntityPlayerMP) sender;
+                    String name = "default";
+                    warpPlayer(sender, (EntityPlayerMP) sender, name);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                }
+                break;
+            case 1:
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
+                    EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
+                    String name = "default";
+
+                    warpPlayer(sender, target, name);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                } else if (sender instanceof EntityPlayerMP) {
                     String name = args.get(0);
-                    NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
-                    if (!warps.getKeySet().contains(name)) throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.error.invalid.warp").getUnformattedText());
-                    NBTTagCompound warp = warps.getCompoundTag(name);
-
-                    if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getInteger("x"), warp.getInteger("y") + 1, warp.getInteger("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
-                        throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.error.teleport.nonAir").getUnformattedText());
-
-                    TeleportHelper.teleportEntityToDimension(player, warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), warp.getInteger("dimension"));
+                    warpPlayer(sender, (EntityPlayerMP) sender, name);
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 }
                 break;
             case 2:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 String name = args.get(1);
-                NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
-                if (!warps.getKeySet().contains(name)) throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.error.invalid.warp").getUnformattedText());
-                NBTTagCompound warp = warps.getCompoundTag(name);
 
-                if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getInteger("x"), warp.getInteger("y") + 1, warp.getInteger("z"))).getBlock() != Blocks.AIR && !target.capabilities.isCreativeMode)
-                    throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.error.teleport.nonAir").getUnformattedText());
-
-                TeleportHelper.teleportEntityToDimension(target, warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), warp.getInteger("dimension"));
+                warpPlayer(sender, target, name);
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
                 target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 break;
         }
+    }
+
+    private static void warpPlayer(ICommandSender sender, EntityPlayerMP player, String name) throws TranslatedCommandException {
+        NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
+        if (!warps.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp");
+        NBTTagCompound warp = warps.getCompoundTag(name);
+
+        if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getInteger("x"), warp.getInteger("y") + 1, warp.getInteger("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
+            throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
+
+        TeleportHelper.teleportEntityToDimension(player, warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), warp.getInteger("dimension"));
     }
 
     @Override
