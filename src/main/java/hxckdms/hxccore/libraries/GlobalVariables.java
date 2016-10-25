@@ -1,5 +1,6 @@
 package hxckdms.hxccore.libraries;
 
+import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.utilities.NBTFileHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -15,4 +16,5 @@ public class GlobalVariables {
     public static SimpleNetworkWrapper network;
     public static Map<String, String> langFile;
     public static HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
+    public static HxCConfig mainConfig, commandConfig;
 }

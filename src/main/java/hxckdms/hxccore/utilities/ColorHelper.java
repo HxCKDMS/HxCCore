@@ -101,6 +101,7 @@ public class ColorHelper {
     }
 
     public static TextComponentTranslation handleMessage(String message, char defaultColor) {
+        System.out.println(message);
         TextComponentTranslation text = color(message, defaultColor);
         return text == null ? new TextComponentTranslation("") : text;
     }

@@ -15,7 +15,7 @@ public class EventNickSync implements EventListener {
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             if ((counter++) == 200) GlobalVariables.network.sendToAll(new MessageNameTagSync(GlobalVariables.server.getPlayerList().getPlayerList()));
-            if (counter > 200) counter = 0;
+            if (counter >= 200) counter = 0;
         }
     }
 

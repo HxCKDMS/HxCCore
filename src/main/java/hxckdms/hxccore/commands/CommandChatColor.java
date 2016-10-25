@@ -49,14 +49,14 @@ public class CommandChatColor extends AbstractSubCommand {
                     boolean removing = args.size() == 1 || args.get(1) == null || args.get(1).isEmpty();
 
                     String color = removing ? "" : args.get(1);
-                    if (!color.isEmpty() && !Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).anyMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
+                    if (!color.isEmpty() && Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).noneMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
                     HxCPlayerInfoHandler.setString(target, "ChatColor", color);
 
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.sender").setStyle(new Style().setColor(TextFormatting.GRAY)));
                     target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.target").setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 } else if (sender instanceof EntityPlayerMP) {
                     String color = args.get(0);
-                    if (!color.isEmpty() && !Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).anyMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
+                    if (!color.isEmpty() && Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).noneMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
                     HxCPlayerInfoHandler.setString((EntityPlayer) sender, "ChatColor", color);
 
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.set.self").setStyle(new Style().setColor(TextFormatting.GREEN)));

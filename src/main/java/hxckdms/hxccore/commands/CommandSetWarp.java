@@ -59,7 +59,7 @@ public class CommandSetWarp extends AbstractSubCommand {
                 int y = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(named ? 1 : 2), false).getAmount());
                 int z = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getAmount());
                 int dimension = CommandBase.parseInt(args.get(named ? 3 : 4));
-                if (!Arrays.stream(DimensionType.values()).anyMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
+                if (Arrays.stream(DimensionType.values()).noneMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
 
                 setWarp(x, y, z, dimension, name);
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));

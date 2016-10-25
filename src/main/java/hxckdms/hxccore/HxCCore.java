@@ -46,8 +46,8 @@ public class HxCCore {
         codersCheckThread.setName("Coders check thread");
         codersCheckThread.start();
 
-        HxCConfig config = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
-        config.initConfiguration();
+        mainConfig = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
+        mainConfig.initConfiguration();
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);

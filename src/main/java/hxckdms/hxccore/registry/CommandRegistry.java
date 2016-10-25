@@ -16,6 +16,7 @@ import java.util.Set;
 
 import static hxckdms.hxcconfig.Flags.RETAIN_ORIGINAL_VALUES;
 import static hxckdms.hxccore.libraries.Constants.MOD_ID;
+import static hxckdms.hxccore.libraries.GlobalVariables.commandConfig;
 import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 
 @SuppressWarnings({"unchecked", "WeakerAccess", "unused"})
@@ -26,7 +27,7 @@ public class CommandRegistry {
         SpecialHandlers.registerSpecialClass(SubCommandConfigHandler.class);
         SpecialHandlers.registerSpecialClass(SubPermissions.class);
 
-        HxCConfig commandConfig = new HxCConfig(CommandConfig.class, "HxCCommands", modConfigDir, "cfg", MOD_ID);
+        commandConfig = new HxCConfig(CommandConfig.class, "HxCCommands", modConfigDir, "cfg", MOD_ID);
         commandConfig.initConfiguration();
 
         Set<ASMDataTable.ASMData> asmDataTable = event.getAsmData().getAll(HxCCommand.class.getCanonicalName());

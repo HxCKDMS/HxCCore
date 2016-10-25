@@ -54,7 +54,7 @@ public class CommandEvents implements EventListener {
                 for (int i = 0; i < vanishedList.tagCount(); i++) {
                     UUID uuid = UUID.fromString(vanishedList.getStringTagAt(i));
 
-                    if (!GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().anyMatch(playerMP -> playerMP.getUniqueID().equals(uuid))) continue;
+                    if (GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().noneMatch(playerMP -> playerMP.getUniqueID().equals(uuid))) continue;
                     EntityPlayerMP target = GlobalVariables.server.getPlayerList().getPlayerByUUID(uuid);
 
                     EntityDataManager dataManager = new EntityDataManager(player);
