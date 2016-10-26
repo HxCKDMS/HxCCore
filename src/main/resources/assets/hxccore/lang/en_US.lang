@@ -1,4 +1,6 @@
 commands.error.creativeMode=You are currently in creativeMode!
+commands.error.noColor=%s is not a color character.
+commands.error.noItem=You aren't holding an item.
 
 commands.drain.successful.all=Successfully drained all fluids in a %1$s block radius in %2$s seconds.
 commands.drain.successful.single=Successfully drained all %1$s in a %s block radius in %2$s seconds.
@@ -60,17 +62,47 @@ commands.smite.other.sender=Thou hast smitten %s.
 commands.smite.other.target=Thou hast been smitten by %s.
 
 commands.warp.set=Warp '%1$s' has been set to coordinates: X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.warp.removed=Warp '%s' has been removed.
 commands.warp.list.header=Warps page: %1$s/%2$s.
 commands.warp.list.format=name: '%1$s', X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
 commands.warp.teleport.self=You sent yourself to warp: '%s'
 commands.warp.teleport.other.sender=You sent %1$s to warp: '%2$s'.
 commands.warp.teleport.other.target=%1$s sent you to warp: '%2$s'.
+commands.error.invalid.warp=Warp '%s' is not a valid warp.
 
 commands.modList.header=ModList page: %1$d/%2$d.
 commands.modList.format=name: %1$s, version %2$s.
 
 commands.kill.successful=You successfully killed %s.
 commands.kill.failed=You failed to kill %s.
+
+commands.TP_HxC.player.self.player=You teleported to %s.
+commands.TP_HxC.player.self.destination=%s teleported to you.
+commands.TP_HxC.player.other.sender=You teleported %1$s to %2$s.
+commands.TP_HxC.player.other.target=%1$s teleported you to %2$s.
+commands.TP_HxC.player.other.destination=%1$s teleported %2$s to you.
+commands.TP_HxC.coordinates.self=You teleported to X: %1$s, Y: %2$s, Z: %3$s, Dimension: %4$s.
+commands.TP_HxC.coordinates.other.sender=You teleported %1$s to X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.TP_HxC.coordinates.other.target=%1$s teleported you to X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+
+commands.chatColor.set.self=You set your chat color to %s.
+commands.chatColor.removed.self=You removed your chat color.
+commands.chatColor.set.other.sender=You set %1$s's chat color to %2$s.
+commands.chatColor.removed.other.sender=You removed %s's chat color.
+commands.chatColor.set.other.target=%1$s set your chat color to %2$s.
+commands.chatColor.removed.other.target=%s removed your chat color.
+
+commands.repair.successful=You successfully repaired %s.
+commands.error.repair.unrepairable=The item you're holding is unrepairable.
+commands.error.repair.undamaged=The item you're holding is full on durability.
+
+commands.repairAll.successful.self=You successfully repaired all your items.
+commands.repairAll.successful.other.sender=You repaired all of %s's items.
+commands.repairAll.successful.other.target=%s repaired all your items.
+
+commands.reloadConfigs.reloaded=You successfully reloaded al HxC configuration files.
+
+commands.rename.successful=You successfully renamed %1$s to %2$s.
 
 death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
 death.attack.command_hxc_kill.1=%1$s has received divine punishment!

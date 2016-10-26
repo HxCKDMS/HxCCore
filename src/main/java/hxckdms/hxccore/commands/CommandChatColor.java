@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -47,19 +48,16 @@ public class CommandChatColor extends AbstractSubCommand {
                 if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.getFirst());
                     boolean removing = args.size() == 1 || args.get(1) == null || args.get(1).isEmpty();
+                    TextFormatting color = removing ? TextFormatting.WHITE : Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == args.get(1).charAt(0)).filter(TextFormatting::isColor).findAny().orElseThrow(() -> new TranslatedCommandException(sender, "commands.error.noColor", args.get(0)));
+                    HxCPlayerInfoHandler.setString(target, "ChatColor", !removing ? Character.toString(color.formattingCode) : "");
 
-                    String color = removing ? "" : args.get(1);
-                    if (!color.isEmpty() && Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).noneMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
-                    HxCPlayerInfoHandler.setString(target, "ChatColor", color);
-
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.sender").setStyle(new Style().setColor(TextFormatting.GRAY)));
-                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.target").setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.sender", target.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.target", sender.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 } else if (sender instanceof EntityPlayerMP) {
-                    String color = args.get(0);
-                    if (!color.isEmpty() && Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == color.charAt(0)).noneMatch(TextFormatting::isColor)) throw new TranslatedCommandException(sender, "commands.error.noColor");
-                    HxCPlayerInfoHandler.setString((EntityPlayer) sender, "ChatColor", color);
+                    TextFormatting color = Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == args.get(0).charAt(0)).filter(TextFormatting::isColor).findAny().orElseThrow(() -> new TranslatedCommandException(sender, "commands.error.noColor", args.get(0)));
+                    HxCPlayerInfoHandler.setString((EntityPlayer) sender, "ChatColor", Character.toString(color.formattingCode));
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.set.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.set.self", new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
         }
