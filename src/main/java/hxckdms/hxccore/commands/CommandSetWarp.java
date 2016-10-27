@@ -54,9 +54,9 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                 boolean named = args.size() == 4;
                 String name = named ? "default" : args.get(0);
 
-                double x = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posX : sender.getPosition().getX(), args.get(named ? 0 : 1), false).getAmount();
-                double y = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posY : sender.getPosition().getY(), args.get(named ? 1 : 2), false).getAmount();
-                double z = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posZ : sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getAmount();
+                double x = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posX : sender.getPosition().getX(), args.get(named ? 0 : 1), false).getResult();
+                double y = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posY : sender.getPosition().getY(), args.get(named ? 1 : 2), false).getResult();
+                double z = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posZ : sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getResult();
                 int dimension = CommandBase.parseInt(args.get(named ? 3 : 4));
                 if (Arrays.stream(DimensionType.values()).noneMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
 

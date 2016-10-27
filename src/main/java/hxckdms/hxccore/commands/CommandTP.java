@@ -14,12 +14,15 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
 public class CommandTP extends AbstractSubCommand<CommandHxC> {
+    private static DecimalFormat posFormat = new DecimalFormat("#.###");
+
     {
         permissionLevel = 3;
     }
@@ -54,25 +57,25 @@ public class CommandTP extends AbstractSubCommand<CommandHxC> {
             case 4:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    double x = CommandBase.parseCoordinate(player.posX, args.get(0), true).getAmount();
-                    double y = CommandBase.parseCoordinate(player.posY, args.get(1), false).getAmount();
-                    double z = CommandBase.parseCoordinate(player.posZ, args.get(2), true).getAmount();
+                    double x = CommandBase.parseCoordinate(player.posX, args.get(0), true).getResult();
+                    double y = CommandBase.parseCoordinate(player.posY, args.get(1), false).getResult();
+                    double z = CommandBase.parseCoordinate(player.posZ, args.get(2), true).getResult();
                     int dimension = CommandBase.parseInt(args.get(3));
 
                     TeleportHelper.teleportEntityToDimension(player, x, y, z, dimension);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.TP_HxC.coordinates.self", x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.TP_HxC.coordinates.self", posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 }
                 break;
             case 5:
                 target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-                double x = CommandBase.parseCoordinate(target.posX, args.get(1), true).getAmount();
-                double y = CommandBase.parseCoordinate(target.posY, args.get(2), false).getAmount();
-                double z = CommandBase.parseCoordinate(target.posZ, args.get(3), true).getAmount();
+                double x = CommandBase.parseCoordinate(target.posX, args.get(1), true).getResult();
+                double y = CommandBase.parseCoordinate(target.posY, args.get(2), false).getResult();
+                double z = CommandBase.parseCoordinate(target.posZ, args.get(3), true).getResult();
                 int dimension = CommandBase.parseInt(args.get(4));
 
                 TeleportHelper.teleportEntityToDimension(target, x, y, z, dimension);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.TP_HxC.coordinates.other.sender", target.getName(), x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TP_HxC.coordinates.other.target", sender.getName(), x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.TP_HxC.coordinates.other.sender", target.getName(), posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TP_HxC.coordinates.other.target", sender.getName(), posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 break;
         }
     }
