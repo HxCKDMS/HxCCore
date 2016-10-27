@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -19,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandRepair extends AbstractSubCommand {
+public class CommandRepair extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 3;
     }
@@ -45,10 +44,5 @@ public class CommandRepair extends AbstractSubCommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

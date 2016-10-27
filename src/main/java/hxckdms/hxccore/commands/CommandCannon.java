@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -15,10 +14,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 @HxCCommand
-public class CommandCannon extends AbstractSubCommand {
+public class CommandCannon extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 3;
     }
@@ -54,10 +55,5 @@ public class CommandCannon extends AbstractSubCommand {
         if (args.size() == 1) return Collections.singletonList(Integer.toString(2));
         else if (args.size() == 2) return Collections.singletonList("kitty");
         else return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

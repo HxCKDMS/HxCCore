@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @HxCCommand
-public class CommandHomeList extends AbstractSubCommand {
+public class CommandHomeList extends AbstractSubCommand<CommandHxC> {
     private static DecimalFormat posFormat = new DecimalFormat("#.###");
 
     {
@@ -69,10 +68,5 @@ public class CommandHomeList extends AbstractSubCommand {
         int homesPerPage = 7;
         int pages = (int) Math.ceil((float) homeAmount / (float) homesPerPage);
         return IntStream.rangeClosed(1, Math.max(1, pages)).mapToObj(Integer::toString).collect(Collectors.toList());
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

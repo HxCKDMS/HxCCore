@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @HxCCommand
-public class CommandNick extends AbstractSubCommand {
+public class CommandNick extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 1;
     }
@@ -70,10 +70,5 @@ public class CommandNick extends AbstractSubCommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

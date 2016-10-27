@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.configs.Configuration;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @HxCCommand
-public class CommandBroadcast extends AbstractSubCommand {
+public class CommandBroadcast extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 4;
     }
@@ -48,8 +47,8 @@ public class CommandBroadcast extends AbstractSubCommand {
         return Collections.emptyList();
     }
 
-    @Override
+    /*@Override
     public Class<? extends AbstractMultiCommand> getParentCommand() {
         return CommandHxC.class;
-    }
+    }*/
 }

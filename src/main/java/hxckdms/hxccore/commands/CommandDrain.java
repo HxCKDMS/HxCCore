@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
 @HxCCommand
-public class CommandDrain extends AbstractSubCommand {
+public class CommandDrain extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 4;
     }
@@ -66,10 +66,5 @@ public class CommandDrain extends AbstractSubCommand {
         if (args.size() == 1) return Collections.singletonList(String.valueOf(8));
         else if (args.size() == 2) return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
         else return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

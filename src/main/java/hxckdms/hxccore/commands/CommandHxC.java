@@ -47,6 +47,7 @@ public class CommandHxC extends AbstractMultiCommand {
         return Arrays.asList("HxCCore", "HxC", "hxccore", "hxC", "hxc", "Hxc", "HXC");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         if (args.length == 1) {

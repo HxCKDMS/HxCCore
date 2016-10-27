@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @HxCCommand
-public class CommandModList extends AbstractSubCommand {
+public class CommandModList extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 1;
     }
@@ -55,10 +54,5 @@ public class CommandModList extends AbstractSubCommand {
         int modsPerPage = 7;
         int pages = (int) Math.ceil((float) listSize / (float) modsPerPage);
         return IntStream.rangeClosed(1, pages).mapToObj(Integer::toString).collect(Collectors.toList());
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

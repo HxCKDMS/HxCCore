@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
@@ -20,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandBurn extends AbstractSubCommand {
+public class CommandBurn extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 3;
     }
@@ -72,10 +71,5 @@ public class CommandBurn extends AbstractSubCommand {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) return Collections.singletonList(Integer.toString(60));
         else return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

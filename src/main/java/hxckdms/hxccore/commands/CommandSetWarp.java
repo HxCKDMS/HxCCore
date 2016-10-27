@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @HxCCommand
-public class CommandSetWarp extends AbstractSubCommand {
+public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
     private static DecimalFormat posFormat = new DecimalFormat("#.###");
 
     {
@@ -88,10 +87,5 @@ public class CommandSetWarp extends AbstractSubCommand {
         }
         if (args.size() == 1) return Arrays.stream(DimensionType.values()).map(type -> Integer.toString(type.getId())).collect(Collectors.toList());
         else return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

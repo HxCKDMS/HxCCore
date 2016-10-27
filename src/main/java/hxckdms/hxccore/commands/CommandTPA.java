@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -23,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandTPA extends AbstractSubCommand {
+public class CommandTPA extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 1;
     }
@@ -91,10 +90,5 @@ public class CommandTPA extends AbstractSubCommand {
             addAll(CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()));
         }};
         return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

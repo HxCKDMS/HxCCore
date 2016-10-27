@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
@@ -19,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 @HxCCommand
-public class CommandSetPermission extends AbstractSubCommand {
+public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 5;
     }
@@ -53,10 +52,5 @@ public class CommandSetPermission extends AbstractSubCommand {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) CommandRegistry.CommandConfig.commandPermissions.keySet();
         return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

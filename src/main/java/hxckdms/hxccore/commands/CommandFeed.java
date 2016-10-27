@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
@@ -19,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @HxCCommand
-public class CommandFeed extends AbstractSubCommand {
+public class CommandFeed extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 2;
     }
@@ -53,10 +52,5 @@ public class CommandFeed extends AbstractSubCommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

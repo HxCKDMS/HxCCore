@@ -1,6 +1,5 @@
 package hxckdms.hxccore.commands;
 
-import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @HxCCommand
-public class CommandChatColor extends AbstractSubCommand {
+public class CommandChatColor extends AbstractSubCommand<CommandHxC> {
     {
         permissionLevel = 1;
     }
@@ -68,10 +67,5 @@ public class CommandChatColor extends AbstractSubCommand {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) return Arrays.stream(TextFormatting.values()).filter(TextFormatting::isColor).map(textFormatting -> Character.toString(textFormatting.formattingCode)).collect(Collectors.toList());
         else return Collections.emptyList();
-    }
-
-    @Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
     }
 }

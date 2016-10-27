@@ -8,12 +8,12 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-interface ISubCommand {
+interface ISubCommand<T extends IMultiCommand> {
     String getCommandName();
     void execute(ICommandSender sender, LinkedList<String> args) throws CommandException;
     List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
 
-    Class<? extends AbstractMultiCommand> getParentCommand();
+    Class<T> getParentCommand();
     int getPermissionLevel();
     CommandState getCommandState();
 
