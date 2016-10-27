@@ -82,12 +82,23 @@ processResources
     }
 }
 
+def generalManifest = {
+    attributes 'FMLAT': 'hxc_at.cfg'
+    attributes "FMLCorePluginContainsFMLMod": "true"
+    attributes "FMLCorePlugin": 'hxckdms.hxccore.asm.HxCLoader'
+}
+
 jar {
     classifier = 'universal'
+    manifest generalManifest
+}
 
-    manifest {
-        attributes 'FMLAT': 'hxc_at.cfg'
-        attributes "FMLCorePluginContainsFMLMod": "true"
-        attributes "FMLCorePlugin": 'hxckdms.hxccore.asm.HxCLoader'
-    }
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+    manifest generalManifest
+}
+
+artifacts {
+    archives devJar
 }
