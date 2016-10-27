@@ -17,6 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 
 @HxCCommand
 public class CommandSetWarp extends AbstractSubCommand {
+    private static DecimalFormat posFormat = new DecimalFormat("#.###");
+
     {
         permissionLevel = 4;
     }
@@ -42,38 +45,35 @@ public class CommandSetWarp extends AbstractSubCommand {
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     String name = args.size() == 0 ? "default" : args.get(0);
-                    int x = (int) Math.round(player.posX);
-                    int y = (int) Math.round(player.posY);
-                    int z = (int) Math.round(player.posZ);
-                    int dimension = player.dimension;
 
-                    setWarp(x, y, z, dimension, name);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                    setWarp(player.posX, player.posY, player.posZ, player.dimension, name);
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name,  posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 }
                 break;
             case 4:
             case 5:
                 boolean named = args.size() == 4;
                 String name = named ? "default" : args.get(0);
-                int x = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(named ? 0 : 1), false).getAmount());
-                int y = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(named ? 1 : 2), false).getAmount());
-                int z = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getAmount());
+
+                double x = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posX : sender.getPosition().getX(), args.get(named ? 0 : 1), false).getAmount();
+                double y = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posY : sender.getPosition().getY(), args.get(named ? 1 : 2), false).getAmount();
+                double z = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posZ : sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getAmount();
                 int dimension = CommandBase.parseInt(args.get(named ? 3 : 4));
                 if (Arrays.stream(DimensionType.values()).noneMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
 
                 setWarp(x, y, z, dimension, name);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, x, y, z, dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 break;
         }
     }
 
-    private static void setWarp(int x, int y, int z, int dimension, String name) {
+    private static void setWarp(double x, double y, double z, int dimension, String name) {
         NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
         NBTTagCompound warp = new NBTTagCompound();
 
-        warp.setInteger("x", x);
-        warp.setInteger("y", y);
-        warp.setInteger("z", z);
+        warp.setDouble("x", x);
+        warp.setDouble("y", y);
+        warp.setDouble("z", z);
         warp.setInteger("dimension", dimension);
         warps.setTag(name, warp);
 
@@ -82,13 +82,12 @@ public class CommandSetWarp extends AbstractSubCommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (pos != null) {
-            if (args.size() == 1) return Collections.singletonList(Integer.toString(pos.getX()));
-            else if (args.size() == 2) return Collections.singletonList(Integer.toString(pos.getY()));
-            else if (args.size() == 3) return Collections.singletonList(Integer.toString(pos.getZ()));
+        if (sender instanceof EntityPlayerMP) {
+            if (args.size() == 1 || args.size() == 2 || args.size() == 3) return Collections.singletonList("~");
+            else if (args.size() == 4) return Collections.singletonList(Integer.toString(((EntityPlayerMP) sender).dimension));
         }
-        if (args.size() == 4) return Arrays.stream(DimensionType.values()).map(type -> Integer.toString(type.getId())).collect(Collectors.toList());
-        return Collections.emptyList();
+        if (args.size() == 1) return Arrays.stream(DimensionType.values()).map(type -> Integer.toString(type.getId())).collect(Collectors.toList());
+        else return Collections.emptyList();
     }
 
     @Override

@@ -119,7 +119,12 @@ public class NBTFileHandler {
     }
 
     public NBTTagCompound getTagCompound(String tagName) {
-        return hasTag(tagName) ? getValue(NBTTagCompound.class, tagName) : null;
+        return getTagCompound(tagName, null);
+    }
+
+    //TODO: add defaultValue to every getter.
+    public NBTTagCompound getTagCompound(String tagName, NBTTagCompound defaultValue) {
+        return hasTag(tagName) ? getValue(NBTTagCompound.class, tagName) : defaultValue;
     }
 
     public void setTagList(String tagName, NBTTagList value) {

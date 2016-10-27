@@ -104,6 +104,29 @@ commands.reloadConfigs.reloaded=You successfully reloaded al HxC configuration f
 
 commands.rename.successful=You successfully renamed %1$s to %2$s.
 
+commands.home.set=Home '%1$s' has been set to coordinates: X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.home.removed=Home '%s' has been removed.
+commands.home.list.header=Homes page: %1$s/%2$s.
+commands.home.list.format=name: '%1$s', X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.home.teleport.self=You sent yourself to home: '%s'
+commands.error.invalid.home=Home '%s' is not a valid home.
+commands.error.outOfHomes=You have run out of homes.
+
+commands.TPA.request.target=%s requests to teleport to you type '/tpa accept' to accept.
+commands.TPA.request.sender=You requested to teleport to %s.
+commands.TPA.accepted.sender=You accepted %s's teleport request.
+commands.TPA.accepted.requester=%s accepted your teleport request.
+commands.TPA.denied.sender=You denied %s's teleport request.
+commands.TPA.denied.requester=%s denied your teleport request.
+commands.TPA.canceled.sender=You canceled your teleport request to %s.
+commands.TPA.canceled.target=%s canceled their teleport request to you.
+commands.TPA.willExpire=The teleport request from %1$s will expire in %2$s.
+commands.TPA.hasExpired=The teleport request from %s has expired.
+commands.error.TPA.noRequest=You don't have any teleportation requests.
+commands.error.TPA.sender.notTeleporting=You haven't sent a teleportation request to anyone.
+commands.error.TPA.sender.teleporting=You already have sent a teleportation request to someone.
+commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
+
 death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
 death.attack.command_hxc_kill.1=%1$s has received divine punishment!
 death.attack.command_hxc_kill.2=%1$s died of ebola.

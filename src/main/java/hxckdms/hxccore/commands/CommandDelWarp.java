@@ -34,7 +34,7 @@ public class CommandDelWarp extends AbstractSubCommand {
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         String warpName = args.size() == 0 ? "default" : args.get(0);
 
-        NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
+        NBTTagCompound warps = GlobalVariables.customWorldData.getTagCompound("warps", new NBTTagCompound());
         if (!warps.hasKey(warpName)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp", warpName);
         warps.removeTag(warpName);
         GlobalVariables.customWorldData.setTagCompound("warps", warps);

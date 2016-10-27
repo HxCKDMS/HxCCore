@@ -97,7 +97,7 @@ public class CommandEvents implements EventListener {
         }
 
         private TPARequest handleCompute(EntityPlayerMP target) {
-            if ((--timeRemaining) == 0) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired").setStyle(new Style().setColor(TextFormatting.RED)));
+            if ((--timeRemaining) == 0) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
             else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 
             return timeRemaining == 0 ? null : this;

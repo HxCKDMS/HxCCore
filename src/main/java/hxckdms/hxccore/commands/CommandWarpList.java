@@ -14,6 +14,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ import java.util.stream.IntStream;
 
 @HxCCommand
 public class CommandWarpList extends AbstractSubCommand {
+    private static DecimalFormat posFormat = new DecimalFormat("#.###");
+
     {
         permissionLevel = 1;
     }
@@ -32,7 +35,7 @@ public class CommandWarpList extends AbstractSubCommand {
 
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
+        NBTTagCompound warps = GlobalVariables.customWorldData.getTagCompound("warps", new NBTTagCompound());
         int warpAmount = warps.getKeySet().size();
         int warpsPerPage = 7;
         int pages = (int) Math.ceil((float) warpAmount / (float) warpsPerPage);
@@ -49,17 +52,17 @@ public class CommandWarpList extends AbstractSubCommand {
             String name = warpList.get(i);
             NBTTagCompound warp = warps.getCompoundTag(name);
 
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.format", name, warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.format", name, posFormat.format(warp.getDouble("x")), posFormat.format(warp.getDouble("y")), posFormat.format(warp.getDouble("z")), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
         }
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
+        NBTTagCompound warps = GlobalVariables.customWorldData.getTagCompound("warps", new NBTTagCompound());
         int warpAmount = warps.getKeySet().size();
         int warpsPerPage = 7;
         int pages = (int) Math.ceil((float) warpAmount / (float) warpsPerPage);
-        return IntStream.rangeClosed(1, pages).mapToObj(Integer::toString).collect(Collectors.toList());
+        return IntStream.rangeClosed(1, Math.max(1, pages)).mapToObj(Integer::toString).collect(Collectors.toList());
     }
 
     @Override

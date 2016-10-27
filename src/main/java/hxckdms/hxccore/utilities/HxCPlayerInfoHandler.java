@@ -122,8 +122,13 @@ public class HxCPlayerInfoHandler {
     }
 
     public static NBTTagCompound getTagCompound(EntityPlayer player, String tagName) {
+        return getTagCompound(player, tagName, null);
+    }
+
+    //TODO: add defaultValue to every getter.
+    public static NBTTagCompound getTagCompound(EntityPlayer player, String tagName, NBTTagCompound defaultValue) {
         UUID uuid = player.getUniqueID();
-        return playerDataTable.containsKey(uuid) ? playerDataTable.get(uuid).getTagCompound(tagName) : null;
+        return hasTag(player, tagName) ? playerDataTable.get(uuid).getTagCompound(tagName) : defaultValue;
     }
 
     public static void setTagList(EntityPlayer player, String tagName, NBTTagList value) {
@@ -134,6 +139,11 @@ public class HxCPlayerInfoHandler {
     public static NBTTagList getTagList(EntityPlayer player, String tagName) {
         UUID uuid = player.getUniqueID();
         return playerDataTable.containsKey(uuid) ? playerDataTable.get(uuid).getTagList(tagName) : null;
+    }
+
+    public static boolean hasTag(EntityPlayer player, String tagName) {
+        UUID uuid = player.getUniqueID();
+        return playerDataTable.containsKey(uuid) && playerDataTable.get(uuid).hasTag(tagName);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

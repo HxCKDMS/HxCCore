@@ -71,10 +71,10 @@ public class CommandWarp extends AbstractSubCommand {
         if (!warps.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp");
         NBTTagCompound warp = warps.getCompoundTag(name);
 
-        if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getInteger("x"), warp.getInteger("y") + 1, warp.getInteger("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
+        if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getDouble("x"), warp.getDouble("y") + 1, warp.getDouble("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
             throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
 
-        TeleportHelper.teleportEntityToDimension(player, warp.getInteger("x"), warp.getInteger("y"), warp.getInteger("z"), warp.getInteger("dimension"));
+        TeleportHelper.teleportEntityToDimension(player, warp.getDouble("x"), warp.getDouble("y"), warp.getDouble("z"), warp.getInteger("dimension"));
     }
 
     @Override
