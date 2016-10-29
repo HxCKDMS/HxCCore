@@ -16,6 +16,7 @@ import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @HxCCommand
 public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
@@ -50,7 +51,7 @@ public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
-        else if (args.size() == 2) CommandRegistry.CommandConfig.commandPermissions.keySet();
+        else if (args.size() == 2) return CommandRegistry.CommandConfig.commandPermissions.keySet().stream().map(i -> Integer.toString(i)).collect(Collectors.toCollection(LinkedList::new));
         return Collections.emptyList();
     }
 }

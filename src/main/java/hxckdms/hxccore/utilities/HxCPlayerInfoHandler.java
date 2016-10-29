@@ -22,8 +22,12 @@ public class HxCPlayerInfoHandler {
     }
 
     public static String getString(EntityPlayer player, String tagName) {
+        return getString(player, tagName, null);
+    }
+
+    public static String getString(EntityPlayer player, String tagName, String defaultValue) {
         UUID uuid = player.getUniqueID();
-        return playerDataTable.containsKey(uuid) ? playerDataTable.get(uuid).getString(tagName) : null;
+        return playerDataTable.containsKey(uuid) ? playerDataTable.get(uuid).getString(tagName) : defaultValue;
     }
 
     public static void setBoolean(EntityPlayer player, String tagName, boolean value) {
@@ -38,7 +42,7 @@ public class HxCPlayerInfoHandler {
 
     public static void setInteger(EntityPlayer player, String tagName, int value) {
         UUID uuid = player.getUniqueID();
-        playerDataTable.get(uuid).setDouble(tagName, value);
+        playerDataTable.get(uuid).setInteger(tagName, value);
     }
 
     public static int getInteger(EntityPlayer player, String tagName) {

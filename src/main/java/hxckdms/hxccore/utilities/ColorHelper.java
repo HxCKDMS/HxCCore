@@ -106,8 +106,8 @@ public class ColorHelper {
         return text == null ? new TextComponentTranslation("") : text;
     }
 
-    public static HashMap<UUID, String> playerNickNames = new HashMap<>();
-    public static HashMap<UUID, Boolean> isPlayerOp = new HashMap<>();
+    public static final HashMap<UUID, String> playerNickNames = new HashMap<>();
+    public static final HashMap<UUID, Boolean> isPlayerOp = new HashMap<>();
 
     public static TextComponentTranslation handleNick(EntityPlayer player, boolean nameTagRender) {
         if (nameTagRender) return "".equals(playerNickNames.get(player.getUniqueID())) ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');

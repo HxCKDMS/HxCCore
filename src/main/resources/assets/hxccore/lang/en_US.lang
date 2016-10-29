@@ -127,6 +127,20 @@ commands.error.TPA.sender.notTeleporting=You haven't sent a teleportation reques
 commands.error.TPA.sender.teleporting=You already have sent a teleportation request to someone.
 commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
 
+commands.mute.other.sender=Thou hast muted %s.
+commands.must.other.target=Thou hast been muted by %s.
+chat.error.muted=Thou ist muted, attempting to speak is futile.
+
+commands.AFK.away=%s has gone AFK.
+commands.AFK.back=%s has returned.
+
+commands.path.enabled=You are now passively building a %2$s x %2$s path made up out of %1$s.
+commands.path.disabled=You stopped passively building a path.
+
+commands.sudo.target.insufficientPermission=%1$s does not have the required privileges to use '%2$s'. (use force for a workaround)
+
+commands.exterminate.killed=You have exterminated %s entities!
+
 death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
 death.attack.command_hxc_kill.1=%1$s has received divine punishment!
 death.attack.command_hxc_kill.2=%1$s died of ebola.

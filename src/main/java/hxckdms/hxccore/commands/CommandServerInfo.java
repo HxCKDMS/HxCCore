@@ -68,8 +68,8 @@ public class CommandServerInfo extends AbstractSubCommand<CommandHxC> {
     }
 
     private static TextComponentTranslation getMemoryUsageStyled(){
-        double totalMem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
-        double usedMem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024;
+        double totalMem = (double) Runtime.getRuntime().maxMemory() / 1024D / 1024D;
+        double usedMem = ((double) Runtime.getRuntime().totalMemory() - (double) Runtime.getRuntime().freeMemory()) / 1024D / 1024D;
         double memPercentage = usedMem / totalMem * 100;
 
         TextFormatting MemColor = memPercentage >= 75 ? TextFormatting.RED : memPercentage <= 25 ? TextFormatting.GREEN : TextFormatting.GOLD;

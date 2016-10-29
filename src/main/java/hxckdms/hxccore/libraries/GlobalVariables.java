@@ -15,6 +15,6 @@ public class GlobalVariables {
     public static MinecraftServer server;
     public static SimpleNetworkWrapper network;
     public static Map<String, String> langFile;
-    public static HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
+    public static final HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
     public static HxCConfig mainConfig, commandConfig;
 }
