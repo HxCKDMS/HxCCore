@@ -30,6 +30,7 @@ public class CommandReloadConfigs extends AbstractSubCommand<CommandHxC> {
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         GlobalVariables.mainConfig.initConfiguration();
         GlobalVariables.commandConfig.initConfiguration();
+        GlobalVariables.kitConfig.initConfiguration();
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.reloadConfigs.reloaded").setStyle(new Style().setColor(TextFormatting.GRAY)));
     }
 

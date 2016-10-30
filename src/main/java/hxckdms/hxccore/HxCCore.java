@@ -1,7 +1,9 @@
 package hxckdms.hxccore;
 
 import hxckdms.hxcconfig.HxCConfig;
+import hxckdms.hxcconfig.handlers.SpecialHandlers;
 import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.configs.KitConfiguration;
 import hxckdms.hxccore.event.CommandEvents;
 import hxckdms.hxccore.event.EventChat;
 import hxckdms.hxccore.event.EventNetworkCheck;
@@ -26,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import static hxckdms.hxcconfig.Flags.COLLECTION_HANDLER;
+import static hxckdms.hxcconfig.Flags.TYPE_HANDLER;
 import static hxckdms.hxccore.libraries.Constants.*;
 import static hxckdms.hxccore.libraries.GlobalVariables.*;
 
@@ -48,6 +52,12 @@ public class HxCCore {
 
         mainConfig = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
         mainConfig.initConfiguration();
+
+        SpecialHandlers.registerSpecialClass(KitConfiguration.DummyItem.class);
+        SpecialHandlers.registerSpecialClass(KitConfiguration.DummyPotionEffect.class);
+        kitConfig = new HxCConfig(KitConfiguration.class, "Kits", modConfigDir, "cfg", MOD_NAME);
+        kitConfig.registerHandler(new KitConfiguration.NBTBaseHandler(), TYPE_HANDLER | COLLECTION_HANDLER);
+        kitConfig.initConfiguration();
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);
