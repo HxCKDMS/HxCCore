@@ -27,7 +27,7 @@ import java.util.*;
 
 @HxCCommand
 public class CommandProtect extends AbstractSubCommand<CommandHxC> {
-    public static final ArrayList<EntityPlayerMP> override = new ArrayList<>();
+    public static final ArrayList<EntityPlayer> override = new ArrayList<>();
 
     {
         permissionLevel = 1;
@@ -170,7 +170,6 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     public static String getLand(int x, int y, int z, int dimension) {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         for (String landName : protectedLands.getKeySet()) {
-            System.out.println("name: " + landName);
             NBTTagCompound land = protectedLands.getCompoundTag(landName);
             boolean xCheck = land.getInteger("x1") > land.getInteger("x2") ? land.getInteger("x1") >= x && x >= land.getInteger("x2") : land.getInteger("x2") >= x && x >= land.getInteger("x1");
             boolean yCheck = land.getInteger("y1") > land.getInteger("y2") ? land.getInteger("y1") >= y && y >= land.getInteger("y2") : land.getInteger("y2") >= y && y >= land.getInteger("y1");
@@ -198,7 +197,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 2) Arrays.asList("addUser", "removeUser", "create", "delete");
+        if (args.size() == 2) Arrays.asList("addUser", "removeUser", "transfer", "create", "delete");
         return Collections.emptyList();
     }
 }

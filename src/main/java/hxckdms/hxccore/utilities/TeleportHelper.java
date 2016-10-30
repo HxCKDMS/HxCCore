@@ -1,11 +1,14 @@
 package hxckdms.hxccore.utilities;
 
+import hxckdms.hxccore.api.event.PlayerTeleportEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.server;
 
@@ -17,18 +20,21 @@ public class TeleportHelper {
 
     public static void teleportEntityToDimension(Entity entity, double x, double y, double z, int dimension) {
         if (entity.dimension == dimension) {
-            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
-            else entity.setPositionAndUpdate(x, y, z);
+            checkAndTeleport(entity, x, y, z, dimension);
             return;
         }
 
         if (entity instanceof EntityPlayerMP) server.getPlayerList().transferPlayerToDimension((EntityPlayerMP) entity, dimension, new HxCTeleporter((WorldServer) server.getEntityWorld()));
         else teleportEntity(entity, dimension);
 
-        if (entity.dimension == dimension) {
-            if (entity instanceof EntityPlayerMP) ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
-            else entity.setPositionAndUpdate(x, y, z);
-        }
+        if (entity.dimension == dimension) checkAndTeleport(entity, x, y, z, dimension);
+    }
+
+    private static void checkAndTeleport(Entity entity, double x, double y, double z, int dimension) {
+        if (entity instanceof EntityPlayerMP) {
+            if (MinecraftForge.EVENT_BUS.post(new PlayerTeleportEvent((EntityPlayer) entity, x, y, z, dimension))) return;
+            ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, ((EntityPlayerMP) entity).rotationYaw, ((EntityPlayerMP) entity).rotationPitch);
+        } else entity.setPositionAndUpdate(x, y, z);
     }
 
     private static void teleportEntity(Entity entity, int dimensionId) {

@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 public abstract class AbstractSubCommand<T extends AbstractMultiCommand> implements ISubCommand<T> {
     protected int permissionLevel = 1;
     protected CommandState state = CommandState.ENABLED;
+    @SuppressWarnings("unchecked")
     protected Class<T> parentCommand = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -21,7 +21,7 @@ import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 
 @SuppressWarnings({"unchecked", "WeakerAccess", "unused"})
 public class CommandRegistry {
-    private static HashSet<AbstractMultiCommand> multiCommands = new HashSet<>();
+    private static HashMap<String, AbstractMultiCommand> multiCommands = new HashMap<>();
 
     public static void registerCommands(FMLPreInitializationEvent event) {
         SpecialHandlers.registerSpecialClass(SubCommandConfigHandler.class);
@@ -39,20 +39,24 @@ public class CommandRegistry {
                     Class<? extends AbstractMultiCommand> clazz = (Class<? extends AbstractMultiCommand>) Class.forName(data.getClassName());
 
                     AbstractMultiCommand multiCommand = clazz.newInstance();
-                    multiCommands.add(multiCommand);
+                    multiCommands.put(multiCommand.getCommandName().toLowerCase(), multiCommand);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        multiCommands.forEach(command -> command.registerSubCommands(event));
+        multiCommands.values().forEach(command -> command.registerSubCommands(event));
 
         commandConfig.initConfiguration();
     }
 
+    public static AbstractMultiCommand getCommandForName(String name) {
+        return multiCommands.get(name.toLowerCase());
+    }
+
     public static void initializeCommands(FMLServerStartingEvent event) {
         if (!CommandConfig.enableCommands) return;
-        multiCommands.forEach(event::registerServerCommand);
+        multiCommands.values().forEach(event::registerServerCommand);
     }
 
     @Config

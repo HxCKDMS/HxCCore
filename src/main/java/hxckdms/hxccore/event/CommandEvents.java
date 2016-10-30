@@ -1,12 +1,21 @@
 package hxckdms.hxccore.event;
 
+import hxckdms.hxccore.api.event.LivingSwingEvent;
+import hxckdms.hxccore.api.event.PlayerTeleportEvent;
 import hxckdms.hxccore.commands.CommandProtect;
+import hxckdms.hxccore.entity.HxCFakePlayer;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.block.Block;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.EntitySelector;
+import net.minecraft.command.ICommand;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketEntityMetadata;
@@ -14,7 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -111,12 +122,104 @@ public class CommandEvents implements EventListener {
     public void eventProtection_1(PlayerInteractEvent event) {
         if (event.getSide() == Side.CLIENT) return;
         if (event instanceof PlayerInteractEvent.RightClickBlock  || event instanceof PlayerInteractEvent.LeftClickBlock || event instanceof PlayerInteractEvent.EntityInteract) {
-            System.out.println("test");
             if (!CommandProtect.isPlayerAllowedToEdit(event.getEntityPlayer(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), event.getEntityPlayer().dimension)) {
                 event.getEntityPlayer().addChatMessage(ServerTranslationHelper.getTranslation(event.getEntityPlayer(), "world.protect.noEditAllowed"));
                 event.setCanceled(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void eventPowerTool_1(ItemTooltipEvent event) {
+        if (event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
+            NBTTagList commands = event.getItemStack().getTagCompound().getTagList("powerToolCommands", 8);
+
+            for (int i = 0; i < commands.tagCount(); i++) event.getToolTip().add(commands.getStringTagAt(i));
+        }
+    }
+
+    @SuppressWarnings("Duplicates")
+    @SubscribeEvent
+    public void eventPowerTool_2(LivingSwingEvent event) {
+        if (!event.getEntityLiving().worldObj.isRemote && event.getItemStack() != null && event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
+            NBTTagList commandList = event.getItemStack().getTagCompound().getTagList("powerToolCommands", 8);
+
+            for (int i = 0; i < commandList.tagCount(); i++) {
+                String commandString = commandList.getStringTagAt(i);
+                String[] splitCommandString = commandString.split("\\s");
+
+                ICommand command = GlobalVariables.server.getCommandManager().getCommands().get(splitCommandString[0].substring(1));
+                String[] args = new String[splitCommandString.length - 1];
+                System.arraycopy(splitCommandString, 1, args, 0, splitCommandString.length - 1);
+
+                boolean hasAt = false;
+
+                for (int j = 0; j < args.length; j++) {
+                    if (!hasAt) hasAt = args[j].contains("@");
+                    for (Entity entity : EntitySelector.matchEntities(event.getEntityLiving(), args[j], Entity.class)) {
+                        args[j] = entity.getCachedUniqueIdString();
+
+                        try {
+                            if (event.getEntityLiving() instanceof EntityPlayerMP) {
+                                command.execute(GlobalVariables.server, event.getEntityLiving(), args);
+                            } else {
+                                HxCFakePlayer fakePlayer = new HxCFakePlayer(GlobalVariables.server.worldServerForDimension(event.getEntityLiving().dimension), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, event.getEntityLiving().rotationYaw, event.getEntityLiving().rotationPitch);
+                                fakePlayer.setCustomNameTag(event.getEntityLiving().getName());
+                                fakePlayer.setUniqueId(event.getEntityLiving().getUniqueID());
+                                command.execute(GlobalVariables.server, fakePlayer, args);
+                                fakePlayer.setDead();
+                            }
+                        } catch (CommandException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                if (!hasAt) {
+                    try {
+                        if (event.getEntityLiving() instanceof EntityPlayerMP) {
+                            command.execute(GlobalVariables.server, event.getEntityLiving(), args);
+                        } else {
+                            HxCFakePlayer fakePlayer = new HxCFakePlayer(GlobalVariables.server.worldServerForDimension(event.getEntityLiving().dimension), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, event.getEntityLiving().rotationYaw, event.getEntityLiving().rotationPitch);
+                            fakePlayer.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(event.getEntityLiving().getMaxHealth());
+                            fakePlayer.setCustomNameTag(event.getEntityLiving().getName());
+                            fakePlayer.setUniqueId(event.getEntityLiving().getUniqueID());
+                            command.execute(GlobalVariables.server, fakePlayer, args);
+                            event.getEntityLiving().setPositionAndUpdate(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ);
+                            event.getEntityLiving().setHealth(fakePlayer.getHealth());
+                            fakePlayer.setDead();
+                        }
+                    } catch (CommandException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void eventBack_1(LivingDeathEvent event) {
+        if (event.getEntityLiving() instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
+            NBTTagCompound backCompound = new NBTTagCompound();
+            backCompound.setDouble("x", player.posX);
+            backCompound.setDouble("y", player.posY);
+            backCompound.setDouble("z", player.posZ);
+            backCompound.setInteger("dimension", player.dimension);
+
+            HxCPlayerInfoHandler.setTagCompound(player, "backLocation", backCompound);
+        }
+    }
+
+    @SubscribeEvent
+    public void eventBack_2(PlayerTeleportEvent event) {
+        NBTTagCompound backCompound = new NBTTagCompound();
+        backCompound.setDouble("x", event.getEntityPlayer().posX);
+        backCompound.setDouble("y", event.getEntityPlayer().posY);
+        backCompound.setDouble("z", event.getEntityPlayer().posZ);
+        backCompound.setInteger("dimension", event.getEntityPlayer().dimension);
+
+        HxCPlayerInfoHandler.setTagCompound(event.getEntityPlayer(), "backLocation", backCompound);
     }
 
     public static final HashMap<EntityPlayerMP, TPARequest> TPAList = new HashMap<>();

@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO: make work for any entity.
 @HxCCommand
 public class CommandCannon extends AbstractSubCommand<CommandHxC> {
     {

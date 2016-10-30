@@ -1,5 +1,6 @@
 package hxckdms.hxccore.api.command;
 
+import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.PermissionHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.*;
@@ -48,6 +49,10 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
                 }
             }
         }
+    }
+
+    public static HashMap<String, AbstractSubCommand> getSubCommands(String name) {
+        return (HashMap<String, AbstractSubCommand>) CommandRegistry.getCommandForName(name).subCommands.clone();
     }
 
     @Override

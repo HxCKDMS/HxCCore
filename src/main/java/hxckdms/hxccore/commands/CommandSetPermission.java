@@ -26,7 +26,7 @@ public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public String getCommandName() {
-        return "SetPermission";
+        return "setPermission";
     }
 
     @Override
