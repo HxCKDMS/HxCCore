@@ -105,6 +105,7 @@ public class Kit {
             NBTTagCompound displayCompound = tagCompound.getCompoundTag("display");
             NBTTagList toolTips = new NBTTagList();
             if (entry.getValue().color != -1) displayCompound.setInteger("color", entry.getValue().color);
+            if (!entry.getValue().itemName.isEmpty()) displayCompound.setString("Name", entry.getValue().itemName);
             entry.getValue().lore.stream().map(NBTTagString::new).forEachOrdered(toolTips::appendTag);
             displayCompound.setTag("Lore", toolTips);
             tagCompound.setTag("display", displayCompound);
