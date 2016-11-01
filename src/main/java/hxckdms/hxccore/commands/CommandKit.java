@@ -5,6 +5,7 @@ import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.configs.KitConfiguration;
 import hxckdms.hxccore.utilities.Kit;
+import hxckdms.hxccore.utilities.PermissionHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -34,6 +35,7 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
         String kitName = args.get(0);
 
         Kit kit = KitConfiguration.kits.get(KitConfiguration.kits.keySet().stream().filter(key -> key.equalsIgnoreCase(kitName)).findFirst().orElseThrow(() -> new TranslatedCommandException(sender, "commands.kit.error.noSuchKit")));
+        if (kit.permissionLevel > PermissionHandler.getPermissionLevel(sender)) throw new TranslatedCommandException(sender, "commands.generic.permission");
         kit.getKitItems().forEach(player.inventory::addItemStackToInventory);
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.kit.successful", kitName).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
