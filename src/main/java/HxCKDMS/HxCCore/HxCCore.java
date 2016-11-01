@@ -6,6 +6,7 @@ import HxCKDMS.HxCCore.Contributors.CodersCheck;
 import HxCKDMS.HxCCore.Crash.CrashHandler;
 import HxCKDMS.HxCCore.Crash.CrashReportThread;
 import HxCKDMS.HxCCore.Events.*;
+import HxCKDMS.HxCCore.Proxy.IProxy;
 import HxCKDMS.HxCCore.Registry.CommandRegistry;
 import HxCKDMS.HxCCore.api.Command.HxCCommand;
 import HxCKDMS.HxCCore.api.Configuration.HxCConfig;
@@ -21,6 +22,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -58,8 +60,12 @@ public class HxCCore {
     public static SimpleNetworkWrapper network;
     public static HxCConfig config, commandConfig, kitConfig;
 
+    @SidedProxy(serverSide = SERVER_PROXY_CLASS, clientSide = CLIENT_PROXY_CLASS)
+    public static IProxy proxy;
+
     public static File HxCCoreDir, HxCConfigDir, HxCConfigFile, commandCFGFile, kitsFile,
             HxCLogDir, CustomWorldData, PermissionsData, KitsData;
+    public static volatile File mcRootDir = new File("");
 
     public static volatile LinkedHashMap<UUID, String> HxCLabels = new LinkedHashMap<>();
 
@@ -111,6 +117,8 @@ public class HxCCore {
         HxCRules.putIfAbsent("AFKDebuffs", "true");
         HxCRules.putIfAbsent("XPCooldownInterrupt", "true");
 
+        proxy.preInit(event);
+
         LogHelper.info("If you see any debug messages, feel free to bug one of the authors about it ^_^", MOD_NAME);
         initTime += System.nanoTime() - t;
     }
@@ -132,6 +140,7 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new EventPlayerDeath());
         MinecraftForge.EVENT_BUS.register(new EventXPCooldownCanceller());
         MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
+        proxy.init(event);
         if (Configurations.DebugMode)
             MinecraftForge.EVENT_BUS.register(new EventPlayerHxCDataSync());
         if (Configurations.enableCommands && CommandsConfig.EnabledCommands.containsKey("Path") && CommandsConfig.EnabledCommands.get("Path"))
