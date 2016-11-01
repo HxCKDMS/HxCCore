@@ -221,7 +221,7 @@ public class HxCTransformer implements IClassTransformer {
 
 
     private static void transformLivingBase(ClassNode classNode) {
-        final String SWING_ARM = HxCLoader.RuntimeDeobf ? "" : "swingArm";
+        final String SWING_ARM = HxCLoader.RuntimeDeobf ? "func_184609_a" : "swingArm";
         final String SWING_ARM_DESC = "(Lnet/minecraft/util/EnumHand;)V";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
@@ -252,10 +252,10 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void transformCommandTP(ClassNode classNode) {
-        final String TELEPORT_ENTITY_TO_COORDINATES = HxCLoader.RuntimeDeobf ? "" : "teleportEntityToCoordinates";
+        final String TELEPORT_ENTITY_TO_COORDINATES = HxCLoader.RuntimeDeobf ? "func_189863_a" : "teleportEntityToCoordinates";
         final String TELEPORT_ENTITY_TO_COORDINATES_DESC = "(Lnet/minecraft/entity/Entity;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;)V";
 
-        final String DO_TELEPORT = HxCLoader.RuntimeDeobf ? "" : "doTeleport";
+        final String DO_TELEPORT = HxCLoader.RuntimeDeobf ? "func_189862_a" : "doTeleport";
         final String DO_TELEPORT_DESC = "(Lnet/minecraft/entity/Entity;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;)V";
 
         boolean hasTransformed = false;
@@ -293,7 +293,7 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void transformCommandSpreadPlayers(ClassNode classNode) {
-        final String SET_PLAYER_POSITIONS = HxCLoader.RuntimeDeobf ? "" : "setPlayerPositions";
+        final String SET_PLAYER_POSITIONS = HxCLoader.RuntimeDeobf ? "func_110671_a" : "setPlayerPositions";
         final String SET_PLAYER_POSITIONS_DEC = "(Ljava/util/List;Lnet/minecraft/world/World;[Lnet/minecraft/command/CommandSpreadPlayers$Position;Z)D";
 
         boolean hasTransformed = false;
