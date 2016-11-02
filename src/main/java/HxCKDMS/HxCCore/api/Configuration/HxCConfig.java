@@ -68,6 +68,17 @@ public class HxCConfig {
         categoryComments.put(category, comment);
     }
 
+    @Deprecated
+    public HxCConfig(Class<?> clazz, String configName, File configDirectory, String extension) {
+        this.configClass = clazz;
+        this.configFile = new File(configDirectory, configName + "." + extension);
+        this.configDirectory = configDirectory;
+        this.app_name = configName;
+
+        registerDefaultHandlers();
+        setCategoryComment("Default", "This is the default category.");
+    }
+
     public HxCConfig(Class<?> clazz, String configName, File configDirectory, String extension, String app_name) {
         this.configClass = clazz;
         this.configFile = new File(configDirectory, configName + "." + extension);

@@ -22,21 +22,12 @@ import static HxCKDMS.HxCCore.Contributors.CapesThread.capes;
 public class ClientProxy implements IProxy {
     Minecraft mc;
     private final Thread capeThread = new Thread(new CapesThread());
+    private static List objs;
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         mc = Minecraft.getMinecraft();
-
         capeThread.setName("HxCKDMS Capes Download thread");
         capeThread.start();
-
-        List objs = new ArrayList<>(mc.getResourcePackRepository().getRepositoryEntries());
-
-        mc.getResourcePackRepository().getRepositoryEntriesAll().forEach(ent -> {
-            if (!objs.contains(ent) && ((ResourcePackRepository.Entry)ent).getResourcePack().getPackName().equals("HxCCapes Pack") || ((ResourcePackRepository.Entry)ent).getResourcePack().getPackName().equals("hxccapes")) {
-                objs.add(ent);
-            }
-        });
-        mc.getResourcePackRepository().func_148527_a(objs);
     }
 
     @Override
@@ -45,10 +36,19 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void postInit(FMLPostInitializationEvent event) {
-
+        objs = new ArrayList<>(mc.getResourcePackRepository().getRepositoryEntries());
+        mc.getResourcePackRepository().getRepositoryEntriesAll().forEach(ent -> {
+            if (!objs.contains(ent) && ((ResourcePackRepository.Entry)ent).getResourcePack().getPackName().equals("HxCCapes Pack") || ((ResourcePackRepository.Entry)ent).getResourcePack().getPackName().equals("hxccapes")) {
+                objs.add(ent);
+            }
+        });
+        mc.getResourcePackRepository().func_148527_a(objs);
+        mc.refreshResources();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public class CapeRenderer {
         @SubscribeEvent
         public void renderPost(RenderPlayerEvent.Post event){

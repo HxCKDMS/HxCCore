@@ -157,6 +157,7 @@ public class HxCCore {
             if (Loader.isModLoaded(mod))
                 LogHelper.info("Thank you for using " + mod, MOD_NAME);
         });
+        proxy.postInit(event);
         initTime += System.nanoTime() - t; //718758345
         LogHelper.info("HxCCore initialized all parts in a total of " + initTime + " nano seconds. Or " + initTime/100000000 + " seconds", MOD_NAME);
     }

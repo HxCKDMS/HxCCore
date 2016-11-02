@@ -18,7 +18,7 @@ public class EventXPBuffs {
             IAttributeInstance PlayerH = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth),
                     PlayerD = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
             double CurrentHealth = player.getMaxHealth() - 20, CurrentDamage = PlayerD.getAttributeValue()-1;
-            int BuffPoints = player.experienceLevel / Configurations.XPBuffPerLevels;
+            int BuffPoints = player.experienceLevel / (Configurations.XPBuffPerLevels > 0 ? Configurations.XPBuffPerLevels : 1);
             if (CurrentHealth != BuffPoints && CurrentHealth <= Configurations.MaxHealth) {
                 AttributeModifier exHP = new AttributeModifier(References.HPBuffUUID, "DrZedHealthBuff", BuffPoints, 0);
                 PlayerH.removeModifier(exHP);
