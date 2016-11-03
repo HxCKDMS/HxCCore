@@ -55,7 +55,6 @@ public class HxCCore {
 
         proxy.preInit(event);
         Logger.info("HxCKDMS Core has finished the pre-initialization process.", MOD_NAME);
-        throw new NullPointerException();
     }
 
     @Mod.EventHandler

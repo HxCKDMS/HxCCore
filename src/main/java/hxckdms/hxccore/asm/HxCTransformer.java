@@ -64,16 +64,16 @@ public class HxCTransformer implements IClassTransformer {
                     break;
                 case 4:
                     transformLivingBase(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                    classWriter = new ClassWriter(0);
                     break;
                 case 5:
                 case 6:
                     transformCommandTP(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                    classWriter = new ClassWriter(0);
                     break;
                 case 7:
                     transformCommandSpreadPlayers(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                    classWriter = new ClassWriter(0);
                     break;
                 case 8:
                     transformEntityXPOrb(classNode);
@@ -92,7 +92,6 @@ public class HxCTransformer implements IClassTransformer {
             return classWriter.toByteArray();
         } catch (Exception exception) {
             exception.printStackTrace();
-            System.out.println("asdf: " + classesBeingTransformed[index]);
         }
         return classBeingTransformed;
     }
@@ -347,7 +346,7 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void transformCrashReport(ClassNode classNode) {
-        final String MAKE_CRASH_REPORT = HxCLoader.RuntimeDeobf ? "" : "makeCrashReport";
+        final String MAKE_CRASH_REPORT = HxCLoader.RuntimeDeobf ? "func_85055_a" : "makeCrashReport";
         final String MAKE_CRASH_REPORT_DESC = "(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/crash/CrashReport;";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
