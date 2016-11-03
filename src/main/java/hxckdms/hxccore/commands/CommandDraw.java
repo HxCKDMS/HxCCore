@@ -32,15 +32,15 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
     @SuppressWarnings("deprecation")
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        int posX = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(0), true).getResult());
-        int posY = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(1), false).getResult());
-        int posZ = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(2), true).getResult());
-        Block block = args.size() >= 4 ? Block.getBlockFromName(args.get(3)) : Block.getBlockFromName("minecraft:glass");
-        int metadata = args.size() >= 5 ? CommandBase.parseInt(args.get(4), 0) : 0;
+        int posX = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(1), true).getResult());
+        int posY = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(2), false).getResult());
+        int posZ = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(3), true).getResult());
+        Block block = args.size() >= 4 ? Block.getBlockFromName(args.get(4)) : Block.getBlockFromName("minecraft:glass");
+        int metadata = args.size() >= 5 ? CommandBase.parseInt(args.get(5), 0) : 0;
         assert block != null;
-        int radius = args.size() >= 6 ? CommandBase.parseInt(args.get(5)) : 8;
-        boolean hollow = args.size() >= 7 || CommandBase.parseBoolean(args.get(6));
-        double precision = args.size() >= 8 ? CommandBase.parseDouble(args.get(7)) : 0.005D;
+        int radius = args.size() >= 6 ? CommandBase.parseInt(args.get(6)) : 8;
+        boolean hollow = args.size() >= 7 || CommandBase.parseBoolean(args.get(7));
+        double precision = args.size() >= 8 ? CommandBase.parseDouble(args.get(8)) : 0.005D;
 
 
         switch (args.get(0).toLowerCase()) {
