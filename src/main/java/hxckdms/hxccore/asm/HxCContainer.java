@@ -12,7 +12,7 @@ public class HxCContainer extends DummyModContainer {
     public HxCContainer() {
         super(new ModMetadata());
         ModMetadata metadata = getMetadata();
-        metadata.modId = Constants.MOD_ID + "-ASM";
+        metadata.modId = Constants.MOD_ID + "-asm";
         metadata.name = Constants.MOD_NAME + " ASM";
         metadata.description = "The HxC-Core ASM";
         metadata.version = Constants.VERSION;
