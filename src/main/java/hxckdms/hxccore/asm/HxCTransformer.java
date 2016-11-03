@@ -283,11 +283,11 @@ public class HxCTransformer implements IClassTransformer {
                     toInsert.add(new VarInsnNode(ALOAD, 0));
                     toInsert.add(new TypeInsnNode(CHECKCAST, "net/minecraft/entity/player/EntityPlayerMP"));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
                     toInsert.add(new VarInsnNode(ALOAD, 2));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
                     toInsert.add(new VarInsnNode(ALOAD, 3));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
 
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onPlayerTeleportEvent", "(Lnet/minecraft/entity/player/EntityPlayer;DDD)Z", false));
                     toInsert.add(new JumpInsnNode(IFEQ, node));
