@@ -22,6 +22,6 @@ public class ServerTranslationHelper {
 
     public static TextComponentTranslation getTranslation(UUID uuid, String translationKey, Object... args) {
         if (doesPlayerHaveMod.contains(uuid)) return new TextComponentTranslation(translationKey, args);
-        else return new TextComponentTranslation(langFile.get(translationKey) + "=test", args);
+        else return new TextComponentTranslation(langFile.get(translationKey), args);
     }
 }
