@@ -45,7 +45,7 @@ public class ClientProxy implements IProxy {
             }
         });
         mc.getResourcePackRepository().func_148527_a(objs);
-        mc.refreshResources();
+        //mc.refreshResources();
     }
 
     @SuppressWarnings("WeakerAccess")
