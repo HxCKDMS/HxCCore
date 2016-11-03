@@ -1,5 +1,6 @@
 package hxckdms.hxccore.asm;
 
+import hxckdms.hxccore.crash.CrashHandler;
 import hxckdms.hxccore.libraries.Constants;
 import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.Logger;
@@ -25,7 +26,9 @@ public class HxCTransformer implements IClassTransformer {
             "net.minecraft.entity.EntityLivingBase",
             "net.minecraft.command.CommandTP",
             "net.minecraft.command.server.CommandTeleport",
-            "net.minecraft.command.CommandSpreadPlayers"
+            "net.minecraft.command.CommandSpreadPlayers",
+            "net.minecraft.entity.item.EntityXPOrb",
+            "net.minecraft.crash.CrashReport"
     };
 
     @Override
@@ -70,6 +73,14 @@ public class HxCTransformer implements IClassTransformer {
                     break;
                 case 7:
                     transformCommandSpreadPlayers(classNode);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                    break;
+                case 8:
+                    transformEntityXPOrb(classNode);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                    break;
+                case 9:
+                    transformCrashReport(classNode);
                     classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 default:
@@ -312,5 +323,52 @@ public class HxCTransformer implements IClassTransformer {
             }
         }
         if (!hasTransformed) Logger.error("Failed to transform: CommandSpreadPlayers.", Constants.MOD_NAME + " ASM");
+    }
+
+    private static void transformEntityXPOrb(ClassNode classNode) {
+        final String ON_COLLIDE_WITH_PLAYER = HxCLoader.RuntimeDeobf ? "func_70100_b_" : "onCollideWithPlayer";
+        final String ON_COLLIDE_WITH_PLAYER_DESC = "(Lnet/minecraft/entity/player/EntityPlayer;)V";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if(methodNode.name.equals(ON_COLLIDE_WITH_PLAYER) && methodNode.desc.equals(ON_COLLIDE_WITH_PLAYER_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == ICONST_2 && instruction.getNext().getNext().getOpcode() == PUTFIELD)
+                        targetNode = instruction.getNext();
+
+                if (targetNode != null) {
+                    methodNode.instructions.set(targetNode, new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "getXPCoolDown", "()I", false));
+                }
+                hasTransformed = true;
+                Logger.info("Successfully transformed: EntityXPOrb.", Constants.MOD_NAME + " ASM");
+            }
+        }
+        if (!hasTransformed) Logger.error("Failed to transform: EntityXPOrb.", Constants.MOD_NAME + " ASM");
+    }
+
+    private static void transformCrashReport(ClassNode classNode) {
+        final String MAKE_CRASH_REPORT = HxCLoader.RuntimeDeobf ? "" : "makeCrashReport";
+        final String MAKE_CRASH_REPORT_DESC = "(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/crash/CrashReport;";
+        boolean hasTransformed = false;
+        for (MethodNode methodNode : classNode.methods) {
+            if(methodNode.name.equals(MAKE_CRASH_REPORT) && methodNode.desc.equals(MAKE_CRASH_REPORT_DESC)) {
+                AbstractInsnNode targetNode = null;
+                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
+                    if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == ARETURN)
+                        targetNode = instruction;
+
+                if (targetNode != null) {
+                    InsnList toInsert = new InsnList();
+
+                    toInsert.insert(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(CrashHandler.class), "handleCrash", "(Lnet/minecraft/crash/CrashReport;)V", false));
+                    toInsert.insert(new VarInsnNode(ALOAD, 2));
+
+                    methodNode.instructions.insertBefore(targetNode, toInsert);
+                }
+                hasTransformed = true;
+                Logger.info("Successfully transformed: CrashReport.", Constants.MOD_NAME + " ASM");
+            }
+        }
+        if (!hasTransformed) Logger.error("Failed to transform: CrashReport.", Constants.MOD_NAME + " ASM");
     }
 }

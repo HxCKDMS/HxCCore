@@ -3,6 +3,7 @@ package hxckdms.hxccore.event;
 import hxckdms.hxccore.api.event.LivingSwingEvent;
 import hxckdms.hxccore.api.event.PlayerTeleportEvent;
 import hxckdms.hxccore.commands.CommandProtect;
+import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.entity.HxCFakePlayer;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
@@ -162,7 +163,7 @@ public class CommandEvents implements EventListener {
                         try {
                             if (event.getEntityLiving() instanceof EntityPlayerMP) {
                                 command.execute(GlobalVariables.server, event.getEntityLiving(), args);
-                            } else {
+                            } else if (Configuration.allowMobsPowerTool) {
                                 HxCFakePlayer fakePlayer = new HxCFakePlayer(GlobalVariables.server.worldServerForDimension(event.getEntityLiving().dimension), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, event.getEntityLiving().rotationYaw, event.getEntityLiving().rotationPitch);
                                 fakePlayer.setCustomNameTag(event.getEntityLiving().getName());
                                 fakePlayer.setUniqueId(event.getEntityLiving().getUniqueID());
@@ -179,7 +180,7 @@ public class CommandEvents implements EventListener {
                     try {
                         if (event.getEntityLiving() instanceof EntityPlayerMP) {
                             command.execute(GlobalVariables.server, event.getEntityLiving(), args);
-                        } else {
+                        } else if (Configuration.allowMobsPowerTool) {
                             HxCFakePlayer fakePlayer = new HxCFakePlayer(GlobalVariables.server.worldServerForDimension(event.getEntityLiving().dimension), event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, event.getEntityLiving().rotationYaw, event.getEntityLiving().rotationPitch);
                             fakePlayer.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(event.getEntityLiving().getMaxHealth());
                             fakePlayer.setCustomNameTag(event.getEntityLiving().getName());

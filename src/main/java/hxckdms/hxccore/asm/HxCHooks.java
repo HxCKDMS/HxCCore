@@ -3,6 +3,7 @@ package hxckdms.hxccore.asm;
 import hxckdms.hxccore.api.event.EmoteEvent;
 import hxckdms.hxccore.api.event.LivingSwingEvent;
 import hxckdms.hxccore.api.event.PlayerTeleportEvent;
+import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,5 +39,9 @@ public class HxCHooks {
         if (entity instanceof EntityPlayer) {
             if (!MinecraftForge.EVENT_BUS.post(new PlayerTeleportEvent((EntityPlayer) entity, x, y, z, entity.dimension))) entity.setPosition(x, y, z);
         } else entity.setPosition(x, y, z);
+    }
+
+    public static int getXPCoolDown() {
+        return GlobalVariables.server.getEntityWorld().getGameRules().getInt("XPPickupCoolDown");
     }
 }

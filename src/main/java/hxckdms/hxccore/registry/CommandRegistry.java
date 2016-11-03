@@ -61,6 +61,8 @@ public class CommandRegistry {
 
     @Config
     public static class CommandConfig {
+        @Config.category("Features")
+        @Config.comment("Enable all HxCCommands. (Disable if you don't want any new commands)")
         public static boolean enableCommands = true;
 
         @Config.flags(RETAIN_ORIGINAL_VALUES)

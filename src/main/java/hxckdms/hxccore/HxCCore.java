@@ -2,10 +2,7 @@ package hxckdms.hxccore;
 
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
-import hxckdms.hxccore.event.CommandEvents;
-import hxckdms.hxccore.event.EventChat;
-import hxckdms.hxccore.event.EventNetworkCheck;
-import hxckdms.hxccore.event.EventNickSync;
+import hxckdms.hxccore.event.*;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
@@ -15,6 +12,7 @@ import hxckdms.hxccore.utilities.Kit;
 import hxckdms.hxccore.utilities.Logger;
 import hxckdms.hxccore.utilities.NBTFileHandler;
 import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -57,6 +55,7 @@ public class HxCCore {
 
         proxy.preInit(event);
         Logger.info("HxCKDMS Core has finished the pre-initialization process.", MOD_NAME);
+        throw new NullPointerException();
     }
 
     @Mod.EventHandler
@@ -68,6 +67,7 @@ public class HxCCore {
         MinecraftForge.EVENT_BUS.register(new NBTFileHandler.NBTSaveEvents());
         MinecraftForge.EVENT_BUS.register(new HxCPlayerInfoHandler.CustomPlayerDataEvents());
         MinecraftForge.EVENT_BUS.register(new EventNetworkCheck());
+        MinecraftForge.EVENT_BUS.register(new EventXPBuffs());
 
         Logger.info("HxCKDMS Core has finished the initialization process.", MOD_NAME);
     }
@@ -84,6 +84,8 @@ public class HxCCore {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         server = event.getServer();
+        server.getEntityWorld().getGameRules().addGameRule("HxC_XPBuffs", "true", GameRules.ValueType.BOOLEAN_VALUE);
+        server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "2", GameRules.ValueType.NUMERICAL_VALUE);
 
         CommandRegistry.initializeCommands(event);
 

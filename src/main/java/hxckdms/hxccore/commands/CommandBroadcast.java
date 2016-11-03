@@ -46,9 +46,4 @@ public class CommandBroadcast extends AbstractSubCommand<CommandHxC> {
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
-
-    /*@Override
-    public Class<? extends AbstractMultiCommand> getParentCommand() {
-        return CommandHxC.class;
-    }*/
 }
