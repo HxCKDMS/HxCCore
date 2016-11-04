@@ -28,6 +28,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -116,9 +118,22 @@ public class CommandEvents implements EventListener {
 
                 int metadata = HxCPlayerInfoHandler.getInteger(player, "PathMetaData");
                 int pathSize = HxCPlayerInfoHandler.getInteger(player, "PathSize");
+                Predicate<BlockPos> blockPredicate;
+
+                switch (HxCPlayerInfoHandler.getString(player, "Override")) {
+                    case "air":
+                        blockPredicate = pos -> player.worldObj.isAirBlock(pos);
+                        break;
+                    case "fluid":
+                        blockPredicate = pos -> player.worldObj.isAirBlock(pos) || player.worldObj.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.worldObj.getBlockState(pos).getBlock()) != null;
+                        break;
+                    default:
+                        blockPredicate = pos -> true;
+                        break;
+                }
 
                 StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(player.posX - pathSize, player.posY - 1, player.posZ - pathSize), new BlockPos(player.posX + pathSize, player.posY - 1, player.posZ + pathSize)).spliterator(), false)
-                        .filter(pos -> !HxCPlayerInfoHandler.getBoolean(player, "Override") || player.worldObj.isAirBlock(pos))
+                        .filter(blockPredicate)
                         .forEach(pos -> player.worldObj.setBlockState(pos, block.getStateFromMeta(metadata)));
             }
         }
