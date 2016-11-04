@@ -14,6 +14,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,12 +66,13 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1 || args.size() == 2 || args.size() == 3) return Collections.singletonList("~");
-        else if (args.size() == 4) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
-        else if (args.size() == 5) return Collections.singletonList("0");
-        else if (args.size() == 6) return Collections.singletonList("8");
-        else if (args.size() == 7) return Collections.singletonList("true");
-        else if (args.size() == 8) return Collections.singletonList("0.005");
+        if (args.size() == 1) return Arrays.asList("circle", "sphere", "2dsquircle", "3dsquircle");
+        else if (args.size() == 2 || args.size() == 3 || args.size() == 4) return Collections.singletonList("~");
+        else if (args.size() == 5) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
+        else if (args.size() == 6) return Collections.singletonList("0");
+        else if (args.size() == 7) return Collections.singletonList("8");
+        else if (args.size() == 8) return Collections.singletonList("true");
+        else if (args.size() == 9) return Collections.singletonList("0.005");
         else return Collections.emptyList();
     }
 }

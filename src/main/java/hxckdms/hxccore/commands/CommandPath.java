@@ -39,14 +39,18 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
         int metadata = args.size() >= 2 ? CommandBase.parseInt(args.get(1), 0) : 0;
         int pathSize = args.size() >= 3 ? CommandBase.parseInt(args.get(2), 0) : 2;
 
+        ItemStack stack = null;
+
         HxCPlayerInfoHandler.setBoolean(player, "PathEnabled", block != null);
 
         if (block != null) {
+            stack = new ItemStack(block, 1, metadata);
+
             HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getRegistryName().toString());
             HxCPlayerInfoHandler.setInteger(player, "PathMetaData", metadata);
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), block != null ? new ItemStack(block, 1, metadata).getDisplayName() : null, 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override

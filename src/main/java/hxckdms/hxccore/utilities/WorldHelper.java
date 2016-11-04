@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public class WorldHelper {
     private static double power(double number, int power) {
-        int result = 1;
+        double result = 1;
         for (int i = 0; i < power; ++i) result *= number;
         return result;
     }
