@@ -93,12 +93,13 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 land.setBoolean("playerOwned", sender instanceof EntityPlayerMP);
                 land.setString("owner", sender instanceof EntityPlayer ? ((EntityPlayer) sender).getUniqueID().toString() : sender.getName());
                 String name = args.get(0);
-                int x1 = CommandBase.parseInt(args.get(2));
-                int y1 = CommandBase.parseInt(args.get(3));
-                int z1 = CommandBase.parseInt(args.get(4));
-                int x2 = CommandBase.parseInt(args.get(5));
-                int y2 = CommandBase.parseInt(args.get(6));
-                int z2 = CommandBase.parseInt(args.get(7));
+
+                int x1 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(2), true).getResult());
+                int y1 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(3), false).getResult());
+                int z1 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(4), true).getResult());
+                int x2 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(5), true).getResult());
+                int y2 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(6), false).getResult());
+                int z2 = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(7), true).getResult());
                 int dimension = CommandBase.parseInt(args.get(8));
                 int blocksNeeded = Math.abs((x1 - x2) * (y1 - y2) * (z1 - z2));
 

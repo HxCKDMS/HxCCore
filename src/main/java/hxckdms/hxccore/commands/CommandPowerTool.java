@@ -41,6 +41,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
         if (itemStack == null) throw new TranslatedCommandException(sender, "commands.error.noItem");
         NBTTagCompound tagCompound = itemStack.getTagCompound() != null ? itemStack.getTagCompound() : new NBTTagCompound();
 
+        if (!args.get(0).startsWith("/")) args.set(0, "/" + args.get(0));
         String commandText = args.stream().collect(Collectors.joining(" "));
 
         NBTTagList commands = new NBTTagList();

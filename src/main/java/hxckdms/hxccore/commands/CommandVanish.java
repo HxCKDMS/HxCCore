@@ -39,10 +39,12 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
 
         switch (args.size()) {
             case 0:
-                boolean isInvisible = player.isInvisible();
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, !isInvisible ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setStyle(new Style().setColor(!isInvisible ? TextFormatting.DARK_AQUA : TextFormatting.RED)));
-                HxCPlayerInfoHandler.setBoolean(player, "VanishedFromAll", !isInvisible);
-                player.setInvisible(!isInvisible);
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setStyle(new Style().setColor(!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? TextFormatting.DARK_AQUA : TextFormatting.RED)));
+                HxCPlayerInfoHandler.setBoolean(player, "VanishedFromAll", !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"));
+
+                if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"))
+                    GlobalVariables.server.getPlayerList().getPlayerList().forEach(target -> target.connection.sendPacket(new SPacketEntityMetadata(player.getEntityId(), player.getDataManager(), true)));
+
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));

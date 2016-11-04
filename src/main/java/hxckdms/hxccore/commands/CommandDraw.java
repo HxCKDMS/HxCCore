@@ -43,23 +43,24 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
         boolean hollow = args.size() >= 7 || CommandBase.parseBoolean(args.get(7));
         double precision = args.size() >= 8 ? CommandBase.parseDouble(args.get(8)) : 0.005D;
 
+        ItemStack stack = new ItemStack(block, 1, metadata);
 
         switch (args.get(0).toLowerCase()) {
             case "circle":
                 WorldHelper.draw2DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 2);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".circle", posX, posY, posZ, new ItemStack(block, 1, metadata).getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".circle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "sphere":
                 WorldHelper.draw3DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 2);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".sphere", posX, posY, posZ, new ItemStack(block, 1, metadata).getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".sphere", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "2dsquircle":
                 WorldHelper.draw2DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 4);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".2DSquircle", posX, posY, posZ, new ItemStack(block, 1, metadata).getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".2DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "3dsquircle":
                 WorldHelper.draw3DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 4);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".3DSquircle", posX, posY, posZ, new ItemStack(block, 1, metadata).getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".3DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
         }
     }

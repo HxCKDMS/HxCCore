@@ -31,7 +31,7 @@ commands.hxc.override.usage=/hxc override
 commands.hxc.path.usage=/hxc path <block> <metadata> <path size>
 commands.hxc.playerInfo.usage=/hxc playerInfo <player>
 commands.hxc.powerTool.usage=/hxc powerTool <commands>
-commands.hxc.protect.usage=/hxc protect [name] [addUser/removeUser/transfer/create/delete] <x1> <y1> <z1> <x2> <y2> <z2>
+commands.hxc.protect.usage=/hxc protect [name] [addUser/removeUser/transfer/create/delete] <x1> <y1> <z1> <x2> <y2> <z2> <dimension>
 commands.hxc.reloadConfigs.usage=/hxc reloadConfigs
 commands.hxc.rename.usage=/hxc rename
 commands.hxc.repair.usage=/hxc repair
@@ -46,7 +46,7 @@ commands.hxc.sudo.usage=/hxc sudo [player] [command]
 commands.hxc.thaw.usage=/hxc thaw [range]
 commands.hxc.vanish.usage=/hxc vanish <player>
 commands.hxc.warp.usage=/hxc warp <warp name>
-commands.hxc.warpList.usage=/hxc warpListcommands.hxc.AFKusage
+commands.hxc.warpList.usage=/hxc warpList
 
 commands.hxc.AFK.info=tmp
 commands.hxc.TP.info=tmp
@@ -94,7 +94,7 @@ commands.hxc.smite.info=tmp
 commands.hxc.spawn.info=tmp
 commands.hxc.sudo.info=tmp
 
-commands.error.creativeMode=You are currently in creativeMode!
+commands.error.creativeMode=You are currently in creative mode!
 commands.error.noColor=%s is not a color character.
 commands.error.noItem=You aren't holding an item.
 
@@ -196,7 +196,7 @@ commands.repairAll.successful.self=You successfully repaired all your items.
 commands.repairAll.successful.other.sender=You repaired all of %s's items.
 commands.repairAll.successful.other.target=%s repaired all your items.
 
-commands.reloadConfigs.reloaded=You successfully reloaded al HxC configuration files.
+commands.reloadConfigs.reloaded=You successfully reloaded all HxC configuration files.
 
 commands.rename.successful=You successfully renamed %1$s to %2$s.
 

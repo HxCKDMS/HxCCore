@@ -33,9 +33,11 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
@@ -73,21 +75,24 @@ public class CommandEvents implements EventListener {
             EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
             NBTTagList vanishedList = HxCPlayerInfoHandler.getTagList(player, "VanishedFromList");
 
-            if (vanishedList != null) {
-                for (int i = 0; i < vanishedList.tagCount(); i++) {
-                    UUID uuid = UUID.fromString(vanishedList.getStringTagAt(i));
+            if (vanishedList != null || HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
+                ArrayList<EntityPlayerMP> targets = new ArrayList<>();
 
-                    if (GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().noneMatch(playerMP -> playerMP.getUniqueID().equals(uuid))) continue;
-                    EntityPlayerMP target = GlobalVariables.server.getPlayerList().getPlayerByUUID(uuid);
+                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList());
+                else if (vanishedList != null)
+                    for (int i = 0; i < vanishedList.tagCount(); i++) {
+                        UUID uuid = UUID.fromString(vanishedList.getStringTagAt(i));
+                        targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().filter(playerMP -> playerMP.getUniqueID().equals(uuid)).collect(Collectors.toList()));
+                    }
 
+                for (EntityPlayerMP target : targets) {
                     EntityDataManager dataManager = new EntityDataManager(player);
                     dataManager.register(FLAGS, (byte) 0);
                     dataManager.set(FLAGS, (byte) (1 << 5));
 
                     target.connection.sendPacket(new SPacketEntityMetadata(player.getEntityId(), dataManager, true));
                 }
-            } else
-                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") && !player.isInvisible()) player.setInvisible(true);
+            }
         }
     }
 
