@@ -35,5 +35,5 @@ public class Configuration {
     public static boolean autoCrashReporterEnabled = true;
 
     public static int coloredChatMinimumPermissionLevel = 0;
-    public static boolean allowMobsPowerTool, herobrineMessages;
+    public static boolean allowMobsPowerTool, herobrineMessages, enableCapes = true;
 }

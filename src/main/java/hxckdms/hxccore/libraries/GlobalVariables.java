@@ -17,4 +17,5 @@ public class GlobalVariables {
     public static Map<String, String> langFile;
     public static final HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
     public static HxCConfig mainConfig, commandConfig, kitConfig;
+    public static HashMap<String, byte[]> playerCapes = new HashMap<>();
 }

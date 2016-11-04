@@ -1,7 +1,9 @@
 package hxckdms.hxccore.asm;
 
 import com.google.common.eventbus.EventBus;
+import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.libraries.Constants;
+import hxckdms.hxccore.utilities.CapeResourcePack;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -24,5 +26,10 @@ public class HxCContainer extends DummyModContainer {
     public boolean registerBus(EventBus bus, LoadController controller) {
         bus.register(this);
         return true;
+    }
+
+    @Override
+    public Class<?> getCustomResourcePackClass() {
+        return Configuration.enableCapes ? CapeResourcePack.class : null;
     }
 }

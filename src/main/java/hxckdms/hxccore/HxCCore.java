@@ -3,6 +3,7 @@ package hxckdms.hxccore;
 import hxckdms.hxcconfig.HxCConfig;
 import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.event.*;
+import hxckdms.hxccore.network.CapesDownload;
 import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
@@ -30,7 +31,7 @@ import static hxckdms.hxccore.libraries.GlobalVariables.*;
 
 @Mod(modid = MOD_ID, name = MOD_NAME, version = VERSION, dependencies = DEPENDENCIES, acceptableRemoteVersions = "*")
 public class HxCCore {
-    private static final Thread codersCheckThread = new Thread(new CodersCheck());
+    private static final Thread codersCheckThread = new Thread(new CodersCheck()), capesDownloadThread = new Thread(new CapesDownload());
 
     @Mod.Instance(MOD_ID)
     public static HxCCore instance;
@@ -44,6 +45,8 @@ public class HxCCore {
 
         codersCheckThread.setName("Coders check thread");
         codersCheckThread.start();
+        capesDownloadThread.setName("Cape Down thread");
+        if (Configuration.enableCapes) capesDownloadThread.start();
 
         mainConfig = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
         mainConfig.initConfiguration();

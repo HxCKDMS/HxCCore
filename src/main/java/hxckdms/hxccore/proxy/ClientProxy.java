@@ -1,5 +1,8 @@
 package hxckdms.hxccore.proxy;
 
+import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.event.EventCapeRender;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -12,7 +15,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
-
+        if (Configuration.enableCapes) MinecraftForge.EVENT_BUS.register(new EventCapeRender());
     }
 
     @Override

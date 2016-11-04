@@ -52,6 +52,8 @@ public class HxCLoader implements IFMLLoadingPlugin {
         return HxCAccessTransformer.class.getCanonicalName();
     }
 
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void checkAndDownloadDependencies(File mcDir) throws IOException {
         URL depListURL = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/configAPIStable.txt");
         InputStream depLinkInputStream = depListURL.openStream();
