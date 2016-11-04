@@ -31,7 +31,7 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public String getCommandName() {
-        return "makeItRain";
+        return "nuke";
     }
 
     @Override
@@ -39,25 +39,25 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
         switch (args.size()) {
             case 0:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
-                spawnProjectiles(args, player);
+                spawnProjectiles(args, player, false);
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
             case 1:
                 if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-                    spawnProjectiles(args, target);
+                    spawnProjectiles(args, target, false);
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                     target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
 
-                } else if(sender instanceof EntityPlayerMP) {
+                } else if (sender instanceof EntityPlayerMP) {
                     player = (EntityPlayerMP) sender;
-                    spawnProjectiles(args, player);
+                    spawnProjectiles(args, player, args.get(0).equalsIgnoreCase("kitty"));
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
                 }
                 break;
             case 2:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-                spawnProjectiles(args, target);
+                spawnProjectiles(args, target, args.get(1).equalsIgnoreCase("kitty"));
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
@@ -66,8 +66,7 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
 
     }
 
-    private static void spawnProjectiles(LinkedList<String> args, EntityPlayerMP player) {
-        boolean isKitty = args.size() >= 2 && args.get(1).equalsIgnoreCase("kitty");
+    private static void spawnProjectiles(LinkedList<String> args, EntityPlayerMP player, boolean isKitty) {
         int minY = player.worldObj.getTopSolidOrLiquidBlock(player.getPosition()).getY() + 64;
 
         for (int x_offset = -10; x_offset <= 10; x_offset += 5) {

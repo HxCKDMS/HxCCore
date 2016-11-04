@@ -44,7 +44,7 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
         int page = args.size() == 1 ? CommandBase.parseInt(args.get(0), 1, pages) - 1 : 0;
         int min = Math.min(page * modsPerPage, modAmount);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
         LinkedList<String> commandList = new LinkedList<>(subCommands.values().stream().filter(command -> PermissionHandler.canUseSubCommand(sender, command)).map(command -> command.getCommandName()).sorted(String::compareTo).collect(Collectors.toList()));
 
         for (int i = page * modsPerPage; i < modsPerPage + min; i++) {

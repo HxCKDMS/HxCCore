@@ -20,11 +20,11 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
     public void executeSubCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length == 0) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
         String commandName = args[0].toLowerCase();
-        if (!subCommands.containsKey(commandName)) throw new CommandNotFoundException(ServerTranslationHelper.getTranslation(sender, "commands.sub.exception.notFound").getUnformattedText());
+        if (!subCommands.containsKey(commandName)) throw new TranslatedCommandException(sender, "commands.sub.exception.notFound");
         AbstractSubCommand command = subCommands.get(commandName);
 
         if (!command.getCommandState().isUsageAllowed()) throw new CommandException(ServerTranslationHelper.getTranslation(sender, command.getCommandState().getErrorText()).getUnformattedText());
-        if (!PermissionHandler.canUseSubCommand(sender, command)) throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.generic.permission").getUnformattedText());
+        if (!PermissionHandler.canUseSubCommand(sender, command)) throw new TranslatedCommandException(sender, "commands.generic.permission");
 
         LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
         subArgs.removeFirst();

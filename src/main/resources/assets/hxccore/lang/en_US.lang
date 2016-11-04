@@ -9,7 +9,7 @@ commands.hxc.chatColor.usage=/hxc chatColor <player> <color>
 commands.hxc.delHome.usage=/hxc delHome [home name]
 commands.hxc.delWarp.usage=/hxc delWarp [warp name]
 commands.hxc.drain.usage=/hxc drain <range> <fluid name>
-commands.hxc.draw.usage/hxc draw [sphere/circle/2DSquircle/3DSquircle] [x] [y] [z] <block> <metadata> <radius> <is hollow> <precision>
+commands.hxc.draw.usage=/hxc draw [sphere/circle/2DSquircle/3DSquircle] [x] [y] [z] <block> <metadata> <radius> <is hollow> <precision>
 commands.hxc.exterminate.usage=/hxc exterminate <hostiles, items, passives, xp, tamable, mob name>
 commands.hxc.extinguish.usage=/hxc extinguish <player>
 commands.hxc.feed.usage=/hxc feed <player>
@@ -23,7 +23,7 @@ commands.hxc.homeList.usage=/hxc homeList <page number>
 commands.hxc.jump.usage=/hxc jump
 commands.hxc.kill.usage=/hxc kill <player>
 commands.hxc.kit.usage=/hxc kit <kit name>
-commands.hxc.makeItRain.usage=/hxc makeItRain <kitty> <kitty>
+commands.hxc.nuke.usage=/hxc nuke <kitty> <kitty>
 commands.hxc.modList.usage=/hxc modList <page number>
 commands.hxc.mute.usage=/hxc mute [player]
 commands.hxc.nick.usage=/hxc nick <player> <nick name>
@@ -73,7 +73,7 @@ commands.hxc.homeList.info=tmp
 commands.hxc.jump.info=tmp
 commands.hxc.kill.info=tmp
 commands.hxc.kit.info=tmp
-commands.hxc.makeItRain.info=tmp
+commands.hxc.nuke.info=tmp
 commands.hxc.modList.info=tmp
 commands.hxc.mute.info=tmp
 commands.hxc.nick.info=tmp
@@ -97,6 +97,7 @@ commands.hxc.sudo.info=tmp
 commands.error.creativeMode=You are currently in creative mode!
 commands.error.noColor=%s is not a color character.
 commands.error.noItem=You aren't holding an item.
+commands.sub.exception.notFound=This sub command cannot be found.
 
 commands.drain.successful.all=Successfully drained all fluids in a %1$s block radius in %2$s seconds.
 commands.drain.successful.single=Successfully drained all %1$s in a %s block radius in %2$s seconds.
@@ -224,7 +225,7 @@ commands.error.TPA.sender.teleporting=You already have sent a teleportation requ
 commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
 
 commands.mute.other.sender=Thou hast muted %s.
-commands.must.other.target=Thou hast been muted by %s.
+commands.mute.other.target=Thou hast been muted by %s.
 chat.error.muted=Thou ist muted, attempting to speak is futile.
 
 commands.AFK.away=%s has gone AFK.
@@ -236,6 +237,37 @@ commands.path.disabled=You stopped passively building a path.
 commands.sudo.target.insufficientPermission=%1$s does not have the required privileges to use '%2$s'. (use force for a workaround)
 
 commands.exterminate.killed=You have exterminated %s entities!
+
+commands.makeItRain.self=You made it rain on yourself.
+commands.makeItRain.other.sender=You made it rain on %s.
+commands.makeItRain.other.target=%s made it rain on you.
+
+commands.back.error.noBack=You don't have a back location stored.
+commands.back.successful=You went back to X: %1$s Y: %2$s Z: %3$s Dimension:%4$s.
+
+commands.draw.hollow.circle=You drew a hollow circle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.circle=You drew a filled circle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.sphere=You drew a hollow sphere at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.sphere=You drew a filled sphere at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.2DSquircle=You drew a hollow 2DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.2DSquircle=You drew a filled 2DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.3DSquircle=You drew a hollow 3DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.3DSquircle=You drew a filled 3DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+
+commands.protect.error.noSuchLand=There is no such land.
+commands.protect.error.playerNotPresent=That player is not present in the land.
+commands.protect.error.alreadyClaimed=That land is already claimed.
+commands.protect.error.outOfLand=You have already claimed all of your possible land.
+commands.protect.error.noSuchMode=There is no such mode.
+commands.protect.adduser.sender=You have added ''%1$s' to land '%2$s'.
+commands.protect.adduser.target=%1$s has added you to land '%2$s'.
+commands.protect.removeuser.sender=You have removed '%1$s' from land '%2$s'.
+commands.protect.removeuser.target=%1$s removed you from land '%2$s'.
+commands.protect.transfer.sender=You have transferred land '%2$s' to %1$s.
+commands.protect.transfer.target=%1$s has transferred the land '%2$s' to you.
+commands.protect.create=You claimed a land called '%8$s' from X: %1$s Y: %2$s Z: %3$s to X: %4$s Y: %5$s Z: %6$s which used %7$s blocks.
+
+commands.help.list.header=Help page: %1$s/%2$s.
 
 death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
 death.attack.command_hxc_kill.1=%1$s has received divine punishment!

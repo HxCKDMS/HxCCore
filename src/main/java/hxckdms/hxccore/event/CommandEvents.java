@@ -118,7 +118,7 @@ public class CommandEvents implements EventListener {
                 int pathSize = HxCPlayerInfoHandler.getInteger(player, "PathSize");
 
                 StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(player.posX - pathSize, player.posY - 1, player.posZ - pathSize), new BlockPos(player.posX + pathSize, player.posY - 1, player.posZ + pathSize)).spliterator(), false)
-                        .filter(pos -> player.worldObj.isAirBlock(pos))
+                        .filter(pos -> !HxCPlayerInfoHandler.getBoolean(player, "Override") || player.worldObj.isAirBlock(pos))
                         .forEach(pos -> player.worldObj.setBlockState(pos, block.getStateFromMeta(metadata)));
             }
         }

@@ -58,7 +58,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 land.setTag("userList", userList);
                 protectedLands.setTag(args.get(0), land);
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.adduser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.sender", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "removeuser":
                 if (!protectedLands.hasKey(args.get(0))) throw new TranslatedCommandException(sender, "commands.protect.error.noSuchLand");

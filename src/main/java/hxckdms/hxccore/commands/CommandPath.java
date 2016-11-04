@@ -16,6 +16,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
         Block block = args.size() >= 1 ? Block.getBlockFromName(args.get(0)) : null;
         int metadata = args.size() >= 2 ? CommandBase.parseInt(args.get(1), 0) : 0;
         int pathSize = args.size() >= 3 ? CommandBase.parseInt(args.get(2), 0) : 2;
+        boolean override = args.size() >= 4 && CommandBase.parseBoolean(args.get(3));
 
         ItemStack stack = null;
 
@@ -49,6 +51,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
             HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getRegistryName().toString());
             HxCPlayerInfoHandler.setInteger(player, "PathMetaData", metadata);
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
+            HxCPlayerInfoHandler.setBoolean(player, "Override", override);
         }
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
@@ -58,6 +61,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
         else if (args.size() == 2) return Collections.singletonList("0");
         else if (args.size() == 3) return Collections.singletonList("2");
+        else if (args.size() == 4) return Arrays.asList("true", "false");
         else return Collections.emptyList();
     }
 }
