@@ -202,11 +202,11 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void transformCommandBase(ClassNode classNode) {
-        final String CAN_COMMAND_SENDER_USE_COMMAND = HxCLoader.RuntimeDeobf ? "" : "canCommandSenderUseCommand";
-        final String CAN_COMMAND_SENDER_USE_COMMAN_DESC = "(Lnet/minecraft/command/ICommandSender;)Z";
+        final String CAN_COMMAND_SENDER_USE_COMMAND = HxCLoader.RuntimeDeobf ? "func_71519_b" : "canCommandSenderUseCommand";
+        final String CAN_COMMAND_SENDER_USE_COMMAND_DESC = "(Lnet/minecraft/command/ICommandSender;)Z";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
-            if(methodNode.name.equals(CAN_COMMAND_SENDER_USE_COMMAND) && methodNode.desc.equals(CAN_COMMAND_SENDER_USE_COMMAN_DESC)) {
+            if(methodNode.name.equals(CAN_COMMAND_SENDER_USE_COMMAND) && methodNode.desc.equals(CAN_COMMAND_SENDER_USE_COMMAND_DESC)) {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
                     if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == ALOAD)

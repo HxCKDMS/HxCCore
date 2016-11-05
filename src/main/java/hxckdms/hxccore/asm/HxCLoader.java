@@ -62,7 +62,7 @@ public class HxCLoader implements IFMLLoadingPlugin {
         depLinkReader.close();
         depLinkInputStream.close();
 
-        File file = new File(mcDir, "/mods/1.10.2");
+        File file = new File(mcDir, "/mods/1.7.10");
         file.mkdirs();
         String fileName = depDownload.toString().split("/")[depDownload.toString().split("/").length - 1];
         File dependency = new File(file, fileName);

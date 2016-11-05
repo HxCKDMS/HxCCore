@@ -154,7 +154,6 @@ public class HxCPlayerInfoHandler {
     public static class CustomPlayerDataEvents {
         @SubscribeEvent
         public void playerLoggedIn(PlayerEvent.LoadFromFile event) {
-            System.out.println("rawr");
             if (event.entity instanceof EntityPlayer) {
                 UUID uuid = UUID.fromString(event.playerUUID);
                 File modPlayerData = new File(GlobalVariables.modWorldDir, "HxC-" + uuid.toString() + ".dat");
@@ -173,11 +172,7 @@ public class HxCPlayerInfoHandler {
 
         @SubscribeEvent
         public void saveToFile(PlayerEvent.SaveToFile event) {
-            System.out.println("rawr2");
-            UUID uuid = UUID.fromString(event.playerUUID);
             NBTFileHandler.saveCustomNBTFiles(true);
-            //NBTFileHandler.unRegister(uuid.toString());
-            //playerDataTable.remove(uuid);
         }
     }
 }
