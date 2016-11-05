@@ -17,7 +17,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         if (Configuration.enableCapes) MinecraftForge.EVENT_BUS.register(new EventCapeRender());
-        MinecraftForge.EVENT_BUS.register(EventDebugOverlay.class);
+        MinecraftForge.EVENT_BUS.register(new EventDebugOverlay());
     }
 
     @Override

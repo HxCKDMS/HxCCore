@@ -9,7 +9,7 @@ import java.util.EventListener;
 
 public class EventDebugOverlay implements EventListener {
     @SubscribeEvent
-    public static void onDrawDebugText(RenderGameOverlayEvent.Text event) {
+    public void onDrawDebugText(RenderGameOverlayEvent.Text event) {
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo || !Configuration.showPingOutsideF3Menu) event.getRight().add("");
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo || Configuration.showPingOutsideF3Menu) event.getRight().add("Ping: " + Minecraft.getMinecraft().thePlayer.connection.getPlayerInfo(Minecraft.getMinecraft().thePlayer.getUniqueID()).getResponseTime());
     }
