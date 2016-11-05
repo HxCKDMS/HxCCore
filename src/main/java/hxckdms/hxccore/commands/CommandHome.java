@@ -41,7 +41,7 @@ public class CommandHome extends AbstractSubCommand<CommandHxC> {
         NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
         String name = args.size() == 0 ? "default" : args.get(0);
 
-        if (!homes.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.home");
+        if (!homes.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.home", name);
         NBTTagCompound home = homes.getCompoundTag(name);
 
         if (GlobalVariables.server.worldServerForDimension(home.getInteger("dimension")).getBlockState(new BlockPos(home.getDouble("x"), home.getDouble("y") + 1, home.getDouble("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)

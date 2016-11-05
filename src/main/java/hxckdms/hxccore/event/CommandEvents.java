@@ -27,10 +27,10 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -47,8 +47,8 @@ import static net.minecraft.entity.Entity.FLAGS;
 
 public class CommandEvents implements EventListener {
     @SubscribeEvent
-    public void eventLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!permissionData.hasTag(event.player.getUniqueID().toString())) permissionData.setInteger(event.player.getUniqueID().toString(), 1);
+    public void eventLoadFile(PlayerEvent.LoadFromFile event) {
+        if (!permissionData.hasTag(event.getPlayerUUID())) permissionData.setInteger(event.getPlayerUUID(), 1);
     }
 
     @SubscribeEvent

@@ -4,8 +4,8 @@ import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,8 +153,8 @@ public class HxCPlayerInfoHandler {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static class CustomPlayerDataEvents {
         @SubscribeEvent
-        public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-            UUID uuid = event.player.getUniqueID();
+        public void eventLoadFile(PlayerEvent.LoadFromFile event) {
+            UUID uuid = event.getEntityPlayer().getUniqueID();
             File modPlayerData = new File(GlobalVariables.modWorldDir, "HxC-" + uuid.toString() + ".dat");
 
             try {
@@ -169,11 +169,8 @@ public class HxCPlayerInfoHandler {
         }
 
         @SubscribeEvent
-        public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-            UUID uuid = event.player.getUniqueID();
+        public void eventSaveFile(PlayerEvent.SaveToFile event) {
             NBTFileHandler.saveCustomNBTFiles(true);
-            NBTFileHandler.unRegister(uuid.toString());
-            playerDataTable.remove(uuid);
         }
     }
 }

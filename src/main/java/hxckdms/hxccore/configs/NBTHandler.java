@@ -127,7 +127,6 @@ public class NBTHandler  implements ITypeHandler, ICollectionsHandler {
     public List<String> writeInCollection(Field field, Object value, HashMap<String, Object> subDataWatcher, ParameterizedType parameterizedType, HxCConfig HxCConfigClass) {
         ICollectionsHandler cHandler = HxCConfigClass.getCollectionsHandler(NBTBase.class);
         NBTBase base = (NBTBase) value;
-        System.out.println(value);
 
         switch (NBTBase.NBT_TYPES[base.getId()]) {
             case "STRING":

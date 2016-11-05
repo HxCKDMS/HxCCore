@@ -1,5 +1,6 @@
 package hxckdms.hxccore.utilities;
 
+import hxckdms.hxccore.configs.Configuration;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -177,7 +178,7 @@ public class NBTFileHandler {
         }
 
         try {
-            CompressedStreamTools.safeWrite(tagCompound, nbtFile);
+            if (Configuration.debugMode) CompressedStreamTools.safeWrite(tagCompound, nbtFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,7 +194,7 @@ public class NBTFileHandler {
             if (!nbtFile.exists()) nbtFile.createNewFile();
             tagCompound = CompressedStreamTools.read(nbtFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            if (Configuration.debugMode) e.printStackTrace();
             return;
         }
 

@@ -29,7 +29,7 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        if (args.size() < 1) throw new TranslatedCommandException(sender, "commands.kit.usage");
+        if (args.size() < 1) throw new TranslatedCommandException(sender, "commands.hxc.kit.usage");
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String kitName = args.get(0);

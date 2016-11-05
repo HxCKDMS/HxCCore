@@ -93,8 +93,8 @@ commands.hxc.setWarp.info=Sets location as global waypoint.
 commands.hxc.smite.info=Smites target, summons lightning bolt on target.
 commands.hxc.spawn.info=Sends target to spawn.
 commands.hxc.sudo.info=Sends command as targeted player.
-commands.hxc.warp.usage=Teleports you to global waypoint.
-commands.hxc.warpList.usage=Lists global waypoints.
+commands.hxc.warp.info=Teleports you to global waypoint.
+commands.hxc.warpList.info=Lists global waypoints.
 
 commands.error.creativeMode=You are currently in creative mode!
 commands.error.noColor=%s is not a color character.
@@ -226,8 +226,10 @@ commands.error.TPA.sender.notTeleporting=You haven't sent a teleportation reques
 commands.error.TPA.sender.teleporting=You already have sent a teleportation request to someone.
 commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
 
-commands.mute.other.sender=Thou hast muted %s.
-commands.mute.other.target=Thou hast been muted by %s.
+commands.mute.other.sender.true=Thou hast muted %s.
+commands.mute.other.sender.false=Thou hast unmuted %s.
+commands.mute.other.target.true=Thou hast been muted by %s.
+commands.mute.other.target.false=Thou hast been unmuted by %s.
 chat.error.muted=Thou ist muted, attempting to speak is futile.
 
 commands.AFK.away=%s has gone AFK.
@@ -270,6 +272,8 @@ commands.protect.transfer.target=%1$s has transferred the land '%2$s' to you.
 commands.protect.create=You claimed a land called '%8$s' from X: %1$s Y: %2$s Z: %3$s to X: %4$s Y: %5$s Z: %6$s which used %7$s blocks.
 
 commands.help.list.header=Help page: %1$s/%2$s.
+
+commands.kit.successful=You successfully gave yourself kit: '%s'.
 
 death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
 death.attack.command_hxc_kill.1=%1$s has received divine punishment!
