@@ -153,7 +153,7 @@ public class HxCPlayerInfoHandler {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static class CustomPlayerDataEvents {
         @SubscribeEvent
-        public void playerLoggedIn(PlayerEvent.LoadFromFile event) {
+        public void eventLoadFile(PlayerEvent.LoadFromFile event) {
             if (event.entity instanceof EntityPlayer) {
                 UUID uuid = UUID.fromString(event.playerUUID);
                 File modPlayerData = new File(GlobalVariables.modWorldDir, "HxC-" + uuid.toString() + ".dat");
@@ -171,7 +171,7 @@ public class HxCPlayerInfoHandler {
         }
 
         @SubscribeEvent
-        public void saveToFile(PlayerEvent.SaveToFile event) {
+        public void eventSaveFile(PlayerEvent.SaveToFile event) {
             NBTFileHandler.saveCustomNBTFiles(true);
         }
     }

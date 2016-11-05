@@ -38,7 +38,7 @@ import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
 public class CommandEvents implements EventListener {
     @SubscribeEvent
-    public void eventLogin(PlayerEvent.LoadFromFile event) {
+    public void eventLoadFile(PlayerEvent.LoadFromFile event) {
         if (!permissionData.hasTag(event.entityPlayer.getUniqueID().toString())) permissionData.setInteger(event.entityPlayer.getUniqueID().toString(), 1);
     }
 
