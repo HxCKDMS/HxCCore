@@ -1,0 +1,76 @@
+package hxckdms.hxccore.api.command;
+
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import hxckdms.hxccore.registry.CommandRegistry;
+import hxckdms.hxccore.utilities.PermissionHandler;
+import hxckdms.hxccore.utilities.ServerTranslationHelper;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
+
+import java.util.*;
+
+@SuppressWarnings("unchecked")
+public abstract class AbstractMultiCommand extends CommandBase implements IMultiCommand {
+    protected HashMap<String, AbstractSubCommand> subCommands = new HashMap<>();
+
+    @Override
+    public void executeSubCommand(ICommandSender sender, String[] args) throws CommandException {
+        if (args.length == 0) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
+        String commandName = args[0].toLowerCase();
+        if (!subCommands.containsKey(commandName)) throw new TranslatedCommandException(sender, "commands.sub.exception.notFound");
+        AbstractSubCommand command = subCommands.get(commandName);
+
+        if (!command.getCommandState().isUsageAllowed()) throw new CommandException(ServerTranslationHelper.getTranslation(sender, command.getCommandState().getErrorText()).getUnformattedText());
+        if (!PermissionHandler.canUseSubCommand(sender, command)) throw new TranslatedCommandException(sender, "commands.generic.permission");
+
+        LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
+        subArgs.removeFirst();
+
+        command.execute(sender, subArgs);
+    }
+
+    @Override
+    public void registerSubCommands(FMLPreInitializationEvent event) {
+        Set<ASMDataTable.ASMData> asmDataTable = event.getAsmData().getAll(HxCCommand.class.getCanonicalName());
+
+        if (asmDataTable != null && !asmDataTable.isEmpty()) {
+            for (ASMDataTable.ASMData data : asmDataTable) {
+                try {
+                    if (Class.forName(data.getClassName()).getSuperclass() != AbstractSubCommand.class) continue;
+                    Class<? extends AbstractSubCommand> clazz = (Class<? extends AbstractSubCommand>) Class.forName(data.getClassName());
+
+                    AbstractSubCommand subCommand = clazz.newInstance();
+                    if (subCommand.getParentCommand() == this.getClass()) subCommands.put(subCommand.getCommandName().toLowerCase(), subCommand);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static HashMap<String, AbstractSubCommand> getSubCommands(String name) {
+        return (HashMap<String, AbstractSubCommand>) CommandRegistry.getCommandForName(name).subCommands.clone();
+    }
+
+
+
+
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return true;
+    }
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        return super.addTabCompletionOptions(sender, args);
+    }
+
+    @Override
+    public void processCommand(ICommandSender sender, String[] args) {
+        executeSubCommand(sender, args);
+    }
+}

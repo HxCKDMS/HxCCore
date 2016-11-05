@@ -1,0 +1,312 @@
+commands.hxc.AFK.usage=/hxc afk
+commands.hxc.TP.usage=/hxc tp [player] <player>
+commands.hxc.TPA.usage=/hxc tpa [player/accept/deny/cancel]
+commands.hxc.back.usage=/hxc back
+commands.hxc.broadcast.usage=/hxc broadcast [message]
+commands.hxc.burn.usage=/hxc burn [player] <time>
+commands.hxc.cannon.usage=/hxc cannon <velocity> <kitty>
+commands.hxc.chatColor.usage=/hxc chatColor <player> <color>
+commands.hxc.delHome.usage=/hxc delHome [home name]
+commands.hxc.delWarp.usage=/hxc delWarp [warp name]
+commands.hxc.drain.usage=/hxc drain <range> <fluid name>
+commands.hxc.draw.usage=/hxc draw [sphere/circle/2DSquircle/3DSquircle] [x] [y] [z] <block> <metadata> <radius> <is hollow> <precision>
+commands.hxc.exterminate.usage=/hxc exterminate <hostiles, items, passives, xp, tamable, mob name>
+commands.hxc.extinguish.usage=/hxc extinguish <player>
+commands.hxc.feed.usage=/hxc feed <player>
+commands.hxc.fly.usage=/hxc fly <player>
+commands.hxc.god.usage=/hxc god <player>
+commands.hxc.hat.usage=/hxc hat
+commands.hxc.heal.usage=/hxc heal <player>
+commands.hxc.help.usage=/hxc help <page number/command>
+commands.hxc.home.usage=/hxc home <home name>
+commands.hxc.homeList.usage=/hxc homeList <page number>
+commands.hxc.jump.usage=/hxc jump
+commands.hxc.kill.usage=/hxc kill <player>
+commands.hxc.kit.usage=/hxc kit <kit name>
+commands.hxc.nuke.usage=/hxc nuke <kitty> <kitty>
+commands.hxc.modList.usage=/hxc modList <page number>
+commands.hxc.mute.usage=/hxc mute [player]
+commands.hxc.nick.usage=/hxc nick <player> <nick name>
+commands.hxc.override.usage=/hxc override
+commands.hxc.path.usage=/hxc path <block> <metadata> <path size> <air/fluid/all>
+commands.hxc.playerInfo.usage=/hxc playerInfo <player>
+commands.hxc.powerTool.usage=/hxc powerTool <commands>
+commands.hxc.protect.usage=/hxc protect [name] [addUser/removeUser/transfer/create/delete] <x1> <y1> <z1> <x2> <y2> <z2> <dimension>
+commands.hxc.reloadConfigs.usage=/hxc reloadConfigs
+commands.hxc.rename.usage=/hxc rename
+commands.hxc.repair.usage=/hxc repair
+commands.hxc.repairAll.usage=/hxc repairAll
+commands.hxc.serverInfo.usage=/hxc serverInfo
+commands.hxc.setHome.usage=/hxc setHome <name>
+commands.hxc.setPermission.usage=/hxc setPermission <player> [permission level]
+commands.hxc.setWarp.usage=/hxc setWarp <name> <x> <y> <z>.
+commands.hxc.smite.usage=/hxc smite <player>
+commands.hxc.spawn.usage=/hxc spawn <player>
+commands.hxc.sudo.usage=/hxc sudo [player] [command]
+commands.hxc.thaw.usage=/hxc thaw [range]
+commands.hxc.vanish.usage=/hxc vanish <player>
+commands.hxc.warp.usage=/hxc warp <warp name>
+commands.hxc.warpList.usage=/hxc warpList
+
+commands.hxc.AFK.info=Toggles to afk protection mode.
+commands.hxc.TP.info=Teleports to player, works inter-dimensionally.
+commands.hxc.TPA.info=Requests to teleport to player, works inter-dimensionally.
+commands.hxc.back.info=Teleports you to your previous location.
+commands.hxc.broadcast.info=Broadcasts a message as the server.
+commands.hxc.burn.info=Ignites player for a duration.
+commands.hxc.cannon.info=Fires a projectile, TNT or Kitten.
+commands.hxc.chatColor.info=Changes your default chat color.
+commands.hxc.delHome.info=Deletes an old home.
+commands.hxc.delWarp.info=Deletes an old warp.
+commands.hxc.drain.info=Voids nearby fluids from world.
+commands.hxc.draw.info=Builds a shape in world.
+commands.hxc.exterminate.info=Kills mobs matching the arguement.
+commands.hxc.extinguish.info=Quenches the flames on a player.
+commands.hxc.feed.info=Fills the target's hunger bar.
+commands.hxc.fly.info=Enables creative mode flight.
+commands.hxc.god.info=Makes you immortal.
+commands.hxc.hat.info=Puts item in hand on your head.
+commands.hxc.heal.info=Heals targeted player.
+commands.hxc.help.info=Informs you of data.
+commands.hxc.home.info=Teleports you to your own waypoint.
+commands.hxc.homeList.info=Lists your waypoints.
+commands.hxc.jump.info=Teleports you to block you are looking at.
+commands.hxc.kill.info=Kills you or your target.
+commands.hxc.kit.info=Gives you a set of items from the config.
+commands.hxc.nuke.info=Nukes targets location.
+commands.hxc.modList.info=Lists installed mods.
+commands.hxc.mute.info=Mutes player.
+commands.hxc.nick.info=Changes your display name.
+commands.hxc.override.info=Overrides protected zone rules.
+commands.hxc.path.info=Builds a path below your feet as you walk.
+commands.hxc.playerInfo.info=Gives you information on a player.
+commands.hxc.powerTool.info=Sets commands bound to currently held item.
+commands.hxc.protect.info=Protects an area from being interacted with by unwanted guests.
+commands.hxc.reloadConfigs.info=Reloads the configs on the server.
+commands.hxc.rename.info=Renames currently held item.
+commands.hxc.repair.info=Repairs held item.
+commands.hxc.repairAll.info=Repairs all items in inventory.
+commands.hxc.serverInfo.info=Displays information from the server.
+commands.hxc.setHome.info=Sets location as a personal waypoint.
+commands.hxc.setPermission.info=Sets targets permission level.
+commands.hxc.setWarp.info=Sets location as global waypoint.
+commands.hxc.smite.info=Smites target, summons lightning bolt on target.
+commands.hxc.spawn.info=Sends target to spawn.
+commands.hxc.sudo.info=Sends command as targeted player.
+commands.hxc.warp.info=Teleports you to global waypoint.
+commands.hxc.warpList.info=Lists global waypoints.
+
+commands.error.creativeMode=You are currently in creative mode!
+commands.error.noColor=%s is not a color character.
+commands.error.noItem=You aren't holding an item.
+commands.sub.exception.notFound=This sub command cannot be found.
+
+commands.drain.successful.all=Successfully drained all fluids in a %1$s block radius in %2$s seconds.
+commands.drain.successful.single=Successfully drained all %1$s in a %s block radius in %2$s seconds.
+
+commands.fly.self.enabled=You have granted yourself the ability to fly.
+commands.fly.self.disabled=You have forfeited the ability to fly.
+commands.fly.other.sender.enabled=You granted %s the ability to fly.
+commands.fly.other.sender.disabled=You have taken the ability to fly away from %s.
+commands.fly.other.target.enabled=%s granted you the ability to fly.
+commands.fly.other.target.disabled=%s has taken your ability to fly away.
+
+commands.nick.removed.self=Your nickname has been removed.
+commands.nick.removed.other.sender=You have removed %s's nickname.
+commands.nick.removed.other.target=%s removed your nickname.
+commands.nick.set.other.sender=You set %1$s's nick to %2$s.
+commands.nick.set.other.target=%1$s set your nickname to %2$s
+commands.nick.set.self=Your nickname has been set to %s.
+
+commands.setpermissions.sender=You have set %1$s's permission level to %2$s.
+commands.setpermissions.target=%1$s set your permission level to %2$s.
+commands.setpermissions.self=Your permission level has been set to %s.
+
+commands.heal.self=You have healed yourself.
+commands.heal.other.sender=You have healed %s.
+commands.heal.other.target=You have been healed by %s.
+
+commands.feed.self=You have fed yourself.
+commands.feed.other.sender=You have fed %s.
+commands.feed.other.target=You have been fed by %s.
+
+commands.spawn.self=You have been teleported to spawn.
+commands.spawn.other.sender=You have teleported %s to spawn.
+commands.spawn.other.target=%s teleported you to spawn.
+
+commands.burn.self=You set yourself ablaze for %s seconds.
+commands.burn.other.sender=You set %1$s ablaze for %2$s seconds.
+commands.burn.other.target=%1$s set you ablaze for %2$s seconds.
+
+commands.extinguish.self=You extinguished yourself.
+commands.extinguish.other.sender=You extinguished %s.
+commands.extinguish.other.target=%s extinguished you.
+
+commands.hat.self=You set your hat to %s.
+
+commands.god.self.enabled=You have granted yourself to power of a god.
+commands.god.self.disabled=You have forfeited the power of a god.
+commands.god.other.sender.enabled=You granted %s the power of a god.
+commands.god.other.sender.disabled=You have taken the power of a god away from %s.
+commands.god.other.target.enabled=%s gave you the power of a god.
+commands.god.other.target.disabled=%s has taken the power of a god away from you.
+
+commands.vanish.all.appear=You are now visible to all players.
+commands.vanish.all.disappear=You are now invisible to all players.
+commands.vanish.single.appear=You are now visible to %s.
+commands.vanish.single.disappear=You are now invisible to %s.
+
+commands.smite.world=Thou hast smitten the location %1$s, %2$s, %3$s
+commands.smite.other.sender=Thou hast smitten %s.
+commands.smite.other.target=Thou hast been smitten by %s.
+
+commands.warp.set=Warp '%1$s' has been set to coordinates: X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.warp.removed=Warp '%s' has been removed.
+commands.warp.list.header=Warps page: %1$s/%2$s.
+commands.warp.list.format=name: '%1$s', X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.warp.teleport.self=You sent yourself to warp: '%s'
+commands.warp.teleport.other.sender=You sent %1$s to warp: '%2$s'.
+commands.warp.teleport.other.target=%1$s sent you to warp: '%2$s'.
+commands.error.invalid.warp=Warp '%s' is not a valid warp.
+
+commands.modList.header=ModList page: %1$d/%2$d.
+commands.modList.format=name: %1$s, version %2$s.
+
+commands.kill.successful=You successfully killed %s.
+commands.kill.failed=You failed to kill %s.
+
+commands.TP_HxC.player.self.player=You teleported to %s.
+commands.TP_HxC.player.self.destination=%s teleported to you.
+commands.TP_HxC.player.other.sender=You teleported %1$s to %2$s.
+commands.TP_HxC.player.other.target=%1$s teleported you to %2$s.
+commands.TP_HxC.player.other.destination=%1$s teleported %2$s to you.
+commands.TP_HxC.coordinates.self=You teleported to X: %1$s, Y: %2$s, Z: %3$s, Dimension: %4$s.
+commands.TP_HxC.coordinates.other.sender=You teleported %1$s to X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.TP_HxC.coordinates.other.target=%1$s teleported you to X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+
+commands.chatColor.set.self=You set your chat color to %s.
+commands.chatColor.removed.self=You removed your chat color.
+commands.chatColor.set.other.sender=You set %1$s's chat color to %2$s.
+commands.chatColor.removed.other.sender=You removed %s's chat color.
+commands.chatColor.set.other.target=%1$s set your chat color to %2$s.
+commands.chatColor.removed.other.target=%s removed your chat color.
+
+commands.repair.successful=You successfully repaired %s.
+commands.error.repair.unrepairable=The item you're holding is unrepairable.
+commands.error.repair.undamaged=The item you're holding is full on durability.
+
+commands.repairAll.successful.self=You successfully repaired all your items.
+commands.repairAll.successful.other.sender=You repaired all of %s's items.
+commands.repairAll.successful.other.target=%s repaired all your items.
+
+commands.reloadConfigs.reloaded=You successfully reloaded all HxC configuration files.
+
+commands.rename.successful=You successfully renamed %1$s to %2$s.
+
+commands.home.set=Home '%1$s' has been set to coordinates: X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.home.removed=Home '%s' has been removed.
+commands.home.list.header=Homes page: %1$s/%2$s.
+commands.home.list.format=name: '%1$s', X: %2$s, Y: %3$s, Z: %4$s, Dimension: %5$s.
+commands.home.teleport.self=You sent yourself to home: '%s'
+commands.error.invalid.home=Home '%s' is not a valid home.
+commands.error.outOfHomes=You have run out of homes.
+
+commands.TPA.request.target=%s requests to teleport to you type '/tpa accept' to accept.
+commands.TPA.request.sender=You requested to teleport to %s.
+commands.TPA.accepted.sender=You accepted %s's teleport request.
+commands.TPA.accepted.requester=%s accepted your teleport request.
+commands.TPA.denied.sender=You denied %s's teleport request.
+commands.TPA.denied.requester=%s denied your teleport request.
+commands.TPA.canceled.sender=You canceled your teleport request to %s.
+commands.TPA.canceled.target=%s canceled their teleport request to you.
+commands.TPA.willExpire=The teleport request from %1$s will expire in %2$s.
+commands.TPA.hasExpired=The teleport request from %s has expired.
+commands.error.TPA.noRequest=You don't have any teleportation requests.
+commands.error.TPA.sender.notTeleporting=You haven't sent a teleportation request to anyone.
+commands.error.TPA.sender.teleporting=You already have sent a teleportation request to someone.
+commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
+
+commands.mute.other.sender.true=Thou hast muted %s.
+commands.mute.other.sender.false=Thou hast unmuted %s.
+commands.mute.other.target.true=Thou hast been muted by %s.
+commands.mute.other.target.false=Thou hast been unmuted by %s.
+chat.error.muted=Thou ist muted, attempting to speak is futile.
+
+commands.AFK.away=%s has gone AFK.
+commands.AFK.back=%s has returned.
+
+commands.path.enabled=You are now passively building a %2$s x %2$s path made up out of %1$s.
+commands.path.disabled=You stopped passively building a path.
+
+commands.sudo.target.insufficientPermission=%1$s does not have the required privileges to use '%2$s'. (use force for a workaround)
+
+commands.exterminate.killed=You have exterminated %s entities!
+
+commands.makeItRain.self=You made it rain on yourself.
+commands.makeItRain.other.sender=You made it rain on %s.
+commands.makeItRain.other.target=%s made it rain on you.
+
+commands.back.error.noBack=You don't have a back location stored.
+commands.back.successful=You went back to X: %1$s Y: %2$s Z: %3$s Dimension: %4$s.
+
+commands.draw.hollow.circle=You drew a hollow circle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.circle=You drew a filled circle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.sphere=You drew a hollow sphere at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.sphere=You drew a filled sphere at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.2DSquircle=You drew a hollow 2DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.2DSquircle=You drew a filled 2DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.hollow.3DSquircle=You drew a hollow 3DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+commands.draw.filled.3DSquircle=You drew a filled 3DSquircle at X: %1$s Y: %2$s Z: %3$s with %4$s with a %5$s radius.
+
+commands.protect.error.noSuchLand=There is no such land.
+commands.protect.error.playerNotPresent=That player is not present in the land.
+commands.protect.error.alreadyClaimed=That land is already claimed.
+commands.protect.error.outOfLand=You have already claimed all of your possible land.
+commands.protect.error.noSuchMode=There is no such mode.
+commands.protect.adduser.sender=You have added ''%1$s' to land '%2$s'.
+commands.protect.adduser.target=%1$s has added you to land '%2$s'.
+commands.protect.removeuser.sender=You have removed '%1$s' from land '%2$s'.
+commands.protect.removeuser.target=%1$s removed you from land '%2$s'.
+commands.protect.transfer.sender=You have transferred land '%2$s' to %1$s.
+commands.protect.transfer.target=%1$s has transferred the land '%2$s' to you.
+commands.protect.create=You claimed a land called '%8$s' from X: %1$s Y: %2$s Z: %3$s to X: %4$s Y: %5$s Z: %6$s which used %7$s blocks.
+
+commands.help.list.header=Help page: %1$s/%2$s.
+
+commands.kit.successful=You successfully gave yourself kit: '%s'.
+
+death.attack.command_hxc_kill.0=%1$s forgot how to breathe.
+death.attack.command_hxc_kill.1=%1$s has received divine punishment!
+death.attack.command_hxc_kill.2=%1$s died of ebola.
+death.attack.command_hxc_kill.3=%1$s stepped on a lego.
+death.attack.command_hxc_kill.4=%1$s has tripped on a cactus.
+death.attack.command_hxc_kill.5=%1$s fell ill with instant death syndrome.
+death.attack.command_hxc_kill.6=%1$s has tripped over air.
+death.attack.command_hxc_kill.7=%1$s has broke his neck.
+death.attack.command_hxc_kill.8=%1$s has spontaneously combusted.
+death.attack.command_hxc_kill.9=%1$s has spontaneously exploded.
+death.attack.command_hxc_kill.10=%1$s has been atomicly dismantled.
+death.attack.command_hxc_kill.11=%1$s has been removed from existence.
+death.attack.command_hxc_kill.12=%1$s has blew out their sphincter!
+death.attack.command_hxc_kill.13=%1$s has fell into a micro-blackhole.
+death.attack.command_hxc_kill.14=%1$s was annihilated by DrZed.
+death.attack.command_hxc_kill.15=%1$s's luck ran out.
+death.attack.command_hxc_kill.16=%1$s has been slapped into the next universe.
+death.attack.command_hxc_kill.17=%1$s died of butt cancer.
+death.attack.command_hxc_kill.18=%1$s choked on a potato.
+death.attack.command_hxc_kill.19=%1$s done borked physics!
+death.attack.command_hxc_kill.20=%1$s angered a walrus.
+death.attack.command_hxc_kill.21=%1$s fell ontop of a porcupine.
+death.attack.command_hxc_kill.22=%1$s was attacked by a swan.
+death.attack.command_hxc_kill.23=%1$s was killed by a squid.
+death.attack.command_hxc_kill.24=%1$s hit the cactus too hard then blew up swimming in lava.....
+death.attack.command_hxc_kill.25=%1$s slipped on a banana peel.
+death.attack.command_hxc_kill.26=%1$s sat on a cactus.
+death.attack.command_hxc_kill.27=%1$s done did.
+death.attack.command_hxc_kill.28=%1$s had one job...
+death.attack.command_hxc_kill.29=You had one job %1$s and you failed...
+death.attack.command_hxc_kill.30=Rest in potatoes %1$s...
+death.attack.command_hxc_kill.31=Rest in pasta %1$s...
+death.attack.command_hxc_kill.32=RIP %1$s...
+death.attack.command_hxc_kill.33=%1$s...
+death.attack.command_hxc_kill.34=%1$s failed...
