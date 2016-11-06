@@ -14,13 +14,13 @@ import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.S1CPacketEntityMetadata;
+import net.minecraft.network.play.server.S13PacketDestroyEntities;
+import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -79,10 +79,9 @@ public class CommandEvents implements EventListener {
                     }
 
                 for (EntityPlayerMP target : targets) {
-                    DataWatcher dataManager = new DataWatcher(player);
-                    //dataManager.addObject(0, (byte) 0);
-                    dataManager.addObject(0, (byte) (1 << 5));
-                    target.playerNetServerHandler.sendPacket(new S1CPacketEntityMetadata(player.getEntityId(), dataManager, true));
+                    if (target == player) continue;
+                    target.playerNetServerHandler.sendPacket(new S13PacketDestroyEntities(player.getEntityId()));
+                    target.playerNetServerHandler.sendPacket(new S38PacketPlayerListItem(player.getCommandSenderName(), false, 0));
                 }
             }
         }

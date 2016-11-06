@@ -11,7 +11,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.play.server.S1CPacketEntityMetadata;
+import net.minecraft.network.play.server.S0CPacketSpawnPlayer;
+import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -40,8 +41,10 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setChatStyle(new ChatStyle().setColor(!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.RED)));
                 HxCPlayerInfoHandler.setBoolean(player, "VanishedFromAll", !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"));
 
-                if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"))
-                    ((List<EntityPlayerMP>) GlobalVariables.server.getConfigurationManager().playerEntityList).forEach(target -> target.playerNetServerHandler.sendPacket(new S1CPacketEntityMetadata(player.getEntityId(), player.getDataWatcher(), true)));
+                if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
+                    ((List<EntityPlayerMP>) GlobalVariables.server.getConfigurationManager().playerEntityList).stream().filter(target -> target != player).forEach(target -> target.playerNetServerHandler.sendPacket(new S38PacketPlayerListItem(player.getCommandSenderName(), true, player.ping)));
+                    ((List<EntityPlayerMP>) GlobalVariables.server.getConfigurationManager().playerEntityList).stream().filter(target -> target != player).forEach(target -> target.playerNetServerHandler.sendPacket(new S0CPacketSpawnPlayer(player)));
+                }
 
                 break;
             case 1:
@@ -60,7 +63,9 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
 
                 if (isInvisibleToTarget) {
                     HxCPlayerInfoHandler.setTagList(player, "VanishedFromList", vanishList);
-                    target.playerNetServerHandler.sendPacket(new S1CPacketEntityMetadata(player.getEntityId(), player.getDataWatcher(), true));
+                    target.playerNetServerHandler.sendPacket(new S38PacketPlayerListItem(player.getCommandSenderName(), true, player.ping));
+                    target.playerNetServerHandler.sendPacket(new S0CPacketSpawnPlayer(player));
+
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.appear", target.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
                 } else {
                     vanishList.appendTag(new NBTTagString(target.getUniqueID().toString()));
