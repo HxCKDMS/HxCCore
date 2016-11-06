@@ -43,8 +43,10 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setStyle(new Style().setColor(!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? TextFormatting.DARK_AQUA : TextFormatting.RED)));
                 HxCPlayerInfoHandler.setBoolean(player, "VanishedFromAll", !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"));
 
-                if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"))
-                    GlobalVariables.server.getPlayerList().getPlayerList().forEach(target -> target.connection.sendPacket(new SPacketEntityMetadata(player.getEntityId(), player.getDataManager(), true)));
+                if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
+                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player)));
+                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketSpawnPlayer(player)));
+                }
 
                 break;
             case 1:
