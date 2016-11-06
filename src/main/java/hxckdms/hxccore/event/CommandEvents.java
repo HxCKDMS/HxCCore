@@ -18,8 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SPacketEntityMetadata;
+import net.minecraft.network.play.server.SPacketDestroyEntities;
+import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
-import static net.minecraft.entity.Entity.FLAGS;
 
 public class CommandEvents implements EventListener {
     @SubscribeEvent
@@ -88,11 +87,9 @@ public class CommandEvents implements EventListener {
                     }
 
                 for (EntityPlayerMP target : targets) {
-                    EntityDataManager dataManager = new EntityDataManager(player);
-                    dataManager.register(FLAGS, (byte) 0);
-                    dataManager.set(FLAGS, (byte) (1 << 5));
-
-                    target.connection.sendPacket(new SPacketEntityMetadata(player.getEntityId(), dataManager, true));
+                    if (target == player) continue;
+                    target.connection.sendPacket(new SPacketDestroyEntities(player.getEntityId()));
+                    target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.REMOVE_PLAYER, player));
                 }
             }
         }

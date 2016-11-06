@@ -151,6 +151,7 @@ commands.god.other.sender.disabled=You have taken the power of a god away from %
 commands.god.other.target.enabled=%s gave you the power of a god.
 commands.god.other.target.disabled=%s has taken the power of a god away from you.
 
+commands.error.vanish.noSelf=You cannot be invisible from yourself.
 commands.vanish.all.appear=You are now visible to all players.
 commands.vanish.all.disappear=You are now invisible to all players.
 commands.vanish.single.appear=You are now visible to %s.

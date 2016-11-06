@@ -2,6 +2,7 @@ package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
+import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
@@ -11,7 +12,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.play.server.SPacketEntityMetadata;
+import net.minecraft.network.play.server.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -48,6 +49,8 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
+                if (target == player) throw new TranslatedCommandException(sender, "commands.error.vanish.noSelf");
+
                 NBTTagList vanishList = HxCPlayerInfoHandler.getTagList(player, "VanishedFromList");
                 if (vanishList == null) vanishList = new NBTTagList();
                 boolean isInvisibleToTarget = false;
@@ -62,7 +65,9 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
 
                 if (isInvisibleToTarget) {
                     HxCPlayerInfoHandler.setTagList(player, "VanishedFromList", vanishList);
-                    target.connection.sendPacket(new SPacketEntityMetadata(player.getEntityId(), player.getDataManager(), true));
+                    target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player));
+                    target.connection.sendPacket(new SPacketSpawnPlayer(player));
+
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.appear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
                 } else {
                     vanishList.appendTag(new NBTTagString(target.getUniqueID().toString()));
