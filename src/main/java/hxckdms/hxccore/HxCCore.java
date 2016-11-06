@@ -14,15 +14,16 @@ import hxckdms.hxccore.network.CodersCheck;
 import hxckdms.hxccore.network.MessageNameTagSync;
 import hxckdms.hxccore.proxy.IProxy;
 import hxckdms.hxccore.registry.CommandRegistry;
-import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
-import hxckdms.hxccore.utilities.Kit;
-import hxckdms.hxccore.utilities.Logger;
-import hxckdms.hxccore.utilities.NBTFileHandler;
+import hxckdms.hxccore.utilities.*;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.StringTranslate;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import static hxckdms.hxccore.libraries.Constants.*;
@@ -50,6 +51,9 @@ public class HxCCore {
         mainConfig = new HxCConfig(Configuration.class, "HxCCore", modConfigDir, "cfg", MOD_NAME);
         mainConfig.initConfiguration();
         Kit.initConfigs();
+
+        extendEnchantsArray();
+        extendPotionsArray();
 
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PACKET_CHANNEL_NAME);
         network.registerMessage(MessageNameTagSync.Handler.class, MessageNameTagSync.class, 0, Side.CLIENT);
@@ -119,5 +123,41 @@ public class HxCCore {
     @NetworkCheckHandler
     public boolean networkCheck(Map<String, String> mods, Side side) {
         return !mods.containsKey("hxccore") || mods.get("hxccore").equals(VERSION);
+    }
+
+    private static void extendEnchantsArray() {
+        int enchantsOffset;
+        Logger.info("Extending Enchants Array", MOD_NAME);
+        enchantsOffset = Enchantment.enchantmentsList.length;
+        Enchantment[] enchantmentsList = new Enchantment[enchantsOffset + 256];
+        System.arraycopy(Enchantment.enchantmentsList, 0, enchantmentsList, 0, enchantsOffset);
+        try {
+            Field field = HxCReflectionHelper.getDeclaredField(Enchantment.class, "enchantmentsList", "field_77331_b");
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(null, enchantmentsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Logger.info("Enchants Array now: " + Enchantment.enchantmentsList.length, MOD_NAME);
+    }
+
+    private static void extendPotionsArray() {
+        int potionOffset;
+        Logger.info("Extending Potions Array.", MOD_NAME);
+        potionOffset = Potion.potionTypes.length;
+        Potion[] potionTypes = new Potion[potionOffset + 256];
+        System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
+        try {
+            Field field = HxCReflectionHelper.getDeclaredField(Potion.class, "potionTypes", "field_76425_a");
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(null, potionTypes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Logger.info("Potion array now: " + Potion.potionTypes.length, MOD_NAME);
     }
 }
