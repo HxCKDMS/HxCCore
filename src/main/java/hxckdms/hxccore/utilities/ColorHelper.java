@@ -101,7 +101,6 @@ public class ColorHelper {
     }
 
     public static TextComponentTranslation handleMessage(String message, char defaultColor) {
-        System.out.println(message);
         TextComponentTranslation text = color(message, defaultColor);
         return text == null ? new TextComponentTranslation("") : text;
     }
@@ -110,7 +109,7 @@ public class ColorHelper {
     public static final HashMap<UUID, Boolean> isPlayerOp = new HashMap<>();
 
     public static TextComponentTranslation handleNick(EntityPlayer player, boolean nameTagRender) {
-        if (nameTagRender) return "".equals(playerNickNames.get(player.getUniqueID())) ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');
+        if (nameTagRender) return playerNickNames.get(player.getUniqueID()) == null || playerNickNames.get(player.getUniqueID()).isEmpty() ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) != null && isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');
         else {
             if (HxCPlayerInfoHandler.getString(player, "NickName") == null || "".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
                 return (Arrays.asList(((EntityPlayerMP) player).mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? color(player.getName(), '4') : color(player.getName(), 'f'));
