@@ -86,8 +86,9 @@ public class HxCCore {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         server = event.getServer();
-        server.getEntityWorld().getGameRules().addGameRule("HxC_XPBuffs", "true", GameRules.ValueType.BOOLEAN_VALUE);
-        server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "2", GameRules.ValueType.NUMERICAL_VALUE);
+        if (!server.getEntityWorld().getGameRules().hasRule("HxC_XPBuffs")) server.getEntityWorld().getGameRules().addGameRule("HxC_XPBuffs", "true", GameRules.ValueType.BOOLEAN_VALUE);
+        if (!server.getEntityWorld().getGameRules().hasRule("XPPickupCoolDown")) server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "2", GameRules.ValueType.NUMERICAL_VALUE);
+
 
         CommandRegistry.initializeCommands(event);
 
