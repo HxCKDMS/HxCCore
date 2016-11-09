@@ -67,7 +67,7 @@ public class CommandWarp extends AbstractSubCommand<CommandHxC> {
 
     private static void warpPlayer(ICommandSender sender, EntityPlayerMP player, String name) throws TranslatedCommandException {
         NBTTagCompound warps = GlobalVariables.customWorldData.hasTag("warps") ? GlobalVariables.customWorldData.getTagCompound("warps") : new NBTTagCompound();
-        if (!warps.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp");
+        if (!warps.getKeySet().contains(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp", name);
         NBTTagCompound warp = warps.getCompoundTag(name);
 
         if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlockState(new BlockPos(warp.getDouble("x"), warp.getDouble("y") + 1, warp.getDouble("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
