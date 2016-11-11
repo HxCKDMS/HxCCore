@@ -112,6 +112,14 @@ public class HxCCore {
     @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         NBTFileHandler.loadCustomNBTFiles(true);
+        if (customWorldData.hasTag("warp")) {
+            customWorldData.setTagCompound("warps", customWorldData.getTagCompound("warp"));
+            customWorldData.removeValue("warp");
+        }
+        if (customWorldData.hasTag("home")) {
+            customWorldData.setTagCompound("homes", customWorldData.getTagCompound("home"));
+            customWorldData.removeValue("home");
+        }
     }
 
     @Mod.EventHandler

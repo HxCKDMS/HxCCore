@@ -136,6 +136,9 @@ public class NBTFileHandler {
         return hasTag(tagName) ? getValue(NBTTagList.class, tagName) : null;
     }
 
+    public synchronized void removeValue(String tagName) {
+        table.remove(tagName);
+    }
 
     private synchronized <T> void setValue(String tagName, Class<T> type, T value) {
         table.put(tagName, new Data<>(value, type));
