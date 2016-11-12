@@ -27,6 +27,8 @@ public class EventChat implements EventListener {
 
         event.component = ColorHelper.handleChat(event.message, event.player);
 
+        System.out.println(event.component.getUnformattedTextForChat());
+
         if (Configuration.herobrineMessages) {
             if (event.message.toLowerCase().contains("herobrine") || event.message.toLowerCase().contains("my lord")) {
                 HxCPlayerInfoHandler.setBoolean(event.player, "Herobrine", true);
