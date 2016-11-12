@@ -186,7 +186,7 @@ public class ColorHelper {
         TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
         TextComponentTranslation permissionTag = handlePermission(player);
         TextComponentTranslation nick = handleNick(player, false);
-        TextComponentTranslation chatMessage = Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player) ? color(message, color) : new TextComponentTranslation(message);
+        TextComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : new TextComponentTranslation(message.replace("%", "%%"));
 
         return new TextComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
     }
