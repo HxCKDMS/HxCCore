@@ -130,8 +130,8 @@ public class CommandEvents implements EventListener {
     }
 
     @SubscribeEvent
-    public void eventProtection_1(PlayerInteractEvent event) {;
-        if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK  || event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) {
+    public void eventProtection_1(PlayerInteractEvent event) {
+        if (!event.world.isRemote && (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK  || event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR)) {
             if (!CommandProtect.isPlayerAllowedToEdit(event.entityPlayer, event.x, event.y, event.z, event.entityPlayer.dimension)) {
                 event.entityPlayer.addChatMessage(ServerTranslationHelper.getTranslation(event.entityPlayer, "world.protect.noEditAllowed"));
                 event.setCanceled(true);
