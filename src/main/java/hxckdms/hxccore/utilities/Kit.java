@@ -14,8 +14,6 @@ import net.minecraft.potion.Potion;
 
 import java.util.*;
 
-import static hxckdms.hxcconfig.Flags.COLLECTION_HANDLER;
-import static hxckdms.hxcconfig.Flags.TYPE_HANDLER;
 import static hxckdms.hxccore.libraries.Constants.MOD_NAME;
 import static hxckdms.hxccore.libraries.GlobalVariables.kitConfig;
 import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
@@ -39,7 +37,7 @@ public class Kit {
         SpecialHandlers.registerSpecialClass(DummyPotionEffect.class);
         SpecialHandlers.registerSpecialClass(DummyAttribute.class);
         kitConfig = new HxCConfig(KitConfiguration.class, "Kits", modConfigDir, "cfg", MOD_NAME);
-        kitConfig.registerHandler(new NBTHandler(), TYPE_HANDLER | COLLECTION_HANDLER);
+        kitConfig.registerHandler(new NBTHandler());
         kitConfig.initConfiguration();
     }
 
