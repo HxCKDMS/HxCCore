@@ -28,7 +28,6 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
         return "draw";
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         int posX = (int) Math.round(CommandBase.func_110666_a(sender, sender.getPlayerCoordinates().posX, args.get(1)));
@@ -38,7 +37,7 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
         int metadata = args.size() >= 5 ? CommandBase.parseIntWithMin(sender, args.get(5), 0) : 0;
         assert block != null;
         int radius = args.size() >= 6 ? CommandBase.parseInt(sender, args.get(6)) : 8;
-        boolean hollow = args.size() >= 7 || CommandBase.parseBoolean(sender, args.get(7));
+        boolean hollow = args.size() >= 7 && CommandBase.parseBoolean(sender, args.get(7));
         double precision = args.size() >= 8 ? CommandBase.parseDouble(sender, args.get(8)) : 0.005D;
 
         ItemStack stack = new ItemStack(block, 1, metadata);
