@@ -30,7 +30,7 @@ minecraft {
 }
 
 dependencies {
-    runtime files('ConfigurationAPI-1.1.jar')
+    runtime files('ConfigurationAPI-1.2.jar')
 }
 
 processResources
