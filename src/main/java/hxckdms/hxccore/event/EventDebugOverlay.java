@@ -11,6 +11,6 @@ public class EventDebugOverlay implements EventListener {
     @SubscribeEvent
     public void onDrawDebugText(RenderGameOverlayEvent.Text event) {
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo || !Configuration.showPingOutsideF3Menu) event.getRight().add("");
-        if (Minecraft.getMinecraft().gameSettings.showDebugInfo || Configuration.showPingOutsideF3Menu) event.getRight().add("Ping: " + Minecraft.getMinecraft().thePlayer.connection.getPlayerInfo(Minecraft.getMinecraft().thePlayer.getUniqueID()).getResponseTime());
+        if (Minecraft.getMinecraft().gameSettings.showDebugInfo || Configuration.showPingOutsideF3Menu) event.getRight().add("Ping: " + Minecraft.getMinecraft().player.connection.getPlayerInfo(Minecraft.getMinecraft().player.getUniqueID()).getResponseTime());
     }
 }

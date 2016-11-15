@@ -41,16 +41,16 @@ public class CommandSmite extends AbstractSubCommand<CommandHxC> {
                     Vec3d vec3d = new Vec3d(player.posX, player.posY + (double)player.getEyeHeight(), player.posZ);
                     Vec3d vec3d1 = player.getLook(1);
                     Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * 4096, vec3d1.yCoord * 4096, vec3d1.zCoord * 4096);
-                    RayTraceResult rayTraceResult = player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
+                    RayTraceResult rayTraceResult = player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
                     if (rayTraceResult == null) return;
                     BlockPos pos = rayTraceResult.getBlockPos();
-                    player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, pos.getX(), pos.getY(), pos.getZ(), false));
+                    player.world.addWeatherEffect(new EntityLightningBolt(player.world, pos.getX(), pos.getY(), pos.getZ(), false));
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.world", pos.getX(), pos.getY(), pos.getZ()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-                target.worldObj.addWeatherEffect(new EntityLightningBolt(target.worldObj, target.posX, target.posY, target.posZ, false));
+                target.world.addWeatherEffect(new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false));
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
                 target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.smite.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;

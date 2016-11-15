@@ -44,12 +44,12 @@ public class CommandDrain extends AbstractSubCommand<CommandHxC> {
             final int z = (int) Math.round(player.posZ);
 
             final Predicate<BlockPos> predicate = pos -> fluid == null ?
-                    player.worldObj.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.worldObj.getBlockState(pos).getBlock()) != null :
-                    player.worldObj.getBlockState(pos).getBlock() == fluid.getBlock();
+                    player.world.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.world.getBlockState(pos).getBlock()) != null :
+                    player.world.getBlockState(pos).getBlock() == fluid.getBlock();
 
             long nano = System.nanoTime();
 
-            StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(x - r, y - r, z - r), new BlockPos(x + r, y + r, z + r)).spliterator(), false).filter(predicate).forEach(player.worldObj::setBlockToAir);
+            StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(x - r, y - r, z - r), new BlockPos(x + r, y + r, z + r)).spliterator(), false).filter(predicate).forEach(player.world::setBlockToAir);
             nano = System.nanoTime() - nano;
 
             TextComponentTranslation msg = fluid == null ? ServerTranslationHelper.getTranslation(player, "commands.drain.successful.all", Integer.toString(r), String.format("%.1f", nano * 1e-9)) :

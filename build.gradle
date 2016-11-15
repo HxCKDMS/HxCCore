@@ -24,11 +24,11 @@ minecraft {
     version = "1.10.2-12.18.2.2099"
     runDir = "run"
     
-    mappings = "snapshot_20161109"
+    mappings = "snapshot_20161115"
 }
 
 dependencies {
-    runtime files('ConfigurationAPI-1.2.jar')
+    runtime files('ConfigurationAPI-1.3.jar')
 }
 
 processResources

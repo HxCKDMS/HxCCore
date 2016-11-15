@@ -119,10 +119,10 @@ public class CommandEvents implements EventListener {
 
                 switch (HxCPlayerInfoHandler.getString(player, "Override")) {
                     case "air":
-                        blockPredicate = pos -> player.worldObj.isAirBlock(pos);
+                        blockPredicate = pos -> player.world.isAirBlock(pos);
                         break;
                     case "fluid":
-                        blockPredicate = pos -> player.worldObj.isAirBlock(pos) || player.worldObj.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.worldObj.getBlockState(pos).getBlock()) != null;
+                        blockPredicate = pos -> player.world.isAirBlock(pos) || player.world.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.world.getBlockState(pos).getBlock()) != null;
                         break;
                     default:
                         blockPredicate = pos -> true;
@@ -131,7 +131,7 @@ public class CommandEvents implements EventListener {
 
                 StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(player.posX - pathSize, player.posY - 1, player.posZ - pathSize), new BlockPos(player.posX + pathSize, player.posY - 1, player.posZ + pathSize)).spliterator(), false)
                         .filter(blockPredicate)
-                        .forEach(pos -> player.worldObj.setBlockState(pos, block.getStateFromMeta(metadata)));
+                        .forEach(pos -> player.world.setBlockState(pos, block.getStateFromMeta(metadata)));
             }
         }
     }
@@ -159,7 +159,7 @@ public class CommandEvents implements EventListener {
     @SuppressWarnings("Duplicates")
     @SubscribeEvent
     public void eventPowerTool_2(LivingSwingEvent event) {
-        if (!event.getEntityLiving().worldObj.isRemote && event.getItemStack() != null && event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
+        if (!event.getEntityLiving().world.isRemote && event.getItemStack() != null && event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
             NBTTagList commandList = event.getItemStack().getTagCompound().getTagList("powerToolCommands", 8);
 
             for (int i = 0; i < commandList.tagCount(); i++) {

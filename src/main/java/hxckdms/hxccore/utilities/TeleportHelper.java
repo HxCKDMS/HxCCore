@@ -38,8 +38,8 @@ public class TeleportHelper {
     }
 
     private static void teleportEntity(Entity entity, int dimensionId) {
-        if (!entity.worldObj.isRemote && !entity.isDead) {
-            entity.worldObj.theProfiler.startSection("changeDimension");
+        if (!entity.world.isRemote && !entity.isDead) {
+            entity.world.theProfiler.startSection("changeDimension");
             int j = entity.dimension;
             WorldServer worldserver = server.worldServerForDimension(j);
             WorldServer worldserver1 = server.worldServerForDimension(dimensionId);
@@ -56,17 +56,17 @@ public class TeleportHelper {
                 e.printStackTrace();
             }
 
-            entity.worldObj.removeEntity(entity);
+            entity.world.removeEntity(entity);
 
             newEntity.forceSpawn = true;
             worldserver1.spawnEntityInWorld(newEntity);
             worldserver1.updateEntityWithOptionalForce(newEntity, true);
 
             entity.isDead = true;
-            entity.worldObj.theProfiler.endSection();
+            entity.world.theProfiler.endSection();
             worldserver.resetUpdateEntityTick();
             worldserver1.resetUpdateEntityTick();
-            entity.worldObj.theProfiler.endSection();
+            entity.world.theProfiler.endSection();
         }
     }
 

@@ -38,7 +38,7 @@ public class CommandKill extends AbstractSubCommand<CommandHxC> {
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
 
-                    player.attackEntityFrom(new DamageSource("command_hxc_kill." + player.worldObj.rand.nextInt(35)) {
+                    player.attackEntityFrom(new DamageSource("command_hxc_kill." + player.world.rand.nextInt(35)) {
                         @Override
                         public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
                             return ServerTranslationHelper.getTranslation(sender, "death.attack." + damageType, entityLivingBaseIn.getDisplayName());
@@ -49,7 +49,7 @@ public class CommandKill extends AbstractSubCommand<CommandHxC> {
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
 
-                boolean killed = target.attackEntityFrom(new DamageSource("command_hxc_kill." + target.worldObj.rand.nextInt(35)) {
+                boolean killed = target.attackEntityFrom(new DamageSource("command_hxc_kill." + target.world.rand.nextInt(35)) {
                     @Override
                     public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
                         return ServerTranslationHelper.getTranslation(target, "death.attack." + damageType, entityLivingBaseIn.getDisplayName());

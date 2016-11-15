@@ -40,7 +40,7 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
 
         Vec3d vector = player.getLookVec();
 
-        Entity projectile = isKitty ? new EntityOcelot(player.worldObj) : new EntityTNTPrimed(player.worldObj, player.posX, player.posY, player.posZ, player);
+        Entity projectile = isKitty ? new EntityOcelot(player.world) : new EntityTNTPrimed(player.world, player.posX, player.posY, player.posZ, player);
         projectile.setPosition(player.posX, player.posY + player.eyeHeight, player.posZ);
 
         projectile.motionX = vector.xCoord * speed;
@@ -48,7 +48,7 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
         projectile.motionZ = vector.zCoord * speed;
         projectile.isAirBorne = true;
 
-        player.worldObj.spawnEntityInWorld(projectile);
+        player.world.spawnEntityInWorld(projectile);
     }
 
     @Override

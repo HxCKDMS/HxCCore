@@ -67,13 +67,13 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
     }
 
     private static void spawnProjectiles(LinkedList<String> args, EntityPlayerMP player, boolean isKitty) {
-        int minY = player.worldObj.getTopSolidOrLiquidBlock(player.getPosition()).getY() + 64;
+        int minY = player.world.getTopSolidOrLiquidBlock(player.getPosition()).getY() + 64;
 
         for (int x_offset = -10; x_offset <= 10; x_offset += 5) {
             for (int z_offset = -10; z_offset <= 10; z_offset += 5) {
-                Entity projectile = isKitty ? new EntityOcelot(player.worldObj) : new EntityTNTPrimed(player.worldObj);
+                Entity projectile = isKitty ? new EntityOcelot(player.world) : new EntityTNTPrimed(player.world);
                 projectile.setPosition(player.posX + x_offset, minY, player.posZ + z_offset);
-                player.worldObj.spawnEntityInWorld(projectile);
+                player.world.spawnEntityInWorld(projectile);
             }
         }
     }
