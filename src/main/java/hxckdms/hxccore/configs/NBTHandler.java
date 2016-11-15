@@ -98,7 +98,7 @@ public class NBTHandler  implements IConfigurationHandler {
     }
 
     @Override
-    public Class<?>[] getTypes() {
-        return new Class<?>[]{NBTBase.class, NBTTagString.class, NBTTagInt.class, NBTTagDouble.class, NBTTagFloat.class, NBTTagShort.class, NBTTagLong.class, NBTTagByte.class, NBTTagCompound.class, NBTTagList.class};
+    public boolean isTypeAccepted(Class<?> type) {
+        return type == NBTBase.class || type == NBTTagString.class || type == NBTTagInt.class || type == NBTTagDouble.class || type == NBTTagFloat.class || type == NBTTagShort.class || type == NBTTagLong.class || type == NBTTagByte.class || type == NBTTagCompound.class || type == NBTTagList.class;
     }
 }
