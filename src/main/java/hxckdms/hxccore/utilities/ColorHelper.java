@@ -27,8 +27,6 @@ public class ColorHelper {
     }
 
     private static ChatComponentTranslation color(String message, char defaultColor) {
-        System.out.println("rawr");
-
         if (message == null || message.isEmpty()) return new ChatComponentTranslation("");
 
         char currentColor = defaultColor;
