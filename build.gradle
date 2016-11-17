@@ -21,7 +21,7 @@ group= "hxckdms.hxccore"
 archivesBaseName = "hxccore"
 
 minecraft {
-    version = "1.11-13.19.0.2130"
+    version = "1.11-13.19.0.2141"
     runDir = "run"
     
     mappings = "snapshot_20161116"

@@ -80,32 +80,33 @@ public class HxCFakePlayer extends FakePlayer {
         ItemStack itemStack1 = prevItemStack;
         ItemStack itemStack2 = getHeldItem(EnumHand.MAIN_HAND);
         if (!ItemStack.areItemStacksEqual(itemStack2, itemStack1)) {
-            if (itemStack1 != null) {
+            if (itemStack1.func_190926_b()) {
                 getAttributeMap().removeAttributeModifiers(itemStack1.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            if (itemStack2 != null) {
+            if (itemStack1.func_190926_b()) {
                 getAttributeMap().applyAttributeModifiers(itemStack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            String name = "[HxC]" + (itemStack2 != null ? " using " + itemStack2.getDisplayName() : "");
+            String name = "[HxC]" + (itemStack1.func_190926_b() ? " using " + itemStack2.getDisplayName() : "");
         }
-        prevItemStack = itemStack2 == null ? null : itemStack2.copy();
+        prevItemStack = itemStack2.copy();
         interactionManager.updateBlockRemoving();
-        if (itemStackMainHand != null) {
+        if (itemStackMainHand.func_190926_b()) {
             tickItemInUse(itemStack1);
         }
     }
 
     public void tickItemInUse(ItemStack updateItem) {
         if (updateItem != null && prevItemStack == itemStackMainHand) {
-            itemStackMainHand.stackSize = ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.stackSize);
-            if (itemStackMainHand.stackSize <= 0) {
+            itemStackMainHand.func_190920_e(ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.func_190916_E()));
+            if (itemStackMainHand.func_190916_E() <= 0) {
                 onItemUseFinish();
             } else {
-                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.stackSize);
-                if (itemStackMainHand.stackSize <= 25 && itemStackMainHand.stackSize % 4 == 0) {
+                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.func_190916_E());
+                if (itemStackMainHand.func_190916_E() <= 25 && itemStackMainHand.func_190916_E() % 4 == 0) {
                     updateItemUse(updateItem, 5);
                 }
-                if (--itemStackMainHand.stackSize == 0 && !world.isRemote) {
+                itemStackMainHand.func_190918_g(1);
+                if (itemStackMainHand.func_190916_E() == 0 && !world.isRemote) {
                     onItemUseFinish();
                 }
             }

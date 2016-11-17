@@ -38,7 +38,7 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     for (NonNullList<ItemStack> subInventory : player.inventory.allInventories)
                         for (ItemStack itemStack : subInventory)
-                            if (itemStack != null && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
+                            if (!itemStack.func_190926_b() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                                 itemStack.setItemDamage(0);
 
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
@@ -48,7 +48,7 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 for (NonNullList<ItemStack> subInventory : target.inventory.allInventories)
                     for (ItemStack itemStack : subInventory)
-                        if (itemStack != null && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
+                        if (!itemStack.func_190926_b() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                             itemStack.setItemDamage(0);
 
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.sender").setStyle(new Style().setColor(TextFormatting.GREEN)));

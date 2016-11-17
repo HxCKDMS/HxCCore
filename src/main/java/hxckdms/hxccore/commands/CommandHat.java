@@ -32,12 +32,12 @@ public class CommandHat extends AbstractSubCommand<CommandHxC> {
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            if (player.getHeldItemMainhand() == null) throw new WrongUsageException("commands.hat.usage");
+            if (player.getHeldItemMainhand().func_190926_b()) throw new WrongUsageException("commands.hat.usage");
             ItemStack helmet = player.inventory.armorItemInSlot(3);
             ItemStack hat = new ItemStack(player.getHeldItemMainhand().getItem(), 1, player.getHeldItemMainhand().getMetadata());
             hat.deserializeNBT(player.getHeldItemMainhand().serializeNBT());
-            if ((--player.getHeldItemMainhand().stackSize) <= 0) player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 
+            player.getHeldItemMainhand().func_190918_g(1);
             player.inventory.armorInventory.set(3, hat);
             player.inventory.addItemStackToInventory(helmet);
 
