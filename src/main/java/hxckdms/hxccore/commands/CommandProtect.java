@@ -130,7 +130,6 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     private static boolean landAvailabilityCheck(int x1, int y1, int z1, int x2, int y2, int z2, int dimension) {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         for (String landName : (Set<String>) protectedLands.func_150296_c()) {
-            System.out.println(landName);
             NBTTagCompound land = protectedLands.getCompoundTag(landName);
             boolean x1Check = land.getInteger("x1") > land.getInteger("x2") ? (x1 > x2 ? land.getInteger("x1") >= x1 && x1 >= land.getInteger("x2") : land.getInteger("x1") >= x2 && x2 >= land.getInteger("x2")) : (x1 > x2 ? land.getInteger("x2") >= x1 && x1 >= land.getInteger("x1") : land.getInteger("x2") >= x2 && x2 >= land.getInteger("x1"));
             boolean y1Check = land.getInteger("y1") > land.getInteger("y2") ? (y1 > y2 ? land.getInteger("y1") >= y1 && y1 >= land.getInteger("y2") : land.getInteger("y1") >= y2 && y2 >= land.getInteger("y2")) : (y1 > y2 ? land.getInteger("y2") >= y1 && y1 >= land.getInteger("y1") : land.getInteger("y2") >= y2 && y2 >= land.getInteger("y1"));

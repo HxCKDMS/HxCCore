@@ -37,8 +37,6 @@ public class CrashHandler extends Thread {
             output.close();
             socket.close();
 
-            System.out.println("done");
-
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }

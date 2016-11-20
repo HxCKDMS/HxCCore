@@ -174,7 +174,6 @@ public class ColorHelper {
     }
 
     public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) {
-        System.out.println("message = " + message);
         String colorString = HxCPlayerInfoHandler.getString(player, "ChatColor");
         char color = (colorString == null || colorString.isEmpty()) ? 'f' : colorString.charAt(0);
 
@@ -185,8 +184,6 @@ public class ColorHelper {
         ChatComponentTranslation permissionTag = handlePermission(player);
         ChatComponentTranslation nick = handleNick(player, false);
         ChatComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : new ChatComponentTranslation(message.replace("%", "%%"));
-
-        System.out.println(PermissionHandler.getPermissionLevel(player));
 
         return new ChatComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
     }
