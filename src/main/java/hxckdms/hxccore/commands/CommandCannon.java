@@ -26,7 +26,7 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "cannon";
     }
 
@@ -48,11 +48,11 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
         projectile.motionZ = vector.zCoord * speed;
         projectile.isAirBorne = true;
 
-        player.world.spawnEntityInWorld(projectile);
+        player.world.spawnEntity(projectile);
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return Collections.singletonList(Integer.toString(2));
         else if (args.size() == 2) return Collections.singletonList("kitty");
         else return Collections.emptyList();

@@ -29,7 +29,7 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "vanish";
     }
 
@@ -40,12 +40,12 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
 
         switch (args.size()) {
             case 0:
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setStyle(new Style().setColor(!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? TextFormatting.DARK_AQUA : TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? "commands.vanish.all.disappear" : "commands.vanish.all.appear").setStyle(new Style().setColor(!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll") ? TextFormatting.DARK_AQUA : TextFormatting.RED)));
                 HxCPlayerInfoHandler.setBoolean(player, "VanishedFromAll", !HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll"));
 
                 if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
-                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player)));
-                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketSpawnPlayer(player)));
+                    GlobalVariables.server.getPlayerList().getPlayers().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player)));
+                    GlobalVariables.server.getPlayerList().getPlayers().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketSpawnPlayer(player)));
                 }
 
                 break;
@@ -70,19 +70,19 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                     target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player));
                     target.connection.sendPacket(new SPacketSpawnPlayer(player));
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.appear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.appear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
                 } else {
                     vanishList.appendTag(new NBTTagString(target.getUniqueID().toString()));
                     HxCPlayerInfoHandler.setTagList(player, "VanishedFromList", vanishList);
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.disappear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.disappear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 }
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

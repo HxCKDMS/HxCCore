@@ -23,7 +23,7 @@ public class CommandOverride extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "override";
     }
 
@@ -33,11 +33,11 @@ public class CommandOverride extends AbstractSubCommand<CommandHxC> {
         EntityPlayerMP player = (EntityPlayerMP) sender;
         if (CommandProtect.override.contains(player)) CommandProtect.override.remove(player);
         else CommandProtect.override.add(player);
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.override." + (CommandProtect.override.contains(player) ? "enabled" : "disabled")).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.override." + (CommandProtect.override.contains(player) ? "enabled" : "disabled")).setStyle(new Style().setColor(TextFormatting.YELLOW)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

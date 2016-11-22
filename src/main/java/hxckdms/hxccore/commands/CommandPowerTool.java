@@ -29,7 +29,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
     private static Predicate<String> isCommand = str -> str.startsWith("/") && GlobalVariables.server.getCommandManager().getCommands().containsKey(str.substring(1));
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "powerTool";
     }
 
@@ -38,7 +38,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         ItemStack itemStack = player.inventory.getCurrentItem();
-        if (itemStack == null) throw new TranslatedCommandException(sender, "commands.error.noItem");
+        if (itemStack.isEmpty()) throw new TranslatedCommandException(sender, "commands.error.noItem");
         NBTTagCompound tagCompound = itemStack.getTagCompound() != null ? itemStack.getTagCompound() : new NBTTagCompound();
 
         if (!args.get(0).startsWith("/")) args.set(0, "/" + args.get(0));
@@ -62,7 +62,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

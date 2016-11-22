@@ -24,7 +24,7 @@ public class CommandRepair extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "repair";
     }
 
@@ -33,16 +33,16 @@ public class CommandRepair extends AbstractSubCommand<CommandHxC> {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             ItemStack itemStack = player.getHeldItemMainhand();
-            if (itemStack.func_190926_b()) throw new TranslatedCommandException(sender, "commands.error.noItem");
+            if (itemStack.isEmpty()) throw new TranslatedCommandException(sender, "commands.error.noItem");
             if (!itemStack.isItemStackDamageable()) throw new TranslatedCommandException(sender, "commands.error.repair.unrepairable");
             if (!itemStack.isItemDamaged()) throw new TranslatedCommandException(sender, "commands.error.repair.undamaged");
             itemStack.setItemDamage(0);
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repair.successful", itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repair.successful", itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

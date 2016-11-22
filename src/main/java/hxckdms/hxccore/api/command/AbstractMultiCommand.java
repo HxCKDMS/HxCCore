@@ -18,12 +18,12 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
 
     @Override
     public void executeSubCommand(ICommandSender sender, String[] args) throws CommandException {
-        if (args.length == 0) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
+        if (args.length == 0) throw new WrongUsageException("Type '" + getUsage(sender) + "' for help.");
         String commandName = args[0].toLowerCase();
         if (!subCommands.containsKey(commandName)) throw new TranslatedCommandException(sender, "commands.sub.exception.notFound");
         AbstractSubCommand command = subCommands.get(commandName);
 
-        if (!command.getCommandState().isUsageAllowed()) throw new CommandException(ServerTranslationHelper.getTranslation(sender, command.getCommandState().getErrorText()).getUnformattedText());
+        if (!command.getState().isUsageAllowed()) throw new CommandException(ServerTranslationHelper.getTranslation(sender, command.getState().getErrorText()).getUnformattedText());
         if (!PermissionHandler.canUseSubCommand(sender, command)) throw new TranslatedCommandException(sender, "commands.generic.permission");
 
         LinkedList<String> subArgs = new LinkedList<>(Arrays.asList(args));
@@ -43,7 +43,7 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
                     Class<? extends AbstractSubCommand> clazz = (Class<? extends AbstractSubCommand>) Class.forName(data.getClassName());
 
                     AbstractSubCommand subCommand = clazz.newInstance();
-                    if (subCommand.getParentCommand() == this.getClass()) subCommands.put(subCommand.getCommandName().toLowerCase(), subCommand);
+                    if (subCommand.getParent() == this.getClass()) subCommands.put(subCommand.getName().toLowerCase(), subCommand);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -61,8 +61,8 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
     }
 
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
-        return super.getTabCompletionOptions(server, sender, args, pos);
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+        return super.getTabCompletions(server, sender, args, pos);
     }
 
     @Override

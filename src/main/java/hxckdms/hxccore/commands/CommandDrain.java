@@ -27,7 +27,7 @@ public class CommandDrain extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "drain";
     }
 
@@ -57,12 +57,12 @@ public class CommandDrain extends AbstractSubCommand<CommandHxC> {
 
             msg.getStyle().setColor(TextFormatting.GREEN);
 
-            player.addChatMessage(msg);
+            player.sendMessage(msg);
         } else throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.exception.playersOnly").getUnformattedText());
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return Collections.singletonList(String.valueOf(8));
         else if (args.size() == 2) return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
         else return Collections.emptyList();

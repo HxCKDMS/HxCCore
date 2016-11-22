@@ -22,7 +22,7 @@ public class CommandReloadConfigs extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "reloadConfigs";
     }
 
@@ -31,11 +31,11 @@ public class CommandReloadConfigs extends AbstractSubCommand<CommandHxC> {
         GlobalVariables.mainConfig.initConfiguration();
         GlobalVariables.commandConfig.initConfiguration();
         GlobalVariables.kitConfig.initConfiguration();
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.reloadConfigs.reloaded").setStyle(new Style().setColor(TextFormatting.GRAY)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.reloadConfigs.reloaded").setStyle(new Style().setColor(TextFormatting.GRAY)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

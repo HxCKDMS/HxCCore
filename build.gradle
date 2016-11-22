@@ -21,10 +21,10 @@ group= "hxckdms.hxccore"
 archivesBaseName = "hxccore"
 
 minecraft {
-    version = "1.11-13.19.0.2141"
+    version = "1.11-13.19.0.2154"
     runDir = "run"
     
-    mappings = "snapshot_20161116"
+    mappings = "snapshot_20161122"
 }
 
 dependencies {

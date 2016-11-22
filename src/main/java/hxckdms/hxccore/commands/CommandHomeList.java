@@ -32,7 +32,7 @@ public class CommandHomeList extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "homeList";
     }
 
@@ -47,7 +47,7 @@ public class CommandHomeList extends AbstractSubCommand<CommandHxC> {
         int page = args.size() == 1 ? CommandBase.parseInt(args.get(0), 1, pages) - 1 : 0;
         int min = Math.min(page * homesPerPage, homeAmount);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
         LinkedList<String> homeList = new LinkedList<>(homes.getKeySet());
         homeList.sort(String::compareTo);
 
@@ -56,12 +56,12 @@ public class CommandHomeList extends AbstractSubCommand<CommandHxC> {
             String name = homeList.get(i);
             NBTTagCompound warp = homes.getCompoundTag(name);
 
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.list.format", name, posFormat.format(warp.getDouble("x")), posFormat.format(warp.getDouble("y")), posFormat.format(warp.getDouble("z")), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.list.format", name, posFormat.format(warp.getDouble("x")), posFormat.format(warp.getDouble("y")), posFormat.format(warp.getDouble("z")), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (!(sender instanceof EntityPlayerMP)) return Collections.emptyList();
         NBTTagCompound warps = HxCPlayerInfoHandler.getTagCompound((EntityPlayer) sender, "homes", new NBTTagCompound());
         int homeAmount = warps.getKeySet().size();

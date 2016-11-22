@@ -28,7 +28,7 @@ public class CommandRename extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rename";
     }
 
@@ -39,16 +39,16 @@ public class CommandRename extends AbstractSubCommand<CommandHxC> {
 
             TextComponentBase name = ColorHelper.handleMessage(args.stream().collect(Collectors.joining(" ")), 'f');
             ItemStack itemStack = player.inventory.getCurrentItem();
-            if (itemStack == null) throw new TranslatedCommandException(sender, "commands.error.noItem");
+            if (itemStack.isEmpty()) throw new TranslatedCommandException(sender, "commands.error.noItem");
             itemStack.setStackDisplayName(name.getFormattedText());
             player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
 
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.rename.successful", new TextComponentTranslation(itemStack.getUnlocalizedName() + ".name"), itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.rename.successful", new TextComponentTranslation(itemStack.getUnlocalizedName() + ".name"), itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

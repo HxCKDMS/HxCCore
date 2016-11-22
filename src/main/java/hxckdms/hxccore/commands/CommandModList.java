@@ -25,7 +25,7 @@ public class CommandModList extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "modList";
     }
 
@@ -38,18 +38,18 @@ public class CommandModList extends AbstractSubCommand<CommandHxC> {
         int page = args.size() == 1 ? CommandBase.parseInt(args.get(0), 1, pages) - 1 : 0;
         int min = Math.min(page * modsPerPage, listSize);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.modList.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.modList.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
 
         for (int i = page * modsPerPage; i < modsPerPage + min; i++) {
             if (i >= listSize) break;
 
             ModContainer mod = Loader.instance().getModList().get(i);
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.modList.format", mod.getName(), mod.getVersion()).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.modList.format", mod.getName(), mod.getVersion()).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         int listSize = Loader.instance().getModList().size();
         int modsPerPage = 7;
         int pages = (int) Math.ceil((float) listSize / (float) modsPerPage);

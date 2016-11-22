@@ -26,7 +26,7 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "repairAll";
     }
 
@@ -38,27 +38,27 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     for (NonNullList<ItemStack> subInventory : player.inventory.allInventories)
                         for (ItemStack itemStack : subInventory)
-                            if (!itemStack.func_190926_b() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
+                            if (!itemStack.isEmpty() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                                 itemStack.setItemDamage(0);
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 for (NonNullList<ItemStack> subInventory : target.inventory.allInventories)
                     for (ItemStack itemStack : subInventory)
-                        if (!itemStack.func_190926_b() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
+                        if (!itemStack.isEmpty() && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                             itemStack.setItemDamage(0);
 
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.sender").setStyle(new Style().setColor(TextFormatting.GREEN)));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.target").setStyle(new Style().setColor(TextFormatting.GRAY)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.sender").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.target").setStyle(new Style().setColor(TextFormatting.GRAY)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

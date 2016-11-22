@@ -9,14 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 interface ISubCommand<T extends IMultiCommand> {
-    String getCommandName();
+    String getName();
     void execute(ICommandSender sender, LinkedList<String> args) throws CommandException;
-    List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
+    List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
 
-    Class<T> getParentCommand();
+    Class<T> getParent();
     int getPermissionLevel();
-    CommandState getCommandState();
+    CommandState getState();
 
     void setPermissionLevel(int level);
-    void setCommandState(CommandState state);
+    void setState(CommandState state);
 }

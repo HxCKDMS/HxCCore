@@ -79,11 +79,11 @@ public class CommandEvents implements EventListener {
             if (vanishedList != null || HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
                 ArrayList<EntityPlayerMP> targets = new ArrayList<>();
 
-                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList());
+                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) targets.addAll(GlobalVariables.server.getPlayerList().getPlayers());
                 else if (vanishedList != null)
                     for (int i = 0; i < vanishedList.tagCount(); i++) {
                         UUID uuid = UUID.fromString(vanishedList.getStringTagAt(i));
-                        targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().filter(playerMP -> playerMP.getUniqueID().equals(uuid)).collect(Collectors.toList()));
+                        targets.addAll(GlobalVariables.server.getPlayerList().getPlayers().parallelStream().filter(playerMP -> playerMP.getUniqueID().equals(uuid)).collect(Collectors.toList()));
                     }
 
                 for (EntityPlayerMP target : targets) {
@@ -141,7 +141,7 @@ public class CommandEvents implements EventListener {
         if (event.getSide() == Side.CLIENT) return;
         if (event instanceof PlayerInteractEvent.RightClickBlock  || event instanceof PlayerInteractEvent.LeftClickBlock || event instanceof PlayerInteractEvent.EntityInteract) {
             if (!CommandProtect.isPlayerAllowedToEdit(event.getEntityPlayer(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), event.getEntityPlayer().dimension)) {
-                event.getEntityPlayer().addChatMessage(ServerTranslationHelper.getTranslation(event.getEntityPlayer(), "world.protect.noEditAllowed"));
+                event.getEntityPlayer().sendMessage(ServerTranslationHelper.getTranslation(event.getEntityPlayer(), "world.protect.noEditAllowed"));
                 event.setCanceled(true);
             }
         }
@@ -264,8 +264,8 @@ public class CommandEvents implements EventListener {
         }
 
         private TPARequest handleCompute(EntityPlayerMP target) {
-            if ((--timeRemaining) == 0) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
-            else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+            if ((--timeRemaining) == 0) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+            else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 
             return timeRemaining == 0 ? null : this;
         }

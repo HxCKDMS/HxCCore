@@ -80,33 +80,33 @@ public class HxCFakePlayer extends FakePlayer {
         ItemStack itemStack1 = prevItemStack;
         ItemStack itemStack2 = getHeldItem(EnumHand.MAIN_HAND);
         if (!ItemStack.areItemStacksEqual(itemStack2, itemStack1)) {
-            if (itemStack1.func_190926_b()) {
+            if (itemStack1.isEmpty()) {
                 getAttributeMap().removeAttributeModifiers(itemStack1.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            if (itemStack1.func_190926_b()) {
+            if (itemStack1.isEmpty()) {
                 getAttributeMap().applyAttributeModifiers(itemStack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            String name = "[HxC]" + (itemStack1.func_190926_b() ? " using " + itemStack2.getDisplayName() : "");
+            String name = "[HxC]" + (itemStack1.isEmpty() ? " using " + itemStack2.getDisplayName() : "");
         }
         prevItemStack = itemStack2.copy();
         interactionManager.updateBlockRemoving();
-        if (itemStackMainHand.func_190926_b()) {
+        if (itemStackMainHand.isEmpty()) {
             tickItemInUse(itemStack1);
         }
     }
 
     public void tickItemInUse(ItemStack updateItem) {
         if (updateItem != null && prevItemStack == itemStackMainHand) {
-            itemStackMainHand.func_190920_e(ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.func_190916_E()));
-            if (itemStackMainHand.func_190916_E() <= 0) {
+            itemStackMainHand.grow(ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.getCount()));
+            if (itemStackMainHand.getCount() <= 0) {
                 onItemUseFinish();
             } else {
-                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.func_190916_E());
-                if (itemStackMainHand.func_190916_E() <= 25 && itemStackMainHand.func_190916_E() % 4 == 0) {
+                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.getCount());
+                if (itemStackMainHand.getCount() <= 25 && itemStackMainHand.getCount() % 4 == 0) {
                     updateItemUse(updateItem, 5);
                 }
-                itemStackMainHand.func_190918_g(1);
-                if (itemStackMainHand.func_190916_E() == 0 && !world.isRemote) {
+                itemStackMainHand.shrink(1);
+                if (itemStackMainHand.getCount() == 0 && !world.isRemote) {
                     onItemUseFinish();
                 }
             }
@@ -130,8 +130,8 @@ public class HxCFakePlayer extends FakePlayer {
     }
 
     @Override
-    public void addChatComponentMessage(ITextComponent textComponent, boolean type) {}
+    public void sendStatusMessage(ITextComponent chatmessagecomponent, boolean type) {}
 
     @Override
-    public void addChatMessage(ITextComponent textComponent) {}
+    public void sendMessage(ITextComponent component) {}
 }

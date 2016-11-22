@@ -25,7 +25,7 @@ public class CommandDelWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "delWarp";
     }
 
@@ -38,11 +38,11 @@ public class CommandDelWarp extends AbstractSubCommand<CommandHxC> {
         warps.removeTag(warpName);
         GlobalVariables.customWorldData.setTagCompound("warps", warps);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.removed", warpName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.removed", warpName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return args.size() == 1 ? new ArrayList<>(GlobalVariables.customWorldData.getTagCompound("warps").getKeySet()) : Collections.emptyList();
     }
 }

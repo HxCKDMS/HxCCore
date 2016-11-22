@@ -34,7 +34,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "protect";
     }
 
@@ -57,8 +57,8 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 if (!match) userList.appendTag(new NBTTagString(target.getUniqueID().toString()));
                 land.setTag("userList", userList);
                 protectedLands.setTag(args.get(0), land);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.adduser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.adduser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "removeuser":
                 if (!protectedLands.hasKey(args.get(0))) throw new TranslatedCommandException(sender, "commands.protect.error.noSuchLand");
@@ -77,16 +77,16 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 if (!match) throw new TranslatedCommandException(sender, "commands.protect.error.playerNotPresent");
                 land.setTag("userList", userList);
                 protectedLands.setTag(args.get(0), land);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.removeuser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.removeuser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.removeuser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.removeuser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.RED)));
 
                 break;
             case "transfer":
                 target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(2));
                 land.setBoolean("playerOwned", true);
                 land.setString("owner", target.getUniqueID().toString());
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.transfer.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.transfer.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.transfer.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.transfer.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 protectedLands.setTag(args.get(0), land);
                 break;
             case "create":
@@ -115,7 +115,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                     land.setInteger("dimension", dimension);
                     protectedLands.setTag(args.get(0), land);
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.create", x1, y1, z1, x2, y2, z2, blocksNeeded, name));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.create", x1, y1, z1, x2, y2, z2, blocksNeeded, name));
                 } else throw new TranslatedCommandException(sender, "commands.protect.error.outOfLand");
                 break;
             case "delete":
@@ -197,7 +197,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 2) Arrays.asList("addUser", "removeUser", "transfer", "create", "delete");
         return Collections.emptyList();
     }
