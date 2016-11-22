@@ -25,7 +25,7 @@ public class CommandGod extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "god";
     }
 
@@ -42,7 +42,7 @@ public class CommandGod extends AbstractSubCommand<CommandHxC> {
                     player.getFoodStats().addStats(20, 1F);
                 }
 
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(player, HxCPlayerInfoHandler.getBoolean(player, "GodMode") ? "commands.god.self.enabled" : "commands.god.self.disabled").setStyle(new Style().setColor(HxCPlayerInfoHandler.getBoolean(player, "GodMode") ? TextFormatting.GREEN : TextFormatting.YELLOW)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(player, HxCPlayerInfoHandler.getBoolean(player, "GodMode") ? "commands.god.self.enabled" : "commands.god.self.disabled").setStyle(new Style().setColor(HxCPlayerInfoHandler.getBoolean(player, "GodMode") ? TextFormatting.GREEN : TextFormatting.YELLOW)));
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
@@ -54,14 +54,14 @@ public class CommandGod extends AbstractSubCommand<CommandHxC> {
                     target.getFoodStats().addStats(20, 1F);
                 }
 
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? "commands.god.other.sender.enabled" : "commands.god.other.sender.disabled", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? "commands.god.other.target.enabled" : "commands.god.other.target.disabled", target.getDisplayName()).setStyle(new Style().setColor(HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? TextFormatting.GOLD : TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? "commands.god.other.sender.enabled" : "commands.god.other.sender.disabled", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? "commands.god.other.target.enabled" : "commands.god.other.target.disabled", target.getDisplayName()).setStyle(new Style().setColor(HxCPlayerInfoHandler.getBoolean(target, "GodMode") ? TextFormatting.GOLD : TextFormatting.RED)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

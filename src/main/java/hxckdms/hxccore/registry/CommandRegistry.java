@@ -39,7 +39,7 @@ public class CommandRegistry {
                     Class<? extends AbstractMultiCommand> clazz = (Class<? extends AbstractMultiCommand>) Class.forName(data.getClassName());
 
                     AbstractMultiCommand multiCommand = clazz.newInstance();
-                    multiCommands.put(multiCommand.getCommandName().toLowerCase(), multiCommand);
+                    multiCommands.put(multiCommand.getName().toLowerCase(), multiCommand);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -30,7 +30,7 @@ public class CommandExterminate extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "exterminate";
     }
 
@@ -76,11 +76,11 @@ public class CommandExterminate extends AbstractSubCommand<CommandHxC> {
             }
         }
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.exterminate.killed", entitiesKilled).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.exterminate.killed", entitiesKilled).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Arrays.asList("hostiles", "items", "passives", "xp", "tamable");
     }
 }

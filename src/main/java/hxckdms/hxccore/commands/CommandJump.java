@@ -23,7 +23,7 @@ public class CommandJump extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "jump";
     }
 
@@ -44,7 +44,7 @@ public class CommandJump extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

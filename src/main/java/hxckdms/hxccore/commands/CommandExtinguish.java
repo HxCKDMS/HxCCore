@@ -24,7 +24,7 @@ public class CommandExtinguish extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "extinguish";
     }
 
@@ -35,20 +35,20 @@ public class CommandExtinguish extends AbstractSubCommand<CommandHxC> {
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.extinguish();
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 target.extinguish();
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.extinguish.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.extinguish.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.extinguish.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return  args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return  args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

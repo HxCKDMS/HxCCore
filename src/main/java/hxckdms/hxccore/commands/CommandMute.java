@@ -25,7 +25,7 @@ public class CommandMute extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "mute";
     }
 
@@ -35,12 +35,12 @@ public class CommandMute extends AbstractSubCommand<CommandHxC> {
         EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
         mutedPlayers.setBoolean(target.getUniqueID().toString(), !mutedPlayers.getBoolean(target.getUniqueID().toString()));
         GlobalVariables.customWorldData.setTagCompound("mutedPlayers", mutedPlayers);
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.mute.other.sender." + (mutedPlayers.getBoolean(target.getUniqueID().toString()) ? "true" : "false"), target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-        target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.mute.other.target." + (mutedPlayers.getBoolean(target.getUniqueID().toString()) ? "true" : "false"), sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.mute.other.sender." + (mutedPlayers.getBoolean(target.getUniqueID().toString()) ? "true" : "false"), target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+        target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.mute.other.target." + (mutedPlayers.getBoolean(target.getUniqueID().toString()) ? "true" : "false"), sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

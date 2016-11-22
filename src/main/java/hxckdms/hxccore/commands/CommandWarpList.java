@@ -28,7 +28,7 @@ public class CommandWarpList extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "warpList";
     }
 
@@ -42,7 +42,7 @@ public class CommandWarpList extends AbstractSubCommand<CommandHxC> {
         int page = args.size() == 1 ? CommandBase.parseInt(args.get(0), 1, pages) - 1 : 0;
         int min = Math.min(page * warpsPerPage, warpAmount);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
         LinkedList<String> warpList = new LinkedList<>(warps.getKeySet());
         warpList.sort(String::compareTo);
 
@@ -51,12 +51,12 @@ public class CommandWarpList extends AbstractSubCommand<CommandHxC> {
             String name = warpList.get(i);
             NBTTagCompound warp = warps.getCompoundTag(name);
 
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.format", name, posFormat.format(warp.getDouble("x")), posFormat.format(warp.getDouble("y")), posFormat.format(warp.getDouble("z")), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.list.format", name, posFormat.format(warp.getDouble("x")), posFormat.format(warp.getDouble("y")), posFormat.format(warp.getDouble("z")), warp.getInteger("dimension")).setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         NBTTagCompound warps = GlobalVariables.customWorldData.getTagCompound("warps", new NBTTagCompound());
         int warpAmount = warps.getKeySet().size();
         int warpsPerPage = 7;

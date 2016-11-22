@@ -27,7 +27,7 @@ public class CommandSmite extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "smite";
     }
 
@@ -45,20 +45,20 @@ public class CommandSmite extends AbstractSubCommand<CommandHxC> {
                     if (rayTraceResult == null) return;
                     BlockPos pos = rayTraceResult.getBlockPos();
                     player.world.addWeatherEffect(new EntityLightningBolt(player.world, pos.getX(), pos.getY(), pos.getZ(), false));
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.world", pos.getX(), pos.getY(), pos.getZ()).setStyle(new Style().setColor(TextFormatting.GOLD)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.world", pos.getX(), pos.getY(), pos.getZ()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 target.world.addWeatherEffect(new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.smite.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.smite.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.smite.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

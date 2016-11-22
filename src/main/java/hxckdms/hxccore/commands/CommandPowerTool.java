@@ -29,7 +29,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
     private static Predicate<String> isCommand = str -> str.startsWith("/") && GlobalVariables.server.getCommandManager().getCommands().containsKey(str.substring(1));
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "powerTool";
     }
 
@@ -62,7 +62,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

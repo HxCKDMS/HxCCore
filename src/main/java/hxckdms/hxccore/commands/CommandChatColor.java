@@ -30,7 +30,7 @@ public class CommandChatColor extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "chatColor";
     }
 
@@ -40,31 +40,31 @@ public class CommandChatColor extends AbstractSubCommand<CommandHxC> {
             case 0:
                 if (sender instanceof EntityPlayerMP) {
                     HxCPlayerInfoHandler.setString((EntityPlayerMP) sender, "ChatColor", "");
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.removed.self").setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.removed.self").setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 }
                 break;
             default:
-                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getOnlinePlayerNames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.getFirst());
                     boolean removing = args.size() == 1 || args.get(1) == null || args.get(1).isEmpty();
                     TextFormatting color = removing ? TextFormatting.WHITE : Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == args.get(1).charAt(0)).filter(TextFormatting::isColor).findAny().orElseThrow(() -> new TranslatedCommandException(sender, "commands.error.noColor", args.get(0)));
                     HxCPlayerInfoHandler.setString(target, "ChatColor", !removing ? Character.toString(color.formattingCode) : "");
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.sender", target.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.target", sender.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.sender", target.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                    target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.chatColor." + (!removing ? "set" : "removed") + ".other.target", sender.getName(), new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 } else if (sender instanceof EntityPlayerMP) {
                     TextFormatting color = Arrays.stream(TextFormatting.values()).filter(format -> format.formattingCode == args.get(0).charAt(0)).filter(TextFormatting::isColor).findAny().orElseThrow(() -> new TranslatedCommandException(sender, "commands.error.noColor", args.get(0)));
                     HxCPlayerInfoHandler.setString((EntityPlayer) sender, "ChatColor", Character.toString(color.formattingCode));
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.set.self", new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.chatColor.set.self", new TextComponentString(color.getFriendlyName()).setStyle(new Style().setColor(color))).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames());
         else if (args.size() == 2) return Arrays.stream(TextFormatting.values()).filter(TextFormatting::isColor).map(textFormatting -> Character.toString(textFormatting.formattingCode)).collect(Collectors.toList());
         else return Collections.emptyList();
     }

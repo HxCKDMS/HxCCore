@@ -24,7 +24,7 @@ public class CommandThaw extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "thaw";
     }
 
@@ -42,7 +42,7 @@ public class CommandThaw extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return args.size() == 1 ? Collections.singletonList(Integer.toString(8)) : Collections.emptyList();
     }
 }

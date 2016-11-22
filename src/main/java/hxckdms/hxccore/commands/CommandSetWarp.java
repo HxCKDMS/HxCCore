@@ -32,7 +32,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "setWarp";
     }
 
@@ -46,7 +46,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                     String name = args.size() == 0 ? "default" : args.get(0);
 
                     setWarp(player.posX, player.posY, player.posZ, player.dimension, name);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name,  posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name,  posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 }
                 break;
             case 4:
@@ -61,7 +61,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                 if (Arrays.stream(DimensionType.values()).noneMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
 
                 setWarp(x, y, z, dimension, name);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 break;
         }
     }
@@ -80,7 +80,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (sender instanceof EntityPlayerMP) {
             if (args.size() == 1 || args.size() == 2 || args.size() == 3) return Collections.singletonList("~");
             else if (args.size() == 4) return Collections.singletonList(Integer.toString(((EntityPlayerMP) sender).dimension));

@@ -59,7 +59,7 @@ public class TeleportHelper {
             entity.world.removeEntity(entity);
 
             newEntity.forceSpawn = true;
-            worldserver1.spawnEntityInWorld(newEntity);
+            worldserver1.spawnEntity(newEntity);
             worldserver1.updateEntityWithOptionalForce(newEntity, true);
 
             entity.isDead = true;

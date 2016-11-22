@@ -129,8 +129,8 @@ public class HxCFakePlayer extends FakePlayer {
     }
 
     @Override
-    public void addChatComponentMessage(ITextComponent textComponent) {}
+    public void sendStatusMessage(ITextComponent textComponent) {}
 
     @Override
-    public void addChatMessage(ITextComponent textComponent) {}
+    public void sendMessage(ITextComponent textComponent) {}
 }

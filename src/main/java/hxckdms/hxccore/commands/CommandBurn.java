@@ -25,7 +25,7 @@ public class CommandBurn extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "burn";
     }
 
@@ -37,22 +37,22 @@ public class CommandBurn extends AbstractSubCommand<CommandHxC> {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
 
                     player.setFire(Integer.MAX_VALUE / 20);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.self", Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.self", Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.RED)));
                 }
                 break;
             case 1:
-                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getOnlinePlayerNames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
 
                     target.setFire(Integer.MAX_VALUE / 20);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.other.sender", target.getDisplayName(), Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.burn.other.target", sender.getDisplayName(), Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.other.sender", target.getDisplayName(), Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                    target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.burn.other.target", sender.getDisplayName(), Integer.MAX_VALUE / 20).setStyle(new Style().setColor(TextFormatting.RED)));
                 } else {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     int duration = CommandBase.parseInt(args.get(1), 1, Integer.MAX_VALUE / 20);
 
                     player.setFire(duration);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.self", duration).setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.self", duration).setStyle(new Style().setColor(TextFormatting.RED)));
                 }
                 break;
             case 2:
@@ -60,15 +60,15 @@ public class CommandBurn extends AbstractSubCommand<CommandHxC> {
                 int duration = CommandBase.parseInt(args.get(1), 1, Integer.MAX_VALUE / 20);
 
                 target.setFire(duration);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.other.sender", target.getDisplayName(), duration).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.burn.other.target", sender.getDisplayName(), duration).setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.burn.other.sender", target.getDisplayName(), duration).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.burn.other.target", sender.getDisplayName(), duration).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames());
         else if (args.size() == 2) return Collections.singletonList(Integer.toString(60));
         else return Collections.emptyList();
     }

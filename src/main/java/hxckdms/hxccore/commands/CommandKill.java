@@ -27,7 +27,7 @@ public class CommandKill extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "kill";
     }
 
@@ -55,13 +55,13 @@ public class CommandKill extends AbstractSubCommand<CommandHxC> {
                         return ServerTranslationHelper.getTranslation(target, "death.attack." + damageType, entityLivingBaseIn.getDisplayName());
                     }
                 }.setDamageAllowedInCreativeMode().setDamageIsAbsolute().setDamageBypassesArmor(), Float.MAX_VALUE);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, killed ? "commands.kill.successful" : "commands.kill.failed", target.getDisplayName()).setStyle(new Style().setColor(killed ? TextFormatting.GREEN : TextFormatting.YELLOW)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, killed ? "commands.kill.successful" : "commands.kill.failed", target.getDisplayName()).setStyle(new Style().setColor(killed ? TextFormatting.GREEN : TextFormatting.YELLOW)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
+    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
     }
 }

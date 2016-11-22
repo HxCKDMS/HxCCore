@@ -18,4 +18,5 @@ public class GlobalVariables {
     public static final HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
     public static HxCConfig mainConfig, commandConfig, kitConfig;
     public static HashMap<String, byte[]> playerCapes = new HashMap<>();
+    public static boolean groovyLoaded;
 }

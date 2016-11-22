@@ -21,7 +21,10 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -42,6 +45,13 @@ public class HxCCore {
     @Mod.EventHandler
     public void preInitialization(FMLPreInitializationEvent event) {
         modConfigDir = new File(event.getModConfigurationDirectory(), "HxCKDMS");
+
+        ScriptEngine scriptEngine = new GroovyScriptEngineFactory().getScriptEngine();
+        try {
+            scriptEngine.eval("println \'asdf\'");
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        }
 
         codersCheckThread.setName("Coders check thread");
         codersCheckThread.start();
