@@ -77,6 +77,16 @@ public class CommandRegistry {
             put(4, new SubPermissions("&6Admin", 16, 32768));
             put(5, new SubPermissions("&4&lOwner", -1, -1));
         }};
+        @Config.comment("Add a cost to a command example = tp=minecraft:ender_pearl:0:1 mod:id:meta:number to use")
+        public static LinkedHashMap<String, String> commandCosts = new LinkedHashMap<>();
+
+        @Config.comment("A rules command, Rule, Color")
+        public static LinkedHashMap<String, String> rules = new LinkedHashMap<String, String>(){{
+            put("Don't piss off the dutchman.", "dark_red");
+        }};
+
+        @Config.comment("command = # | 0 = matches exact command, 1 = command starts with, 2 = command contains | example : give=1 bans all give commands")
+        public static LinkedHashMap<String, Byte> bannedCommands = new LinkedHashMap<>();
     }
 
     public static class SubPermissions {
