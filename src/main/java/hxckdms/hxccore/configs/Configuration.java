@@ -35,5 +35,9 @@ public class Configuration {
     public static boolean autoCrashReporterEnabled = true;
 
     public static int coloredChatMinimumPermissionLevel = 0;
+    public static char defaultChatColour = 'f';
+    public static char defaultNameColour = 'f';
+    public static char defaultOpNameColour = '4';
+
     public static boolean allowMobsPowerTool, herobrineMessages, enableCapes = true, showPingOutsideF3Menu;
 }

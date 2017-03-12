@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
+import java.sql.Time;
 import java.util.*;
 
 import static hxckdms.hxccore.libraries.Constants.MOD_NAME;
@@ -20,6 +21,8 @@ import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 public class Kit {
     public int permissionLevel;
     public HashMap<String, DummyItem> items;
+    public int delayBetweenUses;
+    public int maxUses;
 
     public Kit() {
     }
@@ -27,6 +30,13 @@ public class Kit {
     public Kit(int permissionLevel, HashMap<String, DummyItem> items) {
         this.permissionLevel = permissionLevel;
         this.items = items;
+    }
+
+    public Kit(int permissionLevel, HashMap<String, DummyItem> items, int TimeDelay, int MaxUses) {
+        this.permissionLevel = permissionLevel;
+        this.items = items;
+        this.delayBetweenUses = TimeDelay;
+        this.maxUses = MaxUses;
     }
 
     public static void initConfigs() {

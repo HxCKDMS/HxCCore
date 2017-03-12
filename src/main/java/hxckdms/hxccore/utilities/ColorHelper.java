@@ -71,7 +71,7 @@ public class ColorHelper {
                             prevChar = null;
                             continue;
                         } else if (formatting == EnumChatFormatting.RESET) {
-                            currentColor = 'f';
+                            currentColor = defaultColor;
                             currentEffects = new HashSet<>();
                             prevChar = null;
                             continue;
@@ -109,10 +109,10 @@ public class ColorHelper {
     public static final HashMap<UUID, Boolean> isPlayerOp = new HashMap<>();
 
     public static ChatComponentTranslation handleNick(EntityPlayer player, boolean nameTagRender) {
-        if (nameTagRender) return playerNickNames.get(player.getUniqueID()) == null || playerNickNames.get(player.getUniqueID()).isEmpty() ? color(player.getDisplayName(), isPlayerOp.get(player.getUniqueID()) != null && isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');
+        if (nameTagRender) return playerNickNames.get(player.getUniqueID()) == null || playerNickNames.get(player.getUniqueID()).isEmpty() ? color(player.getDisplayName(), isPlayerOp.get(player.getUniqueID()) != null && isPlayerOp.get(player.getUniqueID()) ? Configuration.defaultOpNameColour : Configuration.defaultNameColour) : color(playerNickNames.get(player.getUniqueID()), Configuration.defaultNameColour);
         else {
             if (HxCPlayerInfoHandler.getString(player, "NickName") == null || "".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
-                return (Arrays.asList(((EntityPlayerMP) player).mcServer.getConfigurationManager().func_152603_m().func_152685_a()).contains(player.getDisplayName()) ? color(player.getDisplayName(), '4') : color(player.getDisplayName(), 'f'));
+                return (Arrays.asList(((EntityPlayerMP) player).mcServer.getConfigurationManager().func_152603_m().func_152685_a()).contains(player.getDisplayName()) ? color(player.getDisplayName(), Configuration.defaultOpNameColour) : color(player.getDisplayName(), Configuration.defaultNameColour));
             else return color(HxCPlayerInfoHandler.getString(player, "NickName"), 'f');
         }
     }
@@ -175,7 +175,7 @@ public class ColorHelper {
 
     public static ChatComponentTranslation handleChat(String message, EntityPlayerMP player) {
         String colorString = HxCPlayerInfoHandler.getString(player, "ChatColor");
-        char color = (colorString == null || colorString.isEmpty()) ? 'f' : colorString.charAt(0);
+        char color = (colorString == null || colorString.isEmpty()) ? Configuration.defaultChatColour : colorString.charAt(0);
 
         UUID UUID = player.getUniqueID();
 
@@ -183,9 +183,10 @@ public class ColorHelper {
         ChatComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new ChatComponentTranslation("");
         ChatComponentTranslation permissionTag = handlePermission(player);
         ChatComponentTranslation nick = handleNick(player, false);
-        ChatComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : new ChatComponentTranslation(message.replace("%", "%%"));
+        ChatComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : color(message.replaceAll("&\\S", ""), color);
+        chatMessage = new ChatComponentTranslation(Configuration.chatMessageLayout.replaceAll("&", "\u00a7").replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
 
-        return new ChatComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
+        return chatMessage;
     }
 
     @SuppressWarnings("unused")

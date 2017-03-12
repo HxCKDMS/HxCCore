@@ -20,7 +20,7 @@ apply plugin: 'forge'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "1.7.10-2.0.0"
+version = "1.7.10-2.0.2"
 group= "hxckdms.hxccore"
 archivesBaseName = "hxccore"
 
