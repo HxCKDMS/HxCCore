@@ -22,13 +22,13 @@ public class PermissionHandler {
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {
-        return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
+        return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == -1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
     }
 
     public static int getPermissionLevel(ICommandSender sender) {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            return Arrays.asList(player.mcServer.getConfigurationManager().func_152603_m().func_152685_a()).contains(player.getDisplayName()) ? -1 : GlobalVariables.permissionData.getInteger(player.getUniqueID().toString());
+            return Arrays.asList(player.mcServer.getConfigurationManager().func_152603_m().func_152685_a()).contains(player.getDisplayName()) ? CommandRegistry.CommandConfig.commandPermissions.size() : GlobalVariables.permissionData.getInteger(player.getUniqueID().toString());
         } else {
             return -1;
         }

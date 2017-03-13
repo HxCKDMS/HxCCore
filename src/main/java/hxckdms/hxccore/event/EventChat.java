@@ -74,6 +74,7 @@ public class EventChat implements EventListener {
             final int[] times = new int[1];
             final int[] meta = new int[1];
 
+            System.out.println(cmd);
 
             CommandRegistry.CommandConfig.bannedCommands.keySet().forEach(c -> {
                 if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
@@ -103,7 +104,6 @@ public class EventChat implements EventListener {
                     }
                 });
             }
-
             if (price[0] != null) {
                 if (cmd.startsWith("HxC ")) {
                     if (CommandRegistry.getCommandForName(event.parameters[1]).canCommandSenderUseCommand(event.sender))

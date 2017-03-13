@@ -3,6 +3,7 @@ package hxckdms.hxccore.commands;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
+import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.PermissionHandler;
@@ -11,6 +12,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -41,7 +43,7 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
 
         NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
 
-        if (!homes.hasKey(name) && CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount != -1 && homes.func_150296_c().size() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount)
+        if (!homes.hasKey(name) && !(CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount == -1) && (homes.func_150296_c().size() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount))
             throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
 
         NBTTagCompound home = new NBTTagCompound();
