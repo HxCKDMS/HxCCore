@@ -52,7 +52,7 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
         Kit kit = KitConfiguration.kits.get(KitConfiguration.kits.keySet().stream().filter(key -> key.equalsIgnoreCase(kitName)).findFirst().orElseThrow(() -> new TranslatedCommandException(sender, "commands.kit.error.noSuchKit")));
         if (kit.permissionLevel > PermissionHandler.getPermissionLevel(sender) || PermissionHandler.getPermissionLevel(sender) == 0)
             throw new TranslatedCommandException(sender, "commands.generic.permission");
-        if (!(usedTimes > KitConfiguration.kits.get(kitName).maxUses) && delay < KitConfiguration.kits.get(kitName).delayBetweenUses) {
+        if (usedTimes < kit.maxUses && delay >= kit.delayBetweenUses) {
             kit.getKitItems().forEach(player.inventory::addItemStackToInventory);
             comp.setLong("lastTimeUsed", System.currentTimeMillis());
             comp.setInteger("usedTimes", usedTimes + 1);

@@ -3,7 +3,7 @@
   "modid": "hxccore",
   "name": "HxC-Core",
   "description": "Core for all HxC mods. Contains Important Libraries such as config system.",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "mcversion": "1.10.2",
   "url": "",
   "updateUrl": "",
