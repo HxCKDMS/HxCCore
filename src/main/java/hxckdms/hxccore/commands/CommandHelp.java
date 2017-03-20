@@ -37,19 +37,19 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
             sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
             return;
         }
-
-        int modAmount = subCommands.keySet().size();
-        int modsPerPage = 7;
-        int pages = (int) Math.ceil((float) modAmount / (float) modsPerPage);
-
-        int page = args.size() == 1 ? CommandBase.parseIntBounded(sender, args.get(0), 1, pages) - 1 : 0;
-        int min = Math.min(page * modsPerPage, modAmount);
-
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
         LinkedList<String> commandList = new LinkedList<>(subCommands.values().stream().filter(command -> PermissionHandler.canUseSubCommand(sender, command)).map(command -> command.getCommandName()).sorted(String::compareTo).collect(Collectors.toList()));
 
-        for (int i = page * modsPerPage; i < modsPerPage + min; i++) {
-            if (i >= modAmount) break;
+        int commandAmount = commandList.size();
+        int commandsPerPage = 7;
+        int pages = (int) Math.ceil((float) commandAmount / (float) commandsPerPage);
+
+        int page = args.size() == 1 ? CommandBase.parseIntBounded(sender, args.get(0), 1, pages) - 1 : 0;
+        int min = Math.min(page * commandsPerPage, commandAmount);
+
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
+
+        for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
+            if (i >= commandAmount) break;
             String name = commandList.get(i);
             sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
         }

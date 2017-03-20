@@ -125,10 +125,13 @@ public class ColorHelper {
     }
 
     public static ChatComponentTranslation handlePermission(EntityPlayerMP player) {
+        if (player == null) return handlePermission(-1);
         return handlePermission(permissionData.getInteger(player.getUniqueID().toString()));
     }
 
     public static ChatComponentTranslation handlePermission(int permissionLevel) {
+        if (permissionLevel == -1)
+            return color(CommandRegistry.CommandConfig.commandPermissions.get(CommandRegistry.CommandConfig.commandPermissions.size()-1).name, Configuration.serverChatColour);
         return color(CommandRegistry.CommandConfig.commandPermissions.get(permissionLevel).name, 'f');
     }
 

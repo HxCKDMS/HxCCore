@@ -29,6 +29,7 @@ public class CommandReloadConfigs extends AbstractSubCommand<CommandHxC> {
         GlobalVariables.mainConfig.initConfiguration();
         GlobalVariables.commandConfig.initConfiguration();
         GlobalVariables.kitConfig.initConfiguration();
+        GlobalVariables.alternateHomesConfig.initConfiguration();
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.reloadConfigs.reloaded").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
     }
 

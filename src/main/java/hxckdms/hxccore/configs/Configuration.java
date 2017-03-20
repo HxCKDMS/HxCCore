@@ -35,9 +35,27 @@ public class Configuration {
     public static boolean autoCrashReporterEnabled = true;
 
     public static int coloredChatMinimumPermissionLevel = 0;
+
+    @Config.category("Features")
+    @Config.comment("Max uses of /hxc RTP")
+    public static int maxRTPUses = 5;
+
+    @Config.category("Features")
+    @Config.comment("Generates a random number for x/y during /hxc RTP (automatically negative if going negative direction)")
+    public static int maxRTPRandom = 500;
+
+    @Config.category("Features")
+    @Config.comment("Added to the random number for x/y (automatically negative if going negative direction)")
+    public static int minRTPRandom = 1000;
     public static char defaultChatColour = 'f';
     public static char defaultNameColour = 'f';
     public static char defaultOpNameColour = '4';
+    public static char serverChatColour = '4';
+    public static boolean useTextStorageofHomes = false;
+    public static boolean storeTextHomesUsingName = false;
+    @Config.category("Features")
+    @Config.comment("Untested, cancels all player interact events within protected zones.")
+    public static boolean cancelAllEventsInProtection = false;
 
     public static boolean allowMobsPowerTool, herobrineMessages, enableCapes = true, showPingOutsideF3Menu;
 }

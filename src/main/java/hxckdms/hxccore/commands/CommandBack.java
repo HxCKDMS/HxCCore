@@ -33,10 +33,12 @@ public class CommandBack extends AbstractSubCommand<CommandHxC> {
 
     @Override
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
+        if (!(sender instanceof EntityPlayerMP))
+            throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         NBTTagCompound backCompound = HxCPlayerInfoHandler.getTagCompound(player, "backLocation");
-        if (backCompound == null) throw new TranslatedCommandException(sender, "commands.back.error.noBack");
+        if (backCompound == null)
+            throw new TranslatedCommandException(sender, "commands.back.error.noBack");
         TeleportHelper.teleportEntityToDimension(player, backCompound.getInteger("x"), backCompound.getDouble("y"), backCompound.getDouble("z"), backCompound.getInteger("dimension"));
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.back.successful", posFormat.format(backCompound.getDouble("x")), posFormat.format(backCompound.getDouble("y")), posFormat.format(backCompound.getDouble("z")), backCompound.getInteger("dimension")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
     }

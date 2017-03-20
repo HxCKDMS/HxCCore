@@ -7,7 +7,10 @@ import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import hxckdms.hxcconfig.HxCConfig;
+import hxckdms.hxcconfig.handlers.SpecialHandlers;
 import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.configs.FakePlayerData;
+import hxckdms.hxccore.configs.HomesConfigStorage;
 import hxckdms.hxccore.event.*;
 import hxckdms.hxccore.network.CapesDownload;
 import hxckdms.hxccore.network.CodersCheck;
@@ -107,6 +110,12 @@ public class HxCCore {
 
         customWorldData = new NBTFileHandler("HxCWorldData", customWorldDataFile);
         permissionData = new NBTFileHandler("HxCPermissionData", permissionDataFile);
+        if (Configuration.useTextStorageofHomes) {
+            SpecialHandlers.registerSpecialClass(FakePlayerData.class);
+            SpecialHandlers.registerSpecialClass(FakePlayerData.Warp.class);
+            alternateHomesConfig = new HxCConfig(HomesConfigStorage.class, "HxCHomes", modConfigDir, "cfg", MOD_NAME);
+            alternateHomesConfig.initConfiguration();
+        }
     }
 
     @Mod.EventHandler

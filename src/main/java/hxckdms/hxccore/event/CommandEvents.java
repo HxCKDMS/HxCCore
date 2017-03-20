@@ -131,6 +131,10 @@ public class CommandEvents implements EventListener {
 
     @SubscribeEvent
     public void eventProtection_1(PlayerInteractEvent event) {
+        if (Configuration.cancelAllEventsInProtection && !CommandProtect.isPlayerAllowedToEdit(event.entityPlayer, event.x, event.y, event.z, event.entityPlayer.dimension)) {
+            event.entityPlayer.addChatMessage(ServerTranslationHelper.getTranslation(event.entityPlayer, "world.protect.noEditAllowed"));
+            event.setCanceled(true);
+        }
         if (!event.world.isRemote && (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK  || event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR)) {
             if (!CommandProtect.isPlayerAllowedToEdit(event.entityPlayer, event.x, event.y, event.z, event.entityPlayer.dimension)) {
                 event.entityPlayer.addChatMessage(ServerTranslationHelper.getTranslation(event.entityPlayer, "world.protect.noEditAllowed"));
@@ -209,8 +213,8 @@ public class CommandEvents implements EventListener {
 
     @SubscribeEvent
     public void eventBack_1(LivingDeathEvent event) {
-        if (event.entityLiving instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+        if (event.entityLiving instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
             NBTTagCompound backCompound = new NBTTagCompound();
             backCompound.setDouble("x", player.posX);
             backCompound.setDouble("y", player.posY);
