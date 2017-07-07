@@ -40,7 +40,7 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
 
         Vec3d vector = player.getLookVec();
 
-        Entity projectile = isKitty ? new EntityOcelot(player.world) : new EntityTNTPrimed(player.world, player.posX, player.posY, player.posZ, player);
+        Entity projectile = isKitty ? new EntityOcelot(player.worldObj) : new EntityTNTPrimed(player.worldObj, player.posX, player.posY, player.posZ, player);
         projectile.setPosition(player.posX, player.posY + player.eyeHeight, player.posZ);
 
         projectile.motionX = vector.xCoord * speed;
@@ -48,11 +48,11 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
         projectile.motionZ = vector.zCoord * speed;
         projectile.isAirBorne = true;
 
-        player.world.spawnEntity(projectile);
+        player.worldObj.spawnEntityInWorld(projectile);
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return Collections.singletonList(Integer.toString(2));
         else if (args.size() == 2) return Collections.singletonList("kitty");
         else return Collections.emptyList();

@@ -37,12 +37,12 @@ public class CommandRepair extends AbstractSubCommand<CommandHxC> {
             if (!itemStack.isItemStackDamageable()) throw new TranslatedCommandException(sender, "commands.error.repair.unrepairable");
             if (!itemStack.isItemDamaged()) throw new TranslatedCommandException(sender, "commands.error.repair.undamaged");
             itemStack.setItemDamage(0);
-            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repair.successful", itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repair.successful", itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
         }
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

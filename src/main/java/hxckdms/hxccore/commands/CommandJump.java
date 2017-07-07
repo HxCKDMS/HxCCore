@@ -35,16 +35,16 @@ public class CommandJump extends AbstractSubCommand<CommandHxC> {
         Vec3d vec3d = new Vec3d(player.posX, player.posY + (double)player.getEyeHeight(), player.posZ);
         Vec3d vec3d1 = player.getLook(1);
         Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * 4096, vec3d1.yCoord * 4096, vec3d1.zCoord * 4096);
-        RayTraceResult rayTraceResult = player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
+        RayTraceResult rayTraceResult = player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
         if (rayTraceResult == null) return;
         BlockPos pos = rayTraceResult.getBlockPos();
-        System.out.println(player.world.getBlockState(rayTraceResult.getBlockPos()).getMaterial().isSolid());
+        System.out.println(player.worldObj.getBlockState(rayTraceResult.getBlockPos()).getMaterial().isSolid());
         if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK)
             TeleportHelper.teleportEntityToDimension(player, pos.up(), player.dimension);
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

@@ -53,11 +53,11 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
             HxCPlayerInfoHandler.setString(player, "Override", override);
         }
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
         else if (args.size() == 2) return Collections.singletonList("0");
         else if (args.size() == 3) return Collections.singletonList("2");

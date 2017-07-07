@@ -11,7 +11,7 @@ import java.util.List;
 interface ISubCommand<T extends IMultiCommand> {
     String getName();
     void execute(ICommandSender sender, LinkedList<String> args) throws CommandException;
-    List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
+    List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
 
     Class<T> getParent();
     int getPermissionLevel();

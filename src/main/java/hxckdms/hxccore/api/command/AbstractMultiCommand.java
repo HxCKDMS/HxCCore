@@ -20,7 +20,7 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
     public void executeSubCommand(ICommandSender sender, String[] args) throws CommandException {
         //GroovyCommandHandler test = GroovyCommandHandler.getInstance();
 
-        if (args.length == 0) throw new WrongUsageException("Type '" + getUsage(sender) + "' for help.");
+        if (args.length == 0) throw new WrongUsageException("Type '" + getCommandUsage(sender) + "' for help.");
         String commandName = args[0].toLowerCase();
         if (!subCommands.containsKey(commandName) /*&& !test.doesCommandScriptExist(commandName)*/) throw new TranslatedCommandException(sender, "commands.sub.exception.notFound");
 
@@ -70,8 +70,8 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
     }
 
     @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
-        return super.getTabCompletions(server, sender, args, pos);
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+        return super.getTabCompletionOptions(server, sender, args, pos);
     }
 
     @Override

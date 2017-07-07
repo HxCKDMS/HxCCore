@@ -21,7 +21,7 @@ public class EventXPBuffs implements EventListener {
         if (event.getEntityLiving() instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
 
-            boolean enabled = player.world.getGameRules().getBoolean("HxC_XPBuffs");
+            boolean enabled = player.worldObj.getGameRules().getBoolean("HxC_XPBuffs");
 
             IAttributeInstance playerHealthAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
             IAttributeInstance playerDamageAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);

@@ -44,6 +44,7 @@ import java.util.stream.StreamSupport;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
+@SuppressWarnings("unused")
 public class CommandEvents implements EventListener {
     @SubscribeEvent
     public void eventLoadFile(PlayerEvent.LoadFromFile event) {
@@ -79,11 +80,11 @@ public class CommandEvents implements EventListener {
             if (vanishedList != null || HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
                 ArrayList<EntityPlayerMP> targets = new ArrayList<>();
 
-                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) targets.addAll(GlobalVariables.server.getPlayerList().getPlayers());
+                if (HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList());
                 else if (vanishedList != null)
                     for (int i = 0; i < vanishedList.tagCount(); i++) {
                         UUID uuid = UUID.fromString(vanishedList.getStringTagAt(i));
-                        targets.addAll(GlobalVariables.server.getPlayerList().getPlayers().parallelStream().filter(playerMP -> playerMP.getUniqueID().equals(uuid)).collect(Collectors.toList()));
+                        targets.addAll(GlobalVariables.server.getPlayerList().getPlayerList().parallelStream().filter(playerMP -> playerMP.getUniqueID().equals(uuid)).collect(Collectors.toList()));
                     }
 
                 for (EntityPlayerMP target : targets) {
@@ -119,10 +120,10 @@ public class CommandEvents implements EventListener {
 
                 switch (HxCPlayerInfoHandler.getString(player, "Override")) {
                     case "air":
-                        blockPredicate = pos -> player.world.isAirBlock(pos);
+                        blockPredicate = pos -> player.worldObj.isAirBlock(pos);
                         break;
                     case "fluid":
-                        blockPredicate = pos -> player.world.isAirBlock(pos) || player.world.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.world.getBlockState(pos).getBlock()) != null;
+                        blockPredicate = pos -> player.worldObj.isAirBlock(pos) || player.worldObj.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.worldObj.getBlockState(pos).getBlock()) != null;
                         break;
                     default:
                         blockPredicate = pos -> true;
@@ -131,7 +132,7 @@ public class CommandEvents implements EventListener {
 
                 StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(player.posX - pathSize, player.posY - 1, player.posZ - pathSize), new BlockPos(player.posX + pathSize, player.posY - 1, player.posZ + pathSize)).spliterator(), false)
                         .filter(blockPredicate)
-                        .forEach(pos -> player.world.setBlockState(pos, block.getStateFromMeta(metadata)));
+                        .forEach(pos -> player.worldObj.setBlockState(pos, block.getStateFromMeta(metadata)));
             }
         }
     }
@@ -141,7 +142,7 @@ public class CommandEvents implements EventListener {
         if (event.getSide() == Side.CLIENT) return;
         if (event instanceof PlayerInteractEvent.RightClickBlock  || event instanceof PlayerInteractEvent.LeftClickBlock || event instanceof PlayerInteractEvent.EntityInteract) {
             if (!CommandProtect.isPlayerAllowedToEdit(event.getEntityPlayer(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), event.getEntityPlayer().dimension)) {
-                event.getEntityPlayer().sendMessage(ServerTranslationHelper.getTranslation(event.getEntityPlayer(), "world.protect.noEditAllowed"));
+                event.getEntityPlayer().addChatMessage(ServerTranslationHelper.getTranslation(event.getEntityPlayer(), "world.protect.noEditAllowed"));
                 event.setCanceled(true);
             }
         }
@@ -159,7 +160,7 @@ public class CommandEvents implements EventListener {
     @SuppressWarnings("Duplicates")
     @SubscribeEvent
     public void eventPowerTool_2(LivingSwingEvent event) {
-        if (!event.getEntityLiving().world.isRemote && event.getItemStack() != null && event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
+        if (!event.getEntityLiving().worldObj.isRemote && event.getItemStack() != null && event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
             NBTTagList commandList = event.getItemStack().getTagCompound().getTagList("powerToolCommands", 8);
 
             for (int i = 0; i < commandList.tagCount(); i++) {
@@ -264,8 +265,8 @@ public class CommandEvents implements EventListener {
         }
 
         private TPARequest handleCompute(EntityPlayerMP target) {
-            if ((--timeRemaining) == 0) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
-            else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+            if ((--timeRemaining) == 0) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+            else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 
             return timeRemaining == 0 ? null : this;
         }

@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -105,7 +104,7 @@ public class HxCFakePlayer extends FakePlayer {
                 if (itemStackMainHand.stackSize <= 25 && itemStackMainHand.stackSize % 4 == 0) {
                     updateItemUse(updateItem, 5);
                 }
-                if (--itemStackMainHand.stackSize == 0 && !world.isRemote) {
+                if (--itemStackMainHand.stackSize == 0 && !worldObj.isRemote) {
                     onItemUseFinish();
                 }
             }
@@ -117,7 +116,7 @@ public class HxCFakePlayer extends FakePlayer {
     @Override
     protected void updateItemUse(ItemStack itemStack, int integer) {
         if (itemStack.getItemUseAction().equals(EnumAction.DRINK))
-            this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 
         if (itemStack.getItemUseAction().equals(EnumAction.EAT))
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.5F + 0.5F * this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
@@ -128,9 +127,4 @@ public class HxCFakePlayer extends FakePlayer {
         return getName();
     }
 
-    @Override
-    public void sendStatusMessage(ITextComponent textComponent) {}
-
-    @Override
-    public void sendMessage(ITextComponent textComponent) {}
 }

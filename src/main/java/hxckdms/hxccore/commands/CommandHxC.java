@@ -22,13 +22,13 @@ import static hxckdms.hxccore.registry.CommandRegistry.CommandConfig.commands;
 @HxCCommand
 public class CommandHxC extends AbstractMultiCommand {
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "HxC";
     }
 
     @Override
-    public String getUsage(ICommandSender sender) {
-        return String.format("/%s help for help", getName());
+    public String getCommandUsage(ICommandSender sender) {
+        return String.format("/%s help for help", getCommandName());
     }
 
     @Override
@@ -43,20 +43,20 @@ public class CommandHxC extends AbstractMultiCommand {
     }
 
     @Override
-    public List<String> getAliases() {
+    public List<String> getCommandAliases() {
         return Arrays.asList("HxCCore", "HxC", "hxccore", "hxC", "hxc", "Hxc", "HXC");
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         if (args.length == 1) {
             return getListOfStringsMatchingLastWord(args, subCommands.entrySet().parallelStream().filter(entry -> entry.getValue().getState().isUsageAllowed()).filter(entry -> PermissionHandler.canUseSubCommand(sender, entry.getValue())).map(Map.Entry::getKey).collect(Collectors.toList()));
         } else if (subCommands.containsKey(args[0])) {
             LinkedList<String> lArgs = new LinkedList<>(Arrays.asList(args));
             lArgs.removeFirst();
-            return subCommands.get(args[0]).addTabCompletions(sender, lArgs, pos);
+            return subCommands.get(args[0]).addTabCompletionOptions(sender, lArgs, pos);
         }
-        return super.getTabCompletions(server, sender, args, pos);
+        return super.getTabCompletionOptions(server, sender, args, pos);
     }
 }

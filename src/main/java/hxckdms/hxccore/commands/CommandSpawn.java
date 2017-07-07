@@ -41,7 +41,7 @@ public class CommandSpawn extends AbstractSubCommand<CommandHxC> {
                     BlockPos pos = player.getEntityWorld().getSpawnPoint();
                     TeleportHelper.teleportEntityToDimension(player, pos, 0);
 
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
@@ -50,14 +50,14 @@ public class CommandSpawn extends AbstractSubCommand<CommandHxC> {
                 BlockPos pos = target.getEntityWorld().getSpawnPoint();
                 TeleportHelper.teleportEntityToDimension(target, pos, 0);
 
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.other.sender", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                sender.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.spawn.other.target", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.other.sender", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.spawn.other.target", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GOLD)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 }

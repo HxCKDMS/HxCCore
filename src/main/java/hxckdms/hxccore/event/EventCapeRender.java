@@ -18,7 +18,7 @@ public class EventCapeRender implements EventListener {
     public void addCapeToTextures(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof EntityPlayerSP) {
             EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
-            player.world.playerEntities.stream().map(iPlayer -> iPlayer.getUniqueID().toString()).filter(GlobalVariables.playerCapes::containsKey)
+            player.worldObj.playerEntities.stream().map(iPlayer -> iPlayer.getUniqueID().toString()).filter(GlobalVariables.playerCapes::containsKey)
                     .forEach(uuid -> player.connection.getPlayerInfo(UUID.fromString(uuid)).playerTextures.put(MinecraftProfileTexture.Type.CAPE, new ResourceLocation("hxccapes", uuid)));
         }
     }

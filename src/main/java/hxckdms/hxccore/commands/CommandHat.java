@@ -41,13 +41,13 @@ public class CommandHat extends AbstractSubCommand<CommandHxC> {
             player.inventory.armorInventory[3] = hat;
             player.inventory.addItemStackToInventory(helmet);
 
-            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.hat.self", hat.getDisplayName()).setStyle(new Style().setColor(TextFormatting.BLUE)));
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hat.self", hat.getDisplayName()).setStyle(new Style().setColor(TextFormatting.BLUE)));
         } else
             throw new CommandException("commands.error.playerOnly");
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

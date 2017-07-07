@@ -50,11 +50,11 @@ public class CommandServerInfo extends AbstractSubCommand<CommandHxC> {
 
         Arrays.stream(DimensionManager.getWorlds()).forEachOrdered(worldServer -> textComponent.appendSibling(new TextComponentTranslation("\nDIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", ColorHelper.handleDimension(worldServer), getWorldTPSStyled(worldServer), worldServer.loadedEntityList.size(), worldServer.getChunkProvider().getLoadedChunkCount()).setStyle(new Style().setColor(TextFormatting.AQUA))));
 
-        sender.sendMessage(textComponent);
+        sender.addChatMessage(textComponent);
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 

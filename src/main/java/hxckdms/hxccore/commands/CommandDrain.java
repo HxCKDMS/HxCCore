@@ -44,12 +44,12 @@ public class CommandDrain extends AbstractSubCommand<CommandHxC> {
             final int z = (int) Math.round(player.posZ);
 
             final Predicate<BlockPos> predicate = pos -> fluid == null ?
-                    player.world.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.world.getBlockState(pos).getBlock()) != null :
-                    player.world.getBlockState(pos).getBlock() == fluid.getBlock();
+                    player.worldObj.getBlockState(pos).getMaterial().isLiquid() || FluidRegistry.lookupFluidForBlock(player.worldObj.getBlockState(pos).getBlock()) != null :
+                    player.worldObj.getBlockState(pos).getBlock() == fluid.getBlock();
 
             long nano = System.nanoTime();
 
-            StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(x - r, y - r, z - r), new BlockPos(x + r, y + r, z + r)).spliterator(), false).filter(predicate).forEach(player.world::setBlockToAir);
+            StreamSupport.stream(BlockPos.getAllInBox(new BlockPos(x - r, y - r, z - r), new BlockPos(x + r, y + r, z + r)).spliterator(), false).filter(predicate).forEach(player.worldObj::setBlockToAir);
             nano = System.nanoTime() - nano;
 
             TextComponentTranslation msg = fluid == null ? ServerTranslationHelper.getTranslation(player, "commands.drain.successful.all", Integer.toString(r), String.format("%.1f", nano * 1e-9)) :
@@ -57,12 +57,12 @@ public class CommandDrain extends AbstractSubCommand<CommandHxC> {
 
             msg.getStyle().setColor(TextFormatting.GREEN);
 
-            player.sendMessage(msg);
+            player.addChatMessage(msg);
         } else throw new CommandException(ServerTranslationHelper.getTranslation(sender, "commands.exception.playersOnly").getUnformattedText());
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return Collections.singletonList(String.valueOf(8));
         else if (args.size() == 2) return new ArrayList<>(FluidRegistry.getRegisteredFluids().keySet());
         else return Collections.emptyList();

@@ -41,11 +41,11 @@ public class CommandDelHome extends AbstractSubCommand<CommandHxC> {
         homes.removeTag(homeName);
         HxCPlayerInfoHandler.setTagCompound((EntityPlayer) sender, "warps", homes);
 
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.removed", homeName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.removed", homeName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return (sender instanceof EntityPlayerMP && args.size() == 1) ? new ArrayList<>(HxCPlayerInfoHandler.getTagCompound((EntityPlayer) sender, "homes", new NBTTagCompound()).getKeySet()) : Collections.emptyList();
     }
 }

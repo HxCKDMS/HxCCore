@@ -55,11 +55,11 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
 
         homes.setTag(name, home);
         HxCPlayerInfoHandler.setTagCompound(player, "homes", homes);
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

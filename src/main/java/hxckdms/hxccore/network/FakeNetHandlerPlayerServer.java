@@ -93,9 +93,6 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
     public void update() {}
 
     @Override
-    public void disconnect(String kickMessage) {}
-
-    @Override
     public void processInput(CPacketInput packetInput) {}
 
     @Override
@@ -106,9 +103,6 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
 
     @Override
     public void processPlayerDigging(CPacketPlayerDigging packetPlayerDigging) {}
-
-    @Override
-    public void processTryUseItem(CPacketPlayerTryUseItem packetPlayerBlockPlacement) {}
 
     @Override
     public void onDisconnect(ITextComponent textComponent) {}

@@ -22,7 +22,7 @@ public class EventChat implements EventListener {
     public void onServerChatEvent(ServerChatEvent event) {
         NBTTagCompound mutedPlayers = GlobalVariables.customWorldData.getTagCompound("mutedPlayers", new NBTTagCompound());
         if (mutedPlayers.getBoolean(event.getPlayer().getUniqueID().toString())) {
-            event.getPlayer().sendMessage(ServerTranslationHelper.getTranslation(event.getPlayer(), "chat.error.muted").setStyle(new Style().setColor(TextFormatting.RED)));
+            event.getPlayer().addChatMessage(ServerTranslationHelper.getTranslation(event.getPlayer(), "chat.error.muted").setStyle(new Style().setColor(TextFormatting.RED)));
             event.setCanceled(true);
         }
 
@@ -33,7 +33,7 @@ public class EventChat implements EventListener {
                 HxCPlayerInfoHandler.setBoolean(event.getPlayer(), "Herobrine", true);
                 GlobalVariables.server.getPlayerList().sendChatMsg(ColorHelper.handleMessage("<&4Herobrine&f> &4What is your request mortal?", 'f'));
             } else if (HxCPlayerInfoHandler.getBoolean(event.getPlayer(), "Herobrine") && (event.getMessage().toLowerCase().contains("die") || event.getMessage().toLowerCase().contains("kill") || event.getMessage().toLowerCase().contains("misery") || event.getMessage().toLowerCase().contains("suffer") || event.getMessage().toLowerCase().contains("torment"))) {
-                event.getPlayer().attackEntityFrom(new DamageSource("command_hxc_kill." + event.getPlayer().world.rand.nextInt(35)) {
+                event.getPlayer().attackEntityFrom(new DamageSource("command_hxc_kill." + event.getPlayer().worldObj.rand.nextInt(35)) {
                     @Override
                     public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
                         return ServerTranslationHelper.getTranslation(event.getPlayer(), "death.attack." + damageType, entityLivingBaseIn.getDisplayName());
@@ -51,7 +51,7 @@ public class EventChat implements EventListener {
         if (event.getSender() instanceof EntityPlayerMP) {
             NBTTagCompound mutedPlayers = GlobalVariables.customWorldData.getTagCompound("mutedPlayers", new NBTTagCompound());
             if (mutedPlayers.getBoolean(((EntityPlayerMP) event.getSender()).getUniqueID().toString())) {
-                event.getSender().sendMessage(ServerTranslationHelper.getTranslation(event.getSender(), "chat.error.muted").setStyle(new Style().setColor(TextFormatting.RED)));
+                event.getSender().addChatMessage(ServerTranslationHelper.getTranslation(event.getSender(), "chat.error.muted").setStyle(new Style().setColor(TextFormatting.RED)));
                 event.setCanceled(true);
             }
         }

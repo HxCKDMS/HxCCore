@@ -14,13 +14,13 @@ public class EventNickSync implements EventListener {
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
-            if ((counter++) == 200) GlobalVariables.network.sendToAll(new MessageNameTagSync(GlobalVariables.server.getPlayerList().getPlayers()));
+            if ((counter++) == 200) GlobalVariables.network.sendToAll(new MessageNameTagSync(GlobalVariables.server.getPlayerList().getPlayerList()));
             if (counter >= 200) counter = 0;
         }
     }
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        GlobalVariables.network.sendToAll(new MessageNameTagSync(GlobalVariables.server.getPlayerList().getPlayers()));
+        GlobalVariables.network.sendToAll(new MessageNameTagSync(GlobalVariables.server.getPlayerList().getPlayerList()));
     }
 }

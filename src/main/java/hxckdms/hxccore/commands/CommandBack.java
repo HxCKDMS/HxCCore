@@ -37,11 +37,11 @@ public class CommandBack extends AbstractSubCommand<CommandHxC> {
         NBTTagCompound backCompound = HxCPlayerInfoHandler.getTagCompound(player, "backLocation");
         if (backCompound == null) throw new TranslatedCommandException(sender, "commands.back.error.noBack");
         TeleportHelper.teleportEntityToDimension(player, backCompound.getInteger("x"), backCompound.getDouble("y"), backCompound.getDouble("z"), backCompound.getInteger("dimension"));
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.back.successful", backCompound.getInteger("x"), backCompound.getDouble("y"), backCompound.getDouble("z"), backCompound.getInteger("dimension")).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.back.successful", backCompound.getInteger("x"), backCompound.getDouble("y"), backCompound.getDouble("z"), backCompound.getInteger("dimension")).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

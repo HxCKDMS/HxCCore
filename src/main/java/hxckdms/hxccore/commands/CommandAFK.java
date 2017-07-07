@@ -44,11 +44,11 @@ public class CommandAFK extends AbstractSubCommand<CommandHxC> {
             player.capabilities.disableDamage = true;
         } else player.capabilities.disableDamage = false;
 
-        GlobalVariables.server.getPlayerList().getPlayers().forEach(iPlayer -> iPlayer.sendMessage(ServerTranslationHelper.getTranslation(iPlayer, "commands.AFK." + (HxCPlayerInfoHandler.getBoolean(player, "AFK") ? "away" : "back"), player.getDisplayName()).setStyle(new Style().setColor(TextFormatting.YELLOW))));
+        GlobalVariables.server.getPlayerList().getPlayerList().forEach(iPlayer -> iPlayer.addChatMessage(ServerTranslationHelper.getTranslation(iPlayer, "commands.AFK." + (HxCPlayerInfoHandler.getBoolean(player, "AFK") ? "away" : "back"), player.getDisplayName()).setStyle(new Style().setColor(TextFormatting.YELLOW))));
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 }

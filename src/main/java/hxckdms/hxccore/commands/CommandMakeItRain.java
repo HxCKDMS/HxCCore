@@ -40,26 +40,26 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
             case 0:
                 EntityPlayerMP player = (EntityPlayerMP) sender;
                 spawnProjectiles(args, player, false);
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
             case 1:
-                if (Arrays.asList(GlobalVariables.server.getPlayerList().getOnlinePlayerNames()).contains(args.get(0))) {
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                     spawnProjectiles(args, target, false);
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
-                    target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
 
                 } else if (sender instanceof EntityPlayerMP) {
                     player = (EntityPlayerMP) sender;
                     spawnProjectiles(args, player, args.get(0).equalsIgnoreCase("kitty"));
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.self").setStyle(new Style().setColor(TextFormatting.RED)));
                 }
                 break;
             case 2:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                 spawnProjectiles(args, target, args.get(1).equalsIgnoreCase("kitty"));
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
-                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.makeItRain.other.sender", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.makeItRain.other.target", sender.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
                 break;
         }
 
@@ -67,19 +67,19 @@ public class CommandMakeItRain extends AbstractSubCommand<CommandHxC> {
     }
 
     private static void spawnProjectiles(LinkedList<String> args, EntityPlayerMP player, boolean isKitty) {
-        int minY = player.world.getTopSolidOrLiquidBlock(player.getPosition()).getY() + 64;
+        int minY = player.worldObj.getTopSolidOrLiquidBlock(player.getPosition()).getY() + 64;
 
         for (int x_offset = -10; x_offset <= 10; x_offset += 5) {
             for (int z_offset = -10; z_offset <= 10; z_offset += 5) {
-                Entity projectile = isKitty ? new EntityOcelot(player.world) : new EntityTNTPrimed(player.world);
+                Entity projectile = isKitty ? new EntityOcelot(player.worldObj) : new EntityTNTPrimed(player.worldObj);
                 projectile.setPosition(player.posX + x_offset, minY, player.posZ + z_offset);
-                player.world.spawnEntity(projectile);
+                player.worldObj.spawnEntityInWorld(projectile);
             }
         }
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]));
         else if (args.size() == 2) return Arrays.asList("kitty", "tnt");
         else return Collections.emptyList();

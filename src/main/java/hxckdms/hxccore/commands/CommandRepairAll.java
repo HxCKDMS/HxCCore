@@ -40,7 +40,7 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
                             if (itemStack != null && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                                 itemStack.setItemDamage(0);
 
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.self").setStyle(new Style().setColor(TextFormatting.GREEN)));
                 }
                 break;
             case 1:
@@ -50,14 +50,14 @@ public class CommandRepairAll extends AbstractSubCommand<CommandHxC> {
                         if (itemStack != null && itemStack.isItemStackDamageable() && itemStack.isItemDamaged())
                             itemStack.setItemDamage(0);
 
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.sender").setStyle(new Style().setColor(TextFormatting.GREEN)));
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.target").setStyle(new Style().setColor(TextFormatting.GRAY)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.sender").setStyle(new Style().setColor(TextFormatting.GREEN)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.repairAll.successful.other.target").setStyle(new Style().setColor(TextFormatting.GRAY)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 }

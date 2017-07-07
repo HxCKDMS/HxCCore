@@ -37,20 +37,20 @@ public class CommandSudo extends AbstractSubCommand<CommandHxC> {
         boolean allowed = (force && command.checkPermission(GlobalVariables.server, sender)) || command.checkPermission(GlobalVariables.server, target);
 
         if (allowed) command.execute(GlobalVariables.server, target, args.toArray(new String[args.size()]));
-        else sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.sudo.target.insufficientPermission", target.getDisplayName(), command.getName()));
+        else sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.sudo.target.insufficientPermission", target.getDisplayName(), command.getCommandName()));
 
 
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames());
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) return Arrays.asList("true", "false");
         else if (args.size() == 3) return new LinkedList<>(GlobalVariables.server.getCommandManager().getCommands().keySet());
         else if (args.size() >= 4) {
             ICommand command = GlobalVariables.server.getCommandManager().getCommands().get(args.get(2));
             args.removeFirst(); args.removeFirst(); args.removeFirst();
-            return command.getTabCompletions(GlobalVariables.server, sender, args.toArray(new String[args.size()]), pos);
+            return command.getTabCompletionOptions(GlobalVariables.server, sender, args.toArray(new String[args.size()]), pos);
         } else return Collections.emptyList();
     }
 }

@@ -37,21 +37,21 @@ public class CommandWarp extends AbstractSubCommand<CommandHxC> {
                 if (sender instanceof EntityPlayerMP) {
                     String name = "default";
                     warpPlayer(sender, (EntityPlayerMP) sender, name);
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 }
                 break;
             case 1:
-                if (Arrays.asList(GlobalVariables.server.getPlayerList().getOnlinePlayerNames()).contains(args.get(0))) {
+                if (Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0))) {
                     EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
                     String name = "default";
 
                     warpPlayer(sender, target, name);
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                    target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                    target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 } else if (sender instanceof EntityPlayerMP) {
                     String name = args.get(0);
                     warpPlayer(sender, (EntityPlayerMP) sender, name);
-                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 }
                 break;
             case 2:
@@ -59,8 +59,8 @@ public class CommandWarp extends AbstractSubCommand<CommandHxC> {
                 String name = args.get(1);
 
                 warpPlayer(sender, target, name);
-                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
-                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.teleport.other.sender", target.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.GRAY)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.warp.teleport.other.target", sender.getDisplayName(), name).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 break;
         }
     }
@@ -77,8 +77,8 @@ public class CommandWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames());
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
         else if (args.size() == 2) return new ArrayList<>(GlobalVariables.customWorldData.getTagCompound("warps").getKeySet());
         else return Collections.emptyList();
     }

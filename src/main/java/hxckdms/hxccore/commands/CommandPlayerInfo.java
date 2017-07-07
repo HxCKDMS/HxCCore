@@ -34,18 +34,18 @@ public class CommandPlayerInfo extends AbstractSubCommand<CommandHxC> {
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         switch (args.size()) {
             case 0:
-                if (sender instanceof EntityPlayerMP) sender.sendMessage(getPlayerInfo((EntityPlayerMP) sender));
+                if (sender instanceof EntityPlayerMP) sender.addChatMessage(getPlayerInfo((EntityPlayerMP) sender));
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0));
-                sender.sendMessage(getPlayerInfo(target));
+                sender.addChatMessage(getPlayerInfo(target));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getOnlinePlayerNames()) : Collections.emptyList();
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+        return args.size() == 1 ? CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames()) : Collections.emptyList();
     }
 
     private static TextComponentTranslation getPlayerInfo(EntityPlayerMP player) {

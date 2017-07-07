@@ -48,11 +48,10 @@ public class CommandHome extends AbstractSubCommand<CommandHxC> {
             throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
 
         TeleportHelper.teleportEntityToDimension(player, home.getDouble("x"), home.getDouble("y"), home.getDouble("z"), home.getInteger("dimension"));
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.teleport.self", name).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
-
     @Override
-    public List<String> addTabCompletions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
         return (sender instanceof EntityPlayerMP && args.size() == 1) ? new ArrayList<>(HxCPlayerInfoHandler.getTagCompound((EntityPlayer) sender, "homes", new NBTTagCompound()).getKeySet()) : Collections.emptyList();
     }
 }
