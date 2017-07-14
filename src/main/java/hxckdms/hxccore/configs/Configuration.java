@@ -20,7 +20,15 @@ public class Configuration {
 
     @Config.category("Features")
     @Config.comment("Don't Exceed 100 without Tinkers or a mod that changes Health Bar.")
-    public static int maxBonusHealth = 10;
+    public static int maxBonusHealth = 60;
+
+    @Config.category("Features")
+    @Config.comment("Max number of any individual entity type")
+    public static int maxEntitiesOfOneType = 50;
+
+    @Config.category("Features")
+    @Config.comment("Delay between checking for excess lag")
+    public static int updateDelay = 10;
 
     @Config.category("Features")
     @Config.comment("The higher the number the more Max Damage!")
@@ -33,6 +41,11 @@ public class Configuration {
     @Config.category("Features")
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
     public static boolean autoCrashReporterEnabled = true;
+
+    @Config.category("Features")
+    @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
+    public static String clearExcessEntities = "clear";
+
 
     public static int coloredChatMinimumPermissionLevel = 0;
 

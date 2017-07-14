@@ -2,30 +2,26 @@ package hxckdms.hxccore.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import hxckdms.hxccore.HxCCore;
 import hxckdms.hxccore.api.event.EmoteEvent;
 import hxckdms.hxccore.configs.Configuration;
-import hxckdms.hxccore.entity.HxCFakePlayer;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
-import hxckdms.hxccore.utilities.*;
-import net.minecraft.command.CommandHandler;
+import hxckdms.hxccore.utilities.ColorHelper;
+import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
+import hxckdms.hxccore.utilities.PermissionHandler;
+import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.*;
-import net.minecraft.world.WorldSettings;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 
 import java.util.Arrays;
 import java.util.EventListener;
-import java.util.Objects;
 
 public class EventChat implements EventListener {
     @SubscribeEvent
@@ -37,9 +33,6 @@ public class EventChat implements EventListener {
         }
 
         event.component = ColorHelper.handleChat(event.message, event.player);
-
-        if (event.component.getFormattedText().replaceAll("\u00a7", "").isEmpty())
-            event.setCanceled(true);
 
         if (Configuration.herobrineMessages) {
             if (event.message.toLowerCase().contains("herobrine") || event.message.toLowerCase().contains("my lord")) {

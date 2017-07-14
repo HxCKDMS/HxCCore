@@ -1,5 +1,6 @@
 package hxckdms.hxccore;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -91,6 +92,7 @@ public class HxCCore {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        FMLCommonHandler.instance().bus().register(new EventClearLag());
         server = event.getServer();
         if (!server.getEntityWorld().getGameRules().hasRule("HxC_XPBuffs")) server.getEntityWorld().getGameRules().addGameRule("HxC_XPBuffs", "true");
         if (!server.getEntityWorld().getGameRules().hasRule("XPPickupCoolDown")) server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "2");

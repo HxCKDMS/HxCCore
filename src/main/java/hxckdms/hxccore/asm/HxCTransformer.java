@@ -227,7 +227,6 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: CommandBase.", Constants.MOD_NAME + " ASM");
     }
 
-
     private static void transformLivingBase(ClassNode classNode) {
         final String SWING_ITEM = HxCLoader.RuntimeDeobf ? "func_71038_i" : "swingItem";
         final String SWING_ITEM_DESC = "()V";
