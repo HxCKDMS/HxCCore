@@ -30,7 +30,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     public static final ArrayList<EntityPlayer> override = new ArrayList<>();
 
     {
-        permissionLevel = 1;
+        permissionLevel = 4;
     }
 
     @Override

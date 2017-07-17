@@ -68,7 +68,18 @@ public class CommandRegistry {
         @Config.flags(RETAIN_ORIGINAL_VALUES)
         public static LinkedHashMap<String, SubCommandConfigHandler> commands = new LinkedHashMap<>();
 
+        @Config.comment("Add a cost to a command example = tp=minecraft:ender_pearl:0:1 mod:id:meta:number to use")
+        public static LinkedHashMap<String, String> commandCosts = new LinkedHashMap<>();
+
+        @Config.comment("command = # | 0 = matches exact command, 1 = command starts with, 2 = command contains | example : give=1 bans all give commands")
+        public static LinkedHashMap<String, Byte> bannedCommands = new LinkedHashMap<>();
+
         public static LinkedHashMap<String, Integer> vanillaPermissionOverride = new LinkedHashMap<>();
+
+        @Config.comment("A rules command, Rule, Color")
+        public static LinkedHashMap<String, String> rules = new LinkedHashMap<String, String>(){{
+            put("Don't piss off the dutchman.", "dark_red");
+        }};
 
         public static LinkedHashMap<Integer, SubPermissions> commandPermissions = new LinkedHashMap<Integer, SubPermissions>(){{
             put(1, new SubPermissions("Default", 3, 0));

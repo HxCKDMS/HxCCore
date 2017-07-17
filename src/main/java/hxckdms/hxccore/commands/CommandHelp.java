@@ -36,19 +36,19 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
             sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".info").setStyle(new Style().setColor(TextFormatting.AQUA)));
             return;
         }
-
-        int modAmount = subCommands.keySet().size();
-        int modsPerPage = 7;
-        int pages = (int) Math.ceil((float) modAmount / (float) modsPerPage);
-
-        int page = args.size() == 1 ? CommandBase.parseInt(args.get(0), 1, pages) - 1 : 0;
-        int min = Math.min(page * modsPerPage, modAmount);
-
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
         LinkedList<String> commandList = new LinkedList<>(subCommands.values().stream().filter(command -> PermissionHandler.canUseSubCommand(sender, command)).map(command -> command.getName()).sorted(String::compareTo).collect(Collectors.toList()));
 
-        for (int i = page * modsPerPage; i < modsPerPage + min; i++) {
-            if (i >= modAmount) break;
+        int commandAmount = commandList.size();
+        int commandsPerPage = 7;
+        int pages = (int) Math.ceil((float) commandAmount / (float) commandsPerPage);
+
+        int page = args.size() == 1 ? CommandBase.parseInt(sender.getName(), Integer.parseInt(args.get(0)), pages) - 1 : 0;
+        int min = Math.min(page * commandsPerPage, commandAmount);
+
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setStyle(new Style().setColor(TextFormatting.AQUA)));
+
+        for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
+            if (i >= commandAmount) break;
             String name = commandList.get(i);
             sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage").setStyle(new Style().setColor(i % 2 == 0 ? TextFormatting.DARK_AQUA : TextFormatting.AQUA)));
         }

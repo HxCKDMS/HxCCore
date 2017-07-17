@@ -3,6 +3,10 @@ package hxckdms.hxccore.commands;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
+import hxckdms.hxccore.configs.Configuration;
+import hxckdms.hxccore.configs.FakePlayerData;
+import hxckdms.hxccore.configs.HomesConfigStorage;
+import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.PermissionHandler;
@@ -40,21 +44,41 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String name = args.size() == 0 ? "default" : args.get(0);
+        if (!Configuration.useTextStorageofHomes) {
+            NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
 
-        NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
+            if (!homes.hasKey(name) && !(CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount == -1) && (homes.getKeySet().size() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount))
+                throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
 
-        if (!homes.hasKey(name) && CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount != -1 && homes.getSize() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount)
-            throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
+            NBTTagCompound home = new NBTTagCompound();
 
-        NBTTagCompound home = new NBTTagCompound();
+            home.setDouble("x", player.posX);
+            home.setDouble("y", player.posY);
+            home.setDouble("z", player.posZ);
+            home.setInteger("dimension", player.dimension);
 
-        home.setDouble("x", player.posX);
-        home.setDouble("y", player.posY);
-        home.setDouble("z", player.posZ);
-        home.setInteger("dimension", player.dimension);
-
-        homes.setTag(name, home);
-        HxCPlayerInfoHandler.setTagCompound(player, "homes", homes);
+            homes.setTag(name, home);
+            HxCPlayerInfoHandler.setTagCompound(player, "homes", homes);
+        } else {
+            String user = Configuration.storeTextHomesUsingName ? player.getName() : player.getUniqueID().toString();
+            if (HomesConfigStorage.homes.containsKey(user)) {
+                FakePlayerData pdata = HomesConfigStorage.homes.get(user);
+                if (pdata.homes.containsKey(name)) {
+                    pdata.homes.replace(name, new FakePlayerData.Warp(player.posX, player.posY, player.posZ, player.dimension));
+                } else {
+                    if ((CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount == -1) || !(pdata.homes.size() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount)) {
+                        pdata.homes.put(name, new FakePlayerData.Warp(player.posX, player.posY, player.posZ, player.dimension));
+                    } else {
+                        throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
+                    }
+                }
+            } else {
+                FakePlayerData data = new FakePlayerData();
+                data.homes.put(name, new FakePlayerData.Warp(player.posX, player.posY, player.posZ, player.dimension));
+                HomesConfigStorage.homes.put(user, data);
+            }
+            GlobalVariables.alternateHomesConfig.initConfiguration();
+        }
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
     }
 

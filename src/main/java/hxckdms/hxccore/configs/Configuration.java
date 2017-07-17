@@ -20,7 +20,15 @@ public class Configuration {
 
     @Config.category("Features")
     @Config.comment("Don't Exceed 100 without Tinkers or a mod that changes Health Bar.")
-    public static int maxBonusHealth = 10;
+    public static int maxBonusHealth = 60;
+
+    @Config.category("Features")
+    @Config.comment("Max number of any individual entity type")
+    public static int maxEntitiesOfOneType = 50;
+
+    @Config.category("Features")
+    @Config.comment("Delay between checking for excess lag")
+    public static int updateDelay = 10;
 
     @Config.category("Features")
     @Config.comment("The higher the number the more Max Damage!")
@@ -34,6 +42,33 @@ public class Configuration {
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
     public static boolean autoCrashReporterEnabled = true;
 
+    @Config.category("Features")
+    @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
+    public static String clearExcessEntities = "clear";
+
+
     public static int coloredChatMinimumPermissionLevel = 0;
+
+    @Config.category("Features")
+    @Config.comment("Max uses of /hxc RTP")
+    public static int maxRTPUses = 5;
+
+    @Config.category("Features")
+    @Config.comment("Generates a random number for x/y during /hxc RTP (automatically negative if going negative direction)")
+    public static int maxRTPRandom = 500;
+
+    @Config.category("Features")
+    @Config.comment("Added to the random number for x/y (automatically negative if going negative direction)")
+    public static int minRTPRandom = 1000;
+    public static char defaultChatColour = 'f';
+    public static char defaultNameColour = 'f';
+    public static char defaultOpNameColour = '4';
+    public static char serverChatColour = '4';
+    public static boolean useTextStorageofHomes = false;
+    public static boolean storeTextHomesUsingName = false;
+    @Config.category("Features")
+    @Config.comment("Untested, cancels all player interact events within protected zones.")
+    public static boolean cancelAllEventsInProtection = false;
+
     public static boolean allowMobsPowerTool, herobrineMessages, enableCapes = true, showPingOutsideF3Menu;
 }

@@ -71,7 +71,7 @@ public class ColorHelper {
                             prevChar = null;
                             continue;
                         } else if (formatting == TextFormatting.RESET) {
-                            currentColor = 'f';
+                            currentColor = defaultColor;
                             currentEffects = new HashSet<>();
                             prevChar = null;
                             continue;
@@ -109,11 +109,11 @@ public class ColorHelper {
     public static final HashMap<UUID, Boolean> isPlayerOp = new HashMap<>();
 
     public static TextComponentTranslation handleNick(EntityPlayer player, boolean nameTagRender) {
-        if (nameTagRender) return playerNickNames.get(player.getUniqueID()) == null || playerNickNames.get(player.getUniqueID()).isEmpty() ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) != null && isPlayerOp.get(player.getUniqueID()) ? '4' : 'f') : color(playerNickNames.get(player.getUniqueID()), 'f');
+        if (nameTagRender) return playerNickNames.get(player.getUniqueID()) == null || playerNickNames.get(player.getUniqueID()).isEmpty() ? color(player.getName(), isPlayerOp.get(player.getUniqueID()) != null && isPlayerOp.get(player.getUniqueID()) ? Configuration.defaultOpNameColour : Configuration.defaultNameColour) : color(playerNickNames.get(player.getUniqueID()), Configuration.defaultNameColour);
         else {
             if (HxCPlayerInfoHandler.getString(player, "NickName") == null || "".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
-                return (Arrays.asList(((EntityPlayerMP) player).mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? color(player.getName(), '4') : color(player.getName(), 'f'));
-            else return color(HxCPlayerInfoHandler.getString(player, "NickName"), 'f');
+                return (Arrays.asList(((EntityPlayerMP) player).mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? color(player.getName(), Configuration.defaultOpNameColour) : color(player.getName(), Configuration.defaultNameColour));
+            else return color(HxCPlayerInfoHandler.getString(player, "NickName"), Configuration.defaultNameColour);
         }
     }
 
@@ -121,7 +121,7 @@ public class ColorHelper {
     public static String getTagName(String name, Entity entity) {
         TextComponentTranslation text;
         if (entity instanceof EntityPlayer) return handleNick((EntityPlayer) entity, true).getFormattedText();
-        else return (text = color(name, 'f')) == null ? name : text.getFormattedText();
+        else return (text = color(name, Configuration.defaultNameColour)) == null ? name : text.getFormattedText();
     }
 
     public static TextComponentTranslation handlePermission(EntityPlayerMP player) {
@@ -129,7 +129,7 @@ public class ColorHelper {
     }
 
     public static TextComponentTranslation handlePermission(int permissionLevel) {
-        return color(CommandRegistry.CommandConfig.commandPermissions.get(permissionLevel).name, 'f');
+        return color(CommandRegistry.CommandConfig.commandPermissions.get(permissionLevel).name, Configuration.defaultNameColour);
     }
 
     public static TextComponentTranslation handleGameMode(EntityPlayerMP player) {
@@ -149,7 +149,7 @@ public class ColorHelper {
                 break;
         }
 
-        return color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), 'f');
+        return color(GMColor + StringUtils.capitalize(player.interactionManager.getGameType().getName()), Configuration.defaultChatColour);
     }
 
     public static TextComponentTranslation handleDimension(EntityPlayerMP player) {
@@ -178,17 +178,18 @@ public class ColorHelper {
 
     public static TextComponentTranslation handleChat(String message, EntityPlayerMP player) {
         String colorString = HxCPlayerInfoHandler.getString(player, "ChatColor");
-        char color = (colorString == null || colorString.isEmpty()) ? 'f' : colorString.charAt(0);
+        char color = (colorString == null || colorString.isEmpty()) ? Configuration.defaultChatColour : colorString.charAt(0);
 
         UUID UUID = player.getUniqueID();
 
         TextComponentTranslation gameMode = handleGameMode(player);
-        TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", 'f') : new TextComponentTranslation("");
+        TextComponentTranslation devTag = devTags.containsKey(UUID) ? color('\uFD3E' + devTags.get(UUID) + "&f\uFD3F", Configuration.defaultChatColour) : new TextComponentTranslation("");
         TextComponentTranslation permissionTag = handlePermission(player);
         TextComponentTranslation nick = handleNick(player, false);
-        TextComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : new TextComponentTranslation(message.replace("%", "%%"));
+        TextComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : color(message.replaceAll("&\\S", ""), color);
+        chatMessage = new TextComponentTranslation(Configuration.chatMessageLayout.replaceAll("&", "\u00a7").replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
 
-        return new TextComponentTranslation(Configuration.chatMessageLayout.replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
+        return chatMessage;
     }
 
     @SuppressWarnings("unused")

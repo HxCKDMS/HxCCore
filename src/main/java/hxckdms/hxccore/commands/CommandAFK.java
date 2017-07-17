@@ -41,6 +41,7 @@ public class CommandAFK extends AbstractSubCommand<CommandHxC> {
         if (HxCPlayerInfoHandler.getBoolean(player, "AFK")) {
             player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5, 100, false, false));
             player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 5, 100, false, false));
+            player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 5, -100, false, false));
             player.capabilities.disableDamage = true;
         } else player.capabilities.disableDamage = false;
 

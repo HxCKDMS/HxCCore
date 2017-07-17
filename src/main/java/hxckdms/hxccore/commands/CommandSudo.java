@@ -34,7 +34,7 @@ public class CommandSudo extends AbstractSubCommand<CommandHxC> {
         boolean force = CommandBase.parseBoolean(args.removeFirst());
         ICommand command = GlobalVariables.server.getCommandManager().getCommands().get(args.removeFirst());
 
-        boolean allowed = (force && command.checkPermission(GlobalVariables.server, sender)) || command.checkPermission(GlobalVariables.server, target);
+        boolean allowed = force || command.checkPermission(GlobalVariables.server, target);
 
         if (allowed) command.execute(GlobalVariables.server, target, args.toArray(new String[args.size()]));
         else sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.sudo.target.insufficientPermission", target.getDisplayName(), command.getCommandName()));

@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -46,6 +47,9 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                 if (!HxCPlayerInfoHandler.getBoolean(player, "VanishedFromAll")) {
                     GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player)));
                     GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.connection.sendPacket(new SPacketSpawnPlayer(player)));
+                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.addChatComponentMessage(new TextComponentTranslation("\u00a7e" + sender.getName() + " joined the game")));
+                } else {
+                    GlobalVariables.server.getPlayerList().getPlayerList().stream().filter(target -> target != player).forEach(target -> target.addChatComponentMessage(new TextComponentTranslation("\u00a7e" + sender.getName() + " left the game")));
                 }
 
                 break;

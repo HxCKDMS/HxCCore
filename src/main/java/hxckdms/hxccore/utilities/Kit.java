@@ -21,6 +21,8 @@ import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 @SuppressWarnings("WeakerAccess")
 public class Kit {
     public int permissionLevel;
+    public int delayBetweenUses;
+    public int maxUses;
     public HashMap<String, DummyItem> items;
 
     public Kit() {
@@ -29,6 +31,13 @@ public class Kit {
     public Kit(int permissionLevel, HashMap<String, DummyItem> items) {
         this.permissionLevel = permissionLevel;
         this.items = items;
+    }
+
+    public Kit(int permissionLevel, HashMap<String, DummyItem> items, int TimeDelay, int MaxUses) {
+        this.permissionLevel = permissionLevel;
+        this.items = items;
+        this.delayBetweenUses = TimeDelay;
+        this.maxUses = MaxUses;
     }
 
     public static void initConfigs() {
