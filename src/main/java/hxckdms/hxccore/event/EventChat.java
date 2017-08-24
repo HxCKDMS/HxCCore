@@ -36,6 +36,8 @@ public class EventChat implements EventListener {
         }
 
         event.setComponent(ColorHelper.handleChat(event.getMessage(), event.getPlayer()));
+        if (event.getComponent().getFormattedText().replaceAll("\u00a7", "").isEmpty())
+            event.setCanceled(true);
 
         if (Configuration.herobrineMessages) {
             if (event.getMessage().toLowerCase().contains("herobrine") || event.getMessage().toLowerCase().contains("my lord")) {

@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class WorldHelper {
-    private static double power(double number, int power) {
+    public static double power(double number, int power) {
         double result = 1;
         for (int i = 0; i < power; ++i) result *= number;
         return result;

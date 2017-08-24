@@ -46,7 +46,6 @@ public class Configuration {
     @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
     public static String clearExcessEntities = "clear";
 
-
     public static int coloredChatMinimumPermissionLevel = 0;
 
     @Config.category("Features")

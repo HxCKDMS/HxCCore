@@ -14,6 +14,7 @@ public class GlobalVariables {
     public static volatile HashMap<UUID, String> devTags = new HashMap<>();
     public static MinecraftServer server;
     public static SimpleNetworkWrapper network;
+    public static boolean groovyLoaded;
     public static Map<String, String> langFile;
     public static final HashSet<UUID> doesPlayerHaveMod = new HashSet<>();
     public static HxCConfig mainConfig, commandConfig, kitConfig, alternateHomesConfig;
