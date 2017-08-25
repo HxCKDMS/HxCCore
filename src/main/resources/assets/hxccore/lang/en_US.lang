@@ -233,6 +233,7 @@ commands.error.TPA.noRequest=You don't have any teleportation requests.
 commands.error.TPA.sender.notTeleporting=You haven't sent a teleportation request to anyone.
 commands.error.TPA.sender.teleporting=You already have sent a teleportation request to someone.
 commands.error.TPA.target.isTeleportedTo=%s is already being requested for a teleport.
+commands.error.outOfHomes=You've run out of homes.
 
 commands.mute.other.sender.true=Thou hast muted %s.
 commands.mute.other.sender.false=Thou hast unmuted %s.

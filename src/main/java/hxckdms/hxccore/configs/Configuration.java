@@ -24,7 +24,7 @@ public class Configuration {
 
     @Config.category("Features")
     @Config.comment("Max number of any individual entity type")
-    public static int maxEntitiesOfOneType = 50;
+    public static int maxEntitiesOfOneType = 100;
 
     @Config.category("Features")
     @Config.comment("Delay between checking for excess lag")
@@ -44,7 +44,7 @@ public class Configuration {
 
     @Config.category("Features")
     @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
-    public static String clearExcessEntities = "clear";
+    public static String clearExcessEntities = "cull";
 
     public static int coloredChatMinimumPermissionLevel = 0;
 
