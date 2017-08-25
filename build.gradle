@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "1.10.2-2.1.0"
+version = "1.10.2-2.1.1"
 group= "hxckdms.hxccore"
 archivesBaseName = "hxccore"
 
