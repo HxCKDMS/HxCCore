@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static hxckdms.hxccore.configs.Configuration.doColorizedHelp;
+
 @HxCCommand
 public class CommandHelp extends AbstractSubCommand<CommandHxC> {
     {
@@ -46,12 +48,19 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
         int page = args.size() == 1 ? CommandBase.parseIntBounded(sender, args.get(0), 1, pages) - 1 : 0;
         int min = Math.min(page * commandsPerPage, commandAmount);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
+        if (doColorizedHelp)
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
+        else
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.help.list.header", page + 1, pages));
+
 
         for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
             if (i >= commandAmount) break;
             String name = commandList.get(i);
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
+            if (doColorizedHelp)
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
+            else
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage"));
         }
     }
 
