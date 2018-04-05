@@ -48,7 +48,7 @@ public class CommandHome extends AbstractSubCommand<CommandHxC> {
                 throw new TranslatedCommandException(sender, "commands.error.invalid.home", name);
             NBTTagCompound home = homes.getCompoundTag(name);
 
-            if (GlobalVariables.server.worldServerForDimension(home.getInteger("dimension")).getBlockState(new BlockPos(home.getDouble("x"), home.getDouble("y") + 1, home.getDouble("z"))) != Blocks.AIR && !player.capabilities.isCreativeMode)
+            if (GlobalVariables.server.worldServerForDimension(home.getInteger("dimension")).getBlockState(new BlockPos(home.getDouble("x"), home.getDouble("y") + 1, home.getDouble("z"))) == Blocks.AIR && !player.capabilities.isCreativeMode)
                 throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
 
             TeleportHelper.teleportEntityToDimension(player, home.getDouble("x"), home.getDouble("y"), home.getDouble("z"), home.getInteger("dimension"));
