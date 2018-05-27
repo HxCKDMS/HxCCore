@@ -19,7 +19,6 @@ import static hxckdms.hxccore.libraries.Constants.MOD_ID;
 import static hxckdms.hxccore.libraries.GlobalVariables.commandConfig;
 import static hxckdms.hxccore.libraries.GlobalVariables.modConfigDir;
 
-@SuppressWarnings({"unchecked", "WeakerAccess", "unused"})
 public class CommandRegistry {
     private static HashMap<String, AbstractMultiCommand> multiCommands = new HashMap<>();
 
@@ -39,7 +38,7 @@ public class CommandRegistry {
                     Class<? extends AbstractMultiCommand> clazz = (Class<? extends AbstractMultiCommand>) Class.forName(data.getClassName());
 
                     AbstractMultiCommand multiCommand = clazz.newInstance();
-                    multiCommands.put(multiCommand.getCommandName().toLowerCase(), multiCommand);
+                    multiCommands.put(multiCommand.getName().toLowerCase(), multiCommand);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -62,24 +61,14 @@ public class CommandRegistry {
     @Config
     public static class CommandConfig {
         @Config.category("Features")
+        @Config.force
         @Config.comment("Enable all HxCCommands. (Disable if you don't want any new commands)")
-        public static boolean enableCommands = true;
+        static boolean enableCommands = true;
 
         @Config.flags(RETAIN_ORIGINAL_VALUES)
         public static LinkedHashMap<String, SubCommandConfigHandler> commands = new LinkedHashMap<>();
 
-        @Config.comment("Add a cost to a command example = tp=minecraft:ender_pearl:0:1 mod:id:meta:number to use")
-        public static LinkedHashMap<String, String> commandCosts = new LinkedHashMap<>();
-
-        @Config.comment("command = # | 0 = matches exact command, 1 = command starts with, 2 = command contains | example : give=1 bans all give commands")
-        public static LinkedHashMap<String, Byte> bannedCommands = new LinkedHashMap<>();
-
         public static LinkedHashMap<String, Integer> vanillaPermissionOverride = new LinkedHashMap<>();
-
-        @Config.comment("A rules command, Rule, Color")
-        public static LinkedHashMap<String, String> rules = new LinkedHashMap<String, String>(){{
-            put("Don't piss off the dutchman.", "dark_red");
-        }};
 
         public static LinkedHashMap<Integer, SubPermissions> commandPermissions = new LinkedHashMap<Integer, SubPermissions>(){{
             put(1, new SubPermissions("Default", 3, 0));
@@ -88,6 +77,16 @@ public class CommandRegistry {
             put(4, new SubPermissions("&6Admin", 16, 32768));
             put(5, new SubPermissions("&4&lOwner", -1, -1));
         }};
+        @Config.comment("Add a cost to a command example = tp=minecraft:ender_pearl:0:1 mod:id:meta:number to use")
+        public static LinkedHashMap<String, String> commandCosts = new LinkedHashMap<>();
+
+        @Config.comment("A rules command, Rule, Color")
+        public static LinkedHashMap<String, String> rules = new LinkedHashMap<String, String>(){{
+            put("Don't piss off the dutchman.", "dark_red");
+        }};
+
+        @Config.comment("command = # | 0 = matches exact command, 1 = command starts with, 2 = command contains | example : give=1 bans all give commands")
+        public static LinkedHashMap<String, Byte> bannedCommands = new LinkedHashMap<>();
     }
 
     public static class SubPermissions {

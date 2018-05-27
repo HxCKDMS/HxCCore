@@ -43,8 +43,13 @@ public class Configuration {
     public static boolean autoCrashReporterEnabled = true;
 
     @Config.category("Features")
-    @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
-    public static String clearExcessEntities = "cull";
+    @Config.comment("Makes help report back in color, currently only works in single player.")
+    public static boolean doColorizedHelp = false;
+
+    @Config.category("Features")
+    @Config.comment("true|false Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
+    public static boolean clearExcessEntities = true;
+
 
     public static int coloredChatMinimumPermissionLevel = 0;
 

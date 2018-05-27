@@ -15,22 +15,23 @@ import java.util.Map;
 import java.util.Optional;
 
 public class PermissionHandler {
+
     public static boolean canUseCommand(ICommandSender sender, ICommand command) {
         int permLevel = command instanceof CommandBase ? ((CommandBase) command).getRequiredPermissionLevel() : 4;
-        Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getCommandName().toLowerCase())).findAny();
-        return getPermissionLevel(sender) == 5 || (commandOptional.isPresent() ? getPermissionLevel(sender) >= commandOptional.get().getValue() : sender.canCommandSenderUseCommand(permLevel, command.getCommandName()));
+        Optional<Map.Entry<String, Integer>> commandOptional = CommandRegistry.CommandConfig.vanillaPermissionOverride.entrySet().parallelStream().filter(entry -> entry.getKey().toLowerCase().equals(command.getName().toLowerCase())).findAny();
+        return getPermissionLevel(sender) == -1 || (commandOptional.map(stringIntegerEntry -> getPermissionLevel(sender) >= stringIntegerEntry.getValue()).orElseGet(() -> sender.canUseCommand(permLevel, command.getName())));
     }
 
     public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {
-        return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == - 1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
+        return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == -1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
     }
 
     public static int getPermissionLevel(ICommandSender sender) {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
-            return Arrays.asList(player.mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? 5 : GlobalVariables.permissionData.getInteger(player.getUniqueID().toString());
+            return Arrays.asList(player.mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getDisplayName().getUnformattedText()) ? CommandRegistry.CommandConfig.commandPermissions.size() : GlobalVariables.permissionData.getInteger(player.getUniqueID().toString());
         } else {
-            return 5;
+            return -1;
         }
     }
 }

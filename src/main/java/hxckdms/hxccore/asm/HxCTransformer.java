@@ -6,8 +6,9 @@ import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.Logger;
 import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.command.CommandBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.server.management.PlayerList;
+import net.minecraft.nbt.NBTTagList;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -47,15 +48,15 @@ public class HxCTransformer implements IClassTransformer {
 
             switch (index) {
                 case 0:
-                    TransformRender(classNode);
+                    transformRender(classNode);
                     classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 1:
-                    TransformRendererSign(classNode);
+                    transformRendererSign(classNode);
                     classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 2:
-                    TransformCommandEmote(classNode);
+                    transformCommandEmote(classNode);
                     classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 3:
@@ -64,12 +65,12 @@ public class HxCTransformer implements IClassTransformer {
                     break;
                 case 4:
                     transformLivingBase(classNode);
-                    classWriter = new ClassWriter(0);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 5:
                 case 6:
                     transformCommandTP(classNode);
-                    classWriter = new ClassWriter(0);
+                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 7:
                     transformCommandSpreadPlayers(classNode);
@@ -96,7 +97,7 @@ public class HxCTransformer implements IClassTransformer {
         return classBeingTransformed;
     }
 
-    private static void TransformRender(ClassNode classNode) {
+    private static void transformRender(ClassNode classNode) {
         final String RENDERER_LIVING_ENTITY = HxCLoader.RuntimeDeobf ? "func_147906_a" : "renderLivingLabel";
         final String RENDERER_LIVING_ENTITY_DESC = "(Lnet/minecraft/entity/Entity;Ljava/lang/String;DDDI)V";
         boolean hasTransformed = false;
@@ -104,7 +105,7 @@ public class HxCTransformer implements IClassTransformer {
             if (methodNode.name.equals(RENDERER_LIVING_ENTITY) && methodNode.desc.equals(RENDERER_LIVING_ENTITY_DESC)) {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == ISTORE && instruction.getNext().getNext().getNext().getNext().getOpcode() == INVOKEVIRTUAL)
+                    if (instruction.getOpcode() == FSUB  && instruction.getNext().getOpcode() == FSTORE)
                         targetNode = instruction.getNext();
 
                 if (targetNode != null) {
@@ -127,29 +128,31 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: Render.", Constants.MOD_NAME + " ASM");
     }
 
-    private static void TransformRendererSign(ClassNode classNode) {
-        final String RENDERER_SIGN = HxCLoader.RuntimeDeobf ? "func_180535_a" : "renderTileEntityAt";
-        final String RENDERER_SIGN_DESC = "(Lnet/minecraft/tileentity/TileEntitySign;DDDFI)V";
+    //TODO: fix colour characters taking up actual text space
+    private static void transformRendererSign(ClassNode classNode) {
+        final String RENDERER_SIGN = HxCLoader.RuntimeDeobf ? "func_192841_a" : "render";
+        final String RENDERER_SIGN_DESC = "(Lnet/minecraft/tileentity/TileEntitySign;DDDFIF)V";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
             if(methodNode.name.equals(RENDERER_SIGN) && methodNode.desc.equals(RENDERER_SIGN_DESC)) {
                 AbstractInsnNode targetNode = null;
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == ASTORE && instruction.getNext().getNext().getNext().getOpcode() == ILOAD && instruction.getNext().getNext().getNext().getNext().getOpcode() == ALOAD)
-                        targetNode = instruction.getNext();
+                    if (instruction.getOpcode() == ASTORE && instruction.getNext().getNext().getNext().getOpcode() == ILOAD)
+                        targetNode = instruction;
 
                 if (targetNode != null) {
                     LabelNode newLabelNode = new LabelNode();
 
                     InsnList toInsert = new InsnList();
 
-                    toInsert.add(new VarInsnNode(ALOAD, 18));
+                    toInsert.add(new VarInsnNode(ALOAD, 19));
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ColorHelper.class), "handleSign", "(Ljava/lang/String;)Ljava/lang/String;", false));
-                    toInsert.add(new VarInsnNode(ASTORE, 18));
+                    toInsert.add(new VarInsnNode(ASTORE, 19));
 
                     methodNode.instructions.insert(targetNode, toInsert);
                     methodNode.instructions.insert(targetNode, newLabelNode);
                 }
+
                 hasTransformed = true;
                 Logger.info("Successfully transformed: RendererSign.", Constants.MOD_NAME + " ASM");
             }
@@ -157,44 +160,44 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: RendererSign.", Constants.MOD_NAME + " ASM");
     }
 
-    private static void TransformCommandEmote(ClassNode classNode) {
-        final String EXECUTE = HxCLoader.RuntimeDeobf ? "func_184881_a" : "execute";
-        final String EXECUTE_DESC = "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/command/ICommandSender;[Ljava/lang/String;)V";
+    private static void transformCommandEmote(ClassNode classNode) {
+        final String PROCESS_COMMAND = HxCLoader.RuntimeDeobf ? "func_184881_a" : "execute";
+        final String PROCESS_COMMAND_DESC = "(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/command/ICommandSender;[Ljava/lang/String;)V";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
-            if(methodNode.name.equals(EXECUTE) && methodNode.desc.equals(EXECUTE_DESC)) {
+            if(methodNode.name.equals(PROCESS_COMMAND) && methodNode.desc.equals(PROCESS_COMMAND_DESC)) {
+
                 AbstractInsnNode targetNode = null;
+
                 for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == INVOKEVIRTUAL && instruction.getNext().getOpcode() == NEW)
-                        targetNode = instruction.getNext();
+                    if (instruction.getOpcode() == ALOAD && instruction.getNext().getOpcode() == INVOKEVIRTUAL && instruction.getNext().getNext().getOpcode() == NEW)
+                        targetNode = instruction;
 
                 if (targetNode != null) {
-                    AbstractInsnNode tempNode = targetNode.getPrevious().getPrevious().getPrevious().getPrevious();
+                    InsnList toInsert = new InsnList();
                     LabelNode node = new LabelNode();
 
-                    InsnList toInsert = new InsnList();
                     toInsert.add(new VarInsnNode(ALOAD, 2));
                     toInsert.add(new VarInsnNode(ALOAD, 4));
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onEmoteEvent", "(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/util/text/ITextComponent;)Lnet/minecraft/util/text/ITextComponent;", false));
-                    toInsert.add(new VarInsnNode(ASTORE, 5));
+                    toInsert.add(new VarInsnNode(ASTORE, 4));
 
-                    toInsert.add(new VarInsnNode(ALOAD, 5));
+                    toInsert.add(new LabelNode());
+
+                    toInsert.add(new VarInsnNode(ALOAD, 4));
                     toInsert.add(new JumpInsnNode(IFNONNULL, node));
                     toInsert.add(new InsnNode(RETURN));
-                    toInsert.add(node);
 
-                    methodNode.instructions.insert(tempNode, toInsert);
+                    methodNode.instructions.insertBefore(targetNode, toInsert);
+                    methodNode.instructions.insertBefore(targetNode, node);
 
-                    for (int i = 0; i < 16; ++i) {
+                    targetNode = targetNode.getNext().getNext();
+                    methodNode.instructions.insertBefore(targetNode, new VarInsnNode(ALOAD, 4));
+
+                    for (int i = 0; i < 15; ++i) {
                         targetNode = targetNode.getNext();
                         methodNode.instructions.remove(targetNode.getPrevious());
                     }
-
-                    toInsert = new InsnList();
-                    toInsert.add(new VarInsnNode(ALOAD, 5));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(PlayerList.class), HxCLoader.RuntimeDeobf ? "func_148539_a" : "sendChatMsg", "(Lnet/minecraft/util/text/ITextComponent;)V", false));
-
-                    methodNode.instructions.insert(targetNode, toInsert);
                 }
                 hasTransformed = true;
                 Logger.info("Successfully transformed: CommandEmote.", Constants.MOD_NAME + " ASM");
@@ -229,26 +232,33 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: CommandBase.", Constants.MOD_NAME + " ASM");
     }
 
-
     private static void transformLivingBase(ClassNode classNode) {
+        NBTTagList  test= new NBTTagList();
+
         final String SWING_ARM = HxCLoader.RuntimeDeobf ? "func_184609_a" : "swingArm";
         final String SWING_ARM_DESC = "(Lnet/minecraft/util/EnumHand;)V";
         boolean hasTransformed = false;
         for (MethodNode methodNode : classNode.methods) {
             if(methodNode.name.equals(SWING_ARM) && methodNode.desc.equals(SWING_ARM_DESC)) {
-                AbstractInsnNode targetNode = null;
-                for (AbstractInsnNode instruction : methodNode.instructions.toArray())
-                    if (instruction.getOpcode() == INVOKEVIRTUAL && instruction.getNext().getOpcode() == ASTORE)
-                        targetNode = instruction.getNext().getNext();
+                AbstractInsnNode targetNode = methodNode.instructions.getFirst();
 
                 if (targetNode != null) {
-                    LabelNode node = new LabelNode();
                     InsnList toInsert = new InsnList();
+                    LabelNode node = new LabelNode();
+
+                    //toInsert.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(MinecraftForge.class), "EVENT_BUS", "Lnet/minecraftforge/fml/common/eventhandler/EventBus;"));
+
+                    //toInsert.add(new TypeInsnNode(NEW, Type.getInternalName(LivingSwingEvent.class)));
+                    //toInsert.add(new InsnNode(DUP));
 
                     toInsert.add(new VarInsnNode(ALOAD, 0));
-                    toInsert.add(new VarInsnNode(ALOAD, 2));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
-                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onLivingSwingEvent", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/EnumHand;)Z", false));
+
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onLivingSwingEvent", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/EnumHand;)Z", false));
+
+                    //toInsert.add(new MethodInsnNode(INVOKESPECIAL, Type.getInternalName(LivingSwingEvent.class), "<init>", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/EnumHand;)V", false));
+                    //toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(EventBus.class), "post", "(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z", false));
+
                     toInsert.add(new JumpInsnNode(IFEQ, node));
                     toInsert.add(new InsnNode(RETURN));
                     toInsert.add(node);
@@ -261,6 +271,7 @@ public class HxCTransformer implements IClassTransformer {
         if (!hasTransformed) Logger.error("Failed to transform: EntityLivingBase.", Constants.MOD_NAME + " ASM");
     }
 
+    //TODO: fix relative teleporting not giving the correct co-ordinate values.
     private static void transformCommandTP(ClassNode classNode) {
         final String TELEPORT_ENTITY_TO_COORDINATES = HxCLoader.RuntimeDeobf ? "func_189863_a" : "teleportEntityToCoordinates";
         final String TELEPORT_ENTITY_TO_COORDINATES_DESC = "(Lnet/minecraft/entity/Entity;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;Lnet/minecraft/command/CommandBase$CoordinateArg;)V";
@@ -281,13 +292,13 @@ public class HxCTransformer implements IClassTransformer {
                     InsnList toInsert = new InsnList();
 
                     toInsert.add(new VarInsnNode(ALOAD, 0));
-                    toInsert.add(new TypeInsnNode(CHECKCAST, "net/minecraft/entity/player/EntityPlayerMP"));
+                    toInsert.add(new TypeInsnNode(CHECKCAST, Type.getInternalName(EntityPlayerMP.class)));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179628_a" : "getResult", "()D", false));
                     toInsert.add(new VarInsnNode(ALOAD, 2));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179628_a" : "getResult", "()D", false));
                     toInsert.add(new VarInsnNode(ALOAD, 3));
-                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179629_b" : "getAmount", "()D", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(CommandBase.CoordinateArg.class), HxCLoader.RuntimeDeobf ? "func_179628_a" : "getResult", "()D", false));
 
                     toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onPlayerTeleportEvent", "(Lnet/minecraft/entity/player/EntityPlayer;DDD)Z", false));
                     toInsert.add(new JumpInsnNode(IFEQ, node));
@@ -336,7 +347,12 @@ public class HxCTransformer implements IClassTransformer {
                         targetNode = instruction.getNext();
 
                 if (targetNode != null) {
-                    methodNode.instructions.set(targetNode, new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "getXPCoolDown", "()I", false));
+                    InsnList toInsert = new InsnList();
+                    toInsert.add(new VarInsnNode(ALOAD, 0));
+                    toInsert.add(new FieldInsnNode(GETFIELD, "net/minecraft/entity/item/EntityXPOrb", HxCLoader.RuntimeDeobf ? "field_70170_p" : "world", "Lnet/minecraft/world/World;"));
+                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "getXPCoolDown", "(Lnet/minecraft/world/World;)I", false));
+                    methodNode.instructions.insertBefore(targetNode, toInsert);
+                    methodNode.instructions.remove(targetNode);
                 }
                 hasTransformed = true;
                 Logger.info("Successfully transformed: EntityXPOrb.", Constants.MOD_NAME + " ASM");

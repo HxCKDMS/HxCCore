@@ -1,16 +1,15 @@
 package hxckdms.hxccore.asm;
 
-import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
+import javax.annotation.Nullable;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.12.2")
 @IFMLLoadingPlugin.TransformerExclusions({"hxckdms.hxccore.asm"})
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class HxCLoader implements IFMLLoadingPlugin {
@@ -28,6 +27,7 @@ public class HxCLoader implements IFMLLoadingPlugin {
         return HxCContainer.class.getCanonicalName();
     }
 
+    @Nullable
     @Override
     public String getSetupClass() {
         return null;
@@ -35,8 +35,6 @@ public class HxCLoader implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        findAndLoadGroovy();
-
         try {
             checkAndDownloadDependencies((File) data.get("mcLocation"));
         } catch (IOException e) {
@@ -56,25 +54,6 @@ public class HxCLoader implements IFMLLoadingPlugin {
         return HxCAccessTransformer.class.getCanonicalName();
     }
 
-    private void findAndLoadGroovy() {
-        String groovy = System.getenv("GROOVY_HOME");
-        File allDir = new File(groovy, "embeddable");
-        File[] files = allDir.listFiles(file -> file.getName().matches("groovy-all-\\d+\\.\\d+\\.\\d+\\.jar"));
-
-        if (files != null) {
-            for (File file : files) {
-                try {
-                    ((LaunchClassLoader) this.getClass().getClassLoader()).addURL(file.toURI().toURL());
-                    GlobalVariables.groovyLoaded = true;
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        System.out.println(Arrays.toString(files));
-    }
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void checkAndDownloadDependencies(File mcDir) throws IOException {
         URL depListURL = new URL("https://raw.githubusercontent.com/HxCKDMS/HxCLib/master/configAPIStable.txt");
@@ -84,7 +63,7 @@ public class HxCLoader implements IFMLLoadingPlugin {
         depLinkReader.close();
         depLinkInputStream.close();
 
-        File file = new File(mcDir, "/mods/1.10.2");
+        File file = new File(mcDir, "/mods/1.12.2");
         file.mkdirs();
         String fileName = depDownload.toString().split("/")[depDownload.toString().split("/").length - 1];
         File dependency = new File(file, fileName);

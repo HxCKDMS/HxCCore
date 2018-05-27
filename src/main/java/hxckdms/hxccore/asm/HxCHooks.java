@@ -3,15 +3,14 @@ package hxckdms.hxccore.asm;
 import hxckdms.hxccore.api.event.EmoteEvent;
 import hxckdms.hxccore.api.event.LivingSwingEvent;
 import hxckdms.hxccore.api.event.PlayerTeleportEvent;
-import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class HxCHooks {
@@ -19,12 +18,12 @@ public class HxCHooks {
         EmoteEvent event = new EmoteEvent(sender, component);
 
         if (MinecraftForge.EVENT_BUS.post(event)) return null;
-        else if(component == event.getComponent()) return new TextComponentTranslation("chat.type.emote", sender.getDisplayName(), component);
+        else if(component == event.getComponent()) return new TextComponentTranslation("chat.type.emote", sender.getName(), component);
         else return event.getComponent();
     }
 
-    public static boolean onLivingSwingEvent(EntityLivingBase entityLiving, ItemStack itemStack, EnumHand hand) {
-        return MinecraftForge.EVENT_BUS.post(new LivingSwingEvent(entityLiving, itemStack, hand));
+    public static boolean onLivingSwingEvent(EntityLivingBase entityLiving, EnumHand hand) {
+        return MinecraftForge.EVENT_BUS.post(new LivingSwingEvent(entityLiving, hand));
     }
 
     public static boolean onPlayerTeleportEvent(EntityPlayer player, double newX, double newY, double newZ) {
@@ -37,11 +36,11 @@ public class HxCHooks {
 
     public static void onSpreadPlayersTeleport(Entity entity, double x, double y, double z) {
         if (entity instanceof EntityPlayer) {
-            if (!MinecraftForge.EVENT_BUS.post(new PlayerTeleportEvent((EntityPlayer) entity, x, y, z, entity.dimension))) entity.setPosition(x, y, z);
-        } else entity.setPosition(x, y, z);
+            if (!MinecraftForge.EVENT_BUS.post(new PlayerTeleportEvent((EntityPlayer) entity, x, y, z, entity.dimension))) entity.setPositionAndUpdate(x, y, z);
+        } else entity.setPositionAndUpdate(x, y, z);
     }
 
-    public static int getXPCoolDown() {
-        return GlobalVariables.server.getEntityWorld().getGameRules().getInt("XPPickupCoolDown");
+    public static int getXPCoolDown(World world) {
+        return world.getGameRules().getInt("XPPickupCoolDown");
     }
 }

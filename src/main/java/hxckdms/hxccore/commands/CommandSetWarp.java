@@ -10,10 +10,11 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -37,7 +38,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         switch (args.size()) {
             case 0:
             case 1:
@@ -46,7 +47,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                     String name = args.size() == 0 ? "default" : args.get(0);
 
                     setWarp(player.posX, player.posY, player.posZ, player.dimension, name);
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name,  posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name,  posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 }
                 break;
             case 4:
@@ -58,10 +59,10 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                 double y = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posY : sender.getPosition().getY(), args.get(named ? 1 : 2), false).getResult();
                 double z = CommandBase.parseCoordinate(sender instanceof EntityPlayerMP ? ((EntityPlayerMP) sender).posZ : sender.getPosition().getZ(), args.get(named ? 2 : 3), false).getResult();
                 int dimension = CommandBase.parseInt(args.get(named ? 3 : 4));
-                if (Arrays.stream(DimensionType.values()).noneMatch(type -> type.getId() == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
+                if (Arrays.stream(DimensionManager.getIDs()).noneMatch(id -> id == dimension)) throw new TranslatedCommandException(sender, "commands.error.invalid.dimension");
 
                 setWarp(x, y, z, dimension, name);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
                 break;
         }
     }
@@ -80,12 +81,12 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         if (sender instanceof EntityPlayerMP) {
             if (args.size() == 1 || args.size() == 2 || args.size() == 3) return Collections.singletonList("~");
             else if (args.size() == 4) return Collections.singletonList(Integer.toString(((EntityPlayerMP) sender).dimension));
         }
-        if (args.size() == 1) return Arrays.stream(DimensionType.values()).map(type -> Integer.toString(type.getId())).collect(Collectors.toList());
+        if (args.size() == 1) return Arrays.stream(DimensionManager.getIDs()).map(id -> Integer.toString(id)).collect(Collectors.toList());
         else return Collections.emptyList();
     }
 }

@@ -42,11 +42,7 @@ public class HxCFakePlayer extends FakePlayer {
 
     public static boolean isBlockBreakable(HxCFakePlayer fakePlayer, World world, BlockPos pos) {
         IBlockState blockState = world.getBlockState(pos);
-        if (fakePlayer == null) {
-            return blockState.getBlockHardness(world, pos) >= 0;
-        } else {
-            return blockState.getPlayerRelativeBlockHardness(fakePlayer, world, pos) >= 0;
-        }
+        return blockState.getPlayerRelativeBlockHardness(fakePlayer, world, pos) >= 0;
     }
 
     public void setItemInHand(ItemStack itemInHand, int slot) {
@@ -79,15 +75,15 @@ public class HxCFakePlayer extends FakePlayer {
         ItemStack itemStack1 = prevItemStack;
         ItemStack itemStack2 = getHeldItem(EnumHand.MAIN_HAND);
         if (!ItemStack.areItemStacksEqual(itemStack2, itemStack1)) {
-            if (itemStack1 != null) {
+            if (!itemStack1.isEmpty()) {
                 getAttributeMap().removeAttributeModifiers(itemStack1.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            if (itemStack2 != null) {
+            if (!itemStack2.isEmpty()) {
                 getAttributeMap().applyAttributeModifiers(itemStack2.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
             }
-            String name = "[HxC]" + (itemStack2 != null ? " using " + itemStack2.getDisplayName() : "");
+            String name = "[HxC]" + (!itemStack2.isEmpty() ? " using " + itemStack2.getDisplayName() : "");
         }
-        prevItemStack = itemStack2 == null ? null : itemStack2.copy();
+        prevItemStack = !itemStack2.isEmpty() ? null : itemStack2.copy();
         interactionManager.updateBlockRemoving();
         if (itemStackMainHand != null) {
             tickItemInUse(itemStack1);
@@ -95,16 +91,17 @@ public class HxCFakePlayer extends FakePlayer {
     }
 
     public void tickItemInUse(ItemStack updateItem) {
-        if (updateItem != null && prevItemStack == itemStackMainHand) {
-            itemStackMainHand.stackSize = ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.stackSize);
-            if (itemStackMainHand.stackSize <= 0) {
+        if (!updateItem.isEmpty() && prevItemStack == itemStackMainHand) {
+            itemStackMainHand.setCount(ForgeEventFactory.onItemUseTick(this, itemStackMainHand, itemStackMainHand.getCount()));
+            if (itemStackMainHand.getCount() <= 0) {
                 onItemUseFinish();
             } else {
-                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.stackSize);
-                if (itemStackMainHand.stackSize <= 25 && itemStackMainHand.stackSize % 4 == 0) {
+                itemStackMainHand.getItem().onUsingTick(itemStackMainHand, this, itemStackMainHand.getCount());
+                if (itemStackMainHand.getCount() <= 25 && itemStackMainHand.getCount() % 4 == 0) {
                     updateItemUse(updateItem, 5);
                 }
-                if (--itemStackMainHand.stackSize == 0 && !worldObj.isRemote) {
+                itemStackMainHand.shrink(1);
+                if (itemStackMainHand.getCount() == 0 && !world.isRemote) {
                     onItemUseFinish();
                 }
             }
@@ -116,7 +113,7 @@ public class HxCFakePlayer extends FakePlayer {
     @Override
     protected void updateItemUse(ItemStack itemStack, int integer) {
         if (itemStack.getItemUseAction().equals(EnumAction.DRINK))
-            this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.playSound(SoundEvents.ENTITY_GENERIC_DRINK, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
 
         if (itemStack.getItemUseAction().equals(EnumAction.EAT))
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.5F + 0.5F * this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);

@@ -1,20 +1,24 @@
 package hxckdms.hxccore.utilities;
 
-import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class HxCPlayerInfoHandler {
     private static Hashtable<UUID, NBTFileHandler> playerDataTable = new Hashtable<>();
+
+    public static void loadPlayerInfo(UUID uuid, NBTFileHandler nbtFileHandler) {
+        playerDataTable.put(uuid, nbtFileHandler);
+    }
+
+    public static void unloadPlayerInfo(UUID uuid) {
+        NBTFileHandler.unRegister(uuid.toString());
+        playerDataTable.remove(uuid);
+    }
 
     public static void setString(EntityPlayer player, String tagName, String value) {
         UUID uuid = player.getUniqueID();
@@ -148,29 +152,5 @@ public class HxCPlayerInfoHandler {
     public static boolean hasTag(EntityPlayer player, String tagName) {
         UUID uuid = player.getUniqueID();
         return playerDataTable.containsKey(uuid) && playerDataTable.get(uuid).hasTag(tagName);
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static class CustomPlayerDataEvents {
-        @SubscribeEvent
-        public void eventLoadFile(PlayerEvent.LoadFromFile event) {
-            UUID uuid = event.getEntityPlayer().getUniqueID();
-            File modPlayerData = new File(GlobalVariables.modWorldDir, "HxC-" + uuid.toString() + ".dat");
-
-            try {
-                if (!modPlayerData.exists()) modPlayerData.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-
-            playerDataTable.put(uuid, new NBTFileHandler(uuid.toString(), modPlayerData));
-            NBTFileHandler.loadCertainNBTFile(uuid.toString());
-        }
-
-        @SubscribeEvent
-        public void eventSaveFile(PlayerEvent.SaveToFile event) {
-            NBTFileHandler.saveCustomNBTFiles(true);
-        }
     }
 }

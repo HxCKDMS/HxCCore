@@ -18,6 +18,7 @@ public class WorldHelper {
         else return Math.pow(number, 1D / (double) power);
     }
 
+    @Deprecated
     public static void draw2DEllipsoid(World world, int x, int y, int z, Block block, int blockMeta, int radius, boolean hollow, double precision, int n) {
         Thread thread = new Thread(() -> {
             for (float X_offset = -radius; X_offset <= radius; X_offset += precision) {
@@ -44,6 +45,7 @@ public class WorldHelper {
         thread.start();
     }
 
+    @Deprecated
     public static void draw3DEllipsoid(World world, int x, int y, int z, Block block, int blockMeta, int radius, boolean hollow, double precision, int n) {
         Thread thread = new Thread(() -> {
             for (float X_offset = -radius; X_offset < radius; X_offset += precision) {
@@ -76,6 +78,7 @@ public class WorldHelper {
 
     @SuppressWarnings("deprecation")
     private synchronized static void checkAndPlaceBlock(World world, Block block, int x, int y, int z, int blockMeta) {
-        if(world.getBlockState(new BlockPos(x, y, z)) != block.getDefaultState() && y >= 0) world.setBlockState(new BlockPos(x, y, z), block.getStateFromMeta(blockMeta), 1 | 2);
+        if(world.getBlockState(new BlockPos(x, y, z)) != block.getDefaultState() && y >= 0)
+            world.getMinecraftServer().addScheduledTask(() -> world.setBlockState(new BlockPos(x, y, z), block.getStateFromMeta(blockMeta), 1 | 2));
     }
 }

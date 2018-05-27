@@ -10,6 +10,7 @@ import net.minecraft.network.play.client.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import java.net.SocketAddress;
 
@@ -20,7 +21,7 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
         }
 
         @Override
-        public void channelActive(ChannelHandlerContext handlerContext) throws Exception {}
+        public void channelActive(ChannelHandlerContext handlerContext) {}
 
         @Override
         public void setConnectionState(EnumConnectionState connectionState) {}
@@ -45,6 +46,7 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
         public void processReceivedPackets() {}
 
         @Override
+        @Nullable
         public SocketAddress getRemoteAddress() {
             return null;
         }
@@ -66,11 +68,13 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
         }
 
         @Override
+        @Nullable
         public INetHandler getNetHandler() {
             return null;
         }
 
         @Override
+        @Nullable
         public Channel channel() {
             return null;
         }
@@ -79,6 +83,7 @@ public class FakeNetHandlerPlayerServer extends NetHandlerPlayServer {
         public void disableAutoRead() {}
 
         @Override
+        @Nullable
         public ITextComponent getExitMessage() {
             return null;
         }

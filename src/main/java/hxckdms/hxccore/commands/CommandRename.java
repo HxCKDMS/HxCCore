@@ -9,9 +9,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentBase;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -33,22 +33,22 @@ public class CommandRename extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
 
-            TextComponentBase name = ColorHelper.handleMessage(args.stream().collect(Collectors.joining(" ")), 'f');
+            TextComponentTranslation name = ColorHelper.handleMessage(args.stream().collect(Collectors.joining(" ")), 'f');
             ItemStack itemStack = player.inventory.getCurrentItem();
-            if (itemStack == null) throw new TranslatedCommandException(sender, "commands.error.noItem");
+            if (itemStack.isEmpty()) throw new TranslatedCommandException(sender, "commands.error.noItem");
             itemStack.setStackDisplayName(name.getFormattedText());
             player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
 
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.rename.successful", new TextComponentTranslation(itemStack.getUnlocalizedName() + ".name"), itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.rename.successful", new TextComponentTranslation(itemStack.getUnlocalizedName() + ".name"), itemStack.getDisplayName()).setStyle(new Style().setColor(TextFormatting.GREEN)));
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Collections.emptyList();
     }
 }

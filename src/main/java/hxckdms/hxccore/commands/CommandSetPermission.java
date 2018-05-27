@@ -10,6 +10,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -30,9 +31,9 @@ public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        boolean hasTarget = Arrays.asList(GlobalVariables.server.getPlayerList().getAllUsernames()).contains(args.get(0));
-        EntityPlayerMP target = hasTarget ? CommandBase.getPlayer(GlobalVariables.server, sender, args.get(0)) : (EntityPlayerMP) sender;
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
+        boolean hasTarget = Arrays.asList(server.getOnlinePlayerNames()).contains(args.get(0));
+        EntityPlayerMP target = hasTarget ? CommandBase.getPlayer(server, sender, args.get(0)) : (EntityPlayerMP) sender;
 
         Optional<Integer> optional = CommandRegistry.CommandConfig.commandPermissions.keySet().stream().max(Comparator.naturalOrder());
         if (!optional.isPresent()) throw new NullPointerException(CommandRegistry.CommandConfig.commandPermissions.toString() + " is empty");
@@ -40,17 +41,17 @@ public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
         int level = CommandBase.parseInt(args.get(hasTarget ? 1 : 0), 1, optional.get());
 
         if (hasTarget) {
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.GRAY)));
-            target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getDisplayName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-        } else sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.handlePermission(level).setStyle(new Style().setColor(TextFormatting.GREEN))));
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.sender", target.getDisplayName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.GRAY)));
+            target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.setpermissions.target", sender.getName(), ColorHelper.handlePermission(level)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+        } else sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.setpermissions.self", ColorHelper.handlePermission(level).setStyle(new Style().setColor(TextFormatting.GREEN))));
 
 
         GlobalVariables.permissionData.setInteger(target.getUniqueID().toString(), level);
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), GlobalVariables.server.getAllUsernames());
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[0]), server.getOnlinePlayerNames());
         else if (args.size() == 2) return CommandRegistry.CommandConfig.commandPermissions.keySet().stream().map(i -> Integer.toString(i)).collect(Collectors.toCollection(LinkedList::new));
         return Collections.emptyList();
     }

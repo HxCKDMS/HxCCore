@@ -12,6 +12,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -30,7 +31,7 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (args.size() < 1)
             throw new TranslatedCommandException(sender, "commands.hxc.kit.usage");
         if (!(sender instanceof EntityPlayerMP))
@@ -54,20 +55,19 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
         Kit kit = KitConfiguration.kits.get(KitConfiguration.kits.keySet().stream().filter(key -> key.equalsIgnoreCase(kitName)).findFirst().orElseThrow(() -> new TranslatedCommandException(sender, "commands.kit.error.noSuchKit")));
         if (kit.permissionLevel > PermissionHandler.getPermissionLevel(sender) || PermissionHandler.getPermissionLevel(sender) == 0)
             throw new TranslatedCommandException(sender, "commands.generic.permission");
-
         if (usedTimes < kit.maxUses && delay >= kit.delayBetweenUses) {
+            System.out.println(kit.getKitItems());
             kit.getKitItems().forEach(player.inventory::addItemStackToInventory);
             comp.setLong("lastTimeUsed", System.currentTimeMillis());
             comp.setInteger("usedTimes", usedTimes + 1);
             usedKits.setTag(kitName, comp);
             HxCPlayerInfoHandler.setTagCompound(player, "kits", usedKits);
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.kit.successful", kitName).setStyle(new Style().setColor(TextFormatting.BLUE)));
-
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.kit.successful", kitName).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return args.size() == 1 ? new ArrayList<>(KitConfiguration.kits.keySet()) : Collections.emptyList();
     }
 }

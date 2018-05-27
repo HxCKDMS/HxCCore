@@ -2,6 +2,7 @@ package hxckdms.hxccore.api.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
@@ -10,13 +11,13 @@ import java.util.List;
 
 interface ISubCommand<T extends IMultiCommand> {
     String getName();
-    void execute(ICommandSender sender, LinkedList<String> args) throws CommandException;
-    List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos);
+    void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException;
+    List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos);
 
-    Class<T> getParent();
+    Class<T> getParentCommand();
     int getPermissionLevel();
-    CommandState getState();
+    CommandState getCommandState();
 
     void setPermissionLevel(int level);
-    void setState(CommandState state);
+    void setCommandState(CommandState state);
 }

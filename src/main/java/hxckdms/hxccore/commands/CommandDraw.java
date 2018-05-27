@@ -9,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -30,9 +31,8 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
         return "draw";
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         int posX = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getX(), args.get(1), true).getResult());
         int posY = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getY(), args.get(2), false).getResult());
         int posZ = (int) Math.round(CommandBase.parseCoordinate(sender.getPosition().getZ(), args.get(3), true).getResult());
@@ -48,28 +48,28 @@ public class CommandDraw extends AbstractSubCommand<CommandHxC> {
         switch (args.get(0).toLowerCase()) {
             case "circle":
                 WorldHelper.draw2DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 2);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".circle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".circle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "sphere":
                 WorldHelper.draw3DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 2);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".sphere", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".sphere", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "2dsquircle":
                 WorldHelper.draw2DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 4);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".2DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".2DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "3dsquircle":
                 WorldHelper.draw3DEllipsoid(sender.getEntityWorld(), posX, posY, posZ, block, metadata, radius, hollow, precision, 4);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".3DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.draw." + (hollow ? "hollow" : "filled") + ".3DSquircle", posX, posY, posZ, stack.getDisplayName(), radius).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         if (args.size() == 1) return Arrays.asList("circle", "sphere", "2dsquircle", "3dsquircle");
         else if (args.size() == 2 || args.size() == 3 || args.size() == 4) return Collections.singletonList("~");
-        else if (args.size() == 5) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
+        else if (args.size() == 5) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[0]), Block.REGISTRY.getKeys());
         else if (args.size() == 6) return Collections.singletonList("0");
         else if (args.size() == 7) return Collections.singletonList("8");
         else if (args.size() == 8) return Collections.singletonList("true");

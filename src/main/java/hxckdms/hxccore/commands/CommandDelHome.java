@@ -13,6 +13,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -35,7 +36,7 @@ public class CommandDelHome extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (!(sender instanceof EntityPlayerMP))
             throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -47,7 +48,7 @@ public class CommandDelHome extends AbstractSubCommand<CommandHxC> {
             homes.removeTag(name);
             HxCPlayerInfoHandler.setTagCompound(player, "warps", homes);
         } else {
-            String user = Configuration.storeTextHomesUsingName ? player.getName() : player.getUniqueID().toString();
+            String user = Configuration.storeTextHomesUsingName ? player.getDisplayNameString() : player.getUniqueID().toString();
             if (HomesConfigStorage.homes.containsKey(user)) {
                 if (HomesConfigStorage.homes.get(user).homes.containsKey(name)) {
                     HomesConfigStorage.homes.get(user).homes.remove(name);
@@ -59,11 +60,11 @@ public class CommandDelHome extends AbstractSubCommand<CommandHxC> {
                 throw new TranslatedCommandException(sender, "commands.error.invalid.home", name);
             }
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.removed", name).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.removed", name).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return (sender instanceof EntityPlayerMP && args.size() == 1) ? new ArrayList<>(HxCPlayerInfoHandler.getTagCompound((EntityPlayer) sender, "homes", new NBTTagCompound()).getKeySet()) : Collections.emptyList();
     }
 }

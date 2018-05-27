@@ -9,6 +9,7 @@ import hxckdms.hxccore.utilities.TeleportHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
@@ -31,7 +32,7 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         switch (args.size()) {
             case 0:
                 if (sender instanceof EntityPlayerMP) {
@@ -41,15 +42,15 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                         throw new TranslatedCommandException(sender, "commands.error.maxRTPs");
                     else
                         HxCPlayerInfoHandler.setInteger(player, "RTPUses", tps + 1);
-                    boolean negativex = player.worldObj.rand.nextBoolean();
-                    boolean negativez = player.worldObj.rand.nextBoolean();
+                    boolean negativex = player.world.rand.nextBoolean();
+                    boolean negativez = player.world.rand.nextBoolean();
 
-                    int x = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
-                    int z = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int x = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int z = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightmapHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
                 }
                 break;
             case 1:
@@ -61,14 +62,14 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     else
                         HxCPlayerInfoHandler.setInteger(player, "RTPUses", tps + 1);
                     boolean negativex = Boolean.parseBoolean(args.removeFirst());
-                    boolean negativez = player.worldObj.rand.nextBoolean();
+                    boolean negativez = player.world.rand.nextBoolean();
 
-                    int x = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
-                    int z = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int x = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int z = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightmapHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
                 }
                 break;
             case 2:
@@ -82,19 +83,19 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     boolean negativex = Boolean.parseBoolean(args.removeFirst());
                     boolean negativez = Boolean.parseBoolean(args.removeFirst());
 
-                    int x = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
-                    int z = player.worldObj.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int x = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
+                    int z = player.world.rand.nextInt(Configuration.maxRTPRandom) + Configuration.minRTPRandom;
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightmapHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
                 }
-                break;
+            break;
         }
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Collections.emptyList();
     }
 }

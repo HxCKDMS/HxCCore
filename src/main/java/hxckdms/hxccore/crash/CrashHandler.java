@@ -1,6 +1,5 @@
 package hxckdms.hxccore.crash;
 
-import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.libraries.Constants;
 import net.minecraft.crash.CrashReport;
 
@@ -9,12 +8,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 
+//TODO: doesn't work currently ... fix it eventually
 public class CrashHandler extends Thread {
     private static boolean frogeFakeCrash = false;
     private Throwable throwable;
     private String crashString;
 
-    public CrashHandler(String name, Throwable throwable, String crashString) {
+    private CrashHandler(String name, Throwable throwable, String crashString) {
         super(name);
         this.throwable = throwable;
         this.crashString = crashString;
@@ -22,7 +22,8 @@ public class CrashHandler extends Thread {
 
     @SuppressWarnings("unused")
     public static void handleCrash(CrashReport crashReport) {
-        if (Configuration.autoCrashReporterEnabled && frogeFakeCrash) Runtime.getRuntime().addShutdownHook(new CrashHandler("HxCKDMS Crash check thread", crashReport.getCrashCause(), crashReport.getCompleteReport()));
+        //if (Configuration.autoCrashReporterEnabled && frogeFakeCrash)
+            //Runtime.getRuntime().addShutdownHook(new CrashHandler("HxCKDMS Crash check thread", crashReport.getCrashCause(), crashReport.getCompleteReport()));
         frogeFakeCrash = true;
     }
 
@@ -37,9 +38,7 @@ public class CrashHandler extends Thread {
             output.close();
             socket.close();
 
-            System.out.println("done");
-
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

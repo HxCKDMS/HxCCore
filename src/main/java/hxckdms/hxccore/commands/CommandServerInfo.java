@@ -3,11 +3,11 @@ package hxckdms.hxccore.commands;
 import com.sun.management.OperatingSystemMXBean;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
-import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.ColorHelper;
 import hxckdms.hxccore.utilities.MathHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -38,23 +38,15 @@ public class CommandServerInfo extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
-        TextComponentTranslation textComponent = new TextComponentTranslation(
-                "CPU usage: %1$s.\n" +
-                "Memory usage: %2$s.\n" +
-                "Server TPS: %3$s.",
-                getCPUUsageStyled(),
-                getMemoryUsageStyled(),
-                getServerTPSStyled());
-        textComponent.getStyle().setColor(TextFormatting.BLUE);
-
-        Arrays.stream(DimensionManager.getWorlds()).forEachOrdered(worldServer -> textComponent.appendSibling(new TextComponentTranslation("\nDIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", ColorHelper.handleDimension(worldServer), getWorldTPSStyled(worldServer), worldServer.loadedEntityList.size(), worldServer.getChunkProvider().getLoadedChunkCount()).setStyle(new Style().setColor(TextFormatting.AQUA))));
-
-        sender.addChatMessage(textComponent);
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
+        sender.sendMessage(new TextComponentTranslation("CPU usage: %1$s.", getCPUUsageStyled()).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.sendMessage(new TextComponentTranslation("Memory usage: %1$s.", getMemoryUsageStyled()).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.sendMessage(new TextComponentTranslation("Server TPS: %1$s.", getServerTPSStyled(server)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        Arrays.stream(DimensionManager.getWorlds()).forEachOrdered(worldServer -> sender.sendMessage(new TextComponentTranslation("DIM: %1$s, TPS: %2$s, entities: %3$s, loaded chunks: %4$s.", ColorHelper.handleDimension(worldServer), getWorldTPSStyled(server, worldServer), worldServer.loadedEntityList.size(), worldServer.getChunkProvider().getLoadedChunkCount()).setStyle(new Style().setColor(TextFormatting.AQUA))));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Collections.emptyList();
     }
 
@@ -77,8 +69,8 @@ public class CommandServerInfo extends AbstractSubCommand<CommandHxC> {
         return new TextComponentTranslation("%sMB/ %sMB", new TextComponentTranslation(Long.toString(Math.round(usedMem))).setStyle(new Style().setColor(MemColor)), Long.toString(Math.round(totalMem)));
     }
 
-    private static TextComponentTranslation getServerTPSStyled(){
-        double meanTickTime = MathHelper.mean(GlobalVariables.server.tickTimeArray) * 1.0E-6D;
+    private static TextComponentTranslation getServerTPSStyled(MinecraftServer server){
+        double meanTickTime = MathHelper.mean(server.tickTimeArray) * 1.0E-6D;
         double meanTPS = Math.min(1000.0 / meanTickTime, 20);
 
         TextFormatting TPSColor = meanTPS >= 18 ? TextFormatting.GREEN : meanTPS < 12 ? TextFormatting.RED : TextFormatting.GOLD;
@@ -88,8 +80,8 @@ public class CommandServerInfo extends AbstractSubCommand<CommandHxC> {
         return textComponent;
     }
 
-    private static TextComponentTranslation getWorldTPSStyled(WorldServer worldServer){
-        double worldTickTime = MathHelper.mean(GlobalVariables.server.worldTickTimes.get(worldServer.provider.getDimension())) * 1.0E-6D;
+    private static TextComponentTranslation getWorldTPSStyled(MinecraftServer server, WorldServer worldServer){
+        double worldTickTime = MathHelper.mean(server.worldTickTimes.get(worldServer.provider.getDimension())) * 1.0E-6D;
         double worldTPS = Math.min(1000.0 / worldTickTime, 20);
 
         TextFormatting TPSColor = worldTPS >= 18 ? TextFormatting.GREEN : worldTPS < 16 ? TextFormatting.RED : TextFormatting.GOLD;

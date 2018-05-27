@@ -5,38 +5,44 @@ import hxckdms.hxccore.registry.CommandRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldServer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.UUID;
 
 import static hxckdms.hxccore.libraries.GlobalVariables.devTags;
 import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
+@SuppressWarnings("WeakerAccess")
 public class ColorHelper {
-    private static Map<Character, TextFormatting> chatThingies = new HashMap<>();
+    /*private static Map<Character, TextFormatting> chatThingies = new HashMap<>();
 
     static {
         for (TextFormatting textFormatting : TextFormatting.values())
             chatThingies.put(textFormatting.formattingCode, textFormatting);
-    }
+    }*/
 
     private static TextComponentTranslation color(String message, char defaultColor) {
         if (message == null || message.isEmpty()) return new TextComponentTranslation("");
 
-        char currentColor = defaultColor;
+        /*char currentColor = defaultColor;
         HashSet<Character> currentEffects = new HashSet<>();
         LinkedList<String> words = new LinkedList<>(Arrays.asList(message.split(" ")));
         TextComponentTranslation text = new TextComponentTranslation("");
 
-        StringBuilder cBuilder = new StringBuilder();
+        StringBuilder cBuilder = new StringBuilder();*/
 
-        for (String word : words) {
+        message = message.replaceAll("%", "%%").replaceAll("&([0-9a-fk-or])", "\u00a7$1");
+
+        if (!message.startsWith("\u00a7"))
+            message = "\u00a7" + defaultColor + message;
+
+        /*for (String word : words) {
             LinkedList<Character> characters = new LinkedList<>(Arrays.asList(ArrayUtils.toObject(word.toCharArray())));
 
             Character prevChar = null;
@@ -84,9 +90,9 @@ public class ColorHelper {
             }
             if (prevChar != null) cBuilder.append(prevChar == '%' ? "%%" : prevChar);
             cBuilder.append(' ');
-        }
+        }*/
 
-        TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString().trim());
+        /*TextComponentTranslation subText = new TextComponentTranslation(cBuilder.toString().trim());
         Style subStyle = subText.getStyle();
 
         subStyle.setColor(chatThingies.get(currentColor))
@@ -96,13 +102,12 @@ public class ColorHelper {
                 .setStrikethrough(currentEffects.contains(TextFormatting.STRIKETHROUGH.formattingCode))
                 .setUnderlined(currentEffects.contains(TextFormatting.UNDERLINE.formattingCode));
 
-        text.appendSibling(subText);
-        return text;
+        text.appendSibling(subText);*/
+        return new TextComponentTranslation(message);
     }
 
     public static TextComponentTranslation handleMessage(String message, char defaultColor) {
-        TextComponentTranslation text = color(message, defaultColor);
-        return text == null ? new TextComponentTranslation("") : text;
+        return color(message, defaultColor);
     }
 
     public static final HashMap<UUID, String> playerNickNames = new HashMap<>();
@@ -119,9 +124,8 @@ public class ColorHelper {
 
     @SuppressWarnings("unused")
     public static String getTagName(String name, Entity entity) {
-        TextComponentTranslation text;
         if (entity instanceof EntityPlayer) return handleNick((EntityPlayer) entity, true).getFormattedText();
-        else return (text = color(name, Configuration.defaultNameColour)) == null ? name : text.getFormattedText();
+        else return color(name, Configuration.defaultNameColour).getFormattedText();
     }
 
     public static TextComponentTranslation handlePermission(EntityPlayerMP player) {
@@ -187,7 +191,7 @@ public class ColorHelper {
         TextComponentTranslation permissionTag = handlePermission(player);
         TextComponentTranslation nick = handleNick(player, false);
         TextComponentTranslation chatMessage = (PermissionHandler.getPermissionLevel(player) == -1 || Configuration.coloredChatMinimumPermissionLevel <= PermissionHandler.getPermissionLevel(player)) ? color(message, color) : color(message.replaceAll("&\\S", ""), color);
-        chatMessage = new TextComponentTranslation(Configuration.chatMessageLayout.replaceAll("&", "\u00a7").replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
+        chatMessage = new TextComponentTranslation(Configuration.chatMessageLayout.replaceAll("&([0-9a-fk-or])", "\u00a7$1").replace("GAMEMODE", "%1$s").replace("DEV_TAG", "%2$s").replace("PERMISSION_TAG", "%3$s").replace("PLAYER_NICK", "%4$s").replace("CHAT_MESSAGE", "%5$s"), gameMode, devTag, permissionTag, nick, chatMessage);
 
         return chatMessage;
     }
@@ -195,7 +199,6 @@ public class ColorHelper {
     @SuppressWarnings("unused")
     public static String handleSign(String text) {
         TextComponentTranslation signText = color(text, '0');
-        if (signText == null) return "";
         text = signText.getFormattedText();
         return text.startsWith("\u00a70") ? text.substring(2) : text;
     }

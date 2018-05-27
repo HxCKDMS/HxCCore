@@ -1,7 +1,7 @@
 package hxckdms.hxccore.api.command;
 
 public enum CommandState {
-    ENABLED(null, true),
+    ENABLED("", true),
     DISABLED("commands.sub.disabled", false);
 
     private final String errorText;

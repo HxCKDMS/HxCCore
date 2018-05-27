@@ -2,18 +2,14 @@ package hxckdms.hxccore.utilities;
 
 import hxckdms.hxccore.api.event.PlayerTeleportEvent;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Teleporter;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import static hxckdms.hxccore.libraries.GlobalVariables.server;
+import net.minecraftforge.common.util.ITeleporter;
 
 public class TeleportHelper {
-
     public static void teleportEntityToDimension(Entity entity, BlockPos pos, int dimension) {
         teleportEntityToDimension(entity, pos.getX(), pos.getY(), pos.getZ(), dimension);
     }
@@ -23,11 +19,7 @@ public class TeleportHelper {
             checkAndTeleport(entity, x, y, z, dimension);
             return;
         }
-
-        if (entity instanceof EntityPlayerMP) server.getPlayerList().transferPlayerToDimension((EntityPlayerMP) entity, dimension, new HxCTeleporter((WorldServer) server.getEntityWorld()));
-        else teleportEntity(entity, dimension);
-
-        if (entity.dimension == dimension) checkAndTeleport(entity, x, y, z, dimension);
+        entity.changeDimension(dimension, new HxCTeleporter(new BlockPos(x, y, z)));
     }
 
     private static void checkAndTeleport(Entity entity, double x, double y, double z, int dimension) {
@@ -37,58 +29,19 @@ public class TeleportHelper {
         } else entity.setPositionAndUpdate(x, y, z);
     }
 
-    private static void teleportEntity(Entity entity, int dimensionId) {
-        if (!entity.worldObj.isRemote && !entity.isDead) {
-            entity.worldObj.theProfiler.startSection("changeDimension");
-            int j = entity.dimension;
-            WorldServer worldserver = server.worldServerForDimension(j);
-            WorldServer worldserver1 = server.worldServerForDimension(dimensionId);
+    private static class HxCTeleporter implements ITeleporter
+    {
+        private final BlockPos targetPos;
 
-            Entity newEntity = EntityList.createEntityByName(EntityList.getEntityString(entity), worldserver1);
-            if (newEntity == null) return;
-
-            entity.dimension = dimensionId;
-
-
-            try {
-                newEntity.copyDataFromOld(entity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            entity.worldObj.removeEntity(entity);
-
-            newEntity.forceSpawn = true;
-            worldserver1.spawnEntityInWorld(newEntity);
-            worldserver1.updateEntityWithOptionalForce(newEntity, true);
-
-            entity.isDead = true;
-            entity.worldObj.theProfiler.endSection();
-            worldserver.resetUpdateEntityTick();
-            worldserver1.resetUpdateEntityTick();
-            entity.worldObj.theProfiler.endSection();
-        }
-    }
-
-    private static class HxCTeleporter extends Teleporter {
-        HxCTeleporter(WorldServer worldIn) {
-            super(worldIn);
+        private HxCTeleporter(BlockPos targetPos)
+        {
+            this.targetPos = targetPos;
         }
 
         @Override
-        public void placeInPortal(Entity entityIn, float rotationYaw) {}
-
-        @Override
-        public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
-            return true;
+        public void placeEntity(World world, Entity entity, float yaw)
+        {
+            entity.moveToBlockPosAndAngles(targetPos, yaw, entity.rotationPitch);
         }
-
-        @Override
-        public boolean makePortal(Entity entityIn) {
-            return true;
-        }
-
-        @Override
-        public void removeStalePortalLocations(long worldTime) {}
     }
 }

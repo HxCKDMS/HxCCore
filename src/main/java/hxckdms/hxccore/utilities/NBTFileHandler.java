@@ -1,12 +1,9 @@
 package hxckdms.hxccore.utilities;
 
-import hxckdms.hxccore.configs.Configuration;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,6 +133,9 @@ public class NBTFileHandler {
         return hasTag(tagName) ? getValue(NBTTagList.class, tagName) : null;
     }
 
+    public synchronized void removeValue(String tagName) {
+        table.remove(tagName);
+    }
 
     private synchronized <T> void setValue(String tagName, Class<T> type, T value) {
         table.put(tagName, new Data<>(value, type));
@@ -178,9 +178,10 @@ public class NBTFileHandler {
         }
 
         try {
-            if (Configuration.debugMode) CompressedStreamTools.safeWrite(tagCompound, nbtFile);
+            CompressedStreamTools.safeWrite(tagCompound, nbtFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            //if (Configuration.debugMode)
+            // e.printStackTrace();
         }
     }
 
@@ -194,9 +195,12 @@ public class NBTFileHandler {
             if (!nbtFile.exists()) nbtFile.createNewFile();
             tagCompound = CompressedStreamTools.read(nbtFile);
         } catch (IOException e) {
-            if (Configuration.debugMode) e.printStackTrace();
+            //if (Configuration.debugMode)
+            // e.printStackTrace();
             return;
         }
+
+        if (tagCompound == null) return;
 
         table.clear();
         for (String key : tagCompound.getKeySet()) {
@@ -265,13 +269,5 @@ public class NBTFileHandler {
 
     public static void saveCustomNBTFiles(final boolean force) {
         fileHandlers.forEach((name, handler) -> handler.saveToFile(force));
-    }
-
-    public static class NBTSaveEvents implements EventListener {
-
-        @SubscribeEvent
-        public void worldSaveEvent(WorldEvent.Save event) {
-            saveCustomNBTFiles(false);
-        }
     }
 }

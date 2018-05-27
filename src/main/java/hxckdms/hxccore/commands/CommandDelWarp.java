@@ -8,6 +8,7 @@ import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -30,7 +31,7 @@ public class CommandDelWarp extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         String warpName = args.size() == 0 ? "default" : args.get(0);
 
         NBTTagCompound warps = GlobalVariables.customWorldData.getTagCompound("warps", new NBTTagCompound());
@@ -38,11 +39,11 @@ public class CommandDelWarp extends AbstractSubCommand<CommandHxC> {
         warps.removeTag(warpName);
         GlobalVariables.customWorldData.setTagCompound("warps", warps);
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.removed", warpName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.removed", warpName).setStyle(new Style().setColor(TextFormatting.DARK_RED)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return args.size() == 1 ? new ArrayList<>(GlobalVariables.customWorldData.getTagCompound("warps").getKeySet()) : Collections.emptyList();
     }
 }

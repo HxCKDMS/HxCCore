@@ -15,6 +15,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -40,14 +41,14 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         String name = args.size() == 0 ? "default" : args.get(0);
         if (!Configuration.useTextStorageofHomes) {
             NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
-            int homecount = (CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender))).homeAmount;
-            if (homecount == -1 || (!homes.hasKey(name) && (homes.getKeySet().size() + 1 > homecount)))
+
+            if (!homes.hasKey(name) && !(CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount == -1) && (homes.getKeySet().size() + 1 > CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount))
                 throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
 
             NBTTagCompound home = new NBTTagCompound();
@@ -60,7 +61,7 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
             homes.setTag(name, home);
             HxCPlayerInfoHandler.setTagCompound(player, "homes", homes);
         } else {
-            String user = Configuration.storeTextHomesUsingName ? player.getName() : player.getUniqueID().toString();
+            String user = Configuration.storeTextHomesUsingName ? player.getDisplayNameString() : player.getUniqueID().toString();
             if (HomesConfigStorage.homes.containsKey(user)) {
                 FakePlayerData pdata = HomesConfigStorage.homes.get(user);
                 if (pdata.homes.containsKey(name)) {
@@ -79,11 +80,11 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
             }
             GlobalVariables.alternateHomesConfig.initConfiguration();
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Collections.emptyList();
     }
 }

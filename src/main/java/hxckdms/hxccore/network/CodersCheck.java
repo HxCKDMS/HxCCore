@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.UUID;
 
 public class CodersCheck implements Runnable {
-
     @Override
     public void run() {
         try {

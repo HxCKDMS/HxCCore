@@ -39,7 +39,7 @@ public class NBTHandler implements IConfigurationHandler {
                 LinkedList<String> lines = new LinkedList<>();
                 lines.add("COMPOUND:[");
                 for (String key : tagCompound.getKeySet()) {
-                    LinkedList<String> iLines = new LinkedList<>(cHandler.write(field, tagCompound.getTag(key), null, mainInstance).stream().map(str -> "\t" + str).collect(Collectors.toList()));
+                    LinkedList<String> iLines = cHandler.write(field, tagCompound.getTag(key), null, mainInstance).stream().map(str -> "\t" + str).collect(Collectors.toCollection(LinkedList::new));
                     lines.add("\t" + key + "=" + iLines.removeFirst().trim());
                     lines.addAll(iLines);
                 }

@@ -3,9 +3,7 @@ package hxckdms.hxccore.api.event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
-@Cancelable
 public class PlayerTeleportEvent extends PlayerEvent {
     private final double newX;
     private final double newY;
@@ -20,7 +18,7 @@ public class PlayerTeleportEvent extends PlayerEvent {
         this.newDimension = newDimension;
     }
 
-    public PlayerTeleportEvent(EntityPlayer player,  BlockPos newPos, int newDimension) {
+    public PlayerTeleportEvent(EntityPlayer player, BlockPos newPos, int newDimension) {
         super(player);
         this.newX = newPos.getX();
         this.newY = newPos.getY();

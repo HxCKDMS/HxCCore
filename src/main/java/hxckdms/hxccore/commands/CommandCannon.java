@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -31,7 +32,7 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.error.playersOnly");
 
         EntityPlayerMP player = (EntityPlayerMP) sender;
@@ -40,19 +41,19 @@ public class CommandCannon extends AbstractSubCommand<CommandHxC> {
 
         Vec3d vector = player.getLookVec();
 
-        Entity projectile = isKitty ? new EntityOcelot(player.worldObj) : new EntityTNTPrimed(player.worldObj, player.posX, player.posY, player.posZ, player);
+        Entity projectile = isKitty ? new EntityOcelot(player.world) : new EntityTNTPrimed(player.world, player.posX, player.posY, player.posZ, player);
         projectile.setPosition(player.posX, player.posY + player.eyeHeight, player.posZ);
 
-        projectile.motionX = vector.xCoord * speed;
-        projectile.motionY = vector.yCoord * speed;
-        projectile.motionZ = vector.zCoord * speed;
+        projectile.motionX = vector.x * speed;
+        projectile.motionY = vector.y * speed;
+        projectile.motionZ = vector.z * speed;
         projectile.isAirBorne = true;
 
-        player.worldObj.spawnEntityInWorld(projectile);
+        player.world.spawnEntity(projectile);
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         if (args.size() == 1) return Collections.singletonList(Integer.toString(2));
         else if (args.size() == 2) return Collections.singletonList("kitty");
         else return Collections.emptyList();

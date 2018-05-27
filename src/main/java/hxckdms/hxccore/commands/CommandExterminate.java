@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -35,11 +36,11 @@ public class CommandExterminate extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         int entitiesKilled = 0;
 
         for (WorldServer worldServer : DimensionManager.getWorlds()) {
-            for (Entity entity : worldServer.loadedEntityList) {
+            for (Entity entity : (List<Entity>) worldServer.loadedEntityList) {
                 if (entity instanceof EntityPlayer) continue;
                 switch (args.size()) {
                     case 0:
@@ -76,11 +77,11 @@ public class CommandExterminate extends AbstractSubCommand<CommandHxC> {
             }
         }
 
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.exterminate.killed", entitiesKilled).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.exterminate.killed", entitiesKilled).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Arrays.asList("hostiles", "items", "passives", "xp", "tamable");
     }
 }

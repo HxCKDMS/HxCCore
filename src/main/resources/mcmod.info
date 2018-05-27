@@ -3,13 +3,13 @@
   "modid": "hxccore",
   "name": "HxC-Core",
   "description": "Core for all HxC mods. Contains Important Libraries such as config system.",
-  "version": "2.1.1",
-  "mcversion": "1.10.2",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["§4HxC§9K§3D§eM§0S§r"],
   "credits": "",
-  "logoFile": "assets/HxCCore/textures/HxC.png",
+  "logoFile": "assets/hxccore/textures/hxc.png",
   "screenshots": [],
   "dependencies": [
              "mod_MinecraftForge"

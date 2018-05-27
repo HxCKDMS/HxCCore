@@ -11,6 +11,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -33,7 +34,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         Block block = args.size() >= 1 ? Block.getBlockFromName(args.get(0)) : null;
@@ -47,18 +48,17 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
 
         if (block != null) {
             stack = new ItemStack(block, 1, metadata);
-
-            HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getRegistryName().toString());
+            HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getUnlocalizedName());
             HxCPlayerInfoHandler.setInteger(player, "PathMetaData", metadata);
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
             HxCPlayerInfoHandler.setString(player, "Override", override);
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setStyle(new Style().setColor(TextFormatting.BLUE)));
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[args.size()]), Block.REGISTRY.getKeys());
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
+        if (args.size() == 1) return CommandBase.getListOfStringsMatchingLastWord(args.toArray(new String[0]), Block.REGISTRY.getKeys());
         else if (args.size() == 2) return Collections.singletonList("0");
         else if (args.size() == 3) return Collections.singletonList("2");
         else if (args.size() == 4) return Arrays.asList("air", "fluid", "all");

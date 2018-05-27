@@ -14,7 +14,7 @@ public abstract class AbstractSubCommand<T extends AbstractMultiCommand> impleme
     }
 
     @Override
-    public CommandState getState() {
+    public CommandState getCommandState() {
         return state;
     }
 
@@ -24,12 +24,12 @@ public abstract class AbstractSubCommand<T extends AbstractMultiCommand> impleme
     }
 
     @Override
-    public void setState(CommandState state) {
+    public void setCommandState(CommandState state) {
         this.state = state;
     }
 
     @Override
-    public Class<T> getParent() {
+    public Class<T> getParentCommand() {
         return parentCommand;
     }
 }

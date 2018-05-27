@@ -3,7 +3,6 @@ package hxckdms.hxccore.commands;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
-import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
@@ -26,19 +26,19 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
         permissionLevel = 5;
     }
 
-    private static Predicate<String> isCommand = str -> str.startsWith("/") && GlobalVariables.server.getCommandManager().getCommands().containsKey(str.substring(1));
-
     @Override
     public String getName() {
         return "powerTool";
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
+        Predicate<String> isCommand = str -> str.startsWith("/") && server.getCommandManager().getCommands().containsKey(str.substring(1));
+
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
         ItemStack itemStack = player.inventory.getCurrentItem();
-        if (itemStack == null) throw new TranslatedCommandException(sender, "commands.error.noItem");
+        if (itemStack.isEmpty()) throw new TranslatedCommandException(sender, "commands.error.noItem");
         NBTTagCompound tagCompound = itemStack.getTagCompound() != null ? itemStack.getTagCompound() : new NBTTagCompound();
 
         if (!args.get(0).startsWith("/")) args.set(0, "/" + args.get(0));
@@ -62,7 +62,7 @@ public class CommandPowerTool extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return Collections.emptyList();
     }
 }

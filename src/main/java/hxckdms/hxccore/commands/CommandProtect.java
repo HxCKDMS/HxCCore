@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -39,7 +40,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         NBTTagCompound land = protectedLands.getCompoundTag(args.get(0));
 
@@ -47,7 +48,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
             case "adduser":
                 if (!protectedLands.hasKey(args.get(0))) throw new TranslatedCommandException(sender, "commands.protect.error.noSuchLand");
 
-                EntityPlayer target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(2));
+                EntityPlayer target = CommandBase.getPlayer(server, sender, args.get(2));
                 NBTTagList userList = land.getTagList("userList", 8);
                 boolean match = false;
                 for (int i = 0; i < userList.tagCount(); ++i) {
@@ -57,13 +58,13 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 if (!match) userList.appendTag(new NBTTagString(target.getUniqueID().toString()));
                 land.setTag("userList", userList);
                 protectedLands.setTag(args.get(0), land);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.adduser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.adduser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.adduser.target", sender.getName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.BLUE)));
                 break;
             case "removeuser":
                 if (!protectedLands.hasKey(args.get(0))) throw new TranslatedCommandException(sender, "commands.protect.error.noSuchLand");
 
-                target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(2));
+                target = CommandBase.getPlayer(server, sender, args.get(2));
                 userList = land.getTagList("userList", 8);
 
                 match = false;
@@ -77,16 +78,16 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 if (!match) throw new TranslatedCommandException(sender, "commands.protect.error.playerNotPresent");
                 land.setTag("userList", userList);
                 protectedLands.setTag(args.get(0), land);
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.removeuser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.removeuser.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.RED)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.removeuser.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.removeuser.target", sender.getName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.RED)));
 
                 break;
             case "transfer":
-                target = CommandBase.getPlayer(GlobalVariables.server, sender, args.get(2));
+                target = CommandBase.getPlayer(server, sender, args.get(2));
                 land.setBoolean("playerOwned", true);
                 land.setString("owner", target.getUniqueID().toString());
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.transfer.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.transfer.target", sender.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.transfer.sender", target.getDisplayName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+                target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.protect.transfer.target", sender.getName(), args.get(0)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
                 protectedLands.setTag(args.get(0), land);
                 break;
             case "create":
@@ -115,7 +116,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                     land.setInteger("dimension", dimension);
                     protectedLands.setTag(args.get(0), land);
 
-                    sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.create", x1, y1, z1, x2, y2, z2, blocksNeeded, name));
+                    sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.protect.create", x1, y1, z1, x2, y2, z2, blocksNeeded, name));
                 } else throw new TranslatedCommandException(sender, "commands.protect.error.outOfLand");
                 break;
             case "delete":
@@ -132,7 +133,6 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     private static boolean landAvailabilityCheck(int x1, int y1, int z1, int x2, int y2, int z2, int dimension) {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         for (String landName : protectedLands.getKeySet()) {
-            System.out.println(landName);
             NBTTagCompound land = protectedLands.getCompoundTag(landName);
             boolean x1Check = land.getInteger("x1") > land.getInteger("x2") ? (x1 > x2 ? land.getInteger("x1") >= x1 && x1 >= land.getInteger("x2") : land.getInteger("x1") >= x2 && x2 >= land.getInteger("x2")) : (x1 > x2 ? land.getInteger("x2") >= x1 && x1 >= land.getInteger("x1") : land.getInteger("x2") >= x2 && x2 >= land.getInteger("x1"));
             boolean y1Check = land.getInteger("y1") > land.getInteger("y2") ? (y1 > y2 ? land.getInteger("y1") >= y1 && y1 >= land.getInteger("y2") : land.getInteger("y1") >= y2 && y2 >= land.getInteger("y2")) : (y1 > y2 ? land.getInteger("y2") >= y1 && y1 >= land.getInteger("y1") : land.getInteger("y2") >= y2 && y2 >= land.getInteger("y1"));
@@ -149,11 +149,11 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
         return true;
     }
 
-    public static boolean isPlayerAllowedToEdit(EntityPlayer player, int x, int y, int z, int dimension) {
+    public static boolean isPlayerAllowedToEdit(EntityPlayer player, BlockPos pos, int dimension) {
         if (override.contains(player)) return true;
 
         String name;
-        if ((name = getLand(x, y, z, dimension)) == null) return true;
+        if ((name = getLand(pos.getX(), pos.getY(), pos.getZ(), dimension)) == null) return true;
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         NBTTagCompound land = protectedLands.getCompoundTag(name);
         boolean allowed = land.getString("owner").equals(player.getUniqueID().toString());
@@ -168,7 +168,8 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
         return allowed;
     }
 
-    private static String getLand(int x, int y, int z, int dimension) {
+    @Nullable
+    public static String getLand(int x, int y, int z, int dimension) {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
         for (String landName : protectedLands.getKeySet()) {
             NBTTagCompound land = protectedLands.getCompoundTag(landName);
@@ -197,8 +198,8 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, LinkedList<String> args, @Nullable BlockPos pos) {
-        if (args.size() == 2) Arrays.asList("addUser", "removeUser", "transfer", "create", "delete");
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
+        if (args.size() == 2) return Arrays.asList("addUser", "removeUser", "transfer", "create", "delete");
         return Collections.emptyList();
     }
 }
