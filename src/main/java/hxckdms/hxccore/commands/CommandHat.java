@@ -36,7 +36,7 @@ public class CommandHat extends AbstractSubCommand<CommandHxC> {
         if (sender instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) sender;
             if (player.getHeldItemMainhand().isEmpty()) throw new WrongUsageException("commands.hat.usage");
-            ItemStack helmet = player.inventory.armorItemInSlot(3);
+            ItemStack helmet = player.inventory.armorInventory.get(3);
             ItemStack hat = new ItemStack(player.getHeldItemMainhand().getItem(), 1, player.getHeldItemMainhand().getItemDamage());
             hat.deserializeNBT(player.getHeldItem(EnumHand.MAIN_HAND).writeToNBT(new NBTTagCompound()));
             player.getHeldItemMainhand().shrink(1);
