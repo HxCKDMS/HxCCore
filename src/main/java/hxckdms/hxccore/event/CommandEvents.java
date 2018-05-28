@@ -32,6 +32,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -145,6 +147,7 @@ public class CommandEvents implements EventListener {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void eventPowerTool_1(ItemTooltipEvent event) {
         if (event.getItemStack().getTagCompound() != null && event.getItemStack().getTagCompound().hasKey("powerToolCommands")) {
             NBTTagList commands = event.getItemStack().getTagCompound().getTagList("powerToolCommands", 8);
