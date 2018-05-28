@@ -8,7 +8,6 @@ import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.nbt.NBTTagList;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -44,51 +43,39 @@ public class HxCTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(classBeingTransformed);
             classReader.accept(classNode, 0);
-            ClassWriter classWriter;
 
             switch (index) {
                 case 0:
                     transformRender(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 1:
                     transformRendererSign(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 2:
                     transformCommandEmote(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 3:
                     transformCommandBase(classNode);
-                    classWriter = new ClassWriter(0);
                     break;
                 case 4:
                     transformLivingBase(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 5:
                 case 6:
                     transformCommandTP(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 7:
                     transformCommandSpreadPlayers(classNode);
-                    classWriter = new ClassWriter(0);
                     break;
                 case 8:
                     transformEntityXPOrb(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
                     break;
                 case 9:
                     transformCrashReport(classNode);
-                    classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
-                    break;
-                default:
-                    classWriter = new ClassWriter(0);
                     break;
             }
 
+            ClassWriter classWriter = new CustomClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
             classNode.accept(classWriter);
             return classWriter.toByteArray();
         } catch (Exception exception) {
@@ -233,7 +220,6 @@ public class HxCTransformer implements IClassTransformer {
     }
 
     private static void transformLivingBase(ClassNode classNode) {
-        NBTTagList  test= new NBTTagList();
 
         final String SWING_ARM = HxCLoader.RuntimeDeobf ? "func_184609_a" : "swingArm";
         final String SWING_ARM_DESC = "(Lnet/minecraft/util/EnumHand;)V";

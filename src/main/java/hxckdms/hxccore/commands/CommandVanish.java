@@ -2,6 +2,7 @@ package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
+import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
@@ -56,6 +57,9 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(server, sender, args.get(0));
+                if (target == sender)
+                    throw new TranslatedCommandException(sender, "commands.vanish.self");
+
                 NBTTagList vanishList = HxCPlayerInfoHandler.getTagList(player, "VanishedFromList");
                 if (vanishList == null) vanishList = new NBTTagList();
                 boolean isInvisibleToTarget = false;

@@ -19,7 +19,7 @@ public class TeleportHelper {
             checkAndTeleport(entity, x, y, z, dimension);
             return;
         }
-        entity.changeDimension(dimension, new HxCTeleporter(new BlockPos(x, y, z)));
+        entity.changeDimension(dimension, new HxCTeleporter(x, y, z));
     }
 
     private static void checkAndTeleport(Entity entity, double x, double y, double z, int dimension) {
@@ -29,19 +29,24 @@ public class TeleportHelper {
         } else entity.setPositionAndUpdate(x, y, z);
     }
 
-    private static class HxCTeleporter implements ITeleporter
-    {
-        private final BlockPos targetPos;
+    private static class HxCTeleporter implements ITeleporter {
+        private final double x;
+        private final double y;
+        private final double z;
 
-        private HxCTeleporter(BlockPos targetPos)
-        {
-            this.targetPos = targetPos;
+        private HxCTeleporter(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         @Override
-        public void placeEntity(World world, Entity entity, float yaw)
-        {
-            entity.moveToBlockPosAndAngles(targetPos, yaw, entity.rotationPitch);
+        public void placeEntity(World world, Entity entity, float yaw) {
+            if (entity instanceof EntityPlayerMP) {
+                ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, yaw, entity.rotationPitch);
+            } else {
+                entity.moveToBlockPosAndAngles(new BlockPos(x, y, z), yaw, entity.rotationPitch);
+            }
         }
     }
 }

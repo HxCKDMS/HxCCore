@@ -9,6 +9,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -165,7 +166,7 @@ public class ColorHelper {
     }
 
     public static TextComponentTranslation handleDimension(int dimensionID) {
-        TextComponentTranslation textComponent = new TextComponentTranslation(DimensionType.getById(dimensionID).getName());
+        TextComponentTranslation textComponent = new TextComponentTranslation(DimensionManager.getProviderType(dimensionID).getName());
         switch (dimensionID) {
             case -1:
                 textComponent.getStyle().setColor(TextFormatting.RED);

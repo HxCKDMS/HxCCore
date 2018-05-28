@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
@@ -28,6 +29,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -37,6 +39,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static hxckdms.hxccore.libraries.Constants.PACKET_CHANNEL_NAME;
+import static hxckdms.hxccore.libraries.GlobalVariables.doesPlayerHaveMod;
 import static hxckdms.hxccore.libraries.GlobalVariables.permissionData;
 
 public class CommonEvents {
@@ -200,6 +204,13 @@ public class CommonEvents {
 
             player.sendPlayerAbilities();
             player.setPlayerHealthUpdated();
+        }
+    }
+
+    @SubscribeEvent
+    public void networkChannelRegistrationEvent(FMLNetworkEvent.CustomPacketRegistrationEvent event) {
+        if (event.getHandler() instanceof NetHandlerPlayServer && event.getOperation().equals("REGISTER") && event.getRegistrations().contains(PACKET_CHANNEL_NAME)) {
+            doesPlayerHaveMod.add(((NetHandlerPlayServer) event.getHandler()).player.getUniqueID());
         }
     }
 }
