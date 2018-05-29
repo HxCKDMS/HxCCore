@@ -22,10 +22,6 @@ public class HxCHooks {
         else return event.getComponent();
     }
 
-    public static boolean onLivingSwingEvent(EntityLivingBase entityLiving, EnumHand hand) {
-        return MinecraftForge.EVENT_BUS.post(new LivingSwingEvent(entityLiving, hand));
-    }
-
     public static boolean onPlayerTeleportEvent(EntityPlayer player, double newX, double newY, double newZ) {
         return MinecraftForge.EVENT_BUS.post(new PlayerTeleportEvent(player, newX, newY, newZ, player.dimension));
     }

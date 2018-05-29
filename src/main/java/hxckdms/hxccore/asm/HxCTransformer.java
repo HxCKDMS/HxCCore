@@ -1,5 +1,6 @@
 package hxckdms.hxccore.asm;
 
+import hxckdms.hxccore.api.event.LivingSwingEvent;
 import hxckdms.hxccore.crash.CrashHandler;
 import hxckdms.hxccore.libraries.Constants;
 import hxckdms.hxccore.utilities.ColorHelper;
@@ -8,6 +9,8 @@ import hxckdms.hxccore.utilities.PermissionHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -232,18 +235,16 @@ public class HxCTransformer implements IClassTransformer {
                     InsnList toInsert = new InsnList();
                     LabelNode node = new LabelNode();
 
-                    //toInsert.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(MinecraftForge.class), "EVENT_BUS", "Lnet/minecraftforge/fml/common/eventhandler/EventBus;"));
+                    toInsert.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(MinecraftForge.class), "EVENT_BUS", "Lnet/minecraftforge/fml/common/eventhandler/EventBus;"));
 
-                    //toInsert.add(new TypeInsnNode(NEW, Type.getInternalName(LivingSwingEvent.class)));
-                    //toInsert.add(new InsnNode(DUP));
+                    toInsert.add(new TypeInsnNode(NEW, Type.getInternalName(LivingSwingEvent.class)));
+                    toInsert.add(new InsnNode(DUP));
 
                     toInsert.add(new VarInsnNode(ALOAD, 0));
                     toInsert.add(new VarInsnNode(ALOAD, 1));
 
-                    toInsert.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(HxCHooks.class), "onLivingSwingEvent", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/EnumHand;)Z", false));
-
-                    //toInsert.add(new MethodInsnNode(INVOKESPECIAL, Type.getInternalName(LivingSwingEvent.class), "<init>", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/EnumHand;)V", false));
-                    //toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(EventBus.class), "post", "(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z", false));
+                    toInsert.add(new MethodInsnNode(INVOKESPECIAL, Type.getInternalName(LivingSwingEvent.class), "<init>", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/EnumHand;)V", false));
+                    toInsert.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(EventBus.class), "post", "(Lnet/minecraftforge/fml/common/eventhandler/Event;)Z", false));
 
                     toInsert.add(new JumpInsnNode(IFEQ, node));
                     toInsert.add(new InsnNode(RETURN));
