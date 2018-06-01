@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -37,7 +38,7 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
             case 0:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    int tps = HxCPlayerInfoHandler.getInteger(player, "RPTUses");
+                    int tps = HxCPlayerInfoHandler.getInteger(player, "RTPUses");
                     if (tps >= Configuration.maxRTPUses)
                         throw new TranslatedCommandException(sender, "commands.error.maxRTPs");
                     else
@@ -50,13 +51,18 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    Chunk chunk;
+                    if ((chunk = player.getServerWorld().getChunkProvider().getLoadedChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4)) == null) {
+                        chunk = player.getServerWorld().getChunkProvider().provideChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4);
+                    }
+
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x,chunk.getHeight(new BlockPos(player.posX, 64, player.posX)) + 1, player.posZ + z, 0);
                 }
                 break;
             case 1:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    int tps = HxCPlayerInfoHandler.getInteger(player, "RPTUses");
+                    int tps = HxCPlayerInfoHandler.getInteger(player, "RTPUses");
                     if (tps >= Configuration.maxRTPUses)
                         throw new TranslatedCommandException(sender, "commands.error.maxRTPs");
                     else
@@ -69,13 +75,18 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    Chunk chunk;
+                    if ((chunk = player.getServerWorld().getChunkProvider().getLoadedChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4)) == null) {
+                        chunk = player.getServerWorld().getChunkProvider().provideChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4);
+                    }
+
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x,chunk.getHeight(new BlockPos(player.posX, 64, player.posX)) + 1, player.posZ + z, 0);
                 }
                 break;
             case 2:
                 if (sender instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    int tps = HxCPlayerInfoHandler.getInteger(player, "RPTUses");
+                    int tps = HxCPlayerInfoHandler.getInteger(player, "RTPUses");
                     if (tps >= Configuration.maxRTPUses)
                         throw new TranslatedCommandException(sender, "commands.error.maxRTPs");
                     else
@@ -88,7 +99,12 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.world.getHeight((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    Chunk chunk;
+                    if ((chunk = player.getServerWorld().getChunkProvider().getLoadedChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4)) == null) {
+                        chunk = player.getServerWorld().getChunkProvider().provideChunk((int)Math.round(player.posX + x) >> 4, (int)Math.round(player.posX + z) >> 4);
+                    }
+
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x,chunk.getHeight(new BlockPos(player.posX, 64, player.posX)) + 1, player.posZ + z, 0);
                 }
             break;
         }

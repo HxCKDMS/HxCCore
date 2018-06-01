@@ -62,8 +62,10 @@ public class CommandKit extends AbstractSubCommand<CommandHxC> {
             comp.setInteger("usedTimes", usedTimes + 1);
             usedKits.setTag(kitName, comp);
             HxCPlayerInfoHandler.setTagCompound(player, "kits", usedKits);
-        }
-        sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.kit.successful", kitName).setStyle(new Style().setColor(TextFormatting.BLUE)));
+
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.kit.successful", kitName).setStyle(new Style().setColor(TextFormatting.BLUE)));
+        } else if (usedTimes >= kit.maxUses)
+            throw new TranslatedCommandException(player, "commands.kit.usedUp");
     }
 
     @Override

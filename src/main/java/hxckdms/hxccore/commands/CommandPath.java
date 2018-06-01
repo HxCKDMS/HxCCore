@@ -48,7 +48,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
 
         if (block != null) {
             stack = new ItemStack(block, 1, metadata);
-            HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getUnlocalizedName());
+            HxCPlayerInfoHandler.setString(player, "PathMaterial", block.getRegistryName().toString());
             HxCPlayerInfoHandler.setInteger(player, "PathMetaData", metadata);
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
             HxCPlayerInfoHandler.setString(player, "Override", override);

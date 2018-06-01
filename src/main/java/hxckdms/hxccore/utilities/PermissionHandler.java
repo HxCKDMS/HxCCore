@@ -1,6 +1,7 @@
 package hxckdms.hxccore.utilities;
 
 import hxckdms.hxccore.api.command.AbstractSubCommand;
+import hxckdms.hxccore.api.command.ISubCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import net.minecraft.command.CommandBase;
@@ -22,7 +23,7 @@ public class PermissionHandler {
         return getPermissionLevel(sender) == -1 || (commandOptional.map(stringIntegerEntry -> getPermissionLevel(sender) >= stringIntegerEntry.getValue()).orElseGet(() -> sender.canUseCommand(permLevel, command.getName())));
     }
 
-    public static boolean canUseSubCommand(ICommandSender sender, AbstractSubCommand subCommand) {
+    public static boolean canUseSubCommand(ICommandSender sender, ISubCommand subCommand) {
         return (FMLCommonHandler.instance().getSide() == Side.CLIENT && sender.getEntityWorld().getWorldInfo().areCommandsAllowed())  || getPermissionLevel(sender) == -1 || getPermissionLevel(sender) >= subCommand.getPermissionLevel();
     }
 

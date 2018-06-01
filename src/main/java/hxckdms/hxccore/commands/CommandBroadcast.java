@@ -10,6 +10,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class CommandBroadcast extends AbstractSubCommand<CommandHxC> {
 
     private static String getPlayerNameOrNick(EntityPlayerMP player) {
         if (HxCPlayerInfoHandler.getString(player, "NickName") == null || "".equals(HxCPlayerInfoHandler.getString(player, "NickName")))
-            return Arrays.asList(player.mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? "&4" + player.getDisplayName() : "&f" + player.getDisplayName();
+            return Arrays.asList(player.mcServer.getPlayerList().getOppedPlayerNames()).contains(player.getName()) ? "&4" + player.getDisplayNameString() : "&f" + player.getDisplayNameString();
         else return HxCPlayerInfoHandler.getString(player, "NickName");
     }
 

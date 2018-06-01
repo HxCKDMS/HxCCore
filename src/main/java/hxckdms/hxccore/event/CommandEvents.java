@@ -106,7 +106,9 @@ public class CommandEvents implements EventListener {
             EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
             if (HxCPlayerInfoHandler.getBoolean(player, "PathEnabled")) {
                 Block block = Block.getBlockFromName(HxCPlayerInfoHandler.getString(player, "PathMaterial"));
-                assert block != null;
+
+                if (block == null)
+                    return;
 
                 int metadata = HxCPlayerInfoHandler.getInteger(player, "PathMetaData");
                 int pathSize = HxCPlayerInfoHandler.getInteger(player, "PathSize");

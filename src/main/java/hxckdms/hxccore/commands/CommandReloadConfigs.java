@@ -2,7 +2,9 @@ package hxckdms.hxccore.commands;
 
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
+import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.libraries.GlobalVariables;
+import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -32,7 +34,11 @@ public class CommandReloadConfigs extends AbstractSubCommand<CommandHxC> {
         GlobalVariables.mainConfig.initConfiguration();
         GlobalVariables.commandConfig.initConfiguration();
         GlobalVariables.kitConfig.initConfiguration();
-        GlobalVariables.alternateHomesConfig.initConfiguration();
+        if (Configuration.useTextStorageofHomes)
+            GlobalVariables.alternateHomesConfig.initConfiguration();
+
+        ((CommandHxC) CommandRegistry.getCommandForName("HxC")).reloadPermissions();
+
         sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.reloadConfigs.reloaded").setStyle(new Style().setColor(TextFormatting.GRAY)));
     }
 

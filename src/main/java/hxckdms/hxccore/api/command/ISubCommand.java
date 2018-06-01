@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-interface ISubCommand<T extends IMultiCommand> {
+public interface ISubCommand<T extends IMultiCommand> {
     String getName();
     void execute(MinecraftServer server, ICommandSender sender, LinkedList<String> args) throws CommandException;
     List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos);

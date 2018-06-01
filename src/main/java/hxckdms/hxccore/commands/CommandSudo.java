@@ -1,7 +1,10 @@
 package hxckdms.hxccore.commands;
 
+import hxckdms.hxccore.api.command.AbstractMultiCommand;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
+import hxckdms.hxccore.api.command.ISubCommand;
+import hxckdms.hxccore.utilities.PermissionHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -31,11 +34,32 @@ public class CommandSudo extends AbstractSubCommand<CommandHxC> {
         boolean force = CommandBase.parseBoolean(args.removeFirst());
         ICommand command = server.getCommandManager().getCommands().get(args.removeFirst());
 
-        boolean allowed = force || command.checkPermission(server, target);
+        System.out.println(command);
 
-        if (allowed)
-            command.execute(server, target, args.toArray(new String[0]));
-        else sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.sudo.target.insufficientPermission", target.getDisplayName(), command.getName()));
+        boolean allowed = force;
+
+        if (!allowed) {
+            if (command instanceof AbstractMultiCommand) {
+                ISubCommand subCommand;
+                if ((subCommand = AbstractMultiCommand.getSubCommands(command.getName()).get(args.getFirst().toLowerCase())) != null) {
+                    allowed = PermissionHandler.canUseSubCommand(target, subCommand);
+                }
+            } else
+                allowed = PermissionHandler.canUseCommand(target, command);
+        }
+
+        if (allowed) {
+            if (command instanceof AbstractMultiCommand) {
+                ISubCommand subCommand;
+                if ((subCommand = AbstractMultiCommand.getSubCommands(command.getName()).get(args.getFirst().toLowerCase())) != null) {
+                    args.removeFirst();
+                    subCommand.execute(server, target, args);
+                }
+            } else {
+                command.execute(server, target, args.toArray(new String[0]));
+            }
+        } else
+            sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.sudo.target.insufficientPermission", target.getDisplayName(), command.getName()));
 
 
     }

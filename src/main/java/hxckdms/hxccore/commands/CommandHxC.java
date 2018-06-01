@@ -64,4 +64,11 @@ public class CommandHxC extends AbstractMultiCommand {
         }
         return super.getTabCompletions(server, sender, args, targetPos);
     }
+
+    void reloadPermissions() {
+        commands.forEach((k, v) -> {
+            subCommands.get(k.toLowerCase()).setPermissionLevel(v.permissionLevel);
+            subCommands.get(k.toLowerCase()).setCommandState(v.enable ? CommandState.ENABLED : CommandState.DISABLED);
+        });
+    }
 }

@@ -39,6 +39,8 @@ public class CommandSpawn extends AbstractSubCommand<CommandHxC> {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
 
                     BlockPos coordinates = player.getEntityWorld().getSpawnPoint();
+
+                    coordinates = player.getEntityWorld().getHeight(coordinates);
                     TeleportHelper.teleportEntityToDimension(player, coordinates, 0);
 
                     sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.spawn.self", ColorHelper.handleNick((EntityPlayer) sender, false)).setStyle(new Style().setColor(TextFormatting.GREEN)));
