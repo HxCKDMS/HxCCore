@@ -5,12 +5,21 @@ import hxckdms.hxccore.libraries.GlobalVariables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
 public class ClientEvents {
@@ -25,14 +34,12 @@ public class ClientEvents {
 
     @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
-    public void addCapeToTextures(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayerSP) {
-
-            EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
-            player.world.playerEntities.stream().filter(iPlayer -> GlobalVariables.playerCapes.containsKey(iPlayer.getUniqueID().toString()))
+    public void addCapeToTextures(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.ClientTickEvent.Phase.START && Minecraft.getMinecraft().world != null) {
+             Minecraft.getMinecraft().world.playerEntities.stream().filter(iPlayer -> GlobalVariables.playerCapes.containsKey(iPlayer.getUniqueID().toString()))
                     .filter(iPlayer -> ((AbstractClientPlayer) iPlayer).getPlayerInfo() != null)
                     .forEach(iPlayer -> ((AbstractClientPlayer) iPlayer).getPlayerInfo().playerTextures.put(MinecraftProfileTexture.Type.CAPE, new ResourceLocation("hxccapes", iPlayer.getUniqueID().toString())));
 
-        }
+       }
     }
 }

@@ -9,8 +9,11 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.play.server.SPacketEntityEquipment;
+import net.minecraft.network.play.server.SPacketEntityMetadata;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketSpawnPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -77,14 +80,18 @@ public class CommandVanish extends AbstractSubCommand<CommandHxC> {
                     target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, player));
                     target.connection.sendPacket(new SPacketSpawnPlayer(player));
 
+                    for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                        target.connection.sendPacket(new SPacketEntityEquipment(player.getEntityId(), slot, player.getItemStackFromSlot(slot)));
+                    }
+
                     sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.appear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
-                    target.sendMessage(new TextComponentString("\u00a7e" + ((EntityPlayerMP) sender).getDisplayNameString() + " left the game"));
+                    target.sendMessage(new TextComponentString("\u00a7e" + ((EntityPlayerMP) sender).getDisplayNameString() + " joined the game"));
                 } else {
                     vanishList.appendTag(new NBTTagString(target.getUniqueID().toString()));
                     HxCPlayerInfoHandler.setTagList(player, "VanishedFromList", vanishList);
 
                     sender.sendMessage(ServerTranslationHelper.getTranslation(sender, "commands.vanish.single.disappear", target.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
-                    target.sendMessage(new TextComponentString("\u00a7e" + ((EntityPlayerMP) sender).getDisplayNameString() + " joined the game"));
+                    target.sendMessage(new TextComponentString("\u00a7e" + ((EntityPlayerMP) sender).getDisplayNameString() + " left the game"));
                 }
                 break;
         }

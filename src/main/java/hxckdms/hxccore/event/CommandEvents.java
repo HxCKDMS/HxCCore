@@ -35,6 +35,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -251,7 +252,7 @@ public class CommandEvents implements EventListener {
     public void eventTPA(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             for (EntityPlayerMP key : TPAList.keySet())
-                if (TPAList.compute(key, (iKey, value) -> value.handleCompute(iKey)) == null) break;
+                if (TPAList.compute(key, (iKey, value) -> value != null ? value.handleCompute(iKey) : null) == null) break;
         }
     }
 
@@ -268,6 +269,7 @@ public class CommandEvents implements EventListener {
             return requester;
         }
 
+        @Nullable
         private TPARequest handleCompute(EntityPlayerMP target) {
             if ((--timeRemaining) == 0) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.hasExpired", requester.getDisplayName()).setStyle(new Style().setColor(TextFormatting.RED)));
             else if (timeRemaining % 20 == 0 && timeRemaining <= 200) target.sendMessage(ServerTranslationHelper.getTranslation(target, "commands.TPA.willExpire", requester.getDisplayName(), timeRemaining / 20).setStyle(new Style().setColor(TextFormatting.YELLOW)));

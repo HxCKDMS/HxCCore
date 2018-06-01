@@ -40,7 +40,7 @@ public class ColorHelper {
 
         message = message.replaceAll("%", "%%").replaceAll("&([0-9a-fk-or])", "\u00a7$1");
 
-        if (!message.startsWith("\u00a7"))
+        if (!message.matches("\\u00a7[0-9a-f].*"))
             message = "\u00a7" + defaultColor + message;
 
         /*for (String word : words) {
