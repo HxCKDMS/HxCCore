@@ -49,12 +49,14 @@ public class CommandHome extends AbstractSubCommand<CommandHxC> {
                 throw new TranslatedCommandException(sender, "commands.error.invalid.home", name);
             NBTTagCompound home = homes.getCompoundTag(name);
 
-            System.out.println(DimensionManager.getWorld(home.getInteger("dimension")).getBlockState(new BlockPos(home.getDouble("x"), home.getDouble("y") + 1, home.getDouble("z"))).getBlock() == Blocks.AIR);
+            BlockPos newPos = new BlockPos(home.getDouble("x"), home.getDouble("y"), home.getDouble("z"));
 
-            if (DimensionManager.getWorld(home.getInteger("dimension")).getBlockState(new BlockPos(home.getDouble("x"), home.getDouble("y") + 1, home.getDouble("z"))).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
+            System.out.println(DimensionManager.getWorld(home.getInteger("dimension")).getBlockState(newPos.up()).getBlock() == Blocks.AIR);
+
+            if (DimensionManager.getWorld(home.getInteger("dimension")).getBlockState(newPos.up()).getBlock() != Blocks.AIR && !player.capabilities.isCreativeMode)
                 throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
 
-            TeleportHelper.teleportEntityToDimension(player, home.getDouble("x"), home.getDouble("y"), home.getDouble("z"), home.getInteger("dimension"));
+            TeleportHelper.teleportEntityToDimension(player, newPos, home.getInteger("dimension"));
         } else {
             String user = Configuration.storeTextHomesUsingName ? player.getDisplayNameString() : player.getUniqueID().toString();
             if (HomesConfigStorage.homes.containsKey(user)) {
@@ -74,7 +76,7 @@ public class CommandHome extends AbstractSubCommand<CommandHxC> {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, LinkedList<String> args, @Nullable BlockPos targetPos) {
         return (sender instanceof EntityPlayerMP && args.size() == 1) ? new ArrayList<>((Configuration.useTextStorageofHomes ?
-                HomesConfigStorage.homes.get(Configuration.storeTextHomesUsingName ? ((EntityPlayerMP) sender).getDisplayName() : ((EntityPlayerMP) sender).getUniqueID().toString()).homes.keySet() :
+                HomesConfigStorage.homes.get(Configuration.storeTextHomesUsingName ? sender.getDisplayName() : ((EntityPlayerMP) sender).getUniqueID().toString()).homes.keySet() :
                 HxCPlayerInfoHandler.getTagCompound((EntityPlayer) sender, "homes", new NBTTagCompound()).getKeySet())) : Collections.emptyList();
     }
 }

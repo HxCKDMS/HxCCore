@@ -187,14 +187,14 @@ public class CommonEvents {
 
             IAttributeInstance playerHealthAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH);
             IAttributeInstance playerDamageAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
-            double healthBuff = Math.min(Configuration.maxBonusHealth, player.experienceLevel / Configuration.XPBuffPerLevels);
+            double healthBuff = enabled ? Math.min(Configuration.maxBonusHealth, player.experienceLevel / Configuration.XPBuffPerLevels) : 0D;
 
             AttributeModifier attributeModifier = playerHealthAttributes.getModifier(HEALTH_UUID);
             if (attributeModifier == null || attributeModifier.getAmount() != healthBuff) {
                 if (attributeModifier != null) playerHealthAttributes.removeModifier(attributeModifier);
                 if (enabled) playerHealthAttributes.applyModifier(new AttributeModifier(HEALTH_UUID, "HxCHealthBuff", healthBuff, 0));
             }
-            double damageBuff = Math.min(Configuration.maxBonusDamage, player.experienceLevel / Configuration.XPBuffPerLevels);
+            double damageBuff = enabled ? Math.min(Configuration.maxBonusDamage, player.experienceLevel / Configuration.XPBuffPerLevels) : 0D;
 
             attributeModifier = playerDamageAttributes.getModifier(DAMAGE_UUID);
             if (attributeModifier == null || attributeModifier.getAmount() != damageBuff) {

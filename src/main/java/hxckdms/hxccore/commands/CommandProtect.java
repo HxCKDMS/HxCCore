@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -104,7 +105,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
                 int dimension = CommandBase.parseInt(args.get(8));
                 int blocksNeeded = Math.abs((x1 - x2) * (y1 - y2) * (z1 - z2));
 
-                if (CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount == -1 || getSenderUsedBlocks(sender) + blocksNeeded <= CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).homeAmount) {
+                if (CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).maxBlocksProtected == -1 || getSenderUsedBlocks(sender) + blocksNeeded <= CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender)).maxBlocksProtected) {
                     if (!landAvailabilityCheck(x1, y1, z1, x2, y2, z2 ,dimension)) throw new TranslatedCommandException(sender, "commands.protect.error.alreadyClaimed");
 
                     land.setInteger("x1", x1);
@@ -132,6 +133,7 @@ public class CommandProtect extends AbstractSubCommand<CommandHxC> {
 
     private static boolean landAvailabilityCheck(int x1, int y1, int z1, int x2, int y2, int z2, int dimension) {
         NBTTagCompound protectedLands = GlobalVariables.customWorldData.getTagCompound("protectedLands", new NBTTagCompound());
+
         for (String landName : protectedLands.getKeySet()) {
             NBTTagCompound land = protectedLands.getCompoundTag(landName);
             boolean x1Check = land.getInteger("x1") > land.getInteger("x2") ? (x1 > x2 ? land.getInteger("x1") >= x1 && x1 >= land.getInteger("x2") : land.getInteger("x1") >= x2 && x2 >= land.getInteger("x2")) : (x1 > x2 ? land.getInteger("x2") >= x1 && x1 >= land.getInteger("x1") : land.getInteger("x2") >= x2 && x2 >= land.getInteger("x1"));
