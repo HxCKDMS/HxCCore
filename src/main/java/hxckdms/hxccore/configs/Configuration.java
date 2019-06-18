@@ -59,8 +59,8 @@ public class Configuration {
     public static boolean autoCrashReporterEnabled = true;
 
     @Config.category("Features")
-    @Config.comment("Makes help report back in color, currently only works in single player.")
-    public static boolean doColorizedHelp = false;
+    @Config.comment("Makes help report back in color.")
+    public static boolean doColorizedHelp = true;
 
     @Config.category("Features")
     @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
