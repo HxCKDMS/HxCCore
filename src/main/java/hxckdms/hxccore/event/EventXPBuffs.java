@@ -96,7 +96,7 @@ public class EventXPBuffs implements EventListener {
     @SubscribeEvent
     public void PlayerEvent(PlayerEvent.BreakSpeed event) {
         if (enabled) {
-            event.newSpeed = (event.originalSpeed + event.originalSpeed * ((Configuration.miningSpeedPerBuff * event.entityPlayer.experienceLevel)));
+            event.newSpeed = (event.originalSpeed + (event.originalSpeed * ((Configuration.miningSpeedPerBuff * event.entityPlayer.experienceLevel))));
         }
     }
 }

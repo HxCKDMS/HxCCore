@@ -6,7 +6,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import java.util.UUID;
 
-import static hxckdms.hxccore.libraries.GlobalVariables.doesPlayerHaveMod;
 import static hxckdms.hxccore.libraries.GlobalVariables.langFile;
 
 public class ServerTranslationHelper {
@@ -21,7 +20,7 @@ public class ServerTranslationHelper {
     }
 
     public static ChatComponentTranslation getTranslation(UUID uuid, String translationKey, Object... args) {
-        if (doesPlayerHaveMod.contains(uuid)) return new ChatComponentTranslation(translationKey, args);
-        else return new ChatComponentTranslation(langFile.get(translationKey), args);
+        //if (doesPlayerHaveMod.contains(uuid)) return new ChatComponentTranslation(translationKey, args);
+        return new ChatComponentTranslation(langFile.get(translationKey), args);
     }
 }
