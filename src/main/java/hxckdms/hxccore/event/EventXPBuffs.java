@@ -26,40 +26,42 @@ public class EventXPBuffs implements EventListener {
     private static HashMap<String, Integer> lastXP = new HashMap<>();
     @SubscribeEvent
     public void applyBuffEvent(LivingEvent.LivingUpdateEvent event) {
-        enabled = MinecraftServer.getServer().getEntityWorld().getGameRules().getGameRuleBooleanValue("HxC_XPBuffs");
-        if (enabled && event.entityLiving instanceof EntityPlayerMP) {
+        if (event.entityLiving instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
-            int lastKnownXP = 0;
-            if (!lastXP.containsKey(player.getCommandSenderName())) {
-                lastKnownXP = player.experienceLevel;
-                lastXP.put(player.getCommandSenderName(), player.experienceLevel);
-            } else {
-                lastKnownXP = lastXP.get(player.getCommandSenderName());
-                lastXP.replace(player.getCommandSenderName(), player.experienceLevel);
-            }
+			enabled = player.worldObj.getGameRules().getGameRuleBooleanValue("HxC_XPBuffs");
+			if (enabled) {
+				int lastKnownXP = 0;
+				if (!lastXP.containsKey(player.getCommandSenderName())) {
+					lastKnownXP = player.experienceLevel;
+					lastXP.put(player.getCommandSenderName(), player.experienceLevel);
+				} else {
+					lastKnownXP = lastXP.get(player.getCommandSenderName());
+					lastXP.replace(player.getCommandSenderName(), player.experienceLevel);
+				}
 
 
-            IAttributeInstance playerHealthAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
-            IAttributeInstance playerDamageAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+				IAttributeInstance playerHealthAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
+				IAttributeInstance playerDamageAttributes = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
 
-            double healthBuff = Math.min(Configuration.maxBonusHealth, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.healthPerBuff);
+				double healthBuff = Math.min(Configuration.maxBonusHealth, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.healthPerBuff);
 
 
-            AttributeModifier attributeModifier = playerHealthAttributes.getModifier(HEALTH_UUID);
-            if (attributeModifier == null || attributeModifier.getAmount() != healthBuff) {
-                if (attributeModifier != null) playerHealthAttributes.removeModifier(attributeModifier);
-                if (enabled) playerHealthAttributes.applyModifier(new AttributeModifier(HEALTH_UUID, "HxCHealthBuff", healthBuff, 0));
-            }
-            double damageBuff = Math.min(Configuration.maxBonusDamage, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.damagePerBuff);
+				AttributeModifier attributeModifier = playerHealthAttributes.getModifier(HEALTH_UUID);
+				if (attributeModifier == null || attributeModifier.getAmount() != healthBuff) {
+					if (attributeModifier != null) playerHealthAttributes.removeModifier(attributeModifier);
+					if (enabled) playerHealthAttributes.applyModifier(new AttributeModifier(HEALTH_UUID, "HxCHealthBuff", healthBuff, 0));
+				}
+				double damageBuff = Math.min(Configuration.maxBonusDamage, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.damagePerBuff);
 
-            attributeModifier = playerDamageAttributes.getModifier(DAMAGE_UUID);
-            if (attributeModifier == null || attributeModifier.getAmount() != damageBuff) {
-                if (attributeModifier != null) playerDamageAttributes.removeModifier(attributeModifier);
-                if (enabled) playerDamageAttributes.applyModifier(new AttributeModifier(DAMAGE_UUID, "HxCDamageBuff", damageBuff, 0));
-            }
+				attributeModifier = playerDamageAttributes.getModifier(DAMAGE_UUID);
+				if (attributeModifier == null || attributeModifier.getAmount() != damageBuff) {
+					if (attributeModifier != null) playerDamageAttributes.removeModifier(attributeModifier);
+					if (enabled) playerDamageAttributes.applyModifier(new AttributeModifier(DAMAGE_UUID, "HxCDamageBuff", damageBuff, 0));
+				}
 
-            player.sendPlayerAbilities();
-            player.setPlayerHealthUpdated();
+				player.sendPlayerAbilities();
+				player.setPlayerHealthUpdated();
+			}
         }
     }
 
