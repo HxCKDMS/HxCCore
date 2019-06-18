@@ -9,6 +9,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
         A: if (args.size() > 0) {
             String name = subCommands.values().stream().map(command-> command.getCommandName()).filter(iName -> iName.equalsIgnoreCase(args.get(0))).findFirst().orElse("");
             if (name.isEmpty()) break A;
-            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
+            sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name.toLowerCase() + ".info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
             return;
         }
         LinkedList<String> commandList = new LinkedList<>(subCommands.values().stream().filter(command -> PermissionHandler.canUseSubCommand(sender, command)).map(command -> command.getCommandName()).sorted(String::compareTo).collect(Collectors.toList()));
@@ -57,10 +58,12 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
         for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
             if (i >= commandAmount) break;
             String name = commandList.get(i);
-            if (doColorizedHelp)
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
-            else
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name + ".usage"));
+            System.out.println(name);
+            if (doColorizedHelp) {
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name.toLowerCase() + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
+            } else {
+                sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name.toLowerCase() + ".usage"));
+            }
         }
     }
 
