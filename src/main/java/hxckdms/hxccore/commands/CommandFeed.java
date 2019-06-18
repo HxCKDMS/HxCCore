@@ -1,5 +1,6 @@
 package hxckdms.hxccore.commands;
 
+import cpw.mods.fml.common.Loader;
 import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
@@ -8,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -34,15 +36,54 @@ public class CommandFeed extends AbstractSubCommand<CommandHxC> {
                     EntityPlayerMP player = (EntityPlayerMP) sender;
                     player.getFoodStats().addStats(20, 1F);
 
+                    if (Loader.isModLoaded("TerraFirmaCraft") || Loader.isModLoaded("terrafirmacraft")) {
+                        try {
+                            NBTTagCompound tfcf = player.getEntityData().getCompoundTag("ForgeData").getCompoundTag("foodCompound");
+                            tfcf.setFloat("nutrDairy", 0.75f);
+                            tfcf.setFloat("nutrProtein", 0.75f);
+                            tfcf.setFloat("nutrVeg", 0.75f);
+                            tfcf.setFloat("nutrGrain", 0.75f);
+                            tfcf.setFloat("nutrFruit", 0.75f);
+                            tfcf.setFloat("foodLevel", 24f);
+                            tfcf.setFloat("waterLevel", 24000f);
+                            tfcf.setFloat("foodSaturationLevel", 24f);
+                            tfcf.setBoolean("satFruit", true);
+                            tfcf.setBoolean("satDairy", true);
+                            tfcf.setBoolean("satProtein", true);
+                            tfcf.setBoolean("satVeg", true);
+                            tfcf.setBoolean("satGrain", true);
+                            tfcf.setBoolean("shouldSendUpdate", true);
+                        } catch (Exception ignored) { }
+                    }
+
                     sender.addChatMessage(ServerTranslationHelper.getTranslation(player, "commands.feed.self").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
                 }
                 break;
             case 1:
                 EntityPlayerMP target = CommandBase.getPlayer(sender, args.removeFirst());
                 target.getFoodStats().addStats(20, 1F);
+                if (Loader.isModLoaded("TerraFirmaCraft") || Loader.isModLoaded("terrafirmacraft")) {
+                    try {
+                        NBTTagCompound tfcf = target.getEntityData().getCompoundTag("ForgeData").getCompoundTag("foodCompound");
+                        tfcf.setFloat("nutrDairy", 0.75f);
+                        tfcf.setFloat("nutrProtein", 0.75f);
+                        tfcf.setFloat("nutrVeg", 0.75f);
+                        tfcf.setFloat("nutrGrain", 0.75f);
+                        tfcf.setFloat("nutrFruit", 0.75f);
+                        tfcf.setFloat("foodLevel", 24f);
+                        tfcf.setFloat("waterLevel", 24000f);
+                        tfcf.setFloat("foodSaturationLevel", 24f);
+                        tfcf.setBoolean("satFruit", true);
+                        tfcf.setBoolean("satDairy", true);
+                        tfcf.setBoolean("satProtein", true);
+                        tfcf.setBoolean("satVeg", true);
+                        tfcf.setBoolean("satGrain", true);
+                        tfcf.setBoolean("shouldSendUpdate", true);
+                    } catch (Exception ignored) {}
+                }
 
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.feed.other.sender", sender.getCommandSenderName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.feed.other.target", target.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.feed.other.target", target.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
                 break;
         }
     }

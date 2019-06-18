@@ -40,7 +40,7 @@ public class CommandHeal extends AbstractSubCommand<CommandHxC> {
                 EntityPlayerMP target = CommandBase.getPlayer(sender, args.removeFirst());
                 target.setHealth(target.getMaxHealth());
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.heal.other.sender", target.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
-                sender.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.heal.other.target", sender.getCommandSenderName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+                target.addChatMessage(ServerTranslationHelper.getTranslation(target, "commands.heal.other.target", sender.getCommandSenderName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
                 break;
         }
     }

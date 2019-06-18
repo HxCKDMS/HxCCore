@@ -22,10 +22,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S13PacketDestroyEntities;
 import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.util.ChatStyle;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -55,9 +56,14 @@ public class CommandEvents implements EventListener {
     }
 
     @SubscribeEvent
-    public void eventGod(LivingAttackEvent event) {
+    public void eventGod(LivingHurtEvent event) {
         if (!event.source.damageType.contains("command_hxc_kill") && event.entityLiving instanceof EntityPlayerMP && HxCPlayerInfoHandler.getBoolean((EntityPlayer) event.entityLiving, "GodMode")) {
             event.entityLiving.heal(20);
+            event.setCanceled(true);
+        }
+
+        if (event.entityLiving instanceof EntityPlayerMP && event.source == DamageSource.fall && HxCPlayerInfoHandler.getInteger((EntityPlayer) event.entityLiving, "FallProtect") > 0) {
+            HxCPlayerInfoHandler.setInteger((EntityPlayer) event.entityLiving, "FallProtect", HxCPlayerInfoHandler.getInteger((EntityPlayer) event.entityLiving, "FallProtect") - 1);
             event.setCanceled(true);
         }
     }

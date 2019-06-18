@@ -39,6 +39,22 @@ public class Configuration {
     public static int XPBuffPerLevels = 5;
 
     @Config.category("Features")
+    @Config.comment("How much health to gain per increment of buffs.")
+    public static int healthPerBuff = 1;
+
+    @Config.category("Features")
+    @Config.comment("How much damage to gain per increment of buffs.")
+    public static int damagePerBuff = 1;
+
+    @Config.category("Features")
+    @Config.comment("How much mining speed per increment of buffs.")
+    public static float miningSpeedPerBuff = 0.015f;
+
+    @Config.category("Features")
+    @Config.comment("How much lifesteal per increment of Buffs")
+    public static float lifestealPerBuff = 0.015f;
+
+    @Config.category("Features")
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")
     public static boolean autoCrashReporterEnabled = true;
 
@@ -48,7 +64,7 @@ public class Configuration {
 
     @Config.category("Features")
     @Config.comment("Clear|Cull|Off Clear kills all if over #, Cull kills random until below limit, Off doesn't clear")
-    public static String clearExcessEntities = "clear";
+    public static String clearExcessEntities = "cull";
 
 
     public static int coloredChatMinimumPermissionLevel = 0;

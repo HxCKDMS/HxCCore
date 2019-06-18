@@ -4,17 +4,11 @@ import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.configs.Configuration;
-import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
-import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import hxckdms.hxccore.utilities.TeleportHelper;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -53,7 +47,8 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightValue((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.posY + 100, player.posZ + z, 0);
+                    HxCPlayerInfoHandler.setInteger(player, "FallProtect", 1);
                 }
                 break;
             case 1:
@@ -72,7 +67,8 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightValue((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.posY + 100, player.posZ + z, 0);
+                    HxCPlayerInfoHandler.setInteger(player, "FallProtect", 1);
                 }
                 break;
             case 2:
@@ -91,7 +87,8 @@ public class CommandRTP extends AbstractSubCommand<CommandHxC> {
                     if (negativex) x = Math.negateExact(x);
                     if (negativez) z = Math.negateExact(z);
 
-                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.worldObj.getHeightValue((int)Math.round(player.posX + x), (int)Math.round(player.posX + z)) + 1, player.posZ + z, 0);
+                    TeleportHelper.teleportEntityToDimension(player, player.posX + x, player.posY + 100, player.posZ + z, 0);
+                    HxCPlayerInfoHandler.setInteger(player, "FallProtect", 1);
                 }
             break;
         }

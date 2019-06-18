@@ -95,7 +95,8 @@ public class HxCCore {
         FMLCommonHandler.instance().bus().register(new EventClearLag());
         server = event.getServer();
         if (!server.getEntityWorld().getGameRules().hasRule("HxC_XPBuffs")) server.getEntityWorld().getGameRules().addGameRule("HxC_XPBuffs", "true");
-        if (!server.getEntityWorld().getGameRules().hasRule("XPPickupCoolDown")) server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "2");
+        if (!server.getEntityWorld().getGameRules().hasRule("XPPickupCoolDown")) server.getEntityWorld().getGameRules().addGameRule("XPPickupCoolDown", "1");
+        if (!server.getEntityWorld().getGameRules().hasRule("HxC_ClearLag")) server.getEntityWorld().getGameRules().addGameRule("HxC_ClearLag", "true");
 
         CommandRegistry.initializeCommands(event);
 

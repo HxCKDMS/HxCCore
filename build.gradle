@@ -20,12 +20,12 @@ apply plugin: 'forge'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "1.7.10-2.0.7"
+version = "1.7.10-2.0.9"
 group= "hxckdms.hxccore"
 archivesBaseName = "hxccore"
 
 minecraft {
-    version = "1.7.10-10.13.4.1558-1.7.10"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "run"
 }
 

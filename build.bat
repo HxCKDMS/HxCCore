@@ -1,1 +1,1 @@
-gradle build --stacktrace
+./gradlew build --stacktrace
