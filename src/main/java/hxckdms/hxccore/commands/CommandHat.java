@@ -36,7 +36,7 @@ public class CommandHat extends AbstractSubCommand<CommandHxC> {
             ItemStack hat = new ItemStack(player.getHeldItem().getItem(), 1, player.getHeldItem().getItemDamage());
             hat.readFromNBT(player.getHeldItem().writeToNBT(new NBTTagCompound()));
             if ((--player.getHeldItem().stackSize) <= 0) player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-
+			hat.stackSize = 1;
             player.inventory.armorInventory[3] = hat;
             player.inventory.addItemStackToInventory(helmet);
 

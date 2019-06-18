@@ -58,7 +58,7 @@ public class CommandHelp extends AbstractSubCommand<CommandHxC> {
         for (int i = page * commandsPerPage; i < commandsPerPage + min; i++) {
             if (i >= commandAmount) break;
             String name = commandList.get(i);
-            System.out.println(name);
+            //System.out.println(name);
             if (doColorizedHelp) {
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.hxc." + name.toLowerCase() + ".usage").setChatStyle(new ChatStyle().setColor(i % 2 == 0 ? EnumChatFormatting.DARK_AQUA : EnumChatFormatting.AQUA)));
             } else {
