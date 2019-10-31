@@ -223,7 +223,7 @@ public class CommandEvents implements EventListener {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             NBTTagCompound backCompound = new NBTTagCompound();
             backCompound.setDouble("x", player.posX);
-            backCompound.setDouble("y", player.posY);
+            backCompound.setDouble("y", player.posY + 1);
             backCompound.setDouble("z", player.posZ);
             backCompound.setInteger("dimension", player.dimension);
 
@@ -235,7 +235,7 @@ public class CommandEvents implements EventListener {
     public void eventBack_2(PlayerTeleportEvent event) {
         NBTTagCompound backCompound = new NBTTagCompound();
         backCompound.setDouble("x", event.entityPlayer.posX);
-        backCompound.setDouble("y", event.entityPlayer.posY);
+        backCompound.setDouble("y", event.entityPlayer.posY + 1);
         backCompound.setDouble("z", event.entityPlayer.posZ);
         backCompound.setInteger("dimension", event.entityPlayer.dimension);
 

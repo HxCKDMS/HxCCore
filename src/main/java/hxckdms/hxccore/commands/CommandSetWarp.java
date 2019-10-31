@@ -4,6 +4,7 @@ import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.api.command.TranslatedCommandException;
 import hxckdms.hxccore.libraries.GlobalVariables;
+import hxckdms.hxccore.utilities.NBTFileHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -62,6 +63,7 @@ public class CommandSetWarp extends AbstractSubCommand<CommandHxC> {
                 sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.warp.set", name, posFormat.format(x), posFormat.format(y), posFormat.format(z), dimension).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_PURPLE)));
                 break;
         }
+        NBTFileHandler.saveCustomNBTFiles(false);
     }
 
     private static void setWarp(double x, double y, double z, int dimension, String name) {

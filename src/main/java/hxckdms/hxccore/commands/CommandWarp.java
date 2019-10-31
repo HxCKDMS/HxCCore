@@ -10,7 +10,6 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -68,7 +67,7 @@ public class CommandWarp extends AbstractSubCommand<CommandHxC> {
         if (!warps.hasKey(name)) throw new TranslatedCommandException(sender, "commands.error.invalid.warp", name);
         NBTTagCompound warp = warps.getCompoundTag(name);
 
-        if (GlobalVariables.server.worldServerForDimension(warp.getInteger("dimension")).getBlock((int) Math.round(warp.getDouble("x")), (int) Math.round(warp.getDouble("y")) + 1,(int) Math.round(warp.getDouble("z"))) != Blocks.air && !player.capabilities.isCreativeMode)
+        if (!player.capabilities.isCreativeMode && TeleportHelper.findSafe(warp.getDouble("x"), warp.getDouble("y"), warp.getDouble("z"), warp.getInteger("dimension")).length == 0)
             throw new TranslatedCommandException(sender, "commands.error.teleport.nonAir");
 
         TeleportHelper.teleportEntityToDimension(player, warp.getDouble("x"), warp.getDouble("y"), warp.getDouble("z"), warp.getInteger("dimension"));

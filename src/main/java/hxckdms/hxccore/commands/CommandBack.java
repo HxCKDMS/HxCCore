@@ -39,7 +39,7 @@ public class CommandBack extends AbstractSubCommand<CommandHxC> {
         NBTTagCompound backCompound = HxCPlayerInfoHandler.getTagCompound(player, "backLocation");
         if (backCompound == null)
             throw new TranslatedCommandException(sender, "commands.back.error.noBack");
-        TeleportHelper.teleportEntityToDimension(player, backCompound.getInteger("x"), backCompound.getDouble("y"), backCompound.getDouble("z"), backCompound.getInteger("dimension"));
+        TeleportHelper.teleportEntityToDimension(player, backCompound.getInteger("x"), backCompound.getDouble("y") + 1, backCompound.getDouble("z"), backCompound.getInteger("dimension"));
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.back.successful", posFormat.format(backCompound.getDouble("x")), posFormat.format(backCompound.getDouble("y")), posFormat.format(backCompound.getDouble("z")), backCompound.getInteger("dimension")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
     }
 

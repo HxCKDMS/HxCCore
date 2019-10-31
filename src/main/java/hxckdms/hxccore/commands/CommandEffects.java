@@ -30,12 +30,15 @@ public class CommandEffects extends AbstractSubCommand<CommandHxC> {
             if (EventXPBuffs.enabled) {
                 sender.addChatMessage(new ChatComponentText("You have the following effects..."));
                 EntityPlayerMP player = (EntityPlayerMP) sender;
-                if (((EntityPlayerMP) sender).experienceLevel > 5) {
-                    sender.addChatMessage(new ChatComponentText("Lifesteal = " + ((player.experienceLevel * Configuration.lifestealPerBuff) * 10) + "%"));
+                if (((EntityPlayerMP) sender).experienceLevel > Configuration.lifestealLevel) {
+                    float lifesteal = ((float)(player.experienceLevel / Configuration.LevelsPerBuff) * Configuration.lifestealPerBuff);
+                    sender.addChatMessage(new ChatComponentText("Lifesteal = " + (int) (Math.min(lifesteal, Configuration.maxLifeSteal) * 100) + "%"));
                 }
-                sender.addChatMessage(new ChatComponentText("Bonus Health = " + Math.min(Configuration.maxBonusHealth, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.healthPerBuff)));
-                sender.addChatMessage(new ChatComponentText("Bonus Damage = " + Math.min(Configuration.maxBonusDamage, (player.experienceLevel / Configuration.XPBuffPerLevels) * Configuration.damagePerBuff)));
-                sender.addChatMessage(new ChatComponentText("Bonus Mining Speed = " + ((Configuration.miningSpeedPerBuff * player.experienceLevel) * 10) + "%"));
+                sender.addChatMessage(new ChatComponentText("Bonus Health = " + Math.min(Configuration.maxBonusHealth, (player.experienceLevel / Configuration.LevelsPerBuff) * Configuration.healthPerBuff)));
+                sender.addChatMessage(new ChatComponentText("Bonus Damage = " + Math.min(Configuration.maxBonusDamage, (player.experienceLevel / Configuration.LevelsPerBuff) * Configuration.damagePerBuff)));
+                if (((EntityPlayerMP) sender).experienceLevel > 10) {
+					sender.addChatMessage(new ChatComponentText("Mining Speed = " + (int) ((Configuration.miningSpeedPerBuff * (float)(player.experienceLevel / Configuration.LevelsPerBuff)) * 100f) + "% of Block Harvest Time"));
+				}
             } else {
                 sender.addChatMessage(new ChatComponentText("Server has disabled XP Buffs!"));
             }

@@ -5,6 +5,7 @@ import hxckdms.hxccore.api.command.HxCCommand;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.ColorHelper;
+import hxckdms.hxccore.utilities.NBTFileHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -44,6 +45,7 @@ public class CommandSetPermission extends AbstractSubCommand<CommandHxC> {
 
 
         GlobalVariables.permissionData.setInteger(target.getUniqueID().toString(), level);
+        NBTFileHandler.saveCustomNBTFiles(false);
     }
 
     @Override

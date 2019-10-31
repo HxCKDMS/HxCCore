@@ -36,7 +36,7 @@ public class  CommandJump extends AbstractSubCommand<CommandHxC> {
         MovingObjectPosition rayTraceResult = player.worldObj.func_147447_a(vec3d, vec3d2, false, false, true);
         if (rayTraceResult == null) return;
         if (rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-            TeleportHelper.teleportEntityToDimension(player, rayTraceResult.blockX, rayTraceResult.blockY + 1, rayTraceResult.blockZ, player.dimension);
+            TeleportHelper.teleportSafely(player, rayTraceResult.blockX, rayTraceResult.blockY, rayTraceResult.blockZ, player.dimension);
     }
 
     @Override

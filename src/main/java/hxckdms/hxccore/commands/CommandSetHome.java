@@ -9,14 +9,13 @@ import hxckdms.hxccore.configs.HomesConfigStorage;
 import hxckdms.hxccore.libraries.GlobalVariables;
 import hxckdms.hxccore.registry.CommandRegistry;
 import hxckdms.hxccore.utilities.HxCPlayerInfoHandler;
+import hxckdms.hxccore.utilities.NBTFileHandler;
 import hxckdms.hxccore.utilities.PermissionHandler;
 import hxckdms.hxccore.utilities.ServerTranslationHelper;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -79,6 +78,7 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
             }
             GlobalVariables.alternateHomesConfig.initConfiguration();
         }
+        NBTFileHandler.saveCustomNBTFiles(false);
         sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.home.set", name, posFormat.format(player.posX), posFormat.format(player.posY), posFormat.format(player.posZ), player.dimension).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_PURPLE)));
     }
 

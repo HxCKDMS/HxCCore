@@ -28,8 +28,8 @@ public class CommandChill extends AbstractSubCommand<CommandHxC> {
     public void execute(ICommandSender sender, LinkedList<String> args) throws CommandException {
         if (!(sender instanceof EntityPlayerMP)) throw new TranslatedCommandException(sender, "commands.exception.playersOnly");
         EntityPlayerMP player = (EntityPlayerMP) sender;
-        final int r = args.size() > 1 ? CommandBase.parseInt(sender, args.get(0)) : 32;
-        final int ry = args.size() > 2 ? CommandBase.parseInt(sender, args.get(1)) : 4;
+        final int r = args.size() >= 1 ? CommandBase.parseInt(sender, args.get(0)) : 32;
+        final int ry = args.size() >= 2 ? CommandBase.parseInt(sender, args.get(1)) : 4;
 
         for (int x = -r; x <= r; x++) {
             for (int y = -ry; y <= ry; y++) {

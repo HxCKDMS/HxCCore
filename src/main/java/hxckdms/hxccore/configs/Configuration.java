@@ -31,12 +31,20 @@ public class Configuration {
     public static int updateDelay = 10;
 
     @Config.category("Features")
+    @Config.comment("Buff Bane/Smite/Sharpness Enchants (Intended for TFC with enchants as +1 damage per level is trash in TFC terms)")
+    public static boolean buffEnchants = false;
+
+    @Config.category("Features")
+    @Config.comment("0.25f = 25%, (25% * EnchantLevel * Damage Dealt) + Damage Dealt = new Damage (Diamond Sword(9damage) Sharp 5 = 1.25*9 or 28~ damage) this is for TFC too op in vanilla")
+    public static float enchantBuff = 0.25f;
+
+    @Config.category("Features")
     @Config.comment("The higher the number the more Max Damage!")
     public static int maxBonusDamage = 1;
 
     @Config.category("Features")
     @Config.comment("How many levels are required per increment of buffs.")
-    public static int XPBuffPerLevels = 5;
+    public static int LevelsPerBuff = 5;
 
     @Config.category("Features")
     @Config.comment("How much health to gain per increment of buffs.")
@@ -47,12 +55,24 @@ public class Configuration {
     public static int damagePerBuff = 1;
 
     @Config.category("Features")
-    @Config.comment("How much mining speed per increment of buffs.")
+    @Config.comment("% of block max speed per level")
     public static float miningSpeedPerBuff = 0.015f;
+
+    @Config.category("Features")
+    @Config.comment("% of block max speed per level")
+    public static boolean miningSpeedApplytoTiles = false;
+
+    @Config.category("Features")
+    @Config.comment("Minimum Level for Lifesteal")
+    public static int lifestealLevel = 5;
 
     @Config.category("Features")
     @Config.comment("How much lifesteal per increment of Buffs")
     public static float lifestealPerBuff = 0.015f;
+
+    @Config.category("Features")
+    @Config.comment("Max lifesteal (1.25f = 125% of damage dealt) Diamond Sword is 9 so 11~ heal")
+    public static float maxLifeSteal = 1.25f;
 
     @Config.category("Features")
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")

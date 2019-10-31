@@ -50,7 +50,7 @@ public class CommandPath extends AbstractSubCommand<CommandHxC> {
             HxCPlayerInfoHandler.setInteger(player, "PathSize", pathSize);
             HxCPlayerInfoHandler.setString(player, "Override", override);
         }
-        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? stack.getDisplayName() : "", 1 + 2 * pathSize).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
+        sender.addChatMessage(ServerTranslationHelper.getTranslation(sender, "commands.path." + (block != null ? "enabled" : "disabled"), stack != null ? (stack.hasDisplayName() ? stack.getDisplayName() : "Air or Unknown") : "", 1 + 2 * pathSize).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
     }
 
     @Override
