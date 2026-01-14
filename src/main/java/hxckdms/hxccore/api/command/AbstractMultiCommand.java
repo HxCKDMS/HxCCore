@@ -64,6 +64,10 @@ public abstract class AbstractMultiCommand extends CommandBase implements IMulti
         return (HashMap<String, AbstractSubCommand>) CommandRegistry.getCommandForName(name).subCommands.clone();
     }
 
+    public static AbstractSubCommand getSubCommand(String name) {
+        return CommandRegistry.getCommandForName("hxc").subCommands.get(name);
+    }
+
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         return true;

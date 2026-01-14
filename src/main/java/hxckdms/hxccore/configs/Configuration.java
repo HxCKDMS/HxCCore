@@ -18,9 +18,38 @@ public class Configuration {
     @Config.category("Chat")
     public static String broadcastLayout = "[&6SERVER&f] &f<SENDER&f> &4MESSAGE";
 
-    @Config.category("Features")
+
+    @Config.category("Buffs")
     @Config.comment("Don't Exceed 100 without Tinkers or a mod that changes Health Bar.")
-    public static int maxBonusHealth = 60;
+    public static float maxBonusHealth = 60.0f, healthPerBuff = 1.0f, buffPerLevelLife = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Attack Damage!")
+    public static float maxBonusDamage = 5.0f, damagePerBuff = 0.1f, buffPerLevelDmg = 5.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Attack Speed!")
+    public static float maxBonusAtkSpeed = 10.0f, atkSpeedPerBuff = 1.0f, buffPerLevelAtkSpeed = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Move Speed!")
+    public static float maxBonusMvSpeed = 0.05f, moveSpeedPerBuff = 0.005f, buffPerLevelMvSpeed = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Knockback Resist!")
+    public static float maxBonusKnockbackResist = 1.0f, knockbackResistPerBuff = 0.1f, buffPerLevelKnockback = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Armour!")
+    public static float maxBonusArmour = 10.0f, armourPerBuff = 0.1f, buffPerLevelArmour = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more Armour Toughness!")
+    public static float maxBonusArmourToughness = 15.0f, toughnessPerBuff = 0.25f, buffPerLevelToughness = 1.0f;
+
+    @Config.category("Buffs")
+    @Config.comment("The higher the number the more luck!")
+    public static float maxBonusLuck = 3.0f, luckPerBuff = 1.0f, buffPerLevelLuck = 10.0f;
 
     @Config.category("Features")
     @Config.comment("Max number of any individual entity type")
@@ -29,14 +58,6 @@ public class Configuration {
     @Config.category("Features")
     @Config.comment("Delay between checking for excess lag")
     public static int updateDelay = 10;
-
-    @Config.category("Features")
-    @Config.comment("The higher the number the more Max Damage!")
-    public static int maxBonusDamage = 1;
-
-    @Config.category("Features")
-    @Config.comment("How many levels are required per increment of buffs.")
-    public static int XPBuffPerLevels = 5;
 
     @Config.category("Features")
     @Config.comment("Change this to false to disable automatic crash reporter when HxCKDMS Core is Possibly involved.")

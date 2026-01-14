@@ -1,5 +1,9 @@
 package hxckdms.hxccore.api.command;
 
+import hxckdms.hxccore.utilities.PermissionHandler;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+
 import java.lang.reflect.ParameterizedType;
 
 public abstract class AbstractSubCommand<T extends AbstractMultiCommand> implements ISubCommand<T> {
@@ -31,5 +35,9 @@ public abstract class AbstractSubCommand<T extends AbstractMultiCommand> impleme
     @Override
     public Class<T> getParent() {
         return parentCommand;
+    }
+
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        return sender.canCommandSenderUseCommand(4, "") || PermissionHandler.getPermissionLevel(sender) >= getPermissionLevel();
     }
 }

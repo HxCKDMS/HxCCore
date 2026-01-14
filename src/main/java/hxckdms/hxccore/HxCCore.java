@@ -104,16 +104,8 @@ public class HxCCore {
         modWorldDir = new File(event.getServer().getEntityWorld().getSaveHandler().getWorldDirectory(), "HxCData");
         if (!modWorldDir.exists()) modWorldDir.mkdirs();
 
-        customWorldDataFile = new File(modWorldDir, "HxCWorld.dat");
-        permissionDataFile = new File(modWorldDir, "HxC-Permissions.dat");
-
-        try {
-            if (!permissionDataFile.exists()) permissionDataFile.createNewFile();
-            if (!customWorldDataFile.exists()) customWorldDataFile.createNewFile();
-        } catch (IOException ignored) {}
-
-        customWorldData = new NBTFileHandler("HxCWorldData", customWorldDataFile);
-        permissionData = new NBTFileHandler("HxCPermissionData", permissionDataFile);
+        customWorldData = new NBTFileHandler("HxCWorld");
+        permissionData = new NBTFileHandler("HxCPermissions");
     }
 
     @Mod.EventHandler

@@ -47,15 +47,16 @@ public class CommandSetHome extends AbstractSubCommand<CommandHxC> {
         if (!Configuration.useTextStorageofHomes) {
             NBTTagCompound homes = HxCPlayerInfoHandler.getTagCompound(player, "homes", new NBTTagCompound());
             int homecount = (CommandRegistry.CommandConfig.commandPermissions.get(PermissionHandler.getPermissionLevel(sender))).homeAmount;
-            if (homecount == -1 || (!homes.hasKey(name) && (homes.getKeySet().size() + 1 > homecount)))
+            if (homecount == -1) homecount = Integer.MAX_VALUE;
+            if (homecount == 0 || (!homes.hasKey(name) && (homes.getKeySet().size() + 1 > homecount)))
                 throw new TranslatedCommandException(sender, "commands.error.outOfHomes");
 
             NBTTagCompound home = new NBTTagCompound();
 
-            home.setDouble("x", player.posX);
-            home.setDouble("y", player.posY);
-            home.setDouble("z", player.posZ);
-            home.setInteger("dimension", player.dimension);
+            home.setDouble("x", args.size() < 2 ? player.posX : Double.parseDouble(args.get(1)));
+            home.setDouble("y", args.size() < 3 ? player.posY : Double.parseDouble(args.get(2)));
+            home.setDouble("z", args.size() < 4 ? player.posZ : Double.parseDouble(args.get(3)));
+            home.setInteger("dimension", args.size() < 5 ? player.dimension : Integer.parseInt(args.get(4)));
 
             homes.setTag(name, home);
             HxCPlayerInfoHandler.setTagCompound(player, "homes", homes);

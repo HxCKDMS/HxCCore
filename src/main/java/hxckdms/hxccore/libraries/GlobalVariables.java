@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.*;
 
 public class GlobalVariables {
-    public static File modConfigDir, modWorldDir, customWorldDataFile, permissionDataFile;
+    public static File modConfigDir, modWorldDir;
     public static NBTFileHandler customWorldData, permissionData;
     public static volatile HashMap<UUID, String> devTags = new HashMap<>();
     public static MinecraftServer server;

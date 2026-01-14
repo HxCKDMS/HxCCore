@@ -8,19 +8,23 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
+
+import static hxckdms.hxccore.libraries.GlobalVariables.modWorldDir;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class NBTFileHandler {
     private static Hashtable<String, NBTFileHandler> fileHandlers = new Hashtable<>();
     private Hashtable<String, Data> table = new Hashtable<>();
-    private File nbtFile;
+    private File[] nbtFiles;
+    private static File lockFile = new File(modWorldDir, "lock.dat");
+    private int fileIndex;
     private long saveTime = 0, loadTime = 0;
 
-    public NBTFileHandler(String handlerName, File nbtFile) {
-        this.nbtFile = nbtFile;
+    public NBTFileHandler(String handlerName) {
+        this.nbtFiles = new File[]{new File(modWorldDir, handlerName + "-1.dat"), new File(modWorldDir, handlerName + "-2.dat")};
 
         readFromFile(true);
         fileHandlers.putIfAbsent(handlerName, this);
@@ -154,12 +158,8 @@ public class NBTFileHandler {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private synchronized void saveToFile(boolean force) {
-        if (!force && Calendar.getInstance().getTimeInMillis() - saveTime < 10000L) return;
+        if (!force && Calendar.getInstance().getTimeInMillis() - saveTime < 1000L) return;
         saveTime = Calendar.getInstance().getTimeInMillis();
-
-        try {
-            if (!nbtFile.exists()) nbtFile.createNewFile();
-        } catch (Exception ignored) {}
 
         NBTTagCompound tagCompound = new NBTTagCompound();
 
@@ -178,10 +178,26 @@ public class NBTFileHandler {
         }
 
         try {
-            if (Configuration.debugMode) CompressedStreamTools.safeWrite(tagCompound, nbtFile);
-        } catch (IOException e) {
+            File nbtFile = nbtFiles[fileIndex ^ 1];
+            if (!nbtFile.exists()) {
+                nbtFile.createNewFile();
+            }
+            DataOutputStream dos = new DataOutputStream(Files.newOutputStream(nbtFile.toPath()));
+            CompressedStreamTools.writeCompressed(tagCompound, dos);
+            dos.close();
+            FileOutputStream fos = new FileOutputStream(lockFile);
+            fos.write(fileIndex);
+            fos.close();
+            fileIndex ^= 1;
+        } catch (Exception e){
             e.printStackTrace();
         }
+/*
+        try {
+            CompressedStreamTools.safeWrite(tagCompound, nbtFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -191,8 +207,18 @@ public class NBTFileHandler {
 
         NBTTagCompound tagCompound;
         try {
-            if (!nbtFile.exists()) nbtFile.createNewFile();
-            tagCompound = CompressedStreamTools.read(nbtFile);
+
+            if (lockFile.exists() && lockFile.length() > 0) {
+                FileInputStream fis = new FileInputStream(lockFile);
+                fileIndex = fis.read() ^ 1;
+                fis.close();
+            }
+            if (!nbtFiles[fileIndex].exists()) nbtFiles[fileIndex].createNewFile();
+
+            FileInputStream fis = new FileInputStream(nbtFiles[fileIndex ^ 1]);
+            tagCompound = CompressedStreamTools.readCompressed(fis);
+            fis.close();
+//            tagCompound = CompressedStreamTools.read(nbtFiles[fileIndex]);
         } catch (IOException e) {
             if (Configuration.debugMode) e.printStackTrace();
             return;
@@ -201,7 +227,7 @@ public class NBTFileHandler {
         table.clear();
         for (String key : tagCompound.getKeySet()) {
             NBTBase base = tagCompound.getTag(key);
-
+            System.err.println("Loading Data: " + key);
             switch (NBTBase.NBT_TYPES[base.getId()]) {
                 case "STRING":
                     table.put(key, new Data<>(tagCompound.getString(key), String.class));

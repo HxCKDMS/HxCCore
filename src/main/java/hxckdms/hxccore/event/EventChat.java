@@ -1,5 +1,7 @@
 package hxckdms.hxccore.event;
 
+import hxckdms.hxccore.api.command.AbstractMultiCommand;
+import hxckdms.hxccore.api.command.AbstractSubCommand;
 import hxckdms.hxccore.api.event.EmoteEvent;
 import hxckdms.hxccore.configs.Configuration;
 import hxckdms.hxccore.libraries.GlobalVariables;
@@ -74,44 +76,42 @@ public class EventChat implements EventListener {
     @SubscribeEvent
     public void commandEvent(CommandEvent event) {
         if (event.getSender().getName() != null && event.getSender() instanceof EntityPlayerMP) {
-            String cmd = event.getCommand().getCommandName() + " " + Arrays.asList(event.getParameters()).toString().replace(",", "").substring(1, Arrays.asList(event.getParameters()).toString().replace(",", "").length() - 1);
+            String[] params = event.getParameters();
+            String cmd = event.getCommand().getCommandName() + " " + Arrays.asList(params).toString().replace(",", "").substring(1, Arrays.asList(event.getParameters()).toString().replace(",", "").length() - 1);
             final Item[] price = new Item[1];
             final int[] times = new int[1];
             final int[] meta = new int[1];
 
 
             CommandRegistry.CommandConfig.bannedCommands.keySet().forEach(c -> {
-                if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd)) {
+                if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 0 && c.equalsIgnoreCase(cmd))
                     event.setCanceled(true);
-//                    throw new WrongUsageException(ServerTranslationHelper.getTranslation(((EntityPlayerMP) event.getSender()).getUniqueID(), "commands.exception.bannedCommand").getFormattedText());
-                } else if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 1 && cmd.startsWith(c)) {
+                else if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 1 && cmd.startsWith(c))
                     event.setCanceled(true);
-//                    throw new WrongUsageException(ServerTranslationHelper.getTranslation(((EntityPlayerMP) event.getSender()).getUniqueID(), "commands.exception.bannedCommand").getFormattedText());
-                } else if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 2 && cmd.contains(c)) {
+                else if (CommandRegistry.CommandConfig.bannedCommands.get(c) == 2 && cmd.contains(c))
                     event.setCanceled(true);
-//                    throw new WrongUsageException(ServerTranslationHelper.getTranslation(((EntityPlayerMP) event.getSender()).getUniqueID(), "commands.exception.bannedCommand").getFormattedText());
-                }
             });
-
-            if (PermissionHandler.canUseCommand(event.getSender(), event.getCommand())) {
-                CommandRegistry.CommandConfig.commandCosts.forEach((command, limiter) -> {
-                    if (cmd.startsWith(command)) {
-                        if (GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1]) != null) {
-                            price[0] = GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1]);
-                            meta[0] = Integer.parseInt(limiter.split(":")[2]);
-                            times[0] = Integer.parseInt(limiter.split(":")[3]);
-                            if (!((EntityPlayerMP) event.getSender()).inventory.hasItemStack(new ItemStack(GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1])))) {
-                                ((EntityPlayerMP) event.getSender()).addChatComponentMessage(new TextComponentTranslation("\u00a74Requires " + price[0].getItemStackDisplayName(new ItemStack(price[0]))));
-                                event.setCanceled(true);
+            if (PermissionHandler.canUseCommand(event.getSender(), event.getCommand()) || PermissionHandler.canUseSubCommand(event.getSender(), AbstractMultiCommand.getSubCommand(params[0]))) {
+                if (!((EntityPlayerMP) event.getSender()).isCreative() && !CommandRegistry.CommandConfig.commandCosts.isEmpty())
+                    CommandRegistry.CommandConfig.commandCosts.forEach((command, limiter) -> {
+                        if (cmd.toLowerCase().startsWith(command.toLowerCase())) {
+                            if (GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1]) != null) {
+                                price[0] = GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1]);
+                                meta[0] = Integer.parseInt(limiter.split(":")[2]);
+                                times[0] = Integer.parseInt(limiter.split(":")[3]);
+                                if (!((EntityPlayerMP) event.getSender()).inventory.hasItemStack(new ItemStack(GameRegistry.findItem(limiter.split(":")[0], limiter.split(":")[1])))) {
+                                    ((EntityPlayerMP) event.getSender()).addChatComponentMessage(new TextComponentTranslation("\u00a74Requires " + price[0].getItemStackDisplayName(new ItemStack(price[0]))));
+                                    event.setCanceled(true);
+                                }
                             }
                         }
-                    }
-                });
+                    });
             }
 
             if (price[0] != null) {
-                if (cmd.startsWith("HxC ")) {
-                    if (CommandRegistry.getCommandForName(event.getParameters()[1]).checkPermission(GlobalVariables.server, event.getSender()))
+                if (cmd.toLowerCase().startsWith("hxc ")) {
+                    AbstractSubCommand comd = AbstractMultiCommand.getSubCommand(params[0]);
+                    if (comd.checkPermission(GlobalVariables.server, event.getSender()))
                             ((EntityPlayerMP) event.getSender()).inventory.clearMatchingItems(price[0], meta[0], times[0], null);
                 } else {
                     ((EntityPlayerMP) event.getSender()).inventory.clearMatchingItems(price[0], meta[0], times[0], null);

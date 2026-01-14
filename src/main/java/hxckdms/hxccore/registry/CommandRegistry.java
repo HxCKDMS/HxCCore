@@ -51,6 +51,9 @@ public class CommandRegistry {
     }
 
     public static AbstractMultiCommand getCommandForName(String name) {
+        for (String comm : multiCommands.keySet()) {
+            System.out.println("comm name : " + comm);
+        }
         return multiCommands.get(name.toLowerCase());
     }
 

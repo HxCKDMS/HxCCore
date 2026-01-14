@@ -154,17 +154,10 @@ public class HxCPlayerInfoHandler {
     public static class CustomPlayerDataEvents {
         @SubscribeEvent
         public void eventLoadFile(PlayerEvent.LoadFromFile event) {
+            System.err.println("Test loaded player file.");
             UUID uuid = event.getEntityPlayer().getUniqueID();
-            File modPlayerData = new File(GlobalVariables.modWorldDir, "HxC-" + uuid.toString() + ".dat");
 
-            try {
-                if (!modPlayerData.exists()) modPlayerData.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-
-            playerDataTable.put(uuid, new NBTFileHandler(uuid.toString(), modPlayerData));
+            playerDataTable.put(uuid, new NBTFileHandler(uuid.toString()));
             NBTFileHandler.loadCertainNBTFile(uuid.toString());
         }
 
